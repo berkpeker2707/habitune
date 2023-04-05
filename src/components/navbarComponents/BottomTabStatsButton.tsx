@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   btnWrapper: {
     flex: 1,
     alignItems: "center",
+    zIndex: 1,
   },
   otherNavButtons: {
     flex: 1,

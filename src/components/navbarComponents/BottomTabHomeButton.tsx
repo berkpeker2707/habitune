@@ -15,7 +15,7 @@ const BottomTabHomeButton = (props: any) => {
           onPress={onPress}
           style={{
             flex: 1,
-            backgroundColor: "green",
+            backgroundColor: "#FFFFFF",
             justifyContent: "center",
             alignItems: "center",
             height: 80,
@@ -51,7 +51,7 @@ const BottomTabHomeButton = (props: any) => {
           onPress={onPress}
           style={{
             flex: 1,
-            backgroundColor: "green",
+            backgroundColor: "#FFFFFF",
             justifyContent: "center",
             alignItems: "center",
             height: 80,
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   btnWrapper: {
     flex: 1,
     alignItems: "center",
+    zIndex: 1,
   },
   otherNavButtons: {
     flex: 1,
