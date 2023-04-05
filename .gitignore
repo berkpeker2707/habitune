@@ -1,2 +1,5 @@
 node_modules
+
+# ignored files created by app
 dist
+logs
