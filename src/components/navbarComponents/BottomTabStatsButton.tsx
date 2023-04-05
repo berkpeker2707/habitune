@@ -89,14 +89,14 @@ const styles = StyleSheet.create({
   },
   otherNavButtons: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
     height: 80,
   },
   svgGapFiller: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
   },
 });
 
