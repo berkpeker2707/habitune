@@ -8,6 +8,8 @@ const jwt = require("jsonwebtoken");
 
 import dotenv from "dotenv";
 
+dotenv.config();
+
 // [1]   sub: '111957037018006382563',
 // [1]   id: '111957037018006382563',
 // http://localhost:1111/api/user/auth/google
