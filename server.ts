@@ -37,6 +37,18 @@ app.use(passport.initialize());
 db();
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 
+//test requests for winston and morgan
+app.use(morganMiddleware);
+app.get("/logger", (_, res) => {
+  Logger.error("This is an error log");
+  Logger.warn("This is a warn log");
+  Logger.info("This is a info log");
+  Logger.http("This is a http log");
+  Logger.debug("This is a debug log");
+
+  res.send("Hello world");
+});
+
 // requests
 app.get("/health", (_, res) => {
   res.send("Working like a well-oiled machine!");
@@ -51,17 +63,5 @@ app.use("/api/user", userRoutes);
 // app.use("/api/habit", habitRoutes);
 // app.use("/api/friend", friendRoutes);
 // app.use("/api/reminder", reminderRoutes);
-
-//test requests for winston and morgan
-app.use(morganMiddleware);
-app.get("/logger", (_, res) => {
-  Logger.error("This is an error log");
-  Logger.warn("This is a warn log");
-  Logger.info("This is a info log");
-  Logger.http("This is a http log");
-  Logger.debug("This is a debug log");
-
-  res.send("Hello world");
-});
 
 export default app;
