@@ -21,9 +21,9 @@ import userRoutes from "./user/user.routes";
 // import * as friendRoutes from "./friend/friend.routes";
 // import * as reminderRoutes from "./reminder/reminder.routes";
 
-const port = process.env.PORT || 1111;
-
 const app: Express = express();
+
+const port = process.env.PORT || 1111;
 
 app.use(express.json());
 app.use(cors());
