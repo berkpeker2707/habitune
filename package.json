@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "nodemon dist/server.js",
+    "start": "nodemon server.ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
   },
   "author": "",
@@ -24,6 +24,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-jwt": "^4.0.1",
+    "ts-node": "^10.9.1",
     "winston": "^3.8.2"
   },
   "devDependencies": {
