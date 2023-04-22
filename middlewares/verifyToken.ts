@@ -26,7 +26,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
       return res.json({ message: "Unauthorized!" });
     }
 
-    const user = await User.findById(decoded.user.id);
+    const user = await User.find({ id: decoded.user.id });
     req.user = user;
 
     next();
