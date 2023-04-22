@@ -1,8 +1,8 @@
 import { Router } from "express";
 import {
-  signInWithGoogle,
   callbackSignInWithGoogle,
-  fetchProfile,
+  fetchCurrentUserProfile,
+  fetchUserProfile,
 } from "./user.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -15,8 +15,7 @@ userRoutes.get(
   "/auth/google",
   passport.authenticate("google", {
     scope: ["email", "profile"],
-  }),
-  signInWithGoogle
+  })
 );
 
 userRoutes.get(
@@ -25,20 +24,8 @@ userRoutes.get(
   callbackSignInWithGoogle
 );
 
-// userRoutes.get("/auth/google/unauthorized", (req, res) => {
-//   res.sendStatus(401);
-// });
+userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 
-// userRoutes.get("/logout", (req, res) => {
-//   //   req.logout();
-//   req.session.destroy(() => res.redirect("/"));
-// });
-
-userRoutes.get(
-  "/profile",
-  //   passport.authenticate("jwt", { session: false }),
-  verifyToken,
-  fetchProfile
-);
+userRoutes.get("/selectedUser/profile/:userID", verifyToken, fetchUserProfile);
 
 export default userRoutes;
