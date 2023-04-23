@@ -3,6 +3,9 @@ import {
   callbackSignInWithGoogle,
   fetchCurrentUserProfile,
   fetchUserProfile,
+  sendFriendship,
+  confirmFriendship,
+  removeFriend,
 } from "./user.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -27,5 +30,11 @@ userRoutes.get(
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 
 userRoutes.get("/selectedUser/profile/:userID", verifyToken, fetchUserProfile);
+
+userRoutes.post("/sendFriendshipRequest", verifyToken, sendFriendship);
+
+userRoutes.post("/confirmFriendshipRequest", verifyToken, confirmFriendship);
+
+userRoutes.put("/cancelFriendship", verifyToken, removeFriend);
 
 export default userRoutes;
