@@ -10,7 +10,7 @@ interface idecoded {
     email: string;
     image: string;
     habitIds: [];
-    friendIds: [];
+    friends: [];
   };
 }
 

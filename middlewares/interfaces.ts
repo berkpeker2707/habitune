@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { Types } from "mongoose";
 
 // interface representing User
 export interface IUser {
@@ -8,7 +9,7 @@ export interface IUser {
   email: string;
   image: string;
   habitIds: number[];
-  friendIds: number[];
+  friends: [{ friend: Types.ObjectId; pending: boolean }];
 }
 
 export interface IReq extends Request {
