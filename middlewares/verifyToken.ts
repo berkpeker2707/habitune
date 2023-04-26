@@ -9,7 +9,7 @@ interface idecoded {
     firstName: string;
     email: string;
     image: string;
-    habitIds: [];
+    habits: [];
     friends: [];
   };
 }
