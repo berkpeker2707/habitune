@@ -64,73 +64,136 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       });
     }
 
-    if (
-      loggedinUser?.friends?.find((element) => {
-        element.friend.toString() === user[0]._id.toString();
-      })
-    ) {
-      console.log("user has already sent friend request");
+    // a) if loggedinUser has already send friend request, and receiver user didn't send any to loggedinUser then remove pending request
+    //    or if receiver and loggedinUser are friends then remove loggedinUser's friend
+    // b) else if user hasnt send friend request before,
+    //    check if receiver already has sent it to loggedinUser friend request,
+    //    if so then accept and make both loggedinUser and user pending to false
+    // c) else add loggedinUser's pending friend to friendList with pending true
 
-      await loggedinUser.updateOne(
+    const currentUserHasUserFriend = loggedinUser?.friends.some((element) => {
+      return element.friend.toString() == user[0]._id.toString();
+    });
+
+    const currentUserAlreadyHasUserFriend = loggedinUser?.friends.some(
+      (element) => {
+        return (
+          element.friend.toString() == user[0]._id.toString() &&
+          element.pending === false
+        );
+      }
+    );
+
+    const currentUserHasPendingUserFriend = loggedinUser?.friends.some(
+      (element) => {
+        return (
+          element.friend.toString() == user[0]._id.toString() &&
+          element.pending === true
+        );
+      }
+    );
+
+    const targetUserHasCurrentUser = user[0].friends.some((elemfriends) => {
+      return elemfriends.friend.toString() === req.user[0]._id.toString();
+    });
+
+    const targetUserAlreadyHasCurrentUser = user[0].friends.some(
+      (elemfriends) => {
+        return (
+          elemfriends.friend.toString() === req.user[0]._id.toString() &&
+          elemfriends.pending === false
+        );
+      }
+    );
+
+    const targetUserHasPendingCurrentUser = user[0].friends.some(
+      (elemfriends) => {
+        return (
+          elemfriends.friend.toString() === req.user[0]._id.toString() &&
+          elemfriends.pending === true
+        );
+      }
+    );
+
+    // console.log("########################################################");
+    // console.log("########################################################");
+    // console.log("########################################################");
+    // console.log(
+    //   "🚀 ~ file: user.controllers.ts:95 ~ sendFriendship ~ currentUserHasUserFriend:",
+    //   currentUserHasUserFriend
+    // );
+    // console.log(
+    //   "🚀 ~ file: user.controllers.ts:97 ~ sendFriendship ~ targetUserHasCurrentUser:",
+    //   targetUserHasCurrentUser
+    // );
+    // console.log(
+    //   "🚀 ~ file: user.controllers.ts:99 ~ sendFriendship ~ targetUserAlreadyHasCurrentUser:",
+    //   targetUserAlreadyHasCurrentUser
+    // );
+
+    // console.log("########################################################");
+    // console.log("########################################################");
+    // console.log("########################################################");
+
+    if (
+      (currentUserHasUserFriend && !targetUserHasCurrentUser) ||
+      (currentUserHasUserFriend && targetUserAlreadyHasCurrentUser)
+    ) {
+      console.log("CONDITION a");
+
+      await loggedinUser?.updateOne(
         {
-          $pull: { friends: { friend: user[0]._id, pending: true } },
+          $pull: { friends: { friend: user[0]._id } },
         },
         { multi: true }
       );
-      // await user.updateOne({ $pull: { likedPosts: selectedLike.postID } });
 
+      res.status(200).json(loggedinUser);
+    } else if (currentUserHasUserFriend && targetUserHasPendingCurrentUser) {
+      console.log("CONDITION b");
+      // console.log("requested user wants friendship as well");
+      // await loggedinUser?.updateOne(
+      //   {
+      //     $push: { friends: [{ friend: user[0]._id, pending: false }] },
+      //   },
+      //   { upsert: true }
+      // );
+      // await user[0]?.
+      await User.findOneAndUpdate(
+        // { "friends.friend": req.user[0]._id },
+        // // {
+        // //   $push: { friends: [{ friend: req.user[0]._id, pending: false }] },
+        // // }
+
+        // {
+        //   $set: {
+        //     friends: { pending: false },
+        //   },
+        // }
+
+        // $elemMatch finds docs containing an array with a matching element
+        {
+          friends: { $elemMatch: { friend: req.user[0]._id, pending: true } },
+        },
+
+        // Positional operator $ is a placeholder for the first matching array element
+        {
+          $set: { "friends.$.pending": false },
+        }
+      );
       res.status(200).json(loggedinUser);
     } else {
-      console.log("user has never sent friend request");
+      console.log("CONDITION c");
+      console.log("only loggedinUser wants friendship");
 
-      // console.log(
-      //   "🚀 ~ file: user.controllers.ts:98 ~ sendFriendship ~ user[0].friends.includes(req.user[0]._id):",
-      //   user[0].friends.includes(req.user[0]._id)
-      // );
-
-      // let tempA = user[0].friends.filter((elemfriends) => {
-      //   return (
-      //     elemfriends.friend.toString() === req.user[0]._id.toString() &&
-      //     elemfriends.pending === true
-      //   );
-      // });
-      // console.log(tempA);
-      console.log(user[0].friends.includes(req.user[0]._id));
-
-      if (
-        // user[0].friends.includes({
-        //   friend: req.user[0]._id,
-        //   pending: true,
-        // })
-        user[0].friends.filter((elemfriends) => {
-          return (
-            elemfriends.friend.toString() === req.user[0]._id.toString() &&
-            elemfriends.pending === true
-          );
-        }).length === 1
-      ) {
-        console.log("requested user wants friendship as well");
-        await loggedinUser?.updateOne(
-          {
-            $push: { friends: [{ friend: user[0]._id, pending: false }] },
-          },
-          { upsert: true }
-        );
-      } else {
-        console.log("breaking friendship");
-        await loggedinUser?.updateOne(
-          {
-            $pull: { friends: { friend: user[0]._id, pending: false } },
-          },
-          { upsert: true }
-        );
-      }
-      // await user.updateOne({ $push: { likedPosts: selectedLike.postID } });
-
+      await loggedinUser?.updateOne(
+        {
+          $push: { friends: [{ friend: user[0]._id, pending: true }] },
+        },
+        { upsert: true }
+      );
       res.status(200).json(loggedinUser);
     }
-
-    // res.status(200).json(user);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
