@@ -13,13 +13,13 @@ import passportStrategy from "./config/passport";
 import Logger from "./middlewares/logger";
 import morganMiddleware from "./middlewares/morganMiddleware";
 
+// import path from "path";
+
 dotenv.config();
 
 import userRoutes from "./user/user.routes";
-// import path from "path";
-// import * as habitRoutes from "./habit/habit.routes";
-// import * as friendRoutes from "./friend/friend.routes";
-// import * as reminderRoutes from "./reminder/reminder.routes";
+import habitRoutes from "./habit/habit.routes";
+// import reminderRoutes from "./reminder/reminder.routes";
 
 const app: Express = express();
 
@@ -39,15 +39,14 @@ app.listen(port, () => console.log(`Server running at port: ${port}`));
 
 //test requests for winston and morgan
 app.use(morganMiddleware);
-app.get("/logger", (_, res) => {
-  Logger.error("This is an error log");
-  Logger.warn("This is a warn log");
-  Logger.info("This is a info log");
-  Logger.http("This is a http log");
-  Logger.debug("This is a debug log");
-
-  res.send("Hello world");
-});
+// app.get("/logger", (_, res) => {
+//   Logger.error("This is an error log");
+//   Logger.warn("This is a warn log");
+//   Logger.info("This is a info log");
+//   Logger.http("This is a http log");
+//   Logger.debug("This is a debug log");
+//   res.send("Hello world");
+// });
 
 // requests
 app.get("/health", (_, res) => {
@@ -60,8 +59,7 @@ app.get("/health", (_, res) => {
 
 //routing
 app.use("/api/user", userRoutes);
-// app.use("/api/habit", habitRoutes);
-// app.use("/api/friend", friendRoutes);
+app.use("/api/habit", habitRoutes);
 // app.use("/api/reminder", reminderRoutes);
 
 export default app;
