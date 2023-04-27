@@ -7,7 +7,7 @@ const userSchema = new Schema<IUser>({
   lastName: { type: String },
   email: { type: String },
   image: { type: String },
-  habits: [Number],
+  habits: [mongoose.Schema.Types.ObjectId],
   friends: [{ friend: mongoose.Schema.Types.ObjectId, pending: Boolean }],
 });
 

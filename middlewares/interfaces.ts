@@ -8,7 +8,7 @@ export interface IUser {
   lastName: string;
   email: string;
   image: string;
-  habits: number[];
+  habits: Types.ObjectId[];
   friends: [{ friend: Types.ObjectId; pending: boolean }];
 }
 
