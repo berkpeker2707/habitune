@@ -43,7 +43,7 @@ export default (passport: PassportStatic) => {
             });
 
             if (alreadyRegisteredUser.length > 0) {
-              return done(null, alreadyRegisteredUser);
+              return done(null, alreadyRegisteredUser[0]);
             } else {
               console.log("Creating new user...");
 
