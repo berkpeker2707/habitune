@@ -17,8 +17,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
       name: req.body.name,
       color: "",
       sharedWith: [],
-      firstDate: "",
-      lastDate: "",
+      firstDate: req.body.firstDate ?? "",
+      lastDate: req.body.lastDate ?? "",
       dates: [],
     });
 
