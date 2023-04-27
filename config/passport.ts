@@ -38,8 +38,12 @@ export default (passport: PassportStatic) => {
           done: any
         ) => {
           try {
-            if (await User.findOne({ id: profile.id })) {
-              return done(null, await User.findOne({ id: profile.id }));
+            const alreadyRegisteredUser = await User.find({
+              email: profile.email,
+            });
+
+            if (alreadyRegisteredUser.length > 0) {
+              return done(null, alreadyRegisteredUser);
             } else {
               console.log("Creating new user...");
 
