@@ -51,7 +51,20 @@ export const deleteHabit = async (req: IReq | any, res: Response) => {
       { upsert: true }
     );
 
-    res.status(200).json("newHabit");
+    res.status(200).json("Habit deleted.");
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const editHabit = async (req: IReq | any, res: Response) => {
+  try {
+    const selectedHabit = await Habit.find({
+      _id: req.body._id,
+    });
+
+    res.status(200).json(selectedHabit);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
