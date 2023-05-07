@@ -188,3 +188,14 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
     return res.status(500).send(getErrorMessage(error));
   }
 };
+
+export const deleteUser = async (req: IReq | any, res: Response) => {
+  try {
+    const loggedinUser = await User.findById(req.user[0]._id);
+
+    res.status(200).json(loggedinUser);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
