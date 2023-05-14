@@ -8,10 +8,23 @@ export interface IUser {
   lastName: string;
   email: string;
   image: string;
-  habitIds: number[];
+  habits: Types.ObjectId[];
   friends: [{ friend: Types.ObjectId; pending: boolean }];
+}
+
+export interface IHabit {
+  owner: Types.ObjectId;
+  name: string;
+  color: string;
+  sharedWith: Types.ObjectId[];
+  firstDate: Date;
+  lastDate: Date;
+  dates: Date[];
 }
 
 export interface IReq extends Request {
   user: IUser;
+}
+export interface IReq extends Request {
+  habit: IHabit;
 }
