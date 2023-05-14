@@ -4,6 +4,7 @@ import {
   fetchCurrentUserProfile,
   fetchUserProfile,
   sendFriendship,
+  deleteUser,
 } from "./user.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -30,5 +31,7 @@ userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 userRoutes.get("/selectedUser/profile/:userID", verifyToken, fetchUserProfile);
 
 userRoutes.post("/sendFriendshipRequest", verifyToken, sendFriendship);
+
+userRoutes.delete("/delete/me", verifyToken, deleteUser);
 
 export default userRoutes;

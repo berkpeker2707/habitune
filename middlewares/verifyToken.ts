@@ -9,7 +9,7 @@ interface idecoded {
     firstName: string;
     email: string;
     image: string;
-    habitIds: [];
+    habits: [];
     friends: [];
   };
 }
@@ -26,7 +26,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
       return res.json({ message: "Unauthorized!" });
     }
 
-    const user = await User.find({ id: decoded.user.id });
+    const user = await User.find({ email: decoded.user.email });
     req.user = user;
 
     next();

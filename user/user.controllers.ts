@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
 import User from "./user.model";
+import Habit from "../habit/habit.model";
 
 import { IReq } from "../middlewares/interfaces";
 const jwt = require("jsonwebtoken");
@@ -181,6 +182,36 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       res.status(200).json(loggedinUser);
     } else {
       // console.log("I KNOWN REQUEST");
+      res.status(200).json(loggedinUser);
+    }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const deleteUser = async (req: IReq | any, res: Response) => {
+  try {
+    const loggedinUser = await User.findById(req.user[0]._id);
+    if (
+      loggedinUser &&
+      loggedinUser.habits.length &&
+      loggedinUser.habits.length > 0
+    ) {
+      for (let i = 0; i < loggedinUser.habits.length; i++) {
+        await Habit.findOneAndDelete({
+          _id: loggedinUser.habits[i],
+        });
+      }
+      await User.findOneAndDelete({
+        _id: req.user[0]._id,
+      });
+      res.status(200).json(loggedinUser);
+    } else {
+      console.log("No habit detected.");
+      await User.findOneAndDelete({
+        _id: req.user[0]._id,
+      });
       res.status(200).json(loggedinUser);
     }
   } catch (error) {
