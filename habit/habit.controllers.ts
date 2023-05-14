@@ -12,25 +12,34 @@ dotenv.config();
 
 export const createHabit = async (req: IReq | any, res: Response) => {
   try {
-    const newHabit = await Habit.create({
-      owner: req.user[0]._id,
-      name: req.body.name,
-      color: "",
-      sharedWith: [],
-      firstDate: req.body.firstDate ?? "",
-      lastDate: req.body.lastDate ?? "",
-      dates: [],
-    });
+    const checkUser = await User.findById(req.user[0]._id);
 
-    await User.findOneAndUpdate(
-      { _id: req.user[0]._id },
-      {
-        $push: { habits: [newHabit._id] },
-      },
-      { upsert: true }
-    );
+    if (checkUser && checkUser.habits && checkUser.habits.length >= 10) {
+      Logger.error("User already has 10 habits.");
+      return res
+        .status(500)
+        .send(getErrorMessage("User already has 10 habits."));
+    } else {
+      const newHabit = await Habit.create({
+        owner: req.user[0]._id,
+        name: req.body.name,
+        color: "",
+        sharedWith: [],
+        firstDate: req.body.firstDate ?? "",
+        lastDate: req.body.lastDate ?? "",
+        dates: [],
+      });
 
-    res.status(200).json(newHabit);
+      await User.findOneAndUpdate(
+        { _id: req.user[0]._id },
+        {
+          $push: { habits: [newHabit._id] },
+        },
+        { upsert: true }
+      );
+
+      res.status(200).json(newHabit);
+    }
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
