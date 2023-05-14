@@ -9,8 +9,8 @@ import passport from "passport";
 import passportStrategy from "./config/passport";
 
 //logger is winston, can log all and categorize all as you wish
+// import Logger from "./middlewares/logger";
 //morgan is for checking requests
-import Logger from "./middlewares/logger";
 import morganMiddleware from "./middlewares/morganMiddleware";
 
 // import path from "path";
@@ -19,7 +19,6 @@ dotenv.config();
 
 import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
-// import reminderRoutes from "./reminder/reminder.routes";
 
 const app: Express = express();
 
@@ -60,6 +59,5 @@ app.get("/health", (_, res) => {
 //routing
 app.use("/api/user", userRoutes);
 app.use("/api/habit", habitRoutes);
-// app.use("/api/reminder", reminderRoutes);
 
 export default app;
