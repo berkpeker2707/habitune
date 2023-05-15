@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "nodemon server.ts",
+    "api": "nodemon server.ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\""
   },
   "author": "",
