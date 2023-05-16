@@ -6,7 +6,11 @@ import SigninLogo from "../assets/images/signin/signinLogo.svg";
 import SigninText from "../assets/images/signin/signinText.svg";
 import GoogleSigninButton from "../assets/images/signin/googleSigninButton.svg";
 
+// import { useNavigation } from "@react-navigation/native";
+// import { SigninScreenNavigationProp } from "../types/BottomTabNavigatorParamList";
+
 export function Signin() {
+  // const navigation = useNavigation<SigninScreenNavigationProp>();
   return (
     <View className="flex-1">
       <ImageBackground

@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -19,7 +18,7 @@ import BottomTabHomeButton from "./src/components/navbarComponents/BottomTabHome
 import BottomTabAddButton from "./src/components/navbarComponents/BottomTabAddButton";
 import BottomTabStatsButton from "./src/components/navbarComponents/BottomTabStatsButton";
 
-const { Navigator, Screen } = createBottomTabNavigator();
+import { BottomTabNavigatorParamList } from "./src/types/BottomTabNavigatorParamList";
 
 const options: BottomTabNavigationOptions = {
   headerShown: false,
@@ -35,6 +34,9 @@ const options: BottomTabNavigationOptions = {
   tabBarInactiveTintColor: "#968EB0",
 };
 
+const { Navigator, Screen } =
+  createBottomTabNavigator<BottomTabNavigatorParamList>();
+
 //auth state temp
 const auth = true;
 
@@ -42,7 +44,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Navigator screenOptions={options}>
-        {auth ? (
+        {!auth ? (
           <Screen
             name="Signin"
             component={Signin}
