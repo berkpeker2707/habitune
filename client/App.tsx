@@ -12,6 +12,7 @@ import {
 import { Home } from "./src/screens/Home";
 import { Add } from "./src/screens/Add";
 import { Stats } from "./src/screens/Stats";
+import { Signin } from "./src/screens/Signin";
 
 //navbar buttons
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomTabHomeButton";
@@ -34,31 +35,46 @@ const options: BottomTabNavigationOptions = {
   tabBarInactiveTintColor: "#968EB0",
 };
 
+//auth state temp
+const auth = true;
+
 const App = () => {
   return (
     <NavigationContainer>
       <Navigator screenOptions={options}>
-        <Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarButton: (props) => <BottomTabHomeButton {...props} />,
-          }}
-        />
-        <Screen
-          name="Add"
-          component={Add}
-          options={{
-            tabBarButton: (props) => <BottomTabAddButton {...props} />,
-          }}
-        />
-        <Screen
-          name="Stats"
-          component={Stats}
-          options={{
-            tabBarButton: (props) => <BottomTabStatsButton {...props} />,
-          }}
-        />
+        {auth ? (
+          <Screen
+            name="Signin"
+            component={Signin}
+            options={{
+              tabBarButton: () => null,
+            }}
+          />
+        ) : (
+          <>
+            <Screen
+              name="Home"
+              component={Home}
+              options={{
+                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+              }}
+            />
+            <Screen
+              name="Add"
+              component={Add}
+              options={{
+                tabBarButton: (props) => <BottomTabAddButton {...props} />,
+              }}
+            />
+            <Screen
+              name="Stats"
+              component={Stats}
+              options={{
+                tabBarButton: (props) => <BottomTabStatsButton {...props} />,
+              }}
+            />
+          </>
+        )}
       </Navigator>
     </NavigationContainer>
     // <View style={styles.container}>
