@@ -22,6 +22,8 @@ import { Home } from "./src/screens/Home";
 import { Add } from "./src/screens/Add";
 import { Overview } from "./src/screens/Overview";
 import { Profile } from "./src/screens/Profile";
+import { Share } from "./src/screens/Share";
+import { Settings } from "./src/screens/Settings";
 
 //navbar components
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
@@ -136,11 +138,73 @@ const HomeSection = () => {
               }}
             >
               <View>
-                <TopNavbarShareButton />
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Settings");
+                  }}
+                >
+                  <TopNavbarShareButton />
+                </Pressable>
               </View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
-                <TopNavbarSettingsButton />
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Settings");
+                  }}
+                >
+                  <TopNavbarSettingsButton />
+                </Pressable>
               </View>
+            </View>
+          ),
+        }}
+      />
+      <StackNavigator.Screen
+        name="Share"
+        component={Share}
+        options={{
+          headerTitle: "Share",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <TopNavbarBackButton />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+      <StackNavigator.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          headerTitle: "Settings",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <TopNavbarBackButton />
+              </Pressable>
             </View>
           ),
         }}
