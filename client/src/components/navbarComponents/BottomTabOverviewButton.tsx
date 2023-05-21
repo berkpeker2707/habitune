@@ -4,7 +4,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 //svg
 import Svg, { Circle, Path } from "react-native-svg";
 
-const BottomTabStatsButton = (props: any) => {
+const BottomTabOverviewButton = (props: any) => {
   const { accessibilityState, onPress } = props;
 
   if (accessibilityState.selected) {
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomTabStatsButton;
+export default BottomTabOverviewButton;
