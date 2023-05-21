@@ -1,26 +1,36 @@
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-
-import { NavigationContainer } from "@react-navigation/native";
+import { Pressable, View } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import "react-native-gesture-handler";
+
+//types
+import {
+  BottomTabNavParamList,
+  HomeNavParamList,
+  generalScreenProp,
+} from "./src/types/BottomTabNavParamList";
 
 // screens
+import { Signin } from "./src/screens/Signin";
 import { Home } from "./src/screens/Home";
 import { Add } from "./src/screens/Add";
-import { Stats } from "./src/screens/Stats";
-import { Signin } from "./src/screens/Signin";
+import { Overview } from "./src/screens/Overview";
+import { Profile } from "./src/screens/Profile";
 
-//navbar buttons
+//navbar components
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomTabHomeButton";
 import BottomTabAddButton from "./src/components/navbarComponents/BottomTabAddButton";
-import BottomTabStatsButton from "./src/components/navbarComponents/BottomTabStatsButton";
+import BottomTabOverviewButton from "./src/components/navbarComponents/BottomTabOverviewButton";
+import TopNavbarLogo from "./src/components/navbarComponents/TopNavbarLogo";
+import TopNavbarProfileImage from "./src/components/navbarComponents/TopNavbarProfileImage";
 
-import { BottomTabNavigatorParamList } from "./src/types/BottomTabNavigatorParamList";
-
-const options: BottomTabNavigationOptions = {
+const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
   tabBarStyle: {
     position: "absolute",
@@ -34,18 +44,79 @@ const options: BottomTabNavigationOptions = {
   tabBarInactiveTintColor: "#968EB0",
 };
 
-const { Navigator, Screen } =
-  createBottomTabNavigator<BottomTabNavigatorParamList>();
+const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
+const StackNavigator = createStackNavigator<HomeNavParamList>();
 
 //auth state temp
 const auth = true;
 
+const HomeSection = () => {
+  const navigation = useNavigation<generalScreenProp>();
+  return (
+    <StackNavigator.Navigator
+      screenOptions={{
+        headerStyle: { height: 70 },
+      }}
+    >
+      <StackNavigator.Screen
+        name="Icon"
+        component={Home}
+        options={{
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 5,
+              }}
+            >
+              <TopNavbarLogo />
+            </View>
+          ),
+          headerTitle: "Today",
+          headerRight: () => (
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Profile");
+              }}
+            >
+              <View
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 5,
+                }}
+              >
+                <TopNavbarProfileImage
+                  imageSource={
+                    "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
+                  }
+                />
+              </View>
+            </Pressable>
+          ),
+        }}
+      />
+      <StackNavigator.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          title: "Profile",
+          headerRight: () => <TopNavbarLogo />,
+        }}
+      />
+    </StackNavigator.Navigator>
+  );
+};
+
 const App = () => {
   return (
     <NavigationContainer>
-      <Navigator screenOptions={options}>
+      <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
         {!auth ? (
-          <Screen
+          <BottomTabNav.Screen
             name="Signin"
             component={Signin}
             options={{
@@ -54,35 +125,31 @@ const App = () => {
           />
         ) : (
           <>
-            <Screen
-              name="Home"
-              component={Home}
+            <BottomTabNav.Screen
+              name="HomeSection"
+              component={HomeSection}
               options={{
                 tabBarButton: (props) => <BottomTabHomeButton {...props} />,
               }}
             />
-            <Screen
+            <BottomTabNav.Screen
               name="Add"
               component={Add}
               options={{
                 tabBarButton: (props) => <BottomTabAddButton {...props} />,
               }}
             />
-            <Screen
-              name="Stats"
-              component={Stats}
+            <BottomTabNav.Screen
+              name="Overview"
+              component={Overview}
               options={{
-                tabBarButton: (props) => <BottomTabStatsButton {...props} />,
+                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
               }}
             />
           </>
         )}
-      </Navigator>
+      </BottomTabNav.Navigator>
     </NavigationContainer>
-    // <View style={styles.container}>
-    //   <Text>Open up App.tsx to start working on your app!</Text>
-    // <StatusBar style="auto" />
-    // </View>
   );
 };
 
