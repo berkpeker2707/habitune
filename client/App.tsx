@@ -12,7 +12,7 @@ import "react-native-gesture-handler";
 //types
 import {
   BottomTabNavParamList,
-  HomeNavParamList,
+  StackNavParamList,
   generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
 
@@ -34,6 +34,7 @@ import TopNavbarProfileImage from "./src/components/navbarComponents/TopNavbarCo
 import TopNavbarBackButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarShareButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
 import TopNavbarSettingsButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
+import TopNavbarDoneButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -50,7 +51,7 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 };
 
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
-const StackNavigator = createStackNavigator<HomeNavParamList>();
+const StackNavigator = createStackNavigator<StackNavParamList>();
 
 //auth state temp
 const auth = true;
@@ -64,7 +65,7 @@ const HomeSection = () => {
       }}
     >
       <StackNavigator.Screen
-        name="Icon"
+        name="Home"
         component={Home}
         options={{
           headerLeft: () => (
@@ -213,6 +214,61 @@ const HomeSection = () => {
   );
 };
 
+const AddSection = () => {
+  const navigation = useNavigation<generalScreenProp>();
+  return (
+    <StackNavigator.Navigator
+      screenOptions={{
+        headerStyle: { height: 70 },
+      }}
+    >
+      <StackNavigator.Screen
+        name="Add"
+        component={Add}
+        options={{
+          headerTitle: "New Habit",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <TopNavbarBackButton />
+              </Pressable>
+            </View>
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  console.log("Done");
+                }}
+              >
+                <TopNavbarDoneButton />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+    </StackNavigator.Navigator>
+  );
+};
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -235,8 +291,8 @@ const App = () => {
               }}
             />
             <BottomTabNav.Screen
-              name="Add"
-              component={Add}
+              name="AddSection"
+              component={AddSection}
               options={{
                 tabBarButton: (props) => <BottomTabAddButton {...props} />,
               }}
