@@ -27,8 +27,8 @@ import { Profile } from "./src/screens/Profile";
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
 import BottomTabAddButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabAddButton";
 import BottomTabOverviewButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabOverviewButton";
-import TopNavbarLogo from "./src/components/navbarComponents/TopNavbarLogo";
-import TopNavbarProfileImage from "./src/components/navbarComponents/TopNavbarProfileImage";
+import TopNavbarLogo from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
+import TopNavbarProfileImage from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarProfileImage";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
