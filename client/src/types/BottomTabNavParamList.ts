@@ -12,6 +12,8 @@ export type BottomTabNavParamList = {
 export type HomeNavParamList = {
   Icon: undefined;
   Profile: undefined;
+  Share: undefined;
+  Settings: undefined;
 };
 
 export type generalScreenProp = CompositeNavigationProp<
