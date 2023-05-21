@@ -1,7 +1,5 @@
 import * as React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-
-//svg
 import Svg, { Defs, G, Path } from "react-native-svg";
 
 const BottomTabHomeButton = (props: any) => {
