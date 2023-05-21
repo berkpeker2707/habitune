@@ -29,6 +29,9 @@ import BottomTabAddButton from "./src/components/navbarComponents/BottomNavbarCo
 import BottomTabOverviewButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabOverviewButton";
 import TopNavbarLogo from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
 import TopNavbarProfileImage from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarProfileImage";
+import TopNavbarBackButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
+import TopNavbarShareButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
+import TopNavbarSettingsButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -103,8 +106,43 @@ const HomeSection = () => {
         name="Profile"
         component={Profile}
         options={{
-          title: "Profile",
-          headerRight: () => <TopNavbarLogo />,
+          headerTitle: "Profile",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <TopNavbarBackButton />
+              </Pressable>
+            </View>
+          ),
+          headerRight: () => (
+            <View
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 5,
+              }}
+            >
+              <View>
+                <TopNavbarShareButton />
+              </View>
+              <View style={{ paddingRight: 10, paddingLeft: 20 }}>
+                <TopNavbarSettingsButton />
+              </View>
+            </View>
+          ),
         }}
       />
     </StackNavigator.Navigator>
