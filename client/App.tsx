@@ -251,7 +251,7 @@ const AddSection = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 10,
+                paddingRight: 10,
               }}
             >
               <Pressable
