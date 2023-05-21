@@ -24,9 +24,9 @@ import { Overview } from "./src/screens/Overview";
 import { Profile } from "./src/screens/Profile";
 
 //navbar components
-import BottomTabHomeButton from "./src/components/navbarComponents/BottomTabHomeButton";
-import BottomTabAddButton from "./src/components/navbarComponents/BottomTabAddButton";
-import BottomTabOverviewButton from "./src/components/navbarComponents/BottomTabOverviewButton";
+import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
+import BottomTabAddButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabAddButton";
+import BottomTabOverviewButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabOverviewButton";
 import TopNavbarLogo from "./src/components/navbarComponents/TopNavbarLogo";
 import TopNavbarProfileImage from "./src/components/navbarComponents/TopNavbarProfileImage";
 
