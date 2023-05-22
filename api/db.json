@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "_id": {
+        "$oid": "643933a420ccb64a40e171a8"
+      },
+      "id": 111957037018006390000,
+      "firstName": "Berkolatto",
+      "email": "berkolatto@gmail.com",
+      "image": "https://lh3.googleusercontent.com/a/AGNmyxbtKs3Ots2AFN_zHkcKcZqxlt-s6sgh579SubTr=s96-c",
+      "__v": 0,
+      "friends": [],
+      "habits": [
+        {
+          "$oid": "644a655e89ee2d787fb24fdd"
+        }
+      ]
+    },
+    {
+      "_id": {
+        "$oid": "644a56d49328fd8dfb7eda91"
+      },
+      "id": 109227819228124180000,
+      "firstName": "Berk Peker",
+      "email": "berkpeker94@gmail.com",
+      "image": "https://lh3.googleusercontent.com/a/AGNmyxZnAMxUh01xKgQpdrfq2-28APhe1bKozXRPxZjn_A=s96-c",
+      "habits": [],
+      "friends": [],
+      "__v": 0
+    }
+  ],
+  "habits": [
+    {
+      "_id": {
+        "$oid": "644a655e89ee2d787fb24fdd"
+      },
+      "owner": {
+        "$oid": "643933a420ccb64a40e171a8"
+      },
+      "name": "habitTest1",
+      "color": "yellow",
+      "sharedWith": [
+        {
+          "$oid": "644a56d49328fd8dfb7eda91"
+        }
+      ],
+      "firstDate": {
+        "$date": "2023-05-01T00:00:00.000Z"
+      },
+      "lastDate": {
+        "$date": "2023-05-10T00:00:00.000Z"
+      },
+      "dates": [
+        {
+          "$date": "2023-05-01T00:00:00.000Z"
+        }
+      ],
+      "__v": 0
+    }
+  ]
+}
