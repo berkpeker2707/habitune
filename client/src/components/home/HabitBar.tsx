@@ -20,7 +20,6 @@ const HabitBar = (props: any) => {
       <Text fill="#000" fontSize="19" x={40} y={30}>
         Task 1
       </Text>
-
       <G filter="url(#filter0_d_392_5163)">
         <Mask
           id="path-2-outside-1_392_5163"
@@ -73,7 +72,7 @@ const HabitBar = (props: any) => {
           x={287.75}
           y={5.75}
           stroke="#fff"
-          strokeWidth={0.5}
+          strokeWidth={1}
           rx={17.25}
         />
       </G>
@@ -92,7 +91,7 @@ const HabitBar = (props: any) => {
           x={307.75}
           y={5.75}
           stroke="#fff"
-          strokeWidth={0.5}
+          strokeWidth={1}
           rx={16.75}
         />
       </G>
@@ -104,7 +103,7 @@ const HabitBar = (props: any) => {
           x={326.75}
           y={5.75}
           stroke="#fff"
-          strokeWidth={0.5}
+          strokeWidth={1}
           rx={17.25}
         />
       </G>
