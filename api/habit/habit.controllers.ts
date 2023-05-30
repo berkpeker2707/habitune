@@ -7,6 +7,7 @@ import { IReq } from "../middlewares/interfaces";
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
+import calculateUpcomingDates from "../middlewares/calculateUpcomingDates";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         firstDate: req.body.firstDate ?? "",
         lastDate: req.body.lastDate ?? "",
         dates: [],
+        upcomingDates: [],
       });
 
       await User.findOneAndUpdate(
@@ -37,6 +39,18 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         },
         { upsert: true }
       );
+
+      await newHabit.updateOne({
+        $push: {
+          upcomingDates: [
+            ...(await calculateUpcomingDates(
+              req && req.body && req.body.firstDate,
+              req && req.body && req.body.lastDate,
+              req && req.body && req.body.upcomingDates
+            )),
+          ],
+        },
+      });
 
       res.status(200).json(newHabit);
     }
