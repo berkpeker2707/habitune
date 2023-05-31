@@ -176,3 +176,36 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
     return res.status(500).send(getErrorMessage(error));
   }
 };
+
+export const updateHabitCompletedDate = async (
+  req: IReq | any,
+  res: Response
+) => {
+  try {
+    let today = new Date(
+      [
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+      ].join("-")
+    );
+    function isInCompletedDates(array: any[] | undefined, value: Date) {
+      return !!array?.find((item) => {
+        return item.getTime() == value.getTime();
+      });
+    }
+    const selectedHabit = await Habit.findById(req.body._id);
+
+    if (!isInCompletedDates(selectedHabit?.dates, today)) {
+      console.log(req.body.date);
+      // await selectedHabit?.updateOne({ $push: { dates: req.body.date } });
+      res.status(200).json("selectedHabit");
+    } else {
+      // await selectedHabit?.updateOne({ $pull: { dates: req.body.date } });
+      res.status(200).json("selectedHabit");
+    }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
