@@ -9,7 +9,7 @@ const calculateUpcomingDates = async (
 
   //regex for the dates taken from body
   var reqBodyDaysInFormat = reqBodyDays.join("|");
-  var weekDays = "/" + reqBodyDaysInFormat + "/";
+  var weekDays = reqBodyDaysInFormat;
   var re = new RegExp(weekDays);
 
   // calculating specific day time starts
@@ -20,7 +20,6 @@ const calculateUpcomingDates = async (
   //calculating hour, minute, milliseconds in milliseconds
   var milliseconds = (h: number, m: number, s: number) =>
     (h * 60 * 60 + m * 60 + s) * 1000;
-  var dayTime = hour + " " + minutes + " " + seconds;
   //addition this to final value is a must in order to get time precisely
   var dayTimeInMilliseconds = milliseconds(hour, minutes, seconds);
   // calculating specific day time ends
@@ -39,7 +38,6 @@ const calculateUpcomingDates = async (
   );
   var tempDate = startDate;
   var result = [];
-
   //take all days between startDate and endDate
   //remove prefix to specify week days
   while (tempDate.valueOf() !== endDate.valueOf()) {
