@@ -13,12 +13,12 @@ import Svg, {
 
 const HabitBar = (props: any) => {
   // const { onPress } = props;
-  // const { DATA } = props;
+  const { item } = props;
 
   return (
     <Svg width={372} height={48} fill="none" viewBox="0 0 372 48" {...props}>
       <Text fill="#000" fontSize="19" x={40} y={30}>
-        Task 1
+        {item.name}
       </Text>
       <G filter="url(#filter0_d_392_5163)">
         <Mask
@@ -34,7 +34,7 @@ const HabitBar = (props: any) => {
           <Path d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z" />
         </Mask>
         <Path
-          fill="#C04F43"
+          fill={item.color}
           d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z"
         />
         <Path
@@ -50,8 +50,8 @@ const HabitBar = (props: any) => {
           height={44.8}
           x={1.1}
           y={1.1}
-          stroke="#C04F43"
-          strokeWidth={0.2}
+          stroke={item.color}
+          strokeWidth={0.5}
           rx={22.4}
         />
       </G>

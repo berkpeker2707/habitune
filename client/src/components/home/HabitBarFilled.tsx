@@ -14,7 +14,8 @@ import Svg, {
 } from "react-native-svg";
 
 const HabitBarFilled = (props: any) => {
-  const { onPress } = props;
+  // const { onPress } = props;
+  const { item } = props;
 
   return (
     <Svg width={372} height={48} fill="none" viewBox="0 0 372 48" {...props}>
@@ -29,11 +30,11 @@ const HabitBarFilled = (props: any) => {
         />
       </G>
       <G filter="url(#filter1_d_386_5008)">
-        <Circle cx={22} cy={23} r={9} fill="#C04F43" />
+        <Circle cx={22} cy={23} r={9} fill={item.color} />
         <Circle cx={22} cy={23} r={9.25} stroke="#fff" strokeWidth={0.5} />
       </G>
       <Text fill="#000" fontSize="19" x={40} y={30}>
-        Task 1
+        {item.name}
       </Text>
       <G filter="url(#filter2_d_386_5008)" shapeRendering="crispEdges">
         <Rect
@@ -54,7 +55,7 @@ const HabitBarFilled = (props: any) => {
           rx={17.25}
         />
       </G>
-      <G filter="url(#filter3_d_386_5008)" shapeRendering="crispEdges">
+      {/* <G filter="url(#filter3_d_386_5008)" shapeRendering="crispEdges">
         <Rect
           width={33}
           height={34}
@@ -72,7 +73,7 @@ const HabitBarFilled = (props: any) => {
           strokeWidth={1}
           rx={16.75}
         />
-      </G>
+      </G> */}
       <G filter="url(#filter4_d_386_5008)">
         <Rect width={34} height={34} x={325} y={6} fill="#9890B2" rx={17} />
         <Rect
@@ -97,17 +98,21 @@ const HabitBarFilled = (props: any) => {
         >
           <Use transform="scale(.0025)" xlinkHref="#image0_386_5008" />
         </Pattern>
-        <Pattern
-          id="pattern1"
-          width={1}
-          height={1}
-          patternContentUnits="objectBoundingBox"
-        >
-          <Use
-            transform="matrix(.00095 0 0 .00093 -.015 0)"
-            xlinkHref="#image1_386_5008"
-          />
-        </Pattern>
+        {item.sharedWith[1]?.image ? (
+          <Pattern
+            id="pattern1"
+            width={1}
+            height={1}
+            patternContentUnits="objectBoundingBox"
+          >
+            <Use
+              transform="matrix(.00095 0 0 .00093 -.015 0)"
+              xlinkHref="#image1_386_5008"
+            />
+          </Pattern>
+        ) : (
+          <></>
+        )}
         <LinearGradient
           id="paint0_linear_386_5008"
           x1={4.5}
@@ -117,20 +122,25 @@ const HabitBarFilled = (props: any) => {
           gradientUnits="userSpaceOnUse"
         >
           <Stop stopColor="#fff" />
-          <Stop offset={1} stopColor="#C04F43" />
+          <Stop offset={1} stopColor={item.color} />
         </LinearGradient>
         <Image
           id="image0_386_5008"
           width={399}
           height={399}
-          href={{ uri: "https://i.pravatar.cc/300" }}
+          href={{ uri: item.sharedWith[0].image }}
+          // href={{ uri: "https://i.pravatar.cc/300" }}
         />
-        <Image
-          id="image1_386_5008"
-          width={1080}
-          height={1080}
-          href={{ uri: "https://i.pravatar.cc/300" }}
-        />
+        {item.sharedWith[1]?.image ? (
+          <Image
+            id="image1_386_5008"
+            width={1080}
+            height={1080}
+            href={{ uri: item.sharedWith[item.sharedWith.length - 1].image }}
+          />
+        ) : (
+          <></>
+        )}
       </Defs>
     </Svg>
   );
