@@ -182,12 +182,11 @@ export const updateHabitCompletedDate = async (
   res: Response
 ) => {
   try {
-    let today = new Date(
-      [
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate(),
-      ].join("-")
+    var todayReq = new Date(req.body.date);
+    var today = new Date(
+      todayReq.getFullYear(),
+      todayReq.getMonth(),
+      todayReq.getDate()
     );
     function isInCompletedDates(array: any[] | undefined, value: Date) {
       return !!array?.find((item) => {
@@ -195,14 +194,13 @@ export const updateHabitCompletedDate = async (
       });
     }
     const selectedHabit = await Habit.findById(req.body._id);
-
+    //if it is already in dates, pull the date back, else push the date in
     if (!isInCompletedDates(selectedHabit?.dates, today)) {
-      console.log(req.body.date);
-      // await selectedHabit?.updateOne({ $push: { dates: req.body.date } });
-      res.status(200).json("selectedHabit");
+      await selectedHabit?.updateOne({ $push: { dates: today } });
+      res.status(200).json(selectedHabit);
     } else {
-      // await selectedHabit?.updateOne({ $pull: { dates: req.body.date } });
-      res.status(200).json("selectedHabit");
+      await selectedHabit?.updateOne({ $pull: { dates: today } });
+      res.status(200).json(selectedHabit);
     }
   } catch (error) {
     Logger.error(error);
