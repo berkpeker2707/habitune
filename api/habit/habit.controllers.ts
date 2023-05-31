@@ -15,11 +15,11 @@ export const createHabit = async (req: IReq | any, res: Response) => {
   try {
     const checkUser = await User.findById(req.user[0]._id);
 
-    if (checkUser && checkUser.habits && checkUser.habits.length >= 10) {
-      Logger.error("User already has 10 habits.");
+    if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
+      Logger.error("User already has 20 habits.");
       return res
         .status(500)
-        .send(getErrorMessage("User already has 10 habits."));
+        .send(getErrorMessage("User already has 20 habits."));
     } else {
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
