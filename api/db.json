@@ -10,11 +10,7 @@
       "image": "https://lh3.googleusercontent.com/a/AGNmyxbtKs3Ots2AFN_zHkcKcZqxlt-s6sgh579SubTr=s96-c",
       "__v": 0,
       "friends": [],
-      "habits": [
-        {
-          "$oid": "644a655e89ee2d787fb24fdd"
-        }
-      ]
+      "habits": ["644a655e89ee2d787fb24fdd", "6475e98537d8e8afe73d0b68"]
     },
     {
       "_id": {
@@ -38,10 +34,19 @@
         "$oid": "643933a420ccb64a40e171a8"
       },
       "name": "habitTest1",
-      "color": "yellow",
+      "color": "#968EB0",
       "sharedWith": [
         {
-          "$oid": "644a56d49328fd8dfb7eda91"
+          "_id": {
+            "$oid": "644a56d49328fd8dfb7eda91"
+          },
+          "id": 109227819228124180000,
+          "firstName": "Berk Peker",
+          "email": "berkpeker94@gmail.com",
+          "image": "https://lh3.googleusercontent.com/a/AGNmyxZnAMxUh01xKgQpdrfq2-28APhe1bKozXRPxZjn_A=s96-c",
+          "habits": [],
+          "friends": [],
+          "__v": 0
         }
       ],
       "firstDate": {
@@ -53,6 +58,54 @@
       "dates": [
         {
           "$date": "2023-05-01T00:00:00.000Z"
+        }
+      ],
+      "upcomingDates": [
+        {
+          "$date": "2023-04-26T21:00:00.000Z"
+        },
+        {
+          "$date": "2023-04-27T21:00:00.000Z"
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "_id": {
+        "$oid": "6475e98537d8e8afe73d0b68"
+      },
+      "owner": {
+        "$oid": "643933a420ccb64a40e171a8"
+      },
+      "name": "habitTest2",
+      "color": "#C04F43",
+      "sharedWith": [
+        {
+          "_id": {
+            "$oid": "644a56d49328fd8dfb7eda91"
+          },
+          "id": 109227819228124180000,
+          "firstName": "Berk Peker",
+          "email": "berkpeker94@gmail.com",
+          "image": "https://lh3.googleusercontent.com/a/AGNmyxZnAMxUh01xKgQpdrfq2-28APhe1bKozXRPxZjn_A=s96-c",
+          "habits": [],
+          "friends": [],
+          "__v": 0
+        }
+      ],
+      "firstDate": {
+        "$date": "2023-04-27T12:03:36.973Z"
+      },
+      "lastDate": {
+        "$date": "2023-04-29T19:54:25.904Z"
+      },
+      "dates": [],
+      "upcomingDates": [
+        {
+          "$date": "2023-04-26T21:00:00.000Z"
+        },
+        {
+          "$date": "2023-04-27T21:00:00.000Z"
         }
       ],
       "__v": 0
