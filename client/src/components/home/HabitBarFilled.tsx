@@ -65,23 +65,48 @@ const HabitBarFilled = (props: any) => {
       item.sharedWith[item.sharedWith.length - 1] &&
       item.sharedWith[item.sharedWith.length - 1].image ? (
         <G filter="url(#filter3_d_386_5008)" shapeRendering="crispEdges">
-          <Rect
-            width={33}
-            height={34}
-            x={306}
-            y={6}
-            fill="url(#pattern1)"
-            rx={16.5}
-          />
-          <Rect
-            width={33.5}
-            height={34.5}
-            x={305.75}
-            y={5.75}
-            stroke="#fff"
-            strokeWidth={1}
-            rx={16.75}
-          />
+          {item && item.sharedWith && item.sharedWith.length > 1 ? (
+            <>
+              <Rect
+                width={33}
+                height={34}
+                x={306}
+                y={6}
+                fill="url(#pattern1)"
+                rx={16.5}
+              />
+              <Rect
+                width={33.5}
+                height={34.5}
+                x={305.75}
+                y={5.75}
+                stroke="#fff"
+                strokeWidth={1}
+                rx={16.75}
+              />
+            </>
+          ) : (
+            ///if shared with single, use style below
+            <>
+              <Rect
+                width={34}
+                height={34}
+                x={325}
+                y={6}
+                fill="url(#pattern1)"
+                rx={17}
+              />
+              <Rect
+                width={34.5}
+                height={34.5}
+                x={324.75}
+                y={5.75}
+                stroke="#fff"
+                strokeWidth={1}
+                rx={17.25}
+              />
+            </>
+          )}
         </G>
       ) : (
         <></>
