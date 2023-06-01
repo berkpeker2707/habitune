@@ -1,21 +1,9 @@
 import * as React from "react";
+import { useCallback, useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import HabitBar from "../components/home/HabitBar";
 import HabitBarFilled from "../components/home/HabitBarFilled";
-
-// color1: #968EB0
-// color2: #9DB2CE
-// color3: #C04F43
-// color4: #A5D2AC
-// color5: #99BB42
-// color6: #F59732
-// color7: #F1867E
-// color8: #FCCA1B
-// color9: #4D6691
-// color10: #6EA8D8
-// color11: #DEB4CF
-// color12: #F6AF90
 
 const DATA = [
   {
@@ -46,6 +34,7 @@ const DATA = [
       "2023-05-01T21:00:00.000Z",
       "2023-05-30T21:00:00.000Z",
       "2023-06-01T21:00:00.000Z",
+      "2023-06-02T21:00:00.000Z",
     ],
     upcomingDates: [
       "2023-04-26T21:00:00.000Z",
@@ -86,65 +75,44 @@ const DATA = [
   },
 ];
 
-function isInArray(array: any[], value: Date) {
-  return !!array.find((item) => {
-    return new Date(item).getTime() == value.getTime();
-  });
-}
-
 // name, color, sharedWith[i].image
 // name:string, color:string,sharedWith:[]
 
-// // check if today
-// function isToday(date: Date) {
-//   const today = new Date();
-//   if (today.toDateString() === date.toDateString()) {
-//     return true;
-//   }
-//   return false;
-// }
-
-var todayTemp = new Date();
-var today = new Date(
+const todayTemp = new Date();
+const today = new Date(
   todayTemp.getFullYear(),
   todayTemp.getMonth(),
   todayTemp.getDate()
 );
 
+const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+//need this for setting default hour 21
+//if backend is not 21 but 00, remove this
+const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
+
+function isInArray(array: any[], value: Date) {
+  return array.find((item) => {
+    return new Date(item).getTime() == value.getTime();
+  });
+}
+
+// const isInArray = useCallback((array: [], value: Date) => {
+//   return array.find((item) => {
+//     return new Date(item).getTime() == value.getTime();
+//   });
+// }, []);
+
 const renderItem = ({ item }: { item: any }) => (
   <TouchableOpacity
     onPress={() => {
-      // console.log(
-      //   item.dates.includes(new Date(Date.now()).toISOString().split("T")[0])
-      // ),
-      // console.log(item.dates),
-      // const a = ['a', 'b', 'c'];
-      // const b = ['c', 'a', 'd'];
-
-      // var a = isInArray(item?.dates, today);
-      // console.log(a);
-      // console.log(today);
-      // console.log(item.dates);
-
       console.log(item);
       console.log(item.color);
       console.log(item.sharedWith);
-
-      // console.log(isToday(new Date(Date.now()))); // true
-      // console.log(isToday(new Date("2023-05-30T00:10:00.000Z")));
-
-      // console.log(item.upcomingDates[i].$date);
-      // console.log("$$$$$$$$$$$$$$$$$$$$$$$$");
-      // console.log("item.dates", item.dates);
-      // console.log("########################");
-      // console.log("found", found);
-      // console.log(new Date(Date.now()).toISOString());
     }}
   >
-    {!isInArray(item?.dates, today) ? (
-      <>
-        <HabitBar item={item} />
-      </>
+    {!isInArray(item.dates, todayLocal21) ? (
+      <HabitBar item={item} />
     ) : (
       <HabitBarFilled item={item} />
     )}
