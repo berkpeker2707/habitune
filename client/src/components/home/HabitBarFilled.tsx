@@ -114,7 +114,14 @@ const HabitBarFilled = (props: any) => {
       {item && item.sharedWith && item.sharedWith.length > 1 ? (
         <>
           <G filter="url(#filter4_d_386_5008)">
-            <Rect width={34} height={34} x={325} y={6} fill="#9890B2" rx={17} />
+            <Rect
+              width={34}
+              height={34}
+              x={325}
+              y={6}
+              fill={item.color}
+              rx={17}
+            />
             <Rect
               width={34.5}
               height={34.5}
@@ -132,6 +139,7 @@ const HabitBarFilled = (props: any) => {
       ) : (
         <></>
       )}
+      {/* right side starts */}
       <Defs>
         {item &&
         item.sharedWith[item.sharedWith.length - 2] &&
@@ -157,6 +165,7 @@ const HabitBarFilled = (props: any) => {
             patternContentUnits="objectBoundingBox"
           >
             <Use
+              // transform="matrix(.00095 0 0 .00093 -.015 0)"
               transform="matrix(.00095 0 0 .00093 -.015 0)"
               xlinkHref="#image1_386_5008"
             />
@@ -200,6 +209,7 @@ const HabitBarFilled = (props: any) => {
           <></>
         )}
       </Defs>
+      {/* right side ends */}
     </Svg>
   );
 };
