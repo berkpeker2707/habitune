@@ -45,7 +45,16 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
     bottom: 0,
     right: 0,
     left: 0,
-    height: 80,
+    height: 64,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
   tabBarInactiveTintColor: "#968EB0",
 };

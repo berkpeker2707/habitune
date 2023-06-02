@@ -13,10 +13,10 @@ const BottomTabHomeButton = (props: any) => {
           onPress={onPress}
           style={{
             flex: 1,
-            backgroundColor: "#FFFFFF",
+            // backgroundColor: "#FFFFFF",
             justifyContent: "center",
             alignItems: "center",
-            height: 80,
+            // height: 80,
           }}
         >
           <View style={{ flexDirection: "row" }}>
@@ -49,10 +49,10 @@ const BottomTabHomeButton = (props: any) => {
           onPress={onPress}
           style={{
             flex: 1,
-            backgroundColor: "#FFFFFF",
+            // backgroundColor: "#FFFFFF",
             justifyContent: "center",
             alignItems: "center",
-            height: 80,
+            // height: 80,
           }}
         >
           <View style={{ flexDirection: "row" }}>
