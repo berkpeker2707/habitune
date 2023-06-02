@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useCallback, useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import HabitBar from "../components/home/HabitBar";
@@ -75,8 +74,7 @@ const DATA = [
   },
 ];
 
-// name, color, sharedWith[i].image
-// name:string, color:string,sharedWith:[]
+// name:string, color:string, sharedWith:[]
 
 const todayTemp = new Date();
 const today = new Date(
@@ -125,7 +123,7 @@ export function Home() {
       style={{
         display: "flex",
         height: "100%",
-        backgroundColor: "#F9F9F9",
+        backgroundColor: "#FFFFFF",
       }}
     >
       <Text>Habits</Text>
