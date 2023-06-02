@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Text, View } from "react-native";
 import AddTaskGroup from "../components/add/AddTaskGroup";
+import AddTaskFrequency from "../components/add/AddTaskFrequency";
 
 export function Add() {
   return (
@@ -15,6 +16,7 @@ export function Add() {
     >
       <Text>Add</Text>
       <AddTaskGroup />
+      {/* <AddTaskFrequency /> */}
     </View>
   );
 }
