@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import AddTaskGroup from "../components/add/AddTaskGroup";
 import AddTaskFrequency from "../components/add/AddTaskFrequency";
+import AddTaskShare from "../components/add/AddTaskShare";
+import AddTaskShareONLY from "../components/add/AddTaskShareONLY";
 
 export function Add() {
   return (
@@ -14,9 +16,13 @@ export function Add() {
         alignItems: "center",
       }}
     >
-      <Text>Add</Text>
-      <AddTaskGroup />
-      {/* <AddTaskFrequency /> */}
+      <ScrollView>
+        <Text>Add</Text>
+        {/* <AddTaskGroup /> */}
+        {/* <AddTaskFrequency /> */}
+        <AddTaskShare />
+        {/* <AddTaskShareONLY /> */}
+      </ScrollView>
     </View>
   );
 }
