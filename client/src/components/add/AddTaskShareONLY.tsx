@@ -8,6 +8,7 @@ import Svg, {
   Defs,
   Pattern,
   Use,
+  Image,
 } from "react-native-svg";
 
 function AddTaskShareONLY(props: any) {
@@ -212,7 +213,10 @@ function AddTaskShareONLY(props: any) {
           height={1}
           patternContentUnits="objectBoundingBox"
         >
-          <Use transform="translate(-.226) scale(.00181)" />
+          <Use
+            transform="translate(-.226) scale(.00181)"
+            xlinkHref="#image0_444_4978"
+          />
         </Pattern>
         <Pattern
           id="pattern1"
@@ -220,7 +224,7 @@ function AddTaskShareONLY(props: any) {
           height={1}
           patternContentUnits="objectBoundingBox"
         >
-          <Use transform="scale(.00024)" />
+          <Use transform="scale(.00024)" xlinkHref="#image1_444_4978" />
         </Pattern>
         <Pattern
           id="pattern2"
@@ -228,7 +232,10 @@ function AddTaskShareONLY(props: any) {
           height={1}
           patternContentUnits="objectBoundingBox"
         >
-          <Use transform="matrix(.00095 0 0 .00093 -.015 0)" />
+          <Use
+            transform="matrix(.00095 0 0 .00093 -.015 0)"
+            xlinkHref="#image2_444_4978"
+          />
         </Pattern>
         <Pattern
           id="pattern3"
@@ -236,7 +243,10 @@ function AddTaskShareONLY(props: any) {
           height={1}
           patternContentUnits="objectBoundingBox"
         >
-          <Use transform="translate(-.389) scale(.00093)" />
+          <Use
+            transform="translate(-.389) scale(.00093)"
+            xlinkHref="#image3_444_4978"
+          />
         </Pattern>
         <Pattern
           id="pattern4"
@@ -244,13 +254,38 @@ function AddTaskShareONLY(props: any) {
           height={1}
           patternContentUnits="objectBoundingBox"
         >
-          <Use transform="scale(.00093)" />
+          <Use transform="scale(.00093)" xlinkHref="#image0_444_4978" />
         </Pattern>
-        <Image id="image0_444_4978" width={800} height={551} />
-        <Image id="image1_444_4978" width={4096} height={4096} />
-        <Image id="image2_444_4978" width={1080} height={1080} />
-        <Image id="image3_444_4978" width={1920} height={1080} />
-        <Image id="image4_444_4978" width={1080} height={1080} />
+        <Image
+          id="image0_444_4978"
+          width={800}
+          height={551}
+          href={{ uri: "https://i.pravatar.cc/300" }}
+        />
+        <Image
+          id="image1_444_4978"
+          width={4096}
+          height={4096}
+          href={{ uri: "https://i.pravatar.cc/300" }}
+        />
+        <Image
+          id="image2_444_4978"
+          width={1080}
+          height={1080}
+          href={{ uri: "https://i.pravatar.cc/300" }}
+        />
+        <Image
+          id="image3_444_4978"
+          width={1920}
+          height={1080}
+          href={{ uri: "https://i.pravatar.cc/300" }}
+        />
+        <Image
+          id="image4_444_4978"
+          width={1080}
+          height={1080}
+          href={{ uri: "https://i.pravatar.cc/300" }}
+        />
       </Defs>
     </Svg>
   );
