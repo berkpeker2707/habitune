@@ -4,7 +4,6 @@ import Svg, { Rect, Text, Circle } from "react-native-svg";
 function AddTaskGroup(props: any) {
   return (
     <Svg width={345} height={48} viewBox="0 0 345 48" fill="none" {...props}>
-      {/* frequency starts */}
       <Rect
         x={0.25}
         y={0.25}
@@ -18,7 +17,6 @@ function AddTaskGroup(props: any) {
         Frequency
       </Text>
       <Circle cx={325} cy={20} r={6} fill="#444" />
-      {/* frequency ends */}
     </Svg>
   );
 }

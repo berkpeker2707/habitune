@@ -1,7 +1,7 @@
 import * as React from "react";
-import Svg, { Rect, Text } from "react-native-svg";
+import Svg, { Rect, Text, Circle } from "react-native-svg";
 
-function TaskName(props: any) {
+function Reminder(props: any) {
   return (
     <Svg width={345} height={48} viewBox="0 0 345 48" fill="none" {...props}>
       <Rect
@@ -14,10 +14,11 @@ function TaskName(props: any) {
         strokeWidth={0.5}
       />
       <Text x={20} y={25} fontSize="14" fontWeight={400} fill="#444">
-        Task Name
+        Reminder
       </Text>
+      <Circle cx={325} cy={20} r={6} fill="#444" />
     </Svg>
   );
 }
 
-export default TaskName;
+export default Reminder;
