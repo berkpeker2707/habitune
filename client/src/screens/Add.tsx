@@ -1,5 +1,7 @@
 import * as React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { useState } from "react";
+
+import { Button, ScrollView, Text, View } from "react-native";
 import AddTaskGroup from "../components/add/AddTaskGroup";
 import AddTaskFrequency from "../components/add/AddTaskFrequency";
 import AddTaskShare from "../components/add/AddTaskShare";
@@ -10,7 +12,32 @@ import ShareWithYourFriends from "../components/add/ShareWithYourFriends";
 import Reminder from "../components/add/Reminder";
 import Color from "../components/add/Color";
 
-export function Add() {
+export function Add(props: any) {
+  const [newHabitState, setNewHabitState] = useState<{
+    name: string | undefined;
+    frequency: Date[] | undefined;
+    sharedWith: String[] | undefined;
+    reminder: string | undefined;
+  }>({
+    name: "",
+    frequency: [], //firstDate, lastDate & ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"](upcomingDates)
+    sharedWith: [],
+    reminder: "", //date with hour; take hour part and equalize it with frequency first and last date hour
+  });
+  console.log("🚀 ~ file: Add.tsx:22 ~ Add ~ newHabitState:", newHabitState);
+
+  const sendNewHabitNameState = (newHabitNameState: string) => {
+    console.log(
+      "🚀 ~ file: Add.tsx:23 ~ newHabitNameState ~ newHabitState:",
+      newHabitNameState
+    );
+    // this.setState((current) => ({ ...current, counter: current.counter + 1 }))
+
+    // setNewHabitState((newHabitState) => ({newHabitState.name:newHabitNameState}));
+
+    props.navigation.setParams(() => newHabitState);
+  };
+
   return (
     <View
       style={{
@@ -23,7 +50,7 @@ export function Add() {
     >
       <ScrollView>
         <Text>Add</Text>
-        <TaskName />
+        <TaskName sendNewHabitNameState={sendNewHabitNameState} />
         <Frequency />
         <ShareWithYourFriends />
         <Reminder />
