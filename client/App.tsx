@@ -265,7 +265,9 @@ const AddSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  console.log("Done");
+                  console.log(
+                    navigation.getState().routes[1].state?.routes[0].params
+                  );
                 }}
               >
                 <TopNavbarDoneButton />
