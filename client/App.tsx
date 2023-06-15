@@ -38,6 +38,7 @@ import TopNavbarDoneButton from "./src/components/navbarComponents/TopNavbarComp
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
+  tabBarHideOnKeyboard: true,
   tabBarStyle: {
     position: "absolute",
     backgroundColor: "transparent",
