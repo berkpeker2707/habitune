@@ -1,15 +1,14 @@
 import * as React from "react";
 // import Svg, { Rect, Text } from "react-native-svg";
 import { View, TextInput } from "react-native";
-import { useRef } from "react";
+import { useState, useEffect } from "react";
 
 const TaskName = (props: any) => {
-  const taskName = useRef<any>("");
+  const [taskName, setTaskName] = useState<string>("");
 
-  const onSubmitEditing = () => {
-    props.sendNewHabitNameState(taskName.current.value);
-  };
-
+  useEffect(() => {
+    props.sendNewHabitNameState(taskName);
+  }, [taskName]);
   return (
     <View>
       {/* <Svg width={345} height={48} viewBox="0 0 345 48" fill="none" {...props}>
@@ -33,12 +32,9 @@ const TaskName = (props: any) => {
           paddingLeft: 20,
           marginBottom: 10,
         }}
-        // onChangeText={onChangeText}
-        // value={text}
         placeholder="Task Name"
-        ref={taskName}
-        onChangeText={(e) => (taskName.current.value = e)}
-        onSubmitEditing={onSubmitEditing}
+        onChangeText={(text) => setTaskName(text)}
+        maxLength={30}
       />
       {/* </Svg> */}
     </View>
