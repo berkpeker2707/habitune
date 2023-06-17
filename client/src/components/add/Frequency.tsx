@@ -1,24 +1,29 @@
 import * as React from "react";
-import Svg, { Rect, Text, Circle } from "react-native-svg";
+import { TouchableOpacity } from "react-native";
+import { useState } from "react";
+import FrequencyWithPurpleIcon from "./frequencyComponents/FrequencyWithPurpleIcon";
+import FrequencyOpened from "./frequencyComponents/FrequencyOpened";
 
-function AddTaskGroup(props: any) {
+function Frequency(props: any) {
+  const [openFrequency, setOpenFrequency] = useState(true);
   return (
-    <Svg width={345} height={48} viewBox="0 0 345 48" fill="none" {...props}>
-      <Rect
-        x={0.25}
-        y={0.25}
-        width={344.5}
-        height={39.5}
-        rx={19.75}
-        stroke="#968EB0"
-        strokeWidth={0.5}
-      />
-      <Text x={20} y={25} fontSize="14" fontWeight={400} fill="#444">
-        Frequency
-      </Text>
-      <Circle cx={325} cy={20} r={6} fill="#444" />
-    </Svg>
+    <>
+      {openFrequency ? (
+        <TouchableOpacity
+          style={{ width: 345 }}
+          onPress={() => setOpenFrequency((openFrequency) => !openFrequency)}
+          onBlur={() => setOpenFrequency((openFrequency) => !openFrequency)}
+          onLongPress={() =>
+            setOpenFrequency((openFrequency) => !openFrequency)
+          }
+        >
+          <FrequencyWithPurpleIcon textInputTitle={"Frequency"} />
+        </TouchableOpacity>
+      ) : (
+        <FrequencyOpened />
+      )}
+    </>
   );
 }
 
-export default AddTaskGroup;
+export default Frequency;
