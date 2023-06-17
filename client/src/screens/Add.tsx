@@ -45,6 +45,7 @@ export function Add(props: any) {
         <Text>Add</Text>
         <TaskName sendNewHabitNameState={sendNewHabitNameState} />
         <Frequency />
+        {/* <AddTaskFrequency /> */}
         <ShareWithYourFriends />
         <Reminder />
         <Color />
