@@ -71,12 +71,7 @@ const FriendBar = (props: {
             <></>
           )}
           {/* marking ends */}
-          <Text
-            // style={{ backgroundColor: "#f4f4", width: 303, height: 45 }}
-            style={{ position: "absolute", left: 50 }}
-          >
-            {friendName}
-          </Text>
+          <Text style={{ position: "absolute", left: 50 }}>{friendName}</Text>
         </View>
       </View>
     </>
