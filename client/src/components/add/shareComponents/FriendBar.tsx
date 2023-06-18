@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Image, Text } from "react-native";
+import { View, TouchableOpacity, Image, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 const FriendBar = (props: {
@@ -13,7 +13,7 @@ const FriendBar = (props: {
 
   return (
     <>
-      <View
+      <TouchableOpacity
         style={{
           position: "absolute",
           width: 303,
@@ -73,7 +73,7 @@ const FriendBar = (props: {
           {/* marking ends */}
           <Text style={{ position: "absolute", left: 50 }}>{friendName}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </>
   );
 };
