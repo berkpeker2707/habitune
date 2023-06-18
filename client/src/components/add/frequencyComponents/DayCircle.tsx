@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 
 const DayCircle = (props: {
   day: string;
@@ -9,7 +9,7 @@ const DayCircle = (props: {
   const { day, left, backgroundColor } = props;
 
   return (
-    <View
+    <TouchableOpacity
       style={{
         position: "absolute",
         width: 35,
@@ -42,7 +42,7 @@ const DayCircle = (props: {
           {day}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,11 +1,11 @@
 import * as React from "react";
-import { View, TextInput } from "react-native";
+import { TouchableOpacity, TextInput } from "react-native";
 
 const DayBetween = (props: { day: string }) => {
   const { day } = props;
 
   return (
-    <View style={{ top: 40 }}>
+    <TouchableOpacity style={{ top: 40 }}>
       <TextInput
         style={{
           height: 49.5,
@@ -23,7 +23,7 @@ const DayBetween = (props: { day: string }) => {
       >
         {day}
       </TextInput>
-    </View>
+    </TouchableOpacity>
   );
 };
 
