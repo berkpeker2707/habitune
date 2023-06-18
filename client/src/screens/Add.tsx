@@ -2,13 +2,17 @@ import * as React from "react";
 import { useState } from "react";
 
 import { Button, ScrollView, Text, View } from "react-native";
-import AddTaskGroup from "../components/add/AddTaskGroup";
-import AddTaskFrequency from "../components/add/AddTaskFrequency";
-import AddTaskShare from "../components/add/AddTaskShare";
-import AddTaskShareONLY from "../components/add/AddTaskShareONLY";
+
+// import AddTaskGroup from "../components/add/AddTaskGroup";
+// import AddTaskFrequency from "../components/add/AddTaskFrequency";
+// import AddTaskShare from "../components/add/AddTaskShare";
+// import AddTaskShareONLY from "../components/add/AddTaskShareONLY";
+// import ShareWithYourFriends from "../components/add/ShareWithYourFriends";
+
 import TaskName from "../components/add/TaskName";
-import Frequency from "../components/add/Frequency";
-import ShareWithYourFriends from "../components/add/ShareWithYourFriends";
+import Frequency from "../components/add/frequencyComponents/Frequency";
+import Share from "../components/add/shareComponents/Share";
+
 import Reminder from "../components/add/Reminder";
 import Color from "../components/add/Color";
 
@@ -41,16 +45,17 @@ export function Add(props: any) {
         alignItems: "center",
       }}
     >
-      <ScrollView>
+      <ScrollView
+        style={{
+          marginBottom: 95,
+        }}
+      >
         <Text>Add</Text>
         <TaskName sendNewHabitNameState={sendNewHabitNameState} />
         <Frequency />
-        {/* <AddTaskFrequency /> */}
-        <ShareWithYourFriends />
+        <Share />
         <Reminder />
         <Color />
-
-        {/* <AddTaskShare /> */}
       </ScrollView>
     </View>
   );
