@@ -15,6 +15,7 @@ const FrequencyOpened = () => {
           borderRadius: 20,
           borderColor: "#968EB0",
           borderWidth: 0.5,
+          marginBottom: 10,
         }}
       >
         <Daily />
