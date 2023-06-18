@@ -1,10 +1,10 @@
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
 import { useState } from "react";
-import FrequencyWithPurpleIcon from "./frequencyComponents/FrequencyWithPurpleIcon";
-import FrequencyOpened from "./frequencyComponents/FrequencyOpened";
+import FrequencyWithPurpleIcon from "./FrequencyWithPurpleIcon";
+import FrequencyOpened from "./FrequencyOpened";
 
-function Frequency(props: any) {
+const Frequency = () => {
   const [openFrequency, setOpenFrequency] = useState(true);
   return (
     <>
@@ -24,6 +24,6 @@ function Frequency(props: any) {
       )}
     </>
   );
-}
+};
 
 export default Frequency;
