@@ -3,12 +3,6 @@ import { useState } from "react";
 
 import { Button, ScrollView, Text, View } from "react-native";
 
-// import AddTaskGroup from "../components/add/AddTaskGroup";
-// import AddTaskFrequency from "../components/add/AddTaskFrequency";
-// import AddTaskShare from "../components/add/AddTaskShare";
-// import AddTaskShareONLY from "../components/add/AddTaskShareONLY";
-// import ShareWithYourFriends from "../components/add/ShareWithYourFriends";
-
 import TaskName from "../components/add/TaskName";
 import Frequency from "../components/add/frequencyComponents/Frequency";
 import Share from "../components/add/shareComponents/Share";
