@@ -5,13 +5,13 @@ import { useState, useEffect, memo } from "react";
 const TaskName = memo((props: any) => {
   const [taskName, setTaskName] = useState<string>("");
 
-  //updating params if frequency changes starts
+  //updating params if taskName changes starts
   useEffect(() => {
     props.navigation.setParams({
       name: taskName,
     });
   }, [taskName]);
-  //updating params if frequency changes ends
+  //updating params if taskName changes ends
 
   return (
     <View style={{ width: 345 }}>

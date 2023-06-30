@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import DayCircle from "./DayCircle";
 import DayBetween from "./DayBetween";
