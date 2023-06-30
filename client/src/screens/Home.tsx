@@ -102,19 +102,29 @@ function isInArray(array: any[], value: Date) {
 // }, []);
 
 const renderItem = ({ item }: { item: any }) => (
-  <TouchableOpacity
-    onPress={() => {
-      console.log(item);
-      console.log(item.color);
-      console.log(item.sharedWith);
+  <View
+    style={{
+      display: "flex",
+      height: "100%",
+      backgroundColor: "#FFFFFF",
+      justifyContent: "flex-start",
+      alignItems: "center",
     }}
   >
-    {!isInArray(item.dates, todayLocal21) ? (
-      <HabitBar item={item} />
-    ) : (
-      <HabitBarFilled item={item} />
-    )}
-  </TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        console.log(item);
+        console.log(item.color);
+        console.log(item.sharedWith);
+      }}
+    >
+      {!isInArray(item.dates, todayLocal21) ? (
+        <HabitBar item={item} />
+      ) : (
+        <HabitBarFilled item={item} />
+      )}
+    </TouchableOpacity>
+  </View>
 );
 
 export function Home() {
