@@ -6,23 +6,10 @@ import { Button, ScrollView, Text, View } from "react-native";
 import TaskName from "../components/add/TaskName";
 import Frequency from "../components/add/frequencyComponents/Frequency";
 import Share from "../components/add/shareComponents/Share";
-
 import Reminder from "../components/add/reminderComponents/Reminder";
 import Color from "../components/add/Color";
 
 export function Add(props: any) {
-  // const [newHabitState, setNewHabitState] = useState<{
-  //   name: string | undefined;
-  //   frequency: Date[] | undefined;
-  //   sharedWith: String[] | undefined;
-  //   reminder: string | undefined;
-  // }>({
-  //   name: "",
-  //   frequency: [], //firstDate, lastDate & ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"](upcomingDates)
-  //   sharedWith: [],
-  //   reminder: "", //date with hour; take hour part and equalize it with frequency first and last date hour
-  // });
-
   const sendNewHabitNameState = (taskName: string) => {
     props.navigation.setParams({
       name: taskName,
@@ -46,9 +33,9 @@ export function Add(props: any) {
       >
         <Text>Add</Text>
         <TaskName sendNewHabitNameState={sendNewHabitNameState} />
-        <Frequency />
+        <Frequency navigation={props.navigation} />
         <Share />
-        <Reminder />
+        {/* <Reminder /> */}
         <Color />
       </ScrollView>
     </View>
