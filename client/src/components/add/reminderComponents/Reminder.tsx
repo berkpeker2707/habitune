@@ -1,35 +1,34 @@
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ReminderWithPurpleIcon from "./ReminderWithPurpleIcon";
+import { TimePickerModal } from "react-native-paper-dates";
 
 function Reminder(props: any) {
-  const [openReminder, setReminderFrequency] = useState(true);
+  // const [openReminder, setReminderFrequency] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const onDismiss = useCallback(() => {
+    setVisible(false);
+  }, [setVisible]);
+
+  const onConfirm = useCallback(
+    ({ hours, minutes }: { hours: any; minutes: any }) => {
+      setVisible(false);
+    },
+    [setVisible]
+  );
   return (
     <>
-      {openReminder ? (
-        <TouchableOpacity
-          style={{ width: 345 }}
-          onPress={() => setReminderFrequency((openReminder) => !openReminder)}
-          onBlur={() => setReminderFrequency((openReminder) => !openReminder)}
-          onLongPress={() =>
-            setReminderFrequency((openReminder) => !openReminder)
-          }
-        >
-          <ReminderWithPurpleIcon textInputTitle={"Reminder"} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={{ width: 345 }}
-          onPress={() => setReminderFrequency((openReminder) => !openReminder)}
-          onBlur={() => setReminderFrequency((openReminder) => !openReminder)}
-          onLongPress={() =>
-            setReminderFrequency((openReminder) => !openReminder)
-          }
-        >
-          <ReminderWithPurpleIcon textInputTitle={"Reminder"} />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity style={{ width: 345 }} onPress={() => setVisible(true)}>
+        <ReminderWithPurpleIcon textInputTitle={"Reminder"} />
+        <TimePickerModal
+          visible={visible}
+          onDismiss={onDismiss}
+          onConfirm={onConfirm}
+          hours={12}
+          minutes={14}
+        />
+      </TouchableOpacity>
     </>
   );
 }
