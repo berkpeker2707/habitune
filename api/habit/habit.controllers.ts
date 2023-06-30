@@ -7,6 +7,7 @@ import { IReq } from "../middlewares/interfaces";
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
+import calculateUpcomingDates from "../middlewares/calculateUpcomingDates";
 
 dotenv.config();
 
@@ -14,11 +15,11 @@ export const createHabit = async (req: IReq | any, res: Response) => {
   try {
     const checkUser = await User.findById(req.user[0]._id);
 
-    if (checkUser && checkUser.habits && checkUser.habits.length >= 10) {
-      Logger.error("User already has 10 habits.");
+    if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
+      Logger.error("User already has 20 habits.");
       return res
         .status(500)
-        .send(getErrorMessage("User already has 10 habits."));
+        .send(getErrorMessage("User already has 20 habits."));
     } else {
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
@@ -28,6 +29,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         firstDate: req.body.firstDate ?? "",
         lastDate: req.body.lastDate ?? "",
         dates: [],
+        upcomingDates: [],
       });
 
       await User.findOneAndUpdate(
@@ -37,6 +39,18 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         },
         { upsert: true }
       );
+
+      await newHabit.updateOne({
+        $push: {
+          upcomingDates: [
+            ...(await calculateUpcomingDates(
+              req && req.body && req.body.firstDate,
+              req && req.body && req.body.lastDate,
+              req && req.body && req.body.upcomingDates
+            )),
+          ],
+        },
+      });
 
       res.status(200).json(newHabit);
     }
@@ -156,6 +170,37 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
       );
       console.log(false);
       res.status(200).json(updatedSelectedHabit);
+    }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const updateHabitCompletedDate = async (
+  req: IReq | any,
+  res: Response
+) => {
+  try {
+    var todayReq = new Date(req.body.date);
+    var today = new Date(
+      todayReq.getFullYear(),
+      todayReq.getMonth(),
+      todayReq.getDate()
+    );
+    function isInCompletedDates(array: any[] | undefined, value: Date) {
+      return !!array?.find((item) => {
+        return item.getTime() == value.getTime();
+      });
+    }
+    const selectedHabit = await Habit.findById(req.body._id);
+    //if it is already in dates, pull the date back, else push the date in
+    if (!isInCompletedDates(selectedHabit?.dates, today)) {
+      await selectedHabit?.updateOne({ $push: { dates: today } });
+      res.status(200).json(selectedHabit);
+    } else {
+      await selectedHabit?.updateOne({ $pull: { dates: today } });
+      res.status(200).json(selectedHabit);
     }
   } catch (error) {
     Logger.error(error);

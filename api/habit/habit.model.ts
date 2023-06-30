@@ -9,6 +9,7 @@ const habitSchema = new Schema<IHabit>({
   firstDate: { type: Date },
   lastDate: { type: Date },
   dates: [{ type: Date }],
+  upcomingDates: [{ type: Date }],
 });
 
 export = mongoose.model<IHabit>("Habit", habitSchema);

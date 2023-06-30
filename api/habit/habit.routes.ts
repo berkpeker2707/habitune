@@ -6,6 +6,7 @@ import {
   updateHabitSharedWith,
   updateHabitFirstAndLastDate,
   updateHabitDates,
+  updateHabitCompletedDate,
 } from "./habit.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -27,5 +28,11 @@ habitRoutes.put(
 );
 
 habitRoutes.put("/update/date", verifyToken, updateHabitDates);
+
+habitRoutes.put(
+  "/update/completed/date",
+  verifyToken,
+  updateHabitCompletedDate
+);
 
 export default habitRoutes;

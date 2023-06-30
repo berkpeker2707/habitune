@@ -20,6 +20,7 @@ export interface IHabit {
   firstDate: Date;
   lastDate: Date;
   dates: Date[];
+  upcomingDates: Date[];
 }
 
 export interface IReq extends Request {
