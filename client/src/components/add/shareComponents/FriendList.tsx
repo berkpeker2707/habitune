@@ -1,19 +1,42 @@
 import * as React from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import FriendBar from "./FriendBar";
+import { useEffect, useState } from "react";
 
-const FriendList = () => {
+const FriendList = (props: any) => {
+  const [shareWithFriendList, setShareWithFriendList] = useState<String[]>([]);
+
+  //updating params if shareWithFriendList changes starts
+  useEffect(() => {
+    props.navigation.setParams({
+      friendList: shareWithFriendList,
+    });
+  }, [shareWithFriendList]);
+  //updating params if shareWithFriendList changes ends
+
   return (
     <ScrollView>
       <View style={{ flex: 1, height: 49 * (5 + 1) }}>
-        <FriendBar
-          friendProfilePicture={"https://i.pravatar.cc/300"}
-          friendName={"İrem"}
-          friendSelected={false}
-          barPositionLevel={49 * 0}
-        />
-        <FriendBar
+        <TouchableOpacity
+          onPress={() =>
+            shareWithFriendList.includes("tempId")
+              ? setShareWithFriendList(() =>
+                  shareWithFriendList.filter((item) => item !== "tempId")
+                )
+              : setShareWithFriendList((prevState) => [...prevState, "tempId"])
+          }
+        >
+          <FriendBar
+            friendProfilePicture={"https://i.pravatar.cc/300"}
+            friendName={"İrem"}
+            barPositionLevel={49 * 0}
+            friendSelected={
+              shareWithFriendList.includes("tempId") ? true : false
+            }
+          />
+        </TouchableOpacity>
+        {/* <FriendBar
           friendProfilePicture={"https://i.pravatar.cc/300"}
           friendName={"Tuğçe"}
           friendSelected={false}
@@ -42,7 +65,7 @@ const FriendList = () => {
           friendName={"Özden"}
           friendSelected={false}
           barPositionLevel={49 * 5}
-        />
+        /> */}
       </View>
     </ScrollView>
   );
