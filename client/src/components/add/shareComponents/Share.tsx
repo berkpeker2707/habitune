@@ -4,11 +4,11 @@ import { useState } from "react";
 import ShareWithPurpleIcon from "./ShareWithPurpleIcon";
 import ShareOpened from "./ShareOpened";
 
-const Share = () => {
-  const [openShare, setOpenShare] = useState(true);
+const Share = (props: any) => {
+  const [openShare, setOpenShare] = useState(false);
   return (
     <>
-      {openShare ? (
+      {!openShare ? (
         <TouchableOpacity
           style={{ width: 345 }}
           onPress={() => setOpenShare((openShare) => !openShare)}
@@ -18,7 +18,7 @@ const Share = () => {
           <ShareWithPurpleIcon textInputTitle={"Share With Your Friends"} />
         </TouchableOpacity>
       ) : (
-        <ShareOpened />
+        <ShareOpened navigation={props.navigation} />
       )}
     </>
   );

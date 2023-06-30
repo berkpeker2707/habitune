@@ -3,7 +3,7 @@ import { View } from "react-native";
 import ShareWithNumber from "./ShareWithNumber";
 import FriendList from "./FriendList";
 
-const ShareOpened = () => {
+const ShareOpened = (props: any) => {
   return (
     <>
       <View
@@ -18,7 +18,7 @@ const ShareOpened = () => {
         }}
       >
         <ShareWithNumber shareWithNum={1} />
-        <FriendList />
+        <FriendList navigation={props.navigation} />
       </View>
     </>
   );

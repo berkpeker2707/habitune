@@ -1,8 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
-
-import { Button, ScrollView, Text, View } from "react-native";
-
+import { ScrollView, Text, View } from "react-native";
 import TaskName from "../components/add/TaskName";
 import Frequency from "../components/add/frequencyComponents/Frequency";
 import Share from "../components/add/shareComponents/Share";
@@ -28,9 +25,9 @@ export function Add(props: any) {
         <Text>Add</Text>
         <TaskName navigation={props.navigation} />
         <Frequency navigation={props.navigation} />
-        <Share />
+        <Share navigation={props.navigation} />
         {/* <Reminder /> */}
-        <Color />
+        <Color navigation={props.navigation} />
       </ScrollView>
     </View>
   );
