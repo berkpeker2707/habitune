@@ -181,7 +181,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
       res.status(200).json(loggedinUser);
     } else {
-      // console.log("I KNOWN REQUEST");
+      // console.log("target user know");
       res.status(200).json(loggedinUser);
     }
   } catch (error) {
@@ -208,7 +208,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
       });
       res.status(200).json(loggedinUser);
     } else {
-      console.log("No habit detected.");
+      // console.log("No habit detected.");
       await User.findOneAndDelete({
         _id: req.user[0]._id,
       });
