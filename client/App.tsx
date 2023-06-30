@@ -257,9 +257,19 @@ const AddSection = () => {
               }}
             >
               <Pressable
+                // disabled={
+                //   navigation.getState().routes[1].state?.routes[0].params?.firstDate &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.lastDate &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.upcomingDates &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.name &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.color
+                //     ? true
+                //     : false
+                // }
                 onPress={() => {
                   console.log(
                     navigation.getState().routes[1].state?.routes[0].params
+                    // navigation.getState().routes[1].state?.routes[0]
                   );
                 }}
               >
