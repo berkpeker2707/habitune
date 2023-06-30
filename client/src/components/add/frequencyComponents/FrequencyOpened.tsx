@@ -6,13 +6,13 @@ import DayBetween from "./DayBetween";
 import Daily from "./Daily";
 const FrequencyOpened = (props: any) => {
   const [taskUpcomingDates, setTaskUpcomingDates] = useState<String[]>([
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat",
+    // "Sun",
+    // "Mon",
+    // "Tue",
+    // "Wed",
+    // "Thu",
+    // "Fri",
+    // "Sat",
   ]);
 
   //updating params if frequency changes starts
