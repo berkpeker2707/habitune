@@ -26,7 +26,6 @@ const DayBetween = (props: any) => {
       setOpen(false);
       setTaskFirstDate(() => startDate);
       setTaskLastDate(() => endDate);
-      console.log(startDate, endDate);
     },
     [setOpen, taskFirstDate, taskLastDate]
   );
