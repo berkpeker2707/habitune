@@ -10,12 +10,6 @@ import Reminder from "../components/add/reminderComponents/Reminder";
 import Color from "../components/add/Color";
 
 export function Add(props: any) {
-  const sendNewHabitNameState = (taskName: string) => {
-    props.navigation.setParams({
-      name: taskName,
-    });
-  };
-
   return (
     <View
       style={{
@@ -32,7 +26,7 @@ export function Add(props: any) {
         }}
       >
         <Text>Add</Text>
-        <TaskName sendNewHabitNameState={sendNewHabitNameState} />
+        <TaskName navigation={props.navigation} />
         <Frequency navigation={props.navigation} />
         <Share />
         {/* <Reminder /> */}

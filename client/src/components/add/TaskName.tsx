@@ -6,9 +6,14 @@ import { useState, useEffect } from "react";
 const TaskName = (props: any) => {
   const [taskName, setTaskName] = useState<string>("");
 
+  //updating params if frequency changes starts
   useEffect(() => {
-    props.sendNewHabitNameState(taskName);
+    props.navigation.setParams({
+      name: taskName,
+    });
   }, [taskName]);
+  //updating params if frequency changes ends
+
   return (
     <View style={{ width: 345 }}>
       <TextInput
