@@ -4,11 +4,12 @@ import { useState } from "react";
 import FrequencyWithPurpleIcon from "./FrequencyWithPurpleIcon";
 import FrequencyOpened from "./FrequencyOpened";
 
-const Frequency = () => {
-  const [openFrequency, setOpenFrequency] = useState(true);
+const Frequency = (props: any) => {
+  const [openFrequency, setOpenFrequency] = useState<boolean>(false);
+
   return (
     <>
-      {openFrequency ? (
+      {!openFrequency ? (
         <TouchableOpacity
           style={{ width: 345 }}
           onPress={() => setOpenFrequency((openFrequency) => !openFrequency)}
@@ -20,7 +21,7 @@ const Frequency = () => {
           <FrequencyWithPurpleIcon textInputTitle={"Frequency"} />
         </TouchableOpacity>
       ) : (
-        <FrequencyOpened />
+        <FrequencyOpened navigation={props.navigation} />
       )}
     </>
   );
