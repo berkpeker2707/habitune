@@ -33,6 +33,7 @@ function Color(props: any) {
           height: 39.5,
           borderWidth: 0.5,
           borderRadius: 20,
+          borderColor: color ? "#968EB0" : "red",
           paddingLeft: 20,
           marginBottom: 10,
         }}

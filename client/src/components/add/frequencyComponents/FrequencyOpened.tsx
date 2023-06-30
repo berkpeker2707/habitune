@@ -44,7 +44,7 @@ const FrequencyOpened = (props: any) => {
         width: 345,
         height: 189,
         borderRadius: 20,
-        borderColor: "#968EB0",
+        borderColor: taskUpcomingDates.length > 0 ? "#968EB0" : "red",
         borderWidth: 0.5,
         marginBottom: 10,
       }}
