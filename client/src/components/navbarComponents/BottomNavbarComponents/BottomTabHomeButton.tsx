@@ -11,13 +11,7 @@ const BottomTabHomeButton = (props: any) => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={onPress}
-          style={{
-            flex: 1,
-            backgroundColor: "#FFFFFF",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 80,
-          }}
+          style={[styles.otherNavButtons]}
         >
           <View style={{ flexDirection: "row" }}>
             <View style={[styles.svgGapFiller]} />
@@ -47,13 +41,7 @@ const BottomTabHomeButton = (props: any) => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={onPress}
-          style={{
-            flex: 1,
-            backgroundColor: "#FFFFFF",
-            justifyContent: "center",
-            alignItems: "center",
-            height: 80,
-          }}
+          style={[styles.otherNavButtons]}
         >
           <View style={{ flexDirection: "row" }}>
             <View style={[styles.svgGapFiller]} />
@@ -83,19 +71,22 @@ const BottomTabHomeButton = (props: any) => {
 const styles = StyleSheet.create({
   btnWrapper: {
     flex: 1,
+    // backgroundColor: "#FFFFFF",
     alignItems: "center",
     zIndex: 1,
   },
   otherNavButtons: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    height: 80,
+    borderTopWidth: 0.2,
+    borderColor: "#BBBBBB",
+    marginTop: 1,
   },
   svgGapFiller: {
     flex: 1,
-    backgroundColor: "white",
+    // backgroundColor: "#FFFFFF",
   },
 });
 

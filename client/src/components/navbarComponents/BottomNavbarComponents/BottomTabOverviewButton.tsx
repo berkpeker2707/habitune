@@ -83,6 +83,7 @@ const BottomTabOverviewButton = (props: any) => {
 const styles = StyleSheet.create({
   btnWrapper: {
     flex: 1,
+    // backgroundColor: "#FFFFFF",
     alignItems: "center",
     zIndex: 1,
   },
@@ -91,11 +92,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-    height: 80,
+    borderTopWidth: 0.2,
+    borderColor: "#BBBBBB",
+    marginTop: 1,
   },
   svgGapFiller: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    // backgroundColor: "#FFFFFF",
   },
 });
 

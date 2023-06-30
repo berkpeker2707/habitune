@@ -38,6 +38,7 @@ import TopNavbarDoneButton from "./src/components/navbarComponents/TopNavbarComp
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
+  tabBarHideOnKeyboard: true,
   tabBarStyle: {
     position: "absolute",
     backgroundColor: "transparent",
@@ -45,9 +46,10 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
     bottom: 0,
     right: 0,
     left: 0,
-    height: 80,
+    height: 64,
+    borderRadius: 0,
+    elevation: 0,
   },
-  tabBarInactiveTintColor: "#968EB0",
 };
 
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
@@ -255,8 +257,20 @@ const AddSection = () => {
               }}
             >
               <Pressable
+                // disabled={
+                //   navigation.getState().routes[1].state?.routes[0].params?.firstDate &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.lastDate &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.upcomingDates &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.name &&
+                //   navigation.getState().routes[1].state?.routes[0].params?.color
+                //     ? true
+                //     : false
+                // }
                 onPress={() => {
-                  console.log("Done");
+                  console.log(
+                    navigation.getState().routes[1].state?.routes[0].params
+                    // navigation.getState().routes[1].state?.routes[0]
+                  );
                 }}
               >
                 <TopNavbarDoneButton />
