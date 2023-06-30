@@ -1,9 +1,8 @@
 import * as React from "react";
-// import Svg, { Rect, Text } from "react-native-svg";
 import { View, TextInput } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 
-const TaskName = (props: any) => {
+const TaskName = memo((props: any) => {
   const [taskName, setTaskName] = useState<string>("");
 
   //updating params if frequency changes starts
@@ -30,6 +29,6 @@ const TaskName = (props: any) => {
       />
     </View>
   );
-};
+});
 
 export default TaskName;
