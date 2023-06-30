@@ -1,49 +1,54 @@
 import * as React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { memo } from "react";
+import { View, Text } from "react-native";
 
-const DayCircle = (props: {
-  day: string;
-  left: number;
-  backgroundColor: string;
-}) => {
-  const { day, left, backgroundColor } = props;
+const DayCircle = memo(
+  (props: { day: string; left: number; dayCircleMarked: boolean }) => {
+    const { day, left, dayCircleMarked } = props;
+    if (dayCircleMarked) {
+      var backgroundColor = "#968EB0";
+    } else {
+      var backgroundColor = "#FFFFFF";
+    }
 
-  return (
-    <TouchableOpacity
-      style={{
-        position: "absolute",
-        width: 35,
-        height: 35,
-        left: left,
-        top: 90,
-        backgroundColor: backgroundColor,
-        borderWidth: 1,
-        borderRadius: 20,
-        borderColor: "#D9D9D9",
-      }}
-    >
+    return (
       <View
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "100%",
+          position: "absolute",
+          width: 35,
+          height: 35,
+          left: left,
+          top: 0,
+          // top: 90,
+          backgroundColor: backgroundColor,
+          borderWidth: 1,
+          borderRadius: 20,
+          borderColor: "#D9D9D9",
         }}
       >
-        <Text
+        <View
           style={{
-            fontStyle: "normal",
-            fontWeight: "400",
-            fontSize: 12,
-            lineHeight: 15,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
           }}
         >
-          {day}
-        </Text>
+          <Text
+            style={{
+              fontStyle: "normal",
+              fontWeight: "400",
+              fontSize: 12,
+              lineHeight: 15,
+            }}
+          >
+            {day}
+          </Text>
+        </View>
       </View>
-    </TouchableOpacity>
-  );
-};
+    );
+  }
+);
 
 export default DayCircle;
