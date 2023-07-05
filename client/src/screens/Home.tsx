@@ -88,6 +88,7 @@ const today = new Date(
 
 const userTimezoneOffset = today.getTimezoneOffset() * 60000;
 const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
 //need this for setting default hour 21
 //if backend is not 21 but 00, remove this
 const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
@@ -105,55 +106,6 @@ function isInArray(array: any[], value: Date) {
 // }, []);
 
 const Home = (props: any) => {
-  // const navigation = useNavigation();
-
-  // console.log("🚀 ~ file: Home.tsx:110 ~ Home ~ props:", props.navigation);
-
-  // const toggleEditButtons = () => {
-  //   setHomeEditState(() => !homeEditState);
-  // };
-
-  // useEffect(() => {
-  // navigation.setParams({ homeEditState: false });
-  // console.log(navigation.getState().routes[0].params.homeEditState);
-  // }, []);
-
-  // const renderItem = ({ item }: { item: any }) => (
-  //   <TouchableOpacity
-  //     style={{
-  //       display: "flex",
-  //       height: "100%",
-  //       backgroundColor: "#FFFFFF",
-  //       justifyContent: "flex-start",
-  //       alignItems: "center",
-  //     }}
-  //   >
-  //     {/* <TouchableOpacity
-  //       // onPress={() => {
-  //       // console.log(item);
-  //       // console.log(item.color);
-  //       // console.log(item.sharedWith);
-  //       // }}
-  //       onPress={() =>
-  //         setHomeEditState((homeEditState) => {
-  //           return homeEditState;
-  //         })
-  //       }
-  //       onLongPress={() => {
-  //         // setHomeEditState((homeEditState) => !homeEditState);
-  //         // navigation.setParams({ homeEditState: homeEditState });
-  //         // console.log(navigation.getState()?.params);
-  //       }}
-  //     > */}
-  //     {!isInArray(item.dates, todayLocal21) ? (
-  //       <HabitBar item={item} />
-  //     ) : (
-  //       <HabitBarFilled item={item} />
-  //     )}
-  //     {/* </TouchableOpacity> */}
-  //   </TouchableOpacity>
-  // );
-
   useEffect(() => {
     props.navigation.getParent().setParams({ homeEditState: false });
   }, []);
@@ -182,6 +134,11 @@ const Home = (props: any) => {
               // console.log(item);
               // console.log(item.color);
               // console.log(item.sharedWith);
+            }}
+            onLongPress={() => {
+              // console.log(item);
+              // console.log(item.color);
+              // console.log(item.sharedWith);
               props.navigation.getParent().getState().routes[0].params
                 .homeEditState
                 ? props.navigation.getParent().setParams({
@@ -192,29 +149,11 @@ const Home = (props: any) => {
                   });
             }}
           >
-            {/* <TouchableOpacity
-        onPress={() => {
-        console.log(item);
-        console.log(item.color);
-        console.log(item.sharedWith);
-        }}
-        onPress={() =>
-          setHomeEditState((homeEditState) => {
-            return homeEditState;
-          })
-        }
-        onLongPress={() => {
-          // setHomeEditState((homeEditState) => !homeEditState);
-          // navigation.setParams({ homeEditState: homeEditState });
-          // console.log(navigation.getState()?.params);
-        }}
-      > */}
             {!isInArray(item.dates, todayLocal21) ? (
               <HabitBar item={item} />
             ) : (
               <HabitBarFilled item={item} />
             )}
-            {/* </TouchableOpacity> */}
           </TouchableOpacity>
         )}
         estimatedItemSize={20}
