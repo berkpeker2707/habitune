@@ -71,19 +71,39 @@ const HomeSection = () => {
         name="Home"
         component={Home}
         options={{
-          headerTitle: "Today",
-          headerLeft: () => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 5,
-              }}
-            >
-              <TopNavbarLogo />
-            </View>
-          ),
+          headerTitle: !navigation.getState().routes[0].params?.homeEditState
+            ? "Today"
+            : "",
+          headerLeft: () =>
+            !navigation.getState().routes[0].params?.homeEditState ? (
+              <View
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 5,
+                }}
+              >
+                <TopNavbarLogo />
+              </View>
+            ) : (
+              <View
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingLeft: 10,
+                }}
+              >
+                <Pressable
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                >
+                  <TopNavbarBackButton />
+                </Pressable>
+              </View>
+            ),
 
           headerRight: () =>
             !navigation.getState().routes[0].params?.homeEditState ? (
@@ -108,27 +128,7 @@ const HomeSection = () => {
                 </View>
               </Pressable>
             ) : (
-              <Pressable
-                onPress={() => {
-                  navigation.navigate("Profile");
-                }}
-              >
-                <View
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: 5,
-                    backgroundColor: "red",
-                  }}
-                >
-                  <TopNavbarProfileImage
-                    imageSource={
-                      "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
-                    }
-                  />
-                </View>
-              </Pressable>
+              <></>
             ),
         }}
       />
