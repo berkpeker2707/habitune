@@ -18,7 +18,7 @@ import {
 
 // screens
 import { Signin } from "./src/screens/Signin";
-import { Home } from "./src/screens/Home";
+import Home from "./src/screens/Home";
 import { Add } from "./src/screens/Add";
 import { Overview } from "./src/screens/Overview";
 import { Profile } from "./src/screens/Profile";
@@ -61,19 +61,6 @@ const auth = true;
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
 
-  // useEffect(() => {
-  //   if (
-  //     navigation.getState().routes[0].state?.routes[0].params?.homeEditState
-  //   ) {
-  //     () =>
-  //       navigation.getState().routes[0].state?.routes[0].params?.homeEditState;
-  //   }
-  // }, [navigation.getState().routes[0].state?.routes[0].params?.homeEditState]);
-  // console.log(
-  //   navigation.getState().routes[0]["params"] &&
-  //     navigation.getState().routes[0]["params"]["homeEditState"]
-  // );
-
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -97,28 +84,52 @@ const HomeSection = () => {
               <TopNavbarLogo />
             </View>
           ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Profile");
-              }}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 5,
+
+          headerRight: () =>
+            !navigation.getState().routes[0].params?.homeEditState ? (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("Profile");
                 }}
               >
-                <TopNavbarProfileImage
-                  imageSource={
-                    "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
-                  }
-                />
-              </View>
-            </Pressable>
-          ),
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 5,
+                  }}
+                >
+                  <TopNavbarProfileImage
+                    imageSource={
+                      "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
+                    }
+                  />
+                </View>
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 5,
+                    backgroundColor: "red",
+                  }}
+                >
+                  <TopNavbarProfileImage
+                    imageSource={
+                      "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
+                    }
+                  />
+                </View>
+              </Pressable>
+            ),
         }}
       />
       <StackNavigator.Screen

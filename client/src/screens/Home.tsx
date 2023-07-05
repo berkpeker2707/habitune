@@ -1,8 +1,11 @@
 import * as React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Pressable } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import HabitBar from "../components/home/HabitBar";
 import HabitBarFilled from "../components/home/HabitBarFilled";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import TopNavbarBackButton from "../components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 
 const DATA = [
   {
@@ -101,33 +104,60 @@ function isInArray(array: any[], value: Date) {
 //   });
 // }, []);
 
-const renderItem = ({ item }: { item: any }) => (
-  <View
-    style={{
-      display: "flex",
-      height: "100%",
-      backgroundColor: "#FFFFFF",
-      justifyContent: "flex-start",
-      alignItems: "center",
-    }}
-  >
-    <TouchableOpacity
-      onPress={() => {
-        console.log(item);
-        console.log(item.color);
-        console.log(item.sharedWith);
-      }}
-    >
-      {!isInArray(item.dates, todayLocal21) ? (
-        <HabitBar item={item} />
-      ) : (
-        <HabitBarFilled item={item} />
-      )}
-    </TouchableOpacity>
-  </View>
-);
+const Home = (props: any) => {
+  // const navigation = useNavigation();
 
-export function Home() {
+  // console.log("🚀 ~ file: Home.tsx:110 ~ Home ~ props:", props.navigation);
+
+  // const toggleEditButtons = () => {
+  //   setHomeEditState(() => !homeEditState);
+  // };
+
+  // useEffect(() => {
+  // navigation.setParams({ homeEditState: false });
+  // console.log(navigation.getState().routes[0].params.homeEditState);
+  // }, []);
+
+  // const renderItem = ({ item }: { item: any }) => (
+  //   <TouchableOpacity
+  //     style={{
+  //       display: "flex",
+  //       height: "100%",
+  //       backgroundColor: "#FFFFFF",
+  //       justifyContent: "flex-start",
+  //       alignItems: "center",
+  //     }}
+  //   >
+  //     {/* <TouchableOpacity
+  //       // onPress={() => {
+  //       // console.log(item);
+  //       // console.log(item.color);
+  //       // console.log(item.sharedWith);
+  //       // }}
+  //       onPress={() =>
+  //         setHomeEditState((homeEditState) => {
+  //           return homeEditState;
+  //         })
+  //       }
+  //       onLongPress={() => {
+  //         // setHomeEditState((homeEditState) => !homeEditState);
+  //         // navigation.setParams({ homeEditState: homeEditState });
+  //         // console.log(navigation.getState()?.params);
+  //       }}
+  //     > */}
+  //     {!isInArray(item.dates, todayLocal21) ? (
+  //       <HabitBar item={item} />
+  //     ) : (
+  //       <HabitBarFilled item={item} />
+  //     )}
+  //     {/* </TouchableOpacity> */}
+  //   </TouchableOpacity>
+  // );
+
+  useEffect(() => {
+    props.navigation.getParent().setParams({ homeEditState: false });
+  }, []);
+
   return (
     <View
       style={{
@@ -137,7 +167,60 @@ export function Home() {
       }}
     >
       <Text>Habits</Text>
-      <FlashList data={DATA} renderItem={renderItem} estimatedItemSize={20} />
+      <FlashList
+        data={DATA}
+        renderItem={({ item }: { item: any }) => (
+          <TouchableOpacity
+            style={{
+              display: "flex",
+              height: "100%",
+              backgroundColor: "#FFFFFF",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+            onPress={() => {
+              // console.log(item);
+              // console.log(item.color);
+              // console.log(item.sharedWith);
+              props.navigation.getParent().getState().routes[0].params
+                .homeEditState
+                ? props.navigation.getParent().setParams({
+                    homeEditState: false,
+                  })
+                : props.navigation.getParent().setParams({
+                    homeEditState: true,
+                  });
+            }}
+          >
+            {/* <TouchableOpacity
+        onPress={() => {
+        console.log(item);
+        console.log(item.color);
+        console.log(item.sharedWith);
+        }}
+        onPress={() =>
+          setHomeEditState((homeEditState) => {
+            return homeEditState;
+          })
+        }
+        onLongPress={() => {
+          // setHomeEditState((homeEditState) => !homeEditState);
+          // navigation.setParams({ homeEditState: homeEditState });
+          // console.log(navigation.getState()?.params);
+        }}
+      > */}
+            {!isInArray(item.dates, todayLocal21) ? (
+              <HabitBar item={item} />
+            ) : (
+              <HabitBarFilled item={item} />
+            )}
+            {/* </TouchableOpacity> */}
+          </TouchableOpacity>
+        )}
+        estimatedItemSize={20}
+      />
     </View>
   );
-}
+};
+
+export default Home;
