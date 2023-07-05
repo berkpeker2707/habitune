@@ -60,6 +60,20 @@ const auth = true;
 
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
+
+  // useEffect(() => {
+  //   if (
+  //     navigation.getState().routes[0].state?.routes[0].params?.homeEditState
+  //   ) {
+  //     () =>
+  //       navigation.getState().routes[0].state?.routes[0].params?.homeEditState;
+  //   }
+  // }, [navigation.getState().routes[0].state?.routes[0].params?.homeEditState]);
+  // console.log(
+  //   navigation.getState().routes[0]["params"] &&
+  //     navigation.getState().routes[0]["params"]["homeEditState"]
+  // );
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -70,6 +84,7 @@ const HomeSection = () => {
         name="Home"
         component={Home}
         options={{
+          headerTitle: "Today",
           headerLeft: () => (
             <View
               style={{
@@ -82,7 +97,6 @@ const HomeSection = () => {
               <TopNavbarLogo />
             </View>
           ),
-          headerTitle: "Today",
           headerRight: () => (
             <Pressable
               onPress={() => {
