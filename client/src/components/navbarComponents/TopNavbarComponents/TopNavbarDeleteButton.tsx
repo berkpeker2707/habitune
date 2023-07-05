@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path, G, Defs } from "react-native-svg";
 
-const TopNavbarAddDeleteButton = () => {
+const TopNavbarDeleteButton = () => {
   return (
     <Svg width={21} height={24} fill="none" viewBox="0 0 21 24">
       <Path
@@ -13,4 +13,4 @@ const TopNavbarAddDeleteButton = () => {
   );
 };
 
-export default TopNavbarAddDeleteButton;
+export default TopNavbarDeleteButton;
