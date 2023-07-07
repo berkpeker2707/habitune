@@ -826,7 +826,7 @@ const Home = (props: any) => {
         display: "flex",
         height: "100%",
         backgroundColor: "#FFFFFF",
-        marginBottom: 60,
+        marginBottom: 64,
       }}
     >
       <Text>Habits</Text>
@@ -843,7 +843,16 @@ const Home = (props: any) => {
         >
           <>
             <TouchableOpacity
-              onPress={() => {
+              onLongPress={() => {
+                props.navigation.getParent().getState().routes[0].params
+                  .homeEditState
+                  ? props.navigation.getParent().setParams({
+                      homeEditState: false,
+                    })
+                  : props.navigation.getParent().setParams({
+                      homeEditState: true,
+                    });
+
                 setSelectedItem(() =>
                   selectedItem === item._id.toString()
                     ? ""
