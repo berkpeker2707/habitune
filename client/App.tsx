@@ -35,6 +35,9 @@ import TopNavbarBackButton from "./src/components/navbarComponents/TopNavbarComp
 import TopNavbarShareButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
 import TopNavbarSettingsButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
 import TopNavbarDoneButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
+import TopNavbarDeleteButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
+import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
+import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -128,7 +131,59 @@ const HomeSection = () => {
                 </View>
               </Pressable>
             ) : (
-              <></>
+              <View style={{ flexDirection: "row" }}>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Profile");
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5,
+                      paddingLeft: 10,
+                    }}
+                  >
+                    <TopNavbarEditButton />
+                  </View>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Profile");
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5,
+                      paddingLeft: 10,
+                    }}
+                  >
+                    <TopNavbarAddFriendButton />
+                  </View>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Profile");
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5,
+                      paddingLeft: 10,
+                    }}
+                  >
+                    <TopNavbarDeleteButton />
+                  </View>
+                </Pressable>
+              </View>
             ),
         }}
       />
