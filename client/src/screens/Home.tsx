@@ -809,11 +809,14 @@ const Home = (props: any) => {
   //if backend is not 21 but 00, remove this
   const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
 
-  const isInArray = useCallback((array: any[], value: Date) => {
-    return array.find((item) => {
-      return new Date(item).getTime() == value.getTime();
-    });
-  }, []);
+  const isInArray = useCallback(
+    (array: any[], value: Date) => {
+      return array.find((item) => {
+        return new Date(item).getTime() == value.getTime();
+      });
+    },
+    [DATA]
+  );
 
   //data stuff ends
 
@@ -823,7 +826,7 @@ const Home = (props: any) => {
         display: "flex",
         height: "100%",
         backgroundColor: "#FFFFFF",
-        marginBottom: 64,
+        marginBottom: 60,
       }}
     >
       <Text>Habits</Text>
