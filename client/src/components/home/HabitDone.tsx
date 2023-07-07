@@ -11,6 +11,7 @@ import Svg, {
   Circle,
   LinearGradient,
   Stop,
+  Path,
 } from "react-native-svg";
 
 const HabitDone = memo((props: any) => {
@@ -29,6 +30,8 @@ const HabitDone = memo((props: any) => {
           rx={22.5}
         />
       </G>
+
+      {/* mark starts */}
       <G filter="url(#filter1_d_386_5008)">
         <Circle cx={22} cy={23} r={9} fill={item.color} />
         <Circle
@@ -39,6 +42,12 @@ const HabitDone = memo((props: any) => {
           strokeWidth={item.itemStroke}
         />
       </G>
+      <Path
+        fill="#fff"
+        d="M20.26 26.172l-2.432-2.433-.828.823 3.26 3.26 7-7-.822-.822-6.177 6.172z"
+      />
+      {/* mark ends */}
+
       <Text fill="#000" fontSize="19" x={40} y={30}>
         {item.name}
       </Text>
