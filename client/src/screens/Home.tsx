@@ -839,31 +839,17 @@ const Home = (props: any) => {
           key={item._id}
         >
           <>
-            {item._id.toString() === selectedItem ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedItem(() => item._id.toString());
-                }}
-              >
-                <HabitBar
-                  item={item}
-                  itemStroke={2}
-                  filled={isInArray(item.dates, todayLocal21)}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  setSelectedItem(() => item._id.toString());
-                }}
-              >
-                <HabitBar
-                  item={item}
-                  itemStroke={0.5}
-                  filled={isInArray(item.dates, todayLocal21)}
-                />
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedItem(() => item._id.toString());
+              }}
+            >
+              <HabitBar
+                item={item}
+                itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
+                filled={isInArray(item.dates, todayLocal21)}
+              />
+            </TouchableOpacity>
           </>
         </View>
       ))}
