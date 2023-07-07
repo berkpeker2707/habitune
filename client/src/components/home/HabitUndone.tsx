@@ -10,9 +10,6 @@ import Svg, {
   Use,
   Image,
   Text,
-  Circle,
-  LinearGradient,
-  Stop,
 } from "react-native-svg";
 
 const HabitUndone = memo((props: any) => {

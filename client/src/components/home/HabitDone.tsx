@@ -1,9 +1,7 @@
 import * as React from "react";
 import { memo } from "react";
 import Svg, {
-  Path,
   G,
-  Mask,
   Rect,
   Defs,
   Pattern,
