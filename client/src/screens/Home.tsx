@@ -844,7 +844,11 @@ const Home = (props: any) => {
           <>
             <TouchableOpacity
               onPress={() => {
-                setSelectedItem(() => item._id.toString());
+                setSelectedItem(() =>
+                  selectedItem === item._id.toString()
+                    ? ""
+                    : item._id.toString()
+                );
               }}
             >
               <HabitBar

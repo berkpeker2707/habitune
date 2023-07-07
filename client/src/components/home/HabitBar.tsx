@@ -1,19 +1,4 @@
 import * as React from "react";
-import { memo } from "react";
-import Svg, {
-  Path,
-  G,
-  Mask,
-  Rect,
-  Defs,
-  Pattern,
-  Use,
-  Image,
-  Text,
-  Circle,
-  LinearGradient,
-  Stop,
-} from "react-native-svg";
 import HabitDone from "./HabitDone";
 import HabitUndone from "./HabitUndone";
 
