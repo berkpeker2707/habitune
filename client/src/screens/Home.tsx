@@ -821,55 +821,48 @@ const Home = (props: any) => {
   //data stuff ends
 
   return (
-    <ScrollView
+    <View
       style={{
         display: "flex",
         height: "100%",
         backgroundColor: "#FFFFFF",
-        marginBottom: 64,
+        justifyContent: "flex-start",
+        alignItems: "center",
       }}
     >
-      <Text>Habits</Text>
-      {DATA.map((item, index) => (
-        <View
-          style={{
-            display: "flex",
-            // height: "100%",
-            backgroundColor: "#FFFFFF",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          key={item._id}
-        >
-          <>
-            <TouchableOpacity
-              onLongPress={() => {
-                props.navigation.getParent().getState().routes[0].params
-                  .homeEditState
-                  ? props.navigation.getParent().setParams({
-                      homeEditState: false,
-                    })
-                  : props.navigation.getParent().setParams({
-                      homeEditState: true,
-                    });
+      <ScrollView
+        style={{
+          marginBottom: 85,
+        }}
+      >
+        <Text>Habits</Text>
+        {DATA.map((item, index) => (
+          <TouchableOpacity
+            key={item._id}
+            onLongPress={() => {
+              props.navigation.getParent().getState().routes[0].params
+                .homeEditState
+                ? props.navigation.getParent().setParams({
+                    homeEditState: false,
+                  })
+                : props.navigation.getParent().setParams({
+                    homeEditState: true,
+                  });
 
-                setSelectedItem(() =>
-                  selectedItem === item._id.toString()
-                    ? ""
-                    : item._id.toString()
-                );
-              }}
-            >
-              <HabitBar
-                item={item}
-                itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-                filled={isInArray(item.dates, todayLocal21)}
-              />
-            </TouchableOpacity>
-          </>
-        </View>
-      ))}
-    </ScrollView>
+              setSelectedItem(() =>
+                selectedItem === item._id.toString() ? "" : item._id.toString()
+              );
+            }}
+          >
+            <HabitBar
+              item={item}
+              itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
+              filled={isInArray(item.dates, todayLocal21)}
+            />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   );
 };
 
