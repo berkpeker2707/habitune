@@ -78,7 +78,7 @@ const DATA = [
 
     owner: "643933a420ccb64a40e171a8",
 
-    name: "habitTest2",
+    name: "habitTest3",
     color: "#C04F43",
     sharedWith: [
       {
@@ -112,7 +112,7 @@ const DATA = [
 
     owner: "643933a420ccb64a40e171a8",
 
-    name: "habitTest2",
+    name: "habitTest4",
     color: "#C04F43",
     sharedWith: [
       {
@@ -141,7 +141,7 @@ const DATA = [
 
     owner: "643933a420ccb64a40e171a8",
 
-    name: "habitTest2",
+    name: "habitTest5",
     color: "#C04F43",
     sharedWith: [
       {
@@ -170,7 +170,7 @@ const DATA = [
 
     owner: "643933a420ccb64a40e171a8",
 
-    name: "habitTest2",
+    name: "habitTest6",
     color: "#C04F43",
     sharedWith: [
       {
@@ -199,7 +199,7 @@ const DATA = [
 
     owner: "643933a420ccb64a40e171a8",
 
-    name: "habitTest2",
+    name: "habitTest7",
     color: "#C04F43",
     sharedWith: [
       {
@@ -839,6 +839,9 @@ const Home = (props: any) => {
         {DATA.map((item, index) => (
           <TouchableOpacity
             key={item._id}
+            onPress={() => {
+              console.log("make habit done");
+            }}
             onLongPress={() => {
               props.navigation.getParent().getState().routes[0].params
                 .homeEditState
