@@ -781,18 +781,19 @@ const DATA = [
 const Home = (props: any) => {
   const [selectedItem, setSelectedItem] = useState("");
 
-  // useEffect(() => {
-  //   setSelectedItem(() => selectedItem);
-
-  //   console.log(
-  //     "🚀 ~ file: Home.tsx:91 ~ useEffect ~ selectedItem:",
-  //     selectedItem
-  //   );
-  // }, [selectedItem, ref]);
-
   useEffect(() => {
     props.navigation.getParent().setParams({ homeEditState: false });
   }, []);
+
+  useEffect(() => {
+    if (
+      props.navigation.getParent().getState().routes[0].params.homeEditState ===
+      false
+    ) {
+      setSelectedItem(() => "");
+      console.log(selectedItem);
+    }
+  }, [props.navigation.getParent().getState().routes[0].params.homeEditState]);
 
   //data stuff starts
   const todayTemp = new Date();
@@ -840,7 +841,11 @@ const Home = (props: any) => {
           <TouchableOpacity
             key={item._id}
             onPress={() => {
-              console.log("make habit done");
+              console.log(
+                props.navigation.getParent().getState().routes[0].params
+                  .homeEditState
+              );
+              // console.log("make habit done");
             }}
             onLongPress={() => {
               props.navigation.getParent().getState().routes[0].params
@@ -850,6 +855,7 @@ const Home = (props: any) => {
                   })
                 : props.navigation.getParent().setParams({
                     homeEditState: true,
+                    _id: item._id,
                   });
 
               setSelectedItem(() =>
