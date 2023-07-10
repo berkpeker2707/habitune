@@ -134,7 +134,10 @@ const HomeSection = () => {
               <View style={{ flexDirection: "row" }}>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Profile");
+                    console.log(
+                      navigation.getState().routes[0].params
+                      // navigation.getState().routes[1].state?.routes[0]
+                    );
                   }}
                 >
                   <View
@@ -146,7 +149,8 @@ const HomeSection = () => {
                       paddingLeft: 10,
                     }}
                   >
-                    <TopNavbarEditButton />
+                    {/* <TopNavbarEditButton /> */}
+                    <TopNavbarDoneButton />
                   </View>
                 </Pressable>
                 <Pressable
@@ -349,7 +353,6 @@ const AddSection = () => {
                 onPress={() => {
                   console.log(
                     navigation.getState().routes[1].state?.routes[0].params
-                    // navigation.getState().routes[1].state?.routes[0]
                   );
                 }}
               >
@@ -381,6 +384,8 @@ const App = () => {
               name="HomeSection"
               component={HomeSection}
               options={{
+                // resets screen states below
+                // unmountOnBlur: true,
                 tabBarButton: (props) => <BottomTabHomeButton {...props} />,
               }}
             />
