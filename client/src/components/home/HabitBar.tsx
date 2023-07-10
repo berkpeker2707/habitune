@@ -3,11 +3,22 @@ import HabitDone from "./HabitDone";
 import HabitUndone from "./HabitUndone";
 
 const HabitBar = (props: any) => {
-  const { item, itemStroke, filled } = props;
+  const { item, itemStroke, filled, nameChangable, navigation } = props;
+
   return !filled ? (
-    <HabitUndone item={item} itemStroke={itemStroke} />
+    <HabitUndone
+      item={item}
+      itemStroke={itemStroke}
+      nameChangable={nameChangable}
+      navigation={navigation}
+    />
   ) : (
-    <HabitDone item={item} itemStroke={itemStroke} />
+    <HabitDone
+      item={item}
+      itemStroke={itemStroke}
+      nameChangable={nameChangable}
+      navigation={navigation}
+    />
   );
 };
 

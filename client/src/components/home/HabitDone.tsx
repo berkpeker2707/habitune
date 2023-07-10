@@ -1,5 +1,6 @@
 import * as React from "react";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import { TextInput } from "react-native";
 import Svg, {
   G,
   Rect,
@@ -15,7 +16,15 @@ import Svg, {
 } from "react-native-svg";
 
 const HabitDone = memo((props: any) => {
-  const { item, itemStroke } = props;
+  const { item, itemStroke, nameChangable, navigation } = props;
+  const [text, onChangeText] = useState("");
+
+  useEffect(() => {
+    navigation.getParent().setParams({
+      name: text,
+    });
+  }, [text]);
+
   return (
     <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
       <G filter="url(#filter0_d_386_5008)">
@@ -48,9 +57,24 @@ const HabitDone = memo((props: any) => {
       />
       {/* mark ends */}
 
-      <Text fill="#000" fontSize="19" x={40} y={30}>
-        {item.name}
-      </Text>
+      {!nameChangable ? (
+        <Text fill="#000" fontSize="19" x={40} y={30}>
+          {item.name}
+        </Text>
+      ) : (
+        <TextInput
+          placeholder={item.name}
+          style={{
+            height: 45,
+            width: 370,
+            paddingLeft: 40,
+            borderRadius: 20,
+          }}
+          onChangeText={onChangeText}
+          value={text}
+          autoFocus={true}
+        />
+      )}
       {item &&
       item.sharedWith[item.sharedWith.length - 2] &&
       item.sharedWith[item.sharedWith.length - 2].image ? (
