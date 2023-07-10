@@ -780,6 +780,7 @@ const DATA = [
 
 const Home = (props: any) => {
   const [selectedItem, setSelectedItem] = useState("");
+  const [nameChangable, setNameChangable] = useState(false);
 
   useEffect(() => {
     props.navigation.getParent().setParams({ homeEditState: false });
@@ -791,9 +792,10 @@ const Home = (props: any) => {
       false
     ) {
       setSelectedItem(() => "");
-      console.log(selectedItem);
+
+      setNameChangable(() => false);
     }
-  }, [props.navigation.getParent().getState().routes[0].params.homeEditState]);
+  }, [props.navigation.getParent().getState().routes[0].params?.homeEditState]);
 
   //data stuff starts
   const todayTemp = new Date();
@@ -841,13 +843,14 @@ const Home = (props: any) => {
           <TouchableOpacity
             key={item._id}
             onPress={() => {
-              console.log(
-                props.navigation.getParent().getState().routes[0].params
-                  .homeEditState
-              );
-              // console.log("make habit done");
+              // console.log(
+              //   props.navigation.getParent().getState().routes[0].params
+              //     .homeEditState
+              // );
+              console.log(item._id);
             }}
             onLongPress={() => {
+              setNameChangable(() => true);
               props.navigation.getParent().getState().routes[0].params
                 .homeEditState
                 ? props.navigation.getParent().setParams({
@@ -867,6 +870,10 @@ const Home = (props: any) => {
               item={item}
               itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
               filled={isInArray(item.dates, todayLocal21)}
+              nameChangable={
+                item._id.toString() === selectedItem ? nameChangable : false
+              }
+              navigation={props.navigation}
             />
           </TouchableOpacity>
         ))}
