@@ -36,7 +36,9 @@ const HabitUndone = memo((props: any) => {
             width: 370,
             paddingLeft: 40,
             borderRadius: 20,
+            fontSize: 19,
           }}
+          maxLength={30}
           onChangeText={onChangeText}
           value={text}
           autoFocus={true}
