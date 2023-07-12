@@ -100,7 +100,9 @@ const HomeSection = () => {
               >
                 <Pressable
                   onPress={() => {
-                    navigation.goBack();
+                    navigation.setParams({
+                      homeEditState: false,
+                    });
                   }}
                 >
                   <TopNavbarBackButton />
@@ -155,7 +157,7 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Profile");
+                    console.log("share with friends pressed");
                   }}
                 >
                   <View
@@ -172,7 +174,7 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Profile");
+                    console.log("delete habit is pressed");
                   }}
                 >
                   <View
