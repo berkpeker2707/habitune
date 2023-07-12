@@ -1,41 +1,82 @@
 import * as React from "react";
+import { memo, useEffect, useState } from "react";
+import { TextInput } from "react-native";
 import Svg, {
   G,
   Rect,
-  Circle,
-  Path,
   Defs,
   Pattern,
   Use,
-  LinearGradient,
-  Stop,
   Image,
   Text,
+  Circle,
+  LinearGradient,
+  Stop,
+  Path,
 } from "react-native-svg";
 
-const HabitBarFilled = (props: any) => {
-  // const { onPress } = props;
-  const { item } = props;
+const HabitDone = memo((props: any) => {
+  const { item, itemStroke, nameChangable, navigation } = props;
+  const [text, onChangeText] = useState("");
+
+  useEffect(() => {
+    navigation.getParent().setParams({
+      name: text,
+    });
+  }, [text]);
 
   return (
-    <Svg width={372} height={48} fill="none" viewBox="0 0 372 48" {...props}>
+    <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
       <G filter="url(#filter0_d_386_5008)">
         <Rect
           width={370}
           height={45}
           x={1}
           y={1}
+          stroke={itemStroke == 2 ? item.color : ""}
+          strokeWidth={itemStroke == 2 ? 2 : 0}
           fill="url(#paint0_linear_386_5008)"
           rx={22.5}
         />
       </G>
+
+      {/* mark starts */}
       <G filter="url(#filter1_d_386_5008)">
         <Circle cx={22} cy={23} r={9} fill={item.color} />
-        <Circle cx={22} cy={23} r={9.25} stroke="#fff" strokeWidth={0.5} />
+        <Circle
+          cx={22}
+          cy={23}
+          r={9.25}
+          stroke="#fff"
+          strokeWidth={item.itemStroke}
+        />
       </G>
-      <Text fill="#000" fontSize="19" x={40} y={30}>
-        {item.name}
-      </Text>
+      <Path
+        fill="#fff"
+        d="M20.26 26.172l-2.432-2.433-.828.823 3.26 3.26 7-7-.822-.822-6.177 6.172z"
+      />
+      {/* mark ends */}
+
+      {!nameChangable ? (
+        <Text fill="#000" fontSize="19" x={40} y={30}>
+          {item.name}
+        </Text>
+      ) : (
+        <TextInput
+          placeholder={item.name}
+          style={{
+            height: 45,
+            width: 370,
+            paddingLeft: 40,
+            borderRadius: 20,
+            fontSize: 19,
+          }}
+          maxLength={30}
+          onChangeText={onChangeText}
+          value={text}
+          autoFocus={true}
+        />
+      )}
       {item &&
       item.sharedWith[item.sharedWith.length - 2] &&
       item.sharedWith[item.sharedWith.length - 2].image ? (
@@ -212,6 +253,6 @@ const HabitBarFilled = (props: any) => {
       {/* right side ends */}
     </Svg>
   );
-};
+});
 
-export default HabitBarFilled;
+export default HabitDone;

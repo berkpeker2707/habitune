@@ -18,7 +18,7 @@ import {
 
 // screens
 import { Signin } from "./src/screens/Signin";
-import { Home } from "./src/screens/Home";
+import Home from "./src/screens/Home";
 import { Add } from "./src/screens/Add";
 import { Overview } from "./src/screens/Overview";
 import { Profile } from "./src/screens/Profile";
@@ -35,6 +35,9 @@ import TopNavbarBackButton from "./src/components/navbarComponents/TopNavbarComp
 import TopNavbarShareButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
 import TopNavbarSettingsButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
 import TopNavbarDoneButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
+import TopNavbarDeleteButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
+import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
+import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -60,6 +63,7 @@ const auth = true;
 
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -70,25 +74,11 @@ const HomeSection = () => {
         name="Home"
         component={Home}
         options={{
-          headerLeft: () => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: 5,
-              }}
-            >
-              <TopNavbarLogo />
-            </View>
-          ),
-          headerTitle: "Today",
-          headerRight: () => (
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Profile");
-              }}
-            >
+          headerTitle: !navigation.getState().routes[0].params?.homeEditState
+            ? "Today"
+            : "",
+          headerLeft: () =>
+            !navigation.getState().routes[0].params?.homeEditState ? (
               <View
                 style={{
                   display: "flex",
@@ -97,14 +87,110 @@ const HomeSection = () => {
                   padding: 5,
                 }}
               >
-                <TopNavbarProfileImage
-                  imageSource={
-                    "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
-                  }
-                />
+                <TopNavbarLogo />
               </View>
-            </Pressable>
-          ),
+            ) : (
+              <View
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingLeft: 10,
+                }}
+              >
+                <Pressable
+                  onPress={() => {
+                    navigation.setParams({
+                      homeEditState: false,
+                    });
+                  }}
+                >
+                  <TopNavbarBackButton />
+                </Pressable>
+              </View>
+            ),
+
+          headerRight: () =>
+            !navigation.getState().routes[0].params?.homeEditState ? (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: 5,
+                  }}
+                >
+                  <TopNavbarProfileImage
+                    imageSource={
+                      "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
+                    }
+                  />
+                </View>
+              </Pressable>
+            ) : (
+              <View style={{ flexDirection: "row" }}>
+                <Pressable
+                  onPress={() => {
+                    console.log(
+                      navigation.getState().routes[0].params
+                      // navigation.getState().routes[1].state?.routes[0]
+                    );
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5,
+                      paddingLeft: 10,
+                    }}
+                  >
+                    {/* <TopNavbarEditButton /> */}
+                    <TopNavbarDoneButton />
+                  </View>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    console.log("share with friends pressed");
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5,
+                      paddingLeft: 10,
+                    }}
+                  >
+                    <TopNavbarAddFriendButton />
+                  </View>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    console.log("delete habit is pressed");
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 5,
+                      paddingLeft: 10,
+                    }}
+                  >
+                    <TopNavbarDeleteButton />
+                  </View>
+                </Pressable>
+              </View>
+            ),
         }}
       />
       <StackNavigator.Screen
@@ -269,7 +355,6 @@ const AddSection = () => {
                 onPress={() => {
                   console.log(
                     navigation.getState().routes[1].state?.routes[0].params
-                    // navigation.getState().routes[1].state?.routes[0]
                   );
                 }}
               >
@@ -301,6 +386,8 @@ const App = () => {
               name="HomeSection"
               component={HomeSection}
               options={{
+                // resets screen states below
+                // unmountOnBlur: true,
                 tabBarButton: (props) => <BottomTabHomeButton {...props} />,
               }}
             />
