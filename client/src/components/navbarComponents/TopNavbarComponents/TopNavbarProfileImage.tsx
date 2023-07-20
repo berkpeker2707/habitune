@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Image, Platform, View } from "react-native";
 
-Image;
 const TopNavbarProfileImage = (props: any) => {
   const { imageSource } = props;
 
