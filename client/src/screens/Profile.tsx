@@ -4,13 +4,14 @@ import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import FriendList from "../components/add/shareComponents/FriendList";
 import ShareWithNumber from "../components/add/shareComponents/ShareWithNumber";
+import AddFriendsButton from "../components/profile/AddFriendsButton";
 
 export function Profile(props: any) {
   return (
     <View
       style={{
         // display: "flex",
-        // height: "100%",
+        height: "100%",
         backgroundColor: "#FFFFFF",
         justifyContent: "center",
         alignItems: "center",
@@ -26,35 +27,11 @@ export function Profile(props: any) {
         <View
           style={{
             width: 345,
-            // justifyContent: "center",
-            // alignItems: "center",
-            backgroundColor: "red",
+            backgroundColor: "yellow",
           }}
         >
-          <View
-            style={{
-              backgroundColor: "#FFFFFF",
-              width: 345,
-              height: 189,
-              marginBottom: 10,
-            }}
-          >
-            <TextInput
-              style={{
-                height: 39.5,
-                borderBottomWidth: 1,
-                paddingLeft: 20,
-                marginBottom: 5,
-                borderColor: "#968EB0",
-                color: "#444",
-              }}
-              editable={false}
-              selectTextOnFocus={false}
-            >
-              Friends 1
-            </TextInput>
-            <FriendList navigation={props.navigation} />
-          </View>
+          <AddFriendsButton />
+          <FriendList navigation={props.navigation} />
         </View>
       </ScrollView>
     </View>
