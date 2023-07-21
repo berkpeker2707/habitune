@@ -6,6 +6,7 @@ const AddFriendsButton = (props: any) => {
     <View
       style={{
         // width: 345,
+        marginBottom: 10,
         height: 39.5,
         backgroundColor: "#FFFFFF",
       }}
@@ -16,7 +17,7 @@ const AddFriendsButton = (props: any) => {
           top: 0,
           width: 40,
           height: 39.5,
-          left: 305,
+          left: 285,
           justifyContent: "center",
 
           backgroundColor: "#FFFFFF",
@@ -47,9 +48,10 @@ const AddFriendsButton = (props: any) => {
         style={{
           position: "absolute",
           top: 0,
-          width: 315,
+          width: 275,
           height: 39.5,
           paddingLeft: 20,
+          marginLeft: 20,
           zIndex: -10,
           marginBottom: 5,
           color: "#444",
