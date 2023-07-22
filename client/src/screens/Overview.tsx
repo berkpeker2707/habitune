@@ -1,10 +1,24 @@
 import * as React from "react";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
-export function Overview() {
+export function Overview(props: any) {
   return (
-    <View className="flex-1 items-center justify-center bg-sky-100">
-      <Text>Overview!</Text>
+    <View
+      style={{
+        display: "flex",
+        height: "100%",
+        backgroundColor: "#FFFFFF",
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
+    >
+      <ScrollView
+        style={{
+          marginBottom: 85,
+        }}
+      >
+        <Text>Overview</Text>
+      </ScrollView>
     </View>
   );
 }
