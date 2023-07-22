@@ -204,16 +204,10 @@ const HomeSection = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 10,
+                padding: 5,
               }}
             >
-              <Pressable
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              >
-                <TopNavbarBackButton />
-              </Pressable>
+              <TopNavbarLogo />
             </View>
           ),
           headerRight: () => (
@@ -368,6 +362,119 @@ const AddSection = () => {
   );
 };
 
+const OverviewSection = () => {
+  const navigation = useNavigation<generalScreenProp>();
+
+  return (
+    <StackNavigator.Navigator
+      screenOptions={{
+        headerStyle: { height: 70 },
+      }}
+    >
+      <StackNavigator.Screen
+        name="Overview"
+        component={Overview}
+        options={{
+          headerTitle: "Overview",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 5,
+              }}
+            >
+              <TopNavbarLogo />
+            </View>
+          ),
+
+          headerRight: () => (
+            <View
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 5,
+              }}
+            >
+              <View>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Settings");
+                  }}
+                >
+                  <TopNavbarShareButton />
+                </Pressable>
+              </View>
+              <View style={{ paddingRight: 10, paddingLeft: 20 }}>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate("Settings");
+                  }}
+                >
+                  <TopNavbarSettingsButton />
+                </Pressable>
+              </View>
+            </View>
+          ),
+        }}
+      />
+      <StackNavigator.Screen
+        name="Share"
+        component={Share}
+        options={{
+          headerTitle: "Share",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <TopNavbarBackButton />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+      <StackNavigator.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          headerTitle: "Settings",
+          headerLeft: () => (
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingLeft: 10,
+              }}
+            >
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <TopNavbarBackButton />
+              </Pressable>
+            </View>
+          ),
+        }}
+      />
+    </StackNavigator.Navigator>
+  );
+};
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -399,8 +506,8 @@ const App = () => {
               }}
             />
             <BottomTabNav.Screen
-              name="Overview"
-              component={Overview}
+              name="OverviewSection"
+              component={OverviewSection}
               options={{
                 tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
               }}

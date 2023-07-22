@@ -7,7 +7,7 @@ export type BottomTabNavParamList = {
   Signin: any;
   HomeSection: any;
   AddSection: any;
-  Overview: any;
+  OverviewSection: any;
 };
 
 export type StackNavParamList = {
@@ -16,6 +16,7 @@ export type StackNavParamList = {
   Share: any;
   Settings: any;
   Add: any;
+  Overview: any;
 };
 
 export type generalScreenProp = CompositeNavigationProp<
