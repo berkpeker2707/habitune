@@ -19,7 +19,7 @@ export function Add(props: any) {
     >
       <ScrollView
         style={{
-          marginBottom: 95,
+          marginBottom: 85,
         }}
       >
         <Text>Add</Text>

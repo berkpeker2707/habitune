@@ -17,7 +17,12 @@ const FriendList = (props: any) => {
 
   return (
     <ScrollView>
-      <View style={{ flex: 1, height: 49 * (5 + 1) }}>
+      <View
+        style={{
+          flex: 1,
+          height: 49 * (5 + 1),
+        }}
+      >
         <TouchableOpacity
           onPress={() =>
             shareWithFriendList.includes("tempId")
