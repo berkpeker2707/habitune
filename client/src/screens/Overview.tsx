@@ -1,6 +1,7 @@
 import * as React from "react";
-import { ScrollView, Text, TextInput, View } from "react-native";
-import StreakBar from "../components/overview/StreakBar";
+import { ScrollView, View } from "react-native";
+import DotGraph from "../components/overview/DotGraph";
+import StreakGraph from "../components/overview/StreakGraph";
 
 export function Overview(props: any) {
   return (
@@ -18,20 +19,9 @@ export function Overview(props: any) {
           marginBottom: 85,
         }}
       >
-        <TextInput
-          style={{
-            height: 29.5,
-            paddingLeft: 20,
-            color: "#444",
-            textAlign: "center",
-          }}
-          editable={false}
-          selectTextOnFocus={false}
-        >
-          Top 3 Streaks 🔥
-        </TextInput>
-        <StreakBar />
-        <StreakBar />
+        <StreakGraph />
+        <View style={{ margin: 20 }}></View>
+        <DotGraph />
       </ScrollView>
     </View>
   );

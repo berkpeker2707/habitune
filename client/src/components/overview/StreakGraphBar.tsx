@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-function StreakBar() {
+function StreakGraphBar() {
   return (
     <View
       style={{
@@ -168,4 +168,4 @@ function StreakBar() {
   );
 }
 
-export default StreakBar;
+export default StreakGraphBar;
