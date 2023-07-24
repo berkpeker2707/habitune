@@ -13,7 +13,7 @@ function StreakBar(props: any) {
           width: 345,
           height: 39.5,
           paddingLeft: 20,
-          marginBottom: 10,
+          marginBottom: 20,
 
           borderTopWidth: 0.5,
           // borderBottomWidth: 0.5,
@@ -25,9 +25,30 @@ function StreakBar(props: any) {
           style={{
             position: "absolute",
             height: 22,
+            width: 345,
+            left: 0,
+            top: 2,
+            justifyContent: "center",
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              color: "#444",
+              fontStyle: "italic",
+            }}
+          >
+            Gunluk su ic ve protein yut
+          </Text>
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            height: 22,
             width: 22,
             left: 34,
-            top: 2,
+            top: 20,
           }}
         >
           <Svg width={25} height={34} fill="none" viewBox="0 0 25 34">
@@ -44,7 +65,7 @@ function StreakBar(props: any) {
             height: 34,
             width: 22,
             left: 9,
-            top: 2,
+            top: 20,
             justifyContent: "center",
           }}
         >
@@ -64,7 +85,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 109,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#968EB0",
           }}
@@ -75,7 +96,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 137,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#968EB0",
             borderColor: "#968EB0",
@@ -88,7 +109,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 165,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#968EB0",
             borderColor: "#968EB0",
@@ -101,7 +122,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 193,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#968EB0",
             borderColor: "#968EB0",
@@ -114,7 +135,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 221,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#968EB0",
             borderColor: "#968EB0",
@@ -127,7 +148,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 249,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#968EB0",
             borderColor: "#968EB0",
@@ -140,7 +161,7 @@ function StreakBar(props: any) {
             height: 22,
             width: 22,
             left: 277,
-            top: 9,
+            top: 29,
             borderRadius: 15,
             backgroundColor: "#FFF",
             borderColor: "#968EB0",

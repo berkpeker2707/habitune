@@ -28,7 +28,7 @@ export function Overview(props: any) {
           editable={false}
           selectTextOnFocus={false}
         >
-          Streaks 🔥
+          Top 3 Streaks 🔥
         </TextInput>
         <StreakBar />
         <StreakBar />
