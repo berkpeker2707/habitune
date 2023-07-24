@@ -164,20 +164,6 @@ function StreakBar() {
           borderWidth: 1,
         }}
       ></View>
-      {/* <View
-          style={{
-            position: "absolute",
-            height: 22,
-            width: 100,
-            left: 205,
-            top: 9,
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ textAlign: "center", overflow: "hidden" }}>
-            günlük 3L su ic ve protein yut
-          </Text>
-        </View> */}
     </View>
   );
 }
