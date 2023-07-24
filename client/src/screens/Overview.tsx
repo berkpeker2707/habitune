@@ -1,5 +1,6 @@
 import * as React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TextInput, View } from "react-native";
+import StreakBar from "../components/overview/StreakBar";
 
 export function Overview(props: any) {
   return (
@@ -18,6 +19,20 @@ export function Overview(props: any) {
         }}
       >
         <Text>Overview</Text>
+        <TextInput
+          style={{
+            height: 29.5,
+            paddingLeft: 20,
+            color: "#444",
+            textAlign: "center",
+          }}
+          editable={false}
+          selectTextOnFocus={false}
+        >
+          Streaks 🔥
+        </TextInput>
+        <StreakBar />
+        <StreakBar />
       </ScrollView>
     </View>
   );
