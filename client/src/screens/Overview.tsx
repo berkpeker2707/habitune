@@ -18,7 +18,6 @@ export function Overview(props: any) {
           marginBottom: 85,
         }}
       >
-        <Text>Overview</Text>
         <TextInput
           style={{
             height: 29.5,
