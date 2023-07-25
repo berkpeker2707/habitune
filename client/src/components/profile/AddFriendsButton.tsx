@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 
-const AddFriendsButton = (props: any) => {
+const AddFriendsButton = () => {
+  const [text, setText] = useState("");
+  const [buttonBoolean, setButtonBoolean] = useState(true);
+
+  const validate = (text: string) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(text) === false) {
+      setText(text);
+      setButtonBoolean(true);
+      return false;
+    } else {
+      setText(text);
+      setButtonBoolean(false);
+      return true;
+    }
+  };
+
   return (
     <View
       style={{
@@ -33,11 +49,12 @@ const AddFriendsButton = (props: any) => {
           borderTopRightRadius: 20,
           borderBottomRightRadius: 20,
         }}
+        disabled={buttonBoolean}
         onPress={() => console.log("Add Button Pressed")}
       >
         <Text
           style={{
-            color: "#444",
+            color: !buttonBoolean ? "#444" : "#D3D3D3",
             textAlign: "center",
           }}
         >
@@ -70,11 +87,12 @@ const AddFriendsButton = (props: any) => {
           borderTopLeftRadius: 20,
           borderBottomLeftRadius: 20,
         }}
-        editable={false}
+        editable={true}
         selectTextOnFocus={false}
-      >
-        Friend's Email
-      </TextInput>
+        placeholder="Friend's Email"
+        onChangeText={(text) => validate(text)}
+        value={text}
+      />
     </View>
   );
 };
