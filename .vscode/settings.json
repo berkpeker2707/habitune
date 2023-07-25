@@ -3,6 +3,10 @@
         {
             "name": "feature/add",
             "base": "develop"
+        },
+        {
+            "name": "feature/settings",
+            "base": "develop"
         }
     ]
 }
