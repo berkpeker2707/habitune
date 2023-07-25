@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, ScrollView } from "react-native";
 import FriendBar from "../add/shareComponents/FriendBar";
 
-const FriendsCard = (props: any) => {
+const FriendsCard = () => {
   return (
     <ScrollView>
       <View

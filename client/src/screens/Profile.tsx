@@ -4,7 +4,7 @@ import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
 
-export function Profile(props: any) {
+const Profile = () => {
   return (
     <View
       style={{
@@ -33,4 +33,6 @@ export function Profile(props: any) {
       </ScrollView>
     </View>
   );
-}
+};
+
+export default Profile;

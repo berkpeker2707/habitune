@@ -1,10 +1,30 @@
 import * as React from "react";
-import { Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
+import DotGraph from "../components/overview/DotGraph";
+import StreakGraph from "../components/overview/StreakGraph";
 
-export function Overview() {
+const Overview = () => {
   return (
-    <View className="flex-1 items-center justify-center bg-sky-100">
-      <Text>Overview!</Text>
+    <View
+      style={{
+        display: "flex",
+        height: "100%",
+        backgroundColor: "#FFFFFF",
+        justifyContent: "flex-start",
+        alignItems: "center",
+      }}
+    >
+      <ScrollView
+        style={{
+          marginBottom: 85,
+        }}
+      >
+        <StreakGraph />
+        <View style={{ margin: 20 }}></View>
+        <DotGraph />
+      </ScrollView>
     </View>
   );
-}
+};
+
+export default Overview;
