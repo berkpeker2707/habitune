@@ -37,7 +37,7 @@ import TopNavbarSettingsButton from "./src/components/navbarComponents/TopNavbar
 import TopNavbarDoneButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
 import TopNavbarDeleteButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
 import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
-import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
+// import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,

@@ -92,6 +92,7 @@ const AddFriendsButton = () => {
         placeholder="Friend's Email"
         onChangeText={(text) => validate(text)}
         value={text}
+        maxLength={50}
       />
     </View>
   );
