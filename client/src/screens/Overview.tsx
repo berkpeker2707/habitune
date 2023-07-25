@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 
-export function Overview(props: any) {
+const Overview = () => {
   return (
     <View
       style={{
@@ -25,4 +25,6 @@ export function Overview(props: any) {
       </ScrollView>
     </View>
   );
-}
+};
+
+export default Overview;

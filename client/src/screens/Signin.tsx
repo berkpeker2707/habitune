@@ -9,7 +9,7 @@ import GoogleSigninButton from "../assets/images/signin/googleSigninButton.svg";
 // import { useNavigation } from "@react-navigation/native";
 // import { SigninScreenNavigationProp } from "../types/BottomTabNavigatorParamList";
 
-export function Signin() {
+const Signin = () => {
   // const navigation = useNavigation<SigninScreenNavigationProp>();
   return (
     <View className="flex-1">
@@ -57,4 +57,6 @@ export function Signin() {
       </ImageBackground>
     </View>
   );
-}
+};
+
+export default Signin;

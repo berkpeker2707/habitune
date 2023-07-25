@@ -3,10 +3,10 @@ import { ScrollView, Text, View } from "react-native";
 import TaskName from "../components/add/TaskName";
 import Frequency from "../components/add/frequencyComponents/Frequency";
 import Share from "../components/add/shareComponents/Share";
-import Reminder from "../components/add/reminderComponents/Reminder";
+// import Reminder from "../components/add/reminderComponents/Reminder";
 import Color from "../components/add/Color";
 
-export function Add(props: any) {
+const Add = (props: any) => {
   return (
     <View
       style={{
@@ -31,4 +31,6 @@ export function Add(props: any) {
       </ScrollView>
     </View>
   );
-}
+};
+
+export default Add;
