@@ -17,13 +17,13 @@ import {
 } from "./src/types/BottomTabNavParamList";
 
 // screens
-import { Signin } from "./src/screens/Signin";
+import Signin from "./src/screens/Signin";
 import Home from "./src/screens/Home";
-import { Add } from "./src/screens/Add";
-import { Overview } from "./src/screens/Overview";
-import { Profile } from "./src/screens/Profile";
-import { Share } from "./src/screens/Share";
-import { Settings } from "./src/screens/Settings";
+import Add from "./src/screens/Add";
+import Overview from "./src/screens/Overview";
+import Profile from "./src/screens/Profile";
+import Share from "./src/screens/Share";
+import Settings from "./src/screens/Settings";
 
 //navbar components
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
