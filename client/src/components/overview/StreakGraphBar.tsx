@@ -1,8 +1,9 @@
 import * as React from "react";
+import { memo } from "react";
 import { View, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-function StreakGraphBar(props: any) {
+const StreakGraphBar = memo((props: any) => {
   const { name, color } = props;
   return (
     <View
@@ -167,6 +168,6 @@ function StreakGraphBar(props: any) {
       ></View>
     </View>
   );
-}
+});
 
 export default StreakGraphBar;

@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextInput } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 
-function DotGraph() {
+const DotGraph = () => {
   return (
     <>
       <TextInput
@@ -39,6 +39,6 @@ function DotGraph() {
       <DotGraphBar name="Gunluk su ic & protein tozu ic" color="#968EB0" />
     </>
   );
-}
+};
 
 export default DotGraph;

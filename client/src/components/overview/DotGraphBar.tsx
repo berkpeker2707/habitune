@@ -1,7 +1,8 @@
 import * as React from "react";
+import { memo } from "react";
 import { View, Text } from "react-native";
 
-function DotGraphBar(props: any) {
+const DotGraphBar = memo((props: any) => {
   const { name, color } = props;
   return (
     <View
@@ -275,6 +276,6 @@ function DotGraphBar(props: any) {
       ></View>
     </View>
   );
-}
+});
 
 export default DotGraphBar;

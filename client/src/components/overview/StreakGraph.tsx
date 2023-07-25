@@ -2,7 +2,7 @@ import * as React from "react";
 import { TextInput } from "react-native";
 import StreakBar from "./StreakGraphBar";
 
-function StreakGraph() {
+const StreakGraph = () => {
   return (
     <>
       <TextInput
@@ -21,6 +21,6 @@ function StreakGraph() {
       <StreakBar name="Gunluk su ic & protein tozu ic" color="#C04F43" />
     </>
   );
-}
+};
 
 export default StreakGraph;
