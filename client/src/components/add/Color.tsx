@@ -1,9 +1,9 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-function Color(props: any) {
+const Color = memo((props: any) => {
   const [color, setColor] = useState<String>();
 
   //updating params if color changes starts
@@ -426,6 +426,6 @@ function Color(props: any) {
       </View>
     </>
   );
-}
+});
 
 export default Color;

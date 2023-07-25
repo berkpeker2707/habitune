@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import DayCircle from "./DayCircle";
 import DayBetween from "./DayBetween";
 import Daily from "./Daily";
-const FrequencyOpened = (props: any) => {
+const FrequencyOpened = memo((props: any) => {
   const [taskUpcomingDates, setTaskUpcomingDates] = useState<String[]>([
     // "Sun",
     // "Mon",
@@ -159,6 +159,6 @@ const FrequencyOpened = (props: any) => {
       <DayBetween sendDayBetweenState={sendDayBetweenState} />
     </View>
   );
-};
+});
 
 export default FrequencyOpened;

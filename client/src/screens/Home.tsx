@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import HabitBar from "../components/home/HabitBar";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 const DATA = [
   {
@@ -778,7 +778,7 @@ const DATA = [
 
 // name:string, color:string, sharedWith:[]
 
-const Home = (props: any) => {
+const Home = memo((props: any) => {
   const [selectedItem, setSelectedItem] = useState("");
   const [nameChangable, setNameChangable] = useState(false);
 
@@ -880,6 +880,6 @@ const Home = (props: any) => {
       </ScrollView>
     </View>
   );
-};
+});
 
 export default Home;
