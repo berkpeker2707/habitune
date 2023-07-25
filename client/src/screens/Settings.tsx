@@ -11,34 +11,12 @@ import {
   Button,
 } from "react-native";
 import SettingsButton from "../components/settings/SettingsButton";
-import { useCallback, useState } from "react";
-
-{
-  /* store link starts */
-}
-const OpenURLButton = ({ url, children }: any) => {
-  const handlePress = useCallback(async () => {
-    // Checking if the link is supported for links with custom URL scheme.
-    const supported = await Linking.canOpenURL(url);
-
-    if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
-      await Linking.openURL(url);
-    } else {
-      console.log(`Don't know how to open this URL: ${url}`);
-    }
-  }, [url]);
-
-  return <Button title={children} onPress={handlePress} />;
-};
-{
-  /* store link ends */
-}
+import { useState } from "react";
+import LinkButton from "../components/settings/LinkButton";
 
 const Settings = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [feedback, setFeedback] = useState<String>();
+  const [feedback, setFeedback] = useState<String>("");
 
   return (
     <View
@@ -142,16 +120,12 @@ const Settings = () => {
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log("TEST")}>
-          <SettingsButton buttonName="Rate Us" />
-          <OpenURLButton
-            url={
-              "https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf&hl=en&gl=US"
-            }
-          >
-            Open Supported URL
-          </OpenURLButton>
-        </TouchableOpacity>
+        <View>
+          <LinkButton
+            buttonName="Rate Us"
+            url="https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf&hl=en&gl=US"
+          />
+        </View>
 
         <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Security" />
