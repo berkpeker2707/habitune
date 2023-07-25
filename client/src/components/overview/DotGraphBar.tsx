@@ -14,7 +14,7 @@ function DotGraphBar(props: any) {
         // borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
         // borderTopColor: color,
-        borderBottomColor: color,
+        borderBottomColor: "#968EB0",
       }}
     >
       <View

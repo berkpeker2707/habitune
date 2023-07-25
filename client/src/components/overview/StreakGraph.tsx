@@ -17,8 +17,8 @@ function StreakGraph() {
       >
         Top 3 Streaks 🔥
       </TextInput>
-      <StreakBar />
-      <StreakBar />
+      <StreakBar name="Gunluk su ic & protein tozu ic" color="#968EB0" />
+      <StreakBar name="Gunluk su ic & protein tozu ic" color="#C04F43" />
     </>
   );
 }
