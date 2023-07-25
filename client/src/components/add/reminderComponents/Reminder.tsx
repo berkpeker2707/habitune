@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import ReminderWithPurpleIcon from "./ReminderWithPurpleIcon";
 import { TimePickerModal } from "react-native-paper-dates";
 
-function Reminder(props: any) {
+const Reminder = () => {
   // const [openReminder, setReminderFrequency] = useState(true);
   const [visible, setVisible] = useState(false);
   const onDismiss = useCallback(() => {
@@ -31,6 +31,6 @@ function Reminder(props: any) {
       </TouchableOpacity>
     </>
   );
-}
+};
 
 export default Reminder;

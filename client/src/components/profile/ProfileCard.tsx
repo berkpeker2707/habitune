@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import { Image, View, Text } from "react-native";
 
-const ProfileCard = () => {
+const ProfileCard = memo(() => {
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <View
@@ -62,6 +62,6 @@ const ProfileCard = () => {
       </View>
     </View>
   );
-};
+});
 
 export default ProfileCard;
