@@ -2,9 +2,9 @@ import * as React from "react";
 import { TouchableOpacity, View, ImageBackground } from "react-native";
 
 import SigninBackground from "../assets/images/signin/signinBackground.png";
-import SigninLogo from "../assets/images/signin/signinLogo.svg";
-import SigninText from "../assets/images/signin/signinText.svg";
-import GoogleSigninButton from "../assets/images/signin/googleSigninButton.svg";
+import GoogleSigninButton from "../components/signin/GoogleSigninButton";
+import SigninLogo from "../components/signin/SigninLogo";
+import SinginText from "../components/signin/SinginText";
 
 // import { useNavigation } from "@react-navigation/native";
 // import { SigninScreenNavigationProp } from "../types/BottomTabNavigatorParamList";
@@ -19,20 +19,24 @@ const Signin = () => {
         style={{ flex: 1, justifyContent: "center" }}
       >
         <View className="flex-1 items-center justify-center">
-          <SigninLogo
+          <View
             style={{
               position: "relative",
               bottom: 70,
             }}
-          />
+          >
+            <SigninLogo />
+          </View>
 
-          <SigninText
+          <View
             style={{
               position: "relative",
               top: 50,
               bottom: 30,
             }}
-          />
+          >
+            <SinginText />
+          </View>
 
           <TouchableOpacity
             style={{
