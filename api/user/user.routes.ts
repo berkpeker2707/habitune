@@ -13,15 +13,14 @@ import passport from "passport";
 
 const userRoutes = Router();
 
-userRoutes.get(
-  "/auth/google",
+userRoutes.get("/google", [
   passport.authenticate("google", {
     scope: ["email", "profile"],
-  })
-);
+  }),
+]);
 
 userRoutes.get(
-  "/auth/google/callback",
+  "/google/callback",
   passport.authenticate("google", { session: false }),
   callbackSignInWithGoogle
 );

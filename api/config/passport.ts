@@ -9,7 +9,7 @@ dotenv.config();
 const JwtStrategy = require("passport-jwt").Strategy;
 const { ExtractJwt } = require("passport-jwt");
 
-export default (passport: PassportStatic) => {
+module.exports = function (passport: PassportStatic) {
   var gCID = process.env.GOOGLE_CLIENT_ID;
   var gCS = process.env.GOOGLE_CLIENT_SECRET;
   var gCB = process.env.GOOGLE_CALLBACK;
