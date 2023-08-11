@@ -59,7 +59,7 @@ const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 //auth state temp
-const auth = true;
+const auth = false;
 
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
