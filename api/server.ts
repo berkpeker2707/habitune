@@ -11,19 +11,24 @@ import passport from "passport";
 //morgan is for checking requests
 import morganMiddleware from "./middlewares/morganMiddleware";
 
-// import path from "path";
-
-dotenv.config();
-
 import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
 
-const app: Express = express();
+dotenv.config();
 
+const app: Express = express();
 const port = process.env.PORT || 1111;
 
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(helmet());
 
 // passport config
@@ -54,8 +59,8 @@ app.use(morganMiddleware);
 // });
 
 // requests
-app.get("/health", (_, res) => {
-  res.send("Working like a well-oiled machine!");
+app.get("/health", (req, res) => {
+  res.send(JSON.stringify("Working like a well-oiled machine!"));
 });
 
 // app.get("/privacy", function (req, res) {
