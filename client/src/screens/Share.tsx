@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 
 const Share = () => {
   return (
-    <View className="flex-1 items-center justify-center bg-sky-100">
+    <View>
       <Text>Share!</Text>
     </View>
   );

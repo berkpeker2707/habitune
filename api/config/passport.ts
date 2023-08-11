@@ -9,7 +9,7 @@ dotenv.config();
 const JwtStrategy = require("passport-jwt").Strategy;
 const { ExtractJwt } = require("passport-jwt");
 
-export default (passport: PassportStatic) => {
+module.exports = function (passport: PassportStatic) {
   var gCID = process.env.GOOGLE_CLIENT_ID;
   var gCS = process.env.GOOGLE_CLIENT_SECRET;
   var gCB = process.env.GOOGLE_CALLBACK;
@@ -38,11 +38,41 @@ export default (passport: PassportStatic) => {
           done: any
         ) => {
           try {
-            const alreadyRegisteredUser = await User.find({
+            const alreadyRegisteredUser: any = await User.find({
               email: profile.email,
             });
 
             if (alreadyRegisteredUser.length > 0) {
+              //update displayName on login
+              if (profile.displayName !== alreadyRegisteredUser?.firstName) {
+                await User.findOneAndUpdate(
+                  { email: profile.email },
+                  {
+                    firstName: profile.displayName,
+                  }
+                );
+              }
+
+              //update familyName on login
+              if (profile.familyName !== alreadyRegisteredUser?.lastName) {
+                await User.findOneAndUpdate(
+                  { email: profile.email },
+                  {
+                    lastname: profile.familyName,
+                  }
+                );
+              }
+
+              //update picture on login
+              if (profile.picture !== alreadyRegisteredUser?.image) {
+                await User.findOneAndUpdate(
+                  { email: profile.email },
+                  {
+                    image: profile.picture,
+                  }
+                );
+              }
+
               return done(null, alreadyRegisteredUser[0]);
             } else {
               console.log("Creating new user...");
