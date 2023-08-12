@@ -39,6 +39,10 @@ import TopNavbarDeleteButton from "./src/components/navbarComponents/TopNavbarCo
 import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
 // import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
+import { Provider } from "react-redux";
+import { createHabitAction } from "./src/state/habitSlice";
+import { store, useAppDispatch } from "./src/state/store";
+
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
   tabBarHideOnKeyboard: true,
@@ -297,7 +301,10 @@ const HomeSection = () => {
 };
 
 const AddSection = () => {
+  const dispatch = useAppDispatch();
+
   const navigation = useNavigation<generalScreenProp>();
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -347,9 +354,19 @@ const AddSection = () => {
                 //     : false
                 // }
                 onPress={() => {
-                  console.log(
-                    navigation.getState().routes[1].state?.routes[0].params
-                  );
+                  try {
+                    dispatch(
+                      createHabitAction(
+                        navigation.getState().routes[1].state?.routes[0].params
+                      )
+                    );
+
+                    // console.log(
+                    //   navigation.getState().routes[1].state?.routes[0].params
+                    // );
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarDoneButton />
@@ -477,45 +494,49 @@ const OverviewSection = () => {
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-        {!auth ? (
-          <BottomTabNav.Screen
-            name="Signin"
-            component={Signin}
-            options={{
-              tabBarButton: () => null,
-            }}
-          />
-        ) : (
-          <>
+    <Provider store={store}>
+      <NavigationContainer>
+        <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
+          {!auth ? (
             <BottomTabNav.Screen
-              name="HomeSection"
-              component={HomeSection}
+              name="Signin"
+              component={Signin}
               options={{
-                // resets screen states below
-                // unmountOnBlur: true,
-                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+                tabBarButton: () => null,
               }}
             />
-            <BottomTabNav.Screen
-              name="AddSection"
-              component={AddSection}
-              options={{
-                tabBarButton: (props) => <BottomTabAddButton {...props} />,
-              }}
-            />
-            <BottomTabNav.Screen
-              name="OverviewSection"
-              component={OverviewSection}
-              options={{
-                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
-              }}
-            />
-          </>
-        )}
-      </BottomTabNav.Navigator>
-    </NavigationContainer>
+          ) : (
+            <>
+              <BottomTabNav.Screen
+                name="HomeSection"
+                component={HomeSection}
+                options={{
+                  // resets screen states below
+                  // unmountOnBlur: true,
+                  tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+                }}
+              />
+              <BottomTabNav.Screen
+                name="AddSection"
+                component={AddSection}
+                options={{
+                  tabBarButton: (props) => <BottomTabAddButton {...props} />,
+                }}
+              />
+              <BottomTabNav.Screen
+                name="OverviewSection"
+                component={OverviewSection}
+                options={{
+                  tabBarButton: (props) => (
+                    <BottomTabOverviewButton {...props} />
+                  ),
+                }}
+              />
+            </>
+          )}
+        </BottomTabNav.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

@@ -10,3 +10,5 @@
 // color10: #6EA8D8
 // color11: #DEB4CF
 // color12: #F6AF90
+
+andoridClientID: 1018578640461-qcuhsngal9ijgmhl4gkbi7kqi6ilo6ca.apps.googleusercontent.com
