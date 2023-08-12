@@ -48,7 +48,7 @@ db();
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 
 //test requests for winston and morgan
-app.use(morganMiddleware);
+// app.use(morganMiddleware);
 // app.get("/logger", (_, res) => {
 //   Logger.error("This is an error log");
 //   Logger.warn("This is a warn log");

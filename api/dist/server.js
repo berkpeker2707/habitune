@@ -9,10 +9,6 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const passport_1 = __importDefault(require("passport"));
-//logger is winston, can log all and categorize all as you wish
-// import Logger from "./middlewares/logger";
-//morgan is for checking requests
-const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 dotenv_1.default.config();
@@ -38,7 +34,7 @@ app.use(passport_1.default.session());
 (0, db_1.default)();
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 //test requests for winston and morgan
-app.use(morganMiddleware_1.default);
+// app.use(morganMiddleware);
 // app.get("/logger", (_, res) => {
 //   Logger.error("This is an error log");
 //   Logger.warn("This is a warn log");
