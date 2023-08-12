@@ -1,6 +1,6 @@
 node_modules
 
 # ignored files created by app
-
-logs
+# dist
+# logs
 .env
