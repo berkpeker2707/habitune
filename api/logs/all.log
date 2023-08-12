@@ -650,3 +650,13 @@
 [35m[39m
 2023-08-11 16:34:52:3452 [35mhttp[39m: [35mGET /api/user/google/callback?code=4%2F0Adeu5BU16uJPyEj2zJfxbN1LvpWE_tmNPqZneoizJ8EUWgkfcLeocnKv2jqwMDToNYVFBQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=consent 500 1274 - 269.269 ms[39m
 [35m[39m
+2023-08-12 17:54:05:545 [35mhttp[39m: [35mGET /health 200 36 - 2.076 ms[39m
+[35m[39m
+2023-08-12 17:54:09:549 [35mhttp[39m: [35mGET /api/user/google 302 0 - 1.448 ms[39m
+[35m[39m
+2023-08-12 17:54:25:5425 [35mhttp[39m: [35mGET /api/user/profile 200 307 - 495.698 ms[39m
+[35m[39m
+2023-08-12 18:08:25:825 [35mhttp[39m: [35mGET /api/user/profile 200 307 - 561.698 ms[39m
+[35m[39m
+2023-08-12 18:08:36:836 [35mhttp[39m: [35mGET /health 200 36 - 0.348 ms[39m
+[35m[39m
