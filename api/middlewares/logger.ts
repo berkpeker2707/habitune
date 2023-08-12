@@ -39,6 +39,7 @@ const transports = [
     filename: "logs/error.log",
     level: "error",
   }),
+  //path added
   new winston.transports.File({
     filename: path.join(__dirname, "logs/all.log"),
   }),
