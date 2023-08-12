@@ -29,11 +29,11 @@ const format = winston_1.default.format.combine(winston_1.default.format.timesta
 const transports = [
     new winston_1.default.transports.Console(),
     new winston_1.default.transports.File({
-        filename: "logs/error.log",
+        filename: path_1.default.join(__dirname, "..", "logs/error.log"),
         level: "error",
     }),
     new winston_1.default.transports.File({
-        filename: path_1.default.join(__dirname, "logs/all.log"),
+        filename: path_1.default.join(__dirname, "..", "logs/all.log"),
     }),
 ];
 const Logger = winston_1.default.createLogger({
