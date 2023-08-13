@@ -40,7 +40,8 @@ const initialState: userTypes = {
 const updatedUser = createAction("user/update");
 
 const instance = axios.create({
-  baseURL: "http://192.168.1.33:1111/api",
+  // baseURL: "http://192.168.1.33:1111/api",
+  baseURL: "https://habitune.vercel.app/api",
 });
 
 export const healthAction = createAsyncThunk(

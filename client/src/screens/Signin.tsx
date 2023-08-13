@@ -136,7 +136,7 @@ const Signin = () => {
               }}
               onPress={() =>
                 // dispatch(signInWithGoogleAction())
-                Linking.openURL("http://localhost:1111/api/user/google")
+                Linking.openURL("https://habitune.vercel.app/api/user/google")
               }
             >
               <View
