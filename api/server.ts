@@ -19,13 +19,6 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 1111;
 
-var fs = require("fs");
-var dir = "./logs";
-
-if (!fs.existsSync(dir)) {
-  fs.mkdirSync(dir);
-}
-
 app.use(express.json());
 
 app.use(

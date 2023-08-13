@@ -33,6 +33,13 @@ const format = winston.format.combine(
   )
 );
 
+var fs = require("fs");
+var dir = "./logs";
+
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+}
+
 const transports = [
   new winston.transports.Console(),
   new winston.transports.File({

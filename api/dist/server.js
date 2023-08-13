@@ -18,11 +18,6 @@ const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
-var fs = require("fs");
-var dir = "./logs";
-if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-}
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",

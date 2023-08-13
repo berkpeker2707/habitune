@@ -26,6 +26,11 @@ const colors = {
 };
 winston_1.default.addColors(colors);
 const format = winston_1.default.format.combine(winston_1.default.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }), winston_1.default.format.colorize({ all: true }), winston_1.default.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`));
+var fs = require("fs");
+var dir = "./logs";
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+}
 const transports = [
     new winston_1.default.transports.Console(),
     new winston_1.default.transports.File({
