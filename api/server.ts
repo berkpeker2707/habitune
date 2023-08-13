@@ -22,6 +22,8 @@ const port = process.env.PORT || 1111;
 
 app.use(express.json());
 
+app.use("/static", express.static(path.join(__dirname, "public")));
+
 app.use(
   cors({
     origin: "*",
@@ -66,6 +68,9 @@ app.get("/health", (req, res) => {
 
 app.get("/privacy", function (req, res) {
   res.sendFile(path.join(__dirname, "/view/privacy.html"));
+});
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "/view/index.html"));
 });
 
 //routing
