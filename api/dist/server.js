@@ -49,10 +49,9 @@ app.use(morganMiddleware_1.default);
 //   Logger.debug("This is a debug log");
 //   res.send("Hello world");
 // });
-// requests
-app.get("/health", (req, res) => {
-    res.send(JSON.stringify("Working like a well-oiled machine!"));
-});
+// app.get("/health", (req, res) => {
+//   res.send(JSON.stringify("Working like a well-oiled machine!"));
+// });
 app.get("/privacy", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });

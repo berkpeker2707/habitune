@@ -61,10 +61,9 @@ app.use(morganMiddleware);
 //   res.send("Hello world");
 // });
 
-// requests
-app.get("/health", (req, res) => {
-  res.send(JSON.stringify("Working like a well-oiled machine!"));
-});
+// app.get("/health", (req, res) => {
+//   res.send(JSON.stringify("Working like a well-oiled machine!"));
+// });
 
 app.get("/privacy", function (req, res) {
   res.sendFile(path.join(__dirname, "/view/privacy.html"));
