@@ -15,6 +15,7 @@ const passport_1 = __importDefault(require("passport"));
 const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
@@ -51,9 +52,9 @@ app.use(morganMiddleware_1.default);
 app.get("/health", (req, res) => {
     res.send(JSON.stringify("Working like a well-oiled machine!"));
 });
-// app.get("/privacy", function (req, res) {
-//   res.sendFile(path.join(__dirname, "/privacy.html"));
-// });
+app.get("/privacy", function (req, res) {
+    res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
+});
 //routing
 app.use("/api/user", user_routes_1.default);
 app.use("/api/habit", habit_routes_1.default);

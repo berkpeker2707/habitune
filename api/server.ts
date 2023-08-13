@@ -13,6 +13,7 @@ import morganMiddleware from "./middlewares/morganMiddleware";
 
 import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
+import path from "path";
 
 dotenv.config();
 
@@ -63,9 +64,9 @@ app.get("/health", (req, res) => {
   res.send(JSON.stringify("Working like a well-oiled machine!"));
 });
 
-// app.get("/privacy", function (req, res) {
-//   res.sendFile(path.join(__dirname, "/privacy.html"));
-// });
+app.get("/privacy", function (req, res) {
+  res.sendFile(path.join(__dirname, "/view/privacy.html"));
+});
 
 //routing
 app.use("/api/user", userRoutes);
