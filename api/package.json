@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build": "rimraf dist && tsc && npm run copyLogs && npm run copyHTML",
+    "build": "rimraf dist && tsc && npm run copyLogs && npm run copyHTML && npm run copyStatic",
     "copyLogs": "copyfiles logs/** dist",
     "copyHTML": "copyfiles view/** dist",
+    "copyStatic": "copyfiles public/** dist",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "api": "nodemon server.ts",
