@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "./store";
 
-var api_url: string;
-if (__DEV__) {
-  api_url = "http://localhost:1111/api";
-} else {
-  api_url = "https://waipe-server.azurewebsites.net/api";
-}
+// var api_url: string;
+// if (__DEV__) {
+//   api_url = "http://192.168.1.33:1111/api";
+// } else {
+//   api_url = "https://habitune.vercel.app/api";
+// }
 
 interface habitTypes {
   loading: boolean;
   error: string;
-  isUpdated: boolean;
+  isHabitUpdated: boolean;
   createHabitData: object;
   deleteHabitData: object;
   updateHabitColorData: object;
@@ -24,7 +25,7 @@ interface habitTypes {
 const initialState: habitTypes = {
   loading: false,
   error: "",
-  isUpdated: false,
+  isHabitUpdated: false,
   createHabitData: {},
   deleteHabitData: {},
   updateHabitColorData: {},
@@ -34,28 +35,33 @@ const initialState: habitTypes = {
   updateHabitCompletedDateData: {},
 };
 
+const axiosInstance = axios.create({
+  // baseURL: "http://192.168.1.33:1111/api",
+  baseURL: "https://habitune.vercel.app/api",
+});
+
 const updatedHabit = createAction("habit/update");
 
 export const createHabitAction = createAsyncThunk(
   "habit/createHabit",
   async (createHabitPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.post(
-        `${api_url}/habit/new`,
+      const { data } = await axiosInstance.post(
+        `/habit/new`,
         createHabitPayload,
         config
       );
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.reponse?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -64,16 +70,16 @@ export const deleteHabitAction = createAsyncThunk(
   "habit/deleteHabit",
   async (deleteHabitPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.delete(
-        `${api_url}/habit/delete`,
-        deleteHabitPayload,
+      const { data } = await axiosInstance.delete(
+        `/habit/delete`,
+        // deleteHabitPayload,
         config
       );
 
@@ -88,22 +94,22 @@ export const updateHabitColorAction = createAsyncThunk(
   "habit/updateHabitColor",
   async (updateHabitColorPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.put(
-        `${api_url}/habit/update/color`,
+      const { data } = await axiosInstance.put(
+        `/habit/update/color`,
         updateHabitColorPayload,
         config
       );
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.reponse?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -112,22 +118,22 @@ export const updateHabitSharedWithAction = createAsyncThunk(
   "habit/updateHabitSharedWith",
   async (updateHabitSharedPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.put(
-        `${api_url}/habit/update/share`,
+      const { data } = await axiosInstance.put(
+        `/habit/update/share`,
         updateHabitSharedPayload,
         config
       );
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.reponse?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -139,22 +145,22 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.put(
-        `${api_url}/habit/update/firstAndLastDate`,
+      const { data } = await axiosInstance.put(
+        `/habit/update/firstAndLastDate`,
         updateHabitFirstAndLastDatePayload,
         config
       );
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.reponse?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -163,22 +169,22 @@ export const updateHabitDatesAction = createAsyncThunk(
   "habit/updateHabitDates",
   async (updateHabitDatesPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.put(
-        `${api_url}/habit/update/date`,
+      const { data } = await axiosInstance.put(
+        `/habit/update/date`,
         updateHabitDatesPayload,
         config
       );
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.reponse?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -190,22 +196,22 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = getState()?.user;
+    const auth = (getState() as RootState).user;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
       },
     };
     try {
-      const { data } = await axios.put(
-        `${api_url}/habit/update/completed/date`,
+      const { data } = await axiosInstance.put(
+        `/habit/update/completed/date`,
         updateHabitCompletedDatePayload,
         config
       );
 
       return data;
     } catch (error) {
-      return rejectWithValue(error?.reponse?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -213,81 +219,78 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
 const habitSlice = createSlice({
   name: "habit",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     //updated check reducer
     builder.addCase(updatedHabit, (state) => {
-      state.isUpdated = true;
+      state.isHabitUpdated = true;
     });
     //create habit reducer
     builder.addCase(createHabitAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(createHabitAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.error = "";
       state.createHabitData = action?.payload;
     });
     builder.addCase(createHabitAction.rejected, (state, action) => {
       state.loading = false;
-      state.error = action?.error;
+      state.error = action.error.toString();
     });
-
     //delete habit reducer
     builder.addCase(deleteHabitAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(deleteHabitAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.error = "";
       state.deleteHabitData = action?.payload;
     });
     builder.addCase(deleteHabitAction.rejected, (state, action) => {
       state.loading = false;
-      state.error = action?.error;
+      state.error = action.error.toString();
     });
-
     //update habit color reducer
     builder.addCase(updateHabitColorAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(updateHabitColorAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.error = "";
       state.updateHabitColorData = action?.payload;
     });
     builder.addCase(updateHabitColorAction.rejected, (state, action) => {
       state.loading = false;
-      state.error = action?.error;
+      state.error = action.error.toString();
     });
-
     //update habit shared with reducer
     builder.addCase(updateHabitSharedWithAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(updateHabitSharedWithAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.error = "";
       state.updateHabitSharedWithData = action?.payload;
     });
     builder.addCase(updateHabitSharedWithAction.rejected, (state, action) => {
       state.loading = false;
-      state.error = action?.error;
+      state.error = action.error.toString();
     });
-
     //update habit first and last date reducer
     builder.addCase(updateHabitFirstAndLastDateAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(
       updateHabitFirstAndLastDateAction.fulfilled,
       (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.error = "";
         state.updateHabitFirstAndLastDateData = action?.payload;
       }
     );
@@ -295,35 +298,33 @@ const habitSlice = createSlice({
       updateHabitFirstAndLastDateAction.rejected,
       (state, action) => {
         state.loading = false;
-        state.error = action?.error;
+        state.error = action.error.toString();
       }
     );
-
     //update habit dates reducer
     builder.addCase(updateHabitDatesAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(updateHabitDatesAction.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.error = "";
       state.updateHabitDatesData = action?.payload;
     });
     builder.addCase(updateHabitDatesAction.rejected, (state, action) => {
       state.loading = false;
-      state.error = action?.error;
+      state.error = action.error.toString();
     });
-
     //update habit completed date reducer
     builder.addCase(updateHabitCompletedDateAction.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = "";
     });
     builder.addCase(
       updateHabitCompletedDateAction.fulfilled,
       (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.error = "";
         state.updateHabitCompletedDateData = action?.payload;
       }
     );
@@ -331,31 +332,31 @@ const habitSlice = createSlice({
       updateHabitCompletedDateAction.rejected,
       (state, action) => {
         state.loading = false;
-        state.error = action?.error;
+        state.error = action.error.toString();
       }
     );
   },
 });
 
-export const selectPostLoading = (state) => state.habit.loading;
-export const selectPostError = (state) => state.habit.error;
-export const selectCreateHabit = (state) => state.habit.createHabitData;
-export const selectDeleteHabit = (state) => {
+export const selectPostLoading = (state: any) => state.habit.loading;
+export const selectPostError = (state: any) => state.habit.error;
+export const selectCreateHabit = (state: any) => state.habit.createHabitData;
+export const selectDeleteHabit = (state: any) => {
   return state.habit.deleteHabitData;
 };
-export const selectUpdateHabitColor = (state) => {
+export const selectUpdateHabitColor = (state: any) => {
   return state.habit.updateHabitColorData;
 };
-export const selectUpdateHabitSharedWith = (state) => {
+export const selectUpdateHabitSharedWith = (state: any) => {
   return state.habit.updateHabitSharedWithData;
 };
-export const selectUpdateHabitFirstAndLastDate = (state) => {
+export const selectUpdateHabitFirstAndLastDate = (state: any) => {
   return state.habit.updateHabitFirstAndLastDateData;
 };
-export const selectUpdateHabitDates = (state) => {
+export const selectUpdateHabitDates = (state: any) => {
   return state.habit.updateHabitDatesData;
 };
-export const selectUpdateHabitCompletedDate = (state) => {
+export const selectUpdateHabitCompletedDate = (state: any) => {
   return state.habit.updateHabitCompletedDateData;
 };
 
