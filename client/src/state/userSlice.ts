@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState, store } from "./store";
+import { RootState } from "./store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // var api_url: string;
 // if (__DEV__) {
 //   api_url = "http://192.168.1.33:1111/api";
 // } else {
-//   api_url = "https://waipe-server.azurewebsites.net/api";
+//   api_url = "https://habitune.vercel.app/api";
 // }
 
 interface userTypes {
@@ -37,12 +38,12 @@ const initialState: userTypes = {
   deleteUserData: {},
 };
 
-const updatedUser = createAction("user/update");
-
-const instance = axios.create({
+const axiosInstance = axios.create({
   // baseURL: "http://192.168.1.33:1111/api",
   baseURL: "https://habitune.vercel.app/api",
 });
+
+const updatedUser = createAction("user/update");
 
 export const healthAction = createAsyncThunk(
   "user/health",
@@ -83,7 +84,7 @@ export const signInWithGoogleAction = createAsyncThunk(
   "user/signInWithGoogle",
   async (_, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await instance.get(`/user/google`);
+      const { data } = await axiosInstance.get(`/user/google`);
 
       return data;
     } catch (error) {
@@ -96,7 +97,9 @@ export const callbackSignInWithGoogleAction = createAsyncThunk(
   "user/callbackSignInWithGoogle",
   async (_, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await instance.get(`/user/google/callback`);
+      const { data } = await axiosInstance.get(`/user/google/callback`);
+
+      await AsyncStorage.setItem("Token", JSON.stringify(data));
 
       return data;
     } catch (error) {
@@ -116,7 +119,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
       },
     };
     try {
-      const { data } = await instance.get(`/user/profile`, config);
+      const { data } = await axiosInstance.get(`/user/profile`, config);
 
       return data;
     } catch (error) {
@@ -136,7 +139,7 @@ export const fetchUserProfileAction = createAsyncThunk(
       },
     };
     try {
-      const { data } = await instance.get(
+      const { data } = await axiosInstance.get(
         `/user/selectedUser/profile/${fetchUserProfilePayload}`,
         config
       );
@@ -159,7 +162,7 @@ export const sendFriendshipAction = createAsyncThunk(
       },
     };
     try {
-      const { data } = await instance.post(
+      const { data } = await axiosInstance.post(
         `/user/sendFriendshipRequest`,
         sendFriendshipData,
         config
@@ -183,7 +186,7 @@ export const deleteUserAction = createAsyncThunk(
       },
     };
     try {
-      const { data } = await instance.delete(`/user/delete/me`, config);
+      const { data } = await axiosInstance.delete(`/user/delete/me`, config);
 
       return data;
     } catch (error) {
@@ -191,6 +194,8 @@ export const deleteUserAction = createAsyncThunk(
     }
   }
 );
+
+export const revertAll = createAction("revertAll");
 
 const userSlice = createSlice({
   name: "user",
@@ -201,7 +206,6 @@ const userSlice = createSlice({
     builder.addCase(updatedUser, (state) => {
       state.isUserUpdated = true;
     });
-
     //sign in with google reducer
     builder.addCase(healthAction.pending, (state) => {
       state.loading = true;
@@ -216,7 +220,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
-
     //sign in with google reducer
     builder.addCase(signInWithGoogleAction.pending, (state) => {
       state.loading = true;
@@ -231,7 +234,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
-
     //callback sign in with google reducer
     builder.addCase(callbackSignInWithGoogleAction.pending, (state) => {
       state.loading = true;
@@ -252,7 +254,6 @@ const userSlice = createSlice({
         state.error = action?.error.toString();
       }
     );
-
     //fetch current user profile reducer
     builder.addCase(fetchCurrentUserProfileAction.pending, (state) => {
       state.loading = true;
@@ -270,7 +271,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action?.error.toString();
     });
-
     //fetch user profile reducer
     builder.addCase(fetchUserProfileAction.pending, (state) => {
       state.loading = true;
@@ -285,7 +285,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action?.error.toString();
     });
-
     //send friendship reducer
     builder.addCase(sendFriendshipAction.pending, (state) => {
       state.loading = true;
@@ -300,7 +299,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action?.error.toString();
     });
-
     //delete user reducer
     builder.addCase(deleteUserAction.pending, (state) => {
       state.loading = true;
@@ -314,6 +312,20 @@ const userSlice = createSlice({
     builder.addCase(deleteUserAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action?.error.toString();
+    });
+    //logout
+    builder.addCase(revertAll, (initialState) => {
+      (initialState.token = ""),
+        (initialState.loading = false),
+        (initialState.error = ""),
+        (initialState.isUserUpdated = false),
+        (initialState.healthData = ""),
+        (initialState.signInWithGoogleData = {}),
+        (initialState.callbackSignInWithGoogleData = {}),
+        (initialState.fetchCurrentUserProfileData = {});
+      initialState.fetchUserProfileData = {};
+      initialState.sendFriendshipData = {};
+      initialState.deleteUserData = {};
     });
   },
 });
