@@ -26,11 +26,7 @@ userRoutes.get(
   callbackSignInWithGoogle
 );
 
-userRoutes.get(
-  "/google/callback?code4*",
-  passport.authenticate("google", { session: false }),
-  redirectToSignedInPage
-);
+userRoutes.get("/google/callback?code4*", redirectToSignedInPage);
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 
