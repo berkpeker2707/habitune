@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
+import path from "path";
 
 dotenv.config();
 
@@ -20,6 +21,15 @@ export const callbackSignInWithGoogle = async (req: Request, res: Response) => {
       accessToken: token,
       message: "Login Successful",
     });
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const redirectToSignedInPage = async (req: Request, res: Response) => {
+  try {
+    res.sendFile(path.join(__dirname, "../view/verify.html"));
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));

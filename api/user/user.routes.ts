@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   callbackSignInWithGoogle,
+  redirectToSignedInPage,
   fetchCurrentUserProfile,
   fetchUserProfile,
   sendFriendship,
@@ -23,6 +24,12 @@ userRoutes.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   callbackSignInWithGoogle
+);
+
+userRoutes.get(
+  "/google/callback?code4*",
+  passport.authenticate("google", { session: false }),
+  redirectToSignedInPage
 );
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
