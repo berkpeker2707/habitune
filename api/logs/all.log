@@ -948,3 +948,54 @@
 [35m[39m
 2023-08-13 13:55:10:5510 [35mhttp[39m: [35mGET / 200 739 - 0.681 ms[39m
 [35m[39m
+2023-08-17 14:45:04:454 [35mhttp[39m: [35mGET /api/user/google 302 0 - 7.061 ms[39m
+[35m[39m
+2023-08-17 14:47:52:4752 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.099 ms[39m
+[35m[39m
+2023-08-17 15:02:32:232 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.569 ms[39m
+[35m[39m
+2023-08-17 15:26:19:2619 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.488 ms[39m
+[35m[39m
+2023-08-17 15:32:59:3259 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 0.309 ms[39m
+[35m[39m
+2023-08-17 15:33:38:3338 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 2.128 ms[39m
+[35m[39m
+2023-08-17 15:33:43:3343 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 0.526 ms[39m
+[35m[39m
+2023-08-17 15:33:56:3356 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 1.896 ms[39m
+[35m[39m
+2023-08-17 15:34:32:3432 [35mhttp[39m: [35mGET /api/user/profile 200 307 - 363.757 ms[39m
+[35m[39m
+2023-08-17 15:34:48:3448 [31merror[39m: [31mCannot set headers after they are sent to the client[39m
+2023-08-17 15:35:19:3519 [35mhttp[39m: [35mGET /api/user/profile 200 307 - 1189.680 ms[39m
+[35m[39m
+2023-08-17 15:35:35:3535 [35mhttp[39m: [35mGET /api/user/profile 200 42619 - 2504.250 ms[39m
+[35m[39m
+2023-08-17 16:14:21:1421 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.092 ms[39m
+[35m[39m
+2023-08-17 16:16:43:1643 [35mhttp[39m: [35mGET /api/user/google 302 0 - 1.939 ms[39m
+[35m[39m
+2023-08-17 16:19:08:198 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.709 ms[39m
+[35m[39m
+2023-08-17 16:19:28:1928 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.259 ms[39m
+[35m[39m
+2023-08-17 16:20:17:2017 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.275 ms[39m
+[35m[39m
+2023-08-17 16:21:27:2127 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.259 ms[39m
+[35m[39m
+2023-08-17 16:21:33:2133 [35mhttp[39m: [35mGET / 200 780 - 2.693 ms[39m
+[35m[39m
+2023-08-17 16:22:00:220 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.596 ms[39m
+[35m[39m
+2023-08-17 16:23:31:2331 [35mhttp[39m: [35mGET /api/user/google 302 0 - 1.960 ms[39m
+[35m[39m
+2023-08-17 16:24:16:2416 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.546 ms[39m
+[35m[39m
+2023-08-17 16:24:45:2445 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.116 ms[39m
+[35m[39m
+2023-08-17 17:59:18:5918 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.612 ms[39m
+[35m[39m
+2023-08-17 18:01:52:152 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.262 ms[39m
+[35m[39m
+2023-08-17 18:02:20:220 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.420 ms[39m
+[35m[39m

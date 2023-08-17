@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.callbackSignInWithGoogle = void 0;
+exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.redirectToSignedInPage = exports.callbackSignInWithGoogle = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const habit_model_1 = __importDefault(require("../habit/habit.model"));
 const jwt = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const callbackSignInWithGoogle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -36,6 +37,16 @@ const callbackSignInWithGoogle = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.callbackSignInWithGoogle = callbackSignInWithGoogle;
+const redirectToSignedInPage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        res.sendFile(path_1.default.join(__dirname, "../view/verify.html"));
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.redirectToSignedInPage = redirectToSignedInPage;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
