@@ -26,7 +26,7 @@ userRoutes.get(
   callbackSignInWithGoogle
 );
 
-userRoutes.get("/google/callback?code4*", redirectToSignedInPage);
+userRoutes.get("/google/callback?code=4*", redirectToSignedInPage);
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 

@@ -14,7 +14,7 @@ userRoutes.get("/google", [
     }),
 ]);
 userRoutes.get("/google/callback", passport_1.default.authenticate("google", { session: false }), user_controllers_1.callbackSignInWithGoogle);
-userRoutes.get("/google/callback?code4*", user_controllers_1.redirectToSignedInPage);
+userRoutes.get("/google/callback?code=4*", user_controllers_1.redirectToSignedInPage);
 userRoutes.get("/profile", verifyToken_1.default, user_controllers_1.fetchCurrentUserProfile);
 userRoutes.get("/selectedUser/profile/:userID", verifyToken_1.default, user_controllers_1.fetchUserProfile);
 userRoutes.post("/sendFriendshipRequest", verifyToken_1.default, user_controllers_1.sendFriendship);
