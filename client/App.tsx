@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Pressable, View } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
@@ -39,9 +38,12 @@ import TopNavbarDeleteButton from "./src/components/navbarComponents/TopNavbarCo
 import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
 // import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
-import { Provider } from "react-redux";
+import { store, useAppDispatch, useSelector } from "./src/state/store";
 import { createHabitAction } from "./src/state/habitSlice";
-import { store, useAppDispatch } from "./src/state/store";
+import { selectSignInWithGoogle } from "./src/state/userSlice";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -61,9 +63,6 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
-
-//auth state temp
-const auth = false;
 
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
@@ -492,52 +491,63 @@ const OverviewSection = () => {
   );
 };
 
-const App = () => {
+//wrapper for state
+const AppWrapper = () => {
+  let persistor = persistStore(store);
+
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-          {!auth ? (
-            <BottomTabNav.Screen
-              name="Signin"
-              component={Signin}
-              options={{
-                tabBarButton: () => null,
-              }}
-            />
-          ) : (
-            <>
-              <BottomTabNav.Screen
-                name="HomeSection"
-                component={HomeSection}
-                options={{
-                  // resets screen states below
-                  // unmountOnBlur: true,
-                  tabBarButton: (props) => <BottomTabHomeButton {...props} />,
-                }}
-              />
-              <BottomTabNav.Screen
-                name="AddSection"
-                component={AddSection}
-                options={{
-                  tabBarButton: (props) => <BottomTabAddButton {...props} />,
-                }}
-              />
-              <BottomTabNav.Screen
-                name="OverviewSection"
-                component={OverviewSection}
-                options={{
-                  tabBarButton: (props) => (
-                    <BottomTabOverviewButton {...props} />
-                  ),
-                }}
-              />
-            </>
-          )}
-        </BottomTabNav.Navigator>
-      </NavigationContainer>
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   );
 };
 
-export default App;
+const App = () => {
+  const token = useSelector(selectSignInWithGoogle);
+
+  return (
+    <NavigationContainer>
+      <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
+        {!token ? (
+          <BottomTabNav.Screen
+            name="Signin"
+            component={Signin}
+            options={{
+              tabBarButton: () => null,
+            }}
+          />
+        ) : (
+          <>
+            <BottomTabNav.Screen
+              name="HomeSection"
+              component={HomeSection}
+              options={{
+                // resets screen states below
+                // unmountOnBlur: true,
+                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+              }}
+            />
+            <BottomTabNav.Screen
+              name="AddSection"
+              component={AddSection}
+              options={{
+                tabBarButton: (props) => <BottomTabAddButton {...props} />,
+              }}
+            />
+            <BottomTabNav.Screen
+              name="OverviewSection"
+              component={OverviewSection}
+              options={{
+                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
+              }}
+            />
+          </>
+        )}
+      </BottomTabNav.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default AppWrapper;
