@@ -26,7 +26,7 @@ const userRoutes = Router();
 //   callbackSignInWithGoogle
 // );
 
-userRoutes.post("/google/callback", signInWithGoogleController);
+userRoutes.post("/google", signInWithGoogleController);
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 
