@@ -20,26 +20,11 @@ const jwt = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
-// export const callbackSignInWithGoogle = async (req: Request, res: Response) => {
-//   try {
-//     var token = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
-//       expiresIn: "365d",
-//     });
-//     res.status(200).json({
-//       accessToken: token,
-//       message: "Login Successful",
-//     });
-//   } catch (error) {
-//     Logger.error(error);
-//     return res.status(500).send(getErrorMessage(error));
-//   }
-// };
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var token = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
+        var token = jwt.sign({ user: req.body }, process.env.JWT_SECRET, {
             expiresIn: "365d",
         });
-        console.log("🚀 ~ file: user.controllers.ts:38 ~ token:", token);
         res.status(200).json({
             accessToken: token,
             message: "Login Successful",
