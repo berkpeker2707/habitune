@@ -5,9 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // var api_url: string;
 // if (__DEV__) {
-//   api_url = "http://192.168.1.33:1111/api";
+//   api_url = "http://192.168.1.37:1111/api";
 // } else {
-//   api_url = "https://habitune.vercel.app/api";
+//   api_url = "https://www.habitune.net/api";
 // }
 
 interface userTypes {
@@ -15,9 +15,8 @@ interface userTypes {
   loading: boolean;
   error: string;
   isUserUpdated: boolean;
-  healthData: string;
   signInWithGoogleData: object;
-  callbackSignInWithGoogleData: object;
+  auth: string;
   fetchCurrentUserProfileData: object;
   fetchUserProfileData: object;
   sendFriendshipData: object;
@@ -29,9 +28,8 @@ const initialState: userTypes = {
   loading: false,
   error: "",
   isUserUpdated: false,
-  healthData: "",
   signInWithGoogleData: {},
-  callbackSignInWithGoogleData: {},
+  auth: "",
   fetchCurrentUserProfileData: {},
   fetchUserProfileData: {},
   sendFriendshipData: {},
@@ -39,65 +37,17 @@ const initialState: userTypes = {
 };
 
 const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.33:1111/api",
-  baseURL: "https://habitune.vercel.app/api",
+  // baseURL: "http://192.168.1.66:1111/api",
+  baseURL: "https://www.habitune.net/api",
 });
 
 const updatedUser = createAction("user/update");
 
-export const healthAction = createAsyncThunk(
-  "user/health",
-  async (_, { rejectWithValue, getState, dispatch }) => {
-    try {
-      const { data } = await axios.get<any>(`http://192.168.1.33:1111/health`);
-
-      // console.log("🚀 ~ file: userSlice.ts:51 ~ data:", data);
-
-      return data;
-    } catch (error) {
-      // if (error.response) {
-      //   console.log("first");
-      //   // The request was made and the server responded with a status code
-      //   // that falls out of the range of 2xx
-      //   console.log(error.response.data);
-      //   console.log(error.response.status);
-      //   console.log(error.response.headers);
-      // } else if (error.request) {
-      //   console.log("second");
-      //   // The request was made but no response was received
-      //   // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-      //   // http.ClientRequest in node.js
-      //   console.log(error.request);
-      // } else {
-      //   console.log("third");
-      //   // Something happened in setting up the request that triggered an Error
-      //   console.log("Error", error.message);
-      // }
-      // console.log(error.config);
-      // console.log(error);
-      return rejectWithValue(error);
-    }
-  }
-);
-
 export const signInWithGoogleAction = createAsyncThunk(
   "user/signInWithGoogle",
-  async (_, { rejectWithValue, getState, dispatch }) => {
+  async (userInfo: any, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { data } = await axiosInstance.get(`/user/google`);
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  }
-);
-
-export const callbackSignInWithGoogleAction = createAsyncThunk(
-  "user/callbackSignInWithGoogle",
-  async (_, { rejectWithValue, getState, dispatch }) => {
-    try {
-      const { data } = await axiosInstance.get(`/user/google/callback`);
+      const { data } = await axiosInstance.post(`/user/google`, userInfo);
 
       await AsyncStorage.setItem("Token", JSON.stringify(data));
 
@@ -112,15 +62,19 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
   "user/fetchCurrentUserProfile",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.signInWithGoogleData
+      .accessToken;
+
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
+
     try {
       const { data } = await axiosInstance.get(`/user/profile`, config);
 
+      console.log("🚀 ~ file: userSlice.ts:75 ~ data:", data);
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -132,7 +86,8 @@ export const fetchUserProfileAction = createAsyncThunk(
   "user/fetchUserProfile",
   async (fetchUserProfilePayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.signInWithGoogleData
+      .accessToken;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
@@ -155,7 +110,8 @@ export const sendFriendshipAction = createAsyncThunk(
   "user/sendFriendship",
   async (sendFriendshipData, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.signInWithGoogleData
+      .accessToken;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
@@ -179,7 +135,8 @@ export const deleteUserAction = createAsyncThunk(
   "user/deleteUser",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.signInWithGoogleData
+      .accessToken;
     const config = {
       headers: {
         Authorization: `Bearer ${auth?.token}`,
@@ -207,20 +164,6 @@ const userSlice = createSlice({
       state.isUserUpdated = true;
     });
     //sign in with google reducer
-    builder.addCase(healthAction.pending, (state) => {
-      state.loading = true;
-      state.error = "";
-    });
-    builder.addCase(healthAction.fulfilled, (state, action) => {
-      state.loading = false;
-      state.error = "";
-      state.healthData = action?.payload;
-    });
-    builder.addCase(healthAction.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.toString();
-    });
-    //sign in with google reducer
     builder.addCase(signInWithGoogleAction.pending, (state) => {
       state.loading = true;
       state.error = "";
@@ -234,26 +177,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
-    //callback sign in with google reducer
-    builder.addCase(callbackSignInWithGoogleAction.pending, (state) => {
-      state.loading = true;
-      state.error = "";
-    });
-    builder.addCase(
-      callbackSignInWithGoogleAction.fulfilled,
-      (state, action) => {
-        state.loading = false;
-        state.error = "";
-        state.callbackSignInWithGoogleData = action?.payload;
-      }
-    );
-    builder.addCase(
-      callbackSignInWithGoogleAction.rejected,
-      (state, action) => {
-        state.loading = false;
-        state.error = action?.error.toString();
-      }
-    );
     //fetch current user profile reducer
     builder.addCase(fetchCurrentUserProfileAction.pending, (state) => {
       state.loading = true;
@@ -319,9 +242,7 @@ const userSlice = createSlice({
         (initialState.loading = false),
         (initialState.error = ""),
         (initialState.isUserUpdated = false),
-        (initialState.healthData = ""),
         (initialState.signInWithGoogleData = {}),
-        (initialState.callbackSignInWithGoogleData = {}),
         (initialState.fetchCurrentUserProfileData = {});
       initialState.fetchUserProfileData = {};
       initialState.sendFriendshipData = {};
@@ -332,12 +253,8 @@ const userSlice = createSlice({
 
 export const selectPostLoading = (state: any) => state.user.loading;
 export const selectPostError = (state: any) => state.user.error;
-export const selectHealth = (state: any) => state.user.healthData;
 export const selectSignInWithGoogle = (state: any) =>
   state.user.signInWithGoogleData;
-export const selectCallbackSignInWithGoogle = (state: any) => {
-  return state.user.callbackSignInWithGoogleData;
-};
 export const selectFetchCurrentUserProfile = (state: any) => {
   return state.user.fetchCurrentUserProfileData;
 };

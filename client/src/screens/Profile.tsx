@@ -3,8 +3,21 @@ import { ScrollView, View } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
+import {
+  fetchCurrentUserProfileAction,
+  selectFetchCurrentUserProfile,
+} from "../state/userSlice";
+import { useAppDispatch, useSelector } from "../state/store";
+import { useEffect } from "react";
 
 const Profile = () => {
+  const dispatch = useAppDispatch();
+
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+  useEffect(() => {
+    dispatch(fetchCurrentUserProfileAction());
+  }, []);
+
   return (
     <View
       style={{
@@ -20,7 +33,11 @@ const Profile = () => {
           marginBottom: 85,
         }}
       >
-        <ProfileCard />
+        <ProfileCard
+          name={currentUser.firstName}
+          email={currentUser.email}
+          image={currentUser.image}
+        />
         <View
           style={{
             width: 345,
