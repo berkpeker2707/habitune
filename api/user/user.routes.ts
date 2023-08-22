@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
-  callbackSignInWithGoogle,
-  redirectToSignedInPage,
+  // callbackSignInWithGoogle,
+  signInWithGoogleController,
   fetchCurrentUserProfile,
   fetchUserProfile,
   sendFriendship,
@@ -10,23 +10,23 @@ import {
 
 import verifyToken from "../middlewares/verifyToken";
 
-import passport from "passport";
+// import passport from "passport";
 
 const userRoutes = Router();
 
-userRoutes.get("/google", [
-  passport.authenticate("google", {
-    scope: ["email", "profile"],
-  }),
-]);
+// userRoutes.get("/google", [
+//   passport.authenticate("google", {
+//     scope: ["email", "profile"],
+//   }),
+// ]);
 
-userRoutes.get(
-  "/google/callback",
-  passport.authenticate("google", { session: false }),
-  callbackSignInWithGoogle
-);
+// userRoutes.get(
+//   "/google/callback",
+//   passport.authenticate("google", { session: false }),
+//   callbackSignInWithGoogle
+// );
 
-userRoutes.get("/google/callback?code=4*", redirectToSignedInPage);
+userRoutes.post("/google/callback", signInWithGoogleController);
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 

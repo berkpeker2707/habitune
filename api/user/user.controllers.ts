@@ -12,24 +12,34 @@ import path from "path";
 
 dotenv.config();
 
-export const callbackSignInWithGoogle = async (req: Request, res: Response) => {
+// export const callbackSignInWithGoogle = async (req: Request, res: Response) => {
+//   try {
+//     var token = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
+//       expiresIn: "365d",
+//     });
+//     res.status(200).json({
+//       accessToken: token,
+//       message: "Login Successful",
+//     });
+//   } catch (error) {
+//     Logger.error(error);
+//     return res.status(500).send(getErrorMessage(error));
+//   }
+// };
+
+export const signInWithGoogleController = async (
+  req: Request,
+  res: Response
+) => {
   try {
     var token = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
       expiresIn: "365d",
     });
+    console.log("🚀 ~ file: user.controllers.ts:38 ~ token:", token);
     res.status(200).json({
       accessToken: token,
       message: "Login Successful",
     });
-  } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
-  }
-};
-
-export const redirectToSignedInPage = async (req: Request, res: Response) => {
-  try {
-    res.sendFile(path.join(__dirname, "../view/verify.html"));
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
