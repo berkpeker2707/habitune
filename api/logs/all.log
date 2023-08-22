@@ -999,3 +999,47 @@
 [35m[39m
 2023-08-17 18:02:20:220 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.420 ms[39m
 [35m[39m
+2023-08-22 17:59:23:5923 [35mhttp[39m: [35mPOST /api/user/google 200 175 - 6.209 ms[39m
+[35m[39m
+2023-08-22 18:00:10:010 [35mhttp[39m: [35mPOST /api/user/google 200 175 - 6.879 ms[39m
+[35m[39m
+2023-08-22 18:00:15:015 [35mhttp[39m: [35mPOST /api/user/google 200 175 - 3.200 ms[39m
+[35m[39m
+2023-08-22 18:00:54:054 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 4.888 ms[39m
+[35m[39m
+2023-08-22 18:08:54:854 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.162 ms[39m
+[35m[39m
+2023-08-22 18:09:24:924 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.443 ms[39m
+[35m[39m
+2023-08-22 18:09:58:958 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.398 ms[39m
+[35m[39m
+2023-08-22 18:10:33:1033 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.076 ms[39m
+[35m[39m
+2023-08-22 18:11:09:119 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.840 ms[39m
+[35m[39m
+2023-08-22 18:12:12:1212 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.276 ms[39m
+[35m[39m
+2023-08-22 18:49:19:4919 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.381 ms[39m
+[35m[39m
+2023-08-22 18:49:30:4930 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.806 ms[39m
+[35m[39m
+2023-08-22 18:49:38:4938 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.900 ms[39m
+[35m[39m
+2023-08-22 18:49:42:4942 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.535 ms[39m
+[35m[39m
+2023-08-22 18:50:04:504 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.758 ms[39m
+[35m[39m
+2023-08-22 18:50:30:5030 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.088 ms[39m
+[35m[39m
+2023-08-22 18:50:35:5035 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.232 ms[39m
+[35m[39m
+2023-08-22 18:50:38:5038 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.599 ms[39m
+[35m[39m
+2023-08-22 18:51:04:514 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.637 ms[39m
+[35m[39m
+2023-08-22 18:51:09:519 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.634 ms[39m
+[35m[39m
+2023-08-22 18:52:47:5247 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.712 ms[39m
+[35m[39m
+2023-08-22 18:53:21:5321 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.524 ms[39m
+[35m[39m
