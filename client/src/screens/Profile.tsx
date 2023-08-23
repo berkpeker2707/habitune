@@ -11,11 +11,17 @@ import { useAppDispatch, useSelector } from "../state/store";
 import { useEffect } from "react";
 
 const Profile = () => {
+  const controller = new AbortController();
+
   const dispatch = useAppDispatch();
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
   useEffect(() => {
     dispatch(fetchCurrentUserProfileAction());
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
