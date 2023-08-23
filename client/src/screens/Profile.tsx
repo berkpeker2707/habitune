@@ -16,6 +16,7 @@ const Profile = () => {
   const dispatch = useAppDispatch();
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
+
   useEffect(() => {
     dispatch(fetchCurrentUserProfileAction());
 
@@ -51,7 +52,16 @@ const Profile = () => {
           }}
         >
           <AddFriendsButton />
-          <FriendsCard />
+          {currentUser &&
+            currentUser.friends &&
+            currentUser.friends.length > 0 &&
+            currentUser.friends.map((friendElem: any, index: number) => (
+              <FriendsCard
+                name={friendElem.friend.firstName}
+                image={friendElem.friend.image}
+                key={index}
+              />
+            ))}
         </View>
       </ScrollView>
     </View>
