@@ -232,6 +232,7 @@ const HomeSection = () => {
                   <TopNavbarShareButton />
                 </Pressable>
               </View>
+              <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
                   onPress={() => {
