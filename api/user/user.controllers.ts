@@ -34,7 +34,14 @@ export const fetchCurrentUserProfile = async (
   res: Response
 ) => {
   try {
-    const loggedinUser = await User.findById(req.user[0]._id);
+    const loggedinUser = await User.findById(req.user[0]._id)
+      .populate({ path: "friends.friend", model: "User" })
+      .populate({
+        path: "habits",
+        model: "Habit",
+      })
+      .exec();
+
     res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
@@ -45,7 +52,13 @@ export const fetchCurrentUserProfile = async (
 export const fetchUserProfile = async (req: IReq | any, res: Response) => {
   try {
     const userID = req.params.userID;
-    const user = await User.findById(userID);
+    const user = await User.findById(userID)
+      .populate({ path: "friends.friend", model: "User" })
+      .populate({
+        path: "habits",
+        model: "Habit",
+      })
+      .exec();
     res.status(200).json(user);
   } catch (error) {
     Logger.error(error);

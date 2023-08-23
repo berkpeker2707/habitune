@@ -38,7 +38,13 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
 exports.signInWithGoogleController = signInWithGoogleController;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
+        const loggedinUser = yield user_model_1.default.findById(req.user[0]._id)
+            .populate({ path: "friends.friend", model: "User" })
+            .populate({
+            path: "habits",
+            model: "Habit",
+        })
+            .exec();
         res.status(200).json(loggedinUser);
     }
     catch (error) {
@@ -50,7 +56,13 @@ exports.fetchCurrentUserProfile = fetchCurrentUserProfile;
 const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userID = req.params.userID;
-        const user = yield user_model_1.default.findById(userID);
+        const user = yield user_model_1.default.findById(userID)
+            .populate({ path: "friends.friend", model: "User" })
+            .populate({
+            path: "habits",
+            model: "Habit",
+        })
+            .exec();
         res.status(200).json(user);
     }
     catch (error) {
