@@ -74,7 +74,6 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.get(`/user/profile`, config);
 
-      console.log("🚀 ~ file: userSlice.ts:75 ~ data:", data);
       return data;
     } catch (error) {
       return rejectWithValue(error);
