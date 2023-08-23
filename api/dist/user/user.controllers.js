@@ -75,13 +75,14 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a;
     try {
         const userMail = req.body.userMail;
-        const user = yield user_model_1.default.find({ email: userMail });
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
-        if (!user) {
+        if ((yield user_model_1.default.find({ email: userMail })).length < 1 ||
+            req.user[0].email) {
             return res.json({
-                message: "Email with such user does not exists.",
+                message: "Invalid Email.",
             });
         }
+        const user = yield user_model_1.default.find({ email: userMail });
         // const currentUserHasUserFriend = loggedinUser?.friends.some((element) => {
         //   return element.friend.toString() == user[0]._id.toString();
         // });

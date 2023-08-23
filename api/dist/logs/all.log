@@ -1047,3 +1047,43 @@
 [35m[39m
 2023-08-23 20:01:59:159 [35mhttp[39m: [35mGET /api/user/profile 200 5309 - 431.015 ms[39m
 [35m[39m
+2023-08-23 20:20:48:2048 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:20:48:2048 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 752.785 ms[39m
+[35m[39m
+2023-08-23 20:21:51:2151 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:21:51:2151 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 1599.557 ms[39m
+[35m[39m
+2023-08-23 20:21:53:2153 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:21:53:2153 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 1261.478 ms[39m
+[35m[39m
+2023-08-23 20:22:40:2240 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:22:40:2240 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 690.663 ms[39m
+[35m[39m
+2023-08-23 20:23:15:2315 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 2724.106 ms[39m
+[35m[39m
+2023-08-23 20:24:14:2414 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 566.798 ms[39m
+[35m[39m
+2023-08-23 20:24:31:2431 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 567.893 ms[39m
+[35m[39m
+2023-08-23 20:25:28:2528 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 564.135 ms[39m
+[35m[39m
+2023-08-23 20:26:11:2611 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 850.864 ms[39m
+[35m[39m
+2023-08-23 20:26:21:2621 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 479 - 830.633 ms[39m
+[35m[39m
+2023-08-23 20:26:24:2624 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 834.875 ms[39m
+[35m[39m
+2023-08-23 20:26:35:2635 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 479 - 836.860 ms[39m
+[35m[39m
+2023-08-23 20:27:26:2726 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 849.335 ms[39m
+[35m[39m
+2023-08-23 20:27:28:2728 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 479 - 832.284 ms[39m
+[35m[39m
+2023-08-23 20:27:47:2747 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 562.398 ms[39m
+[35m[39m
+2023-08-23 20:27:49:2749 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 551.010 ms[39m
+[35m[39m
+2023-08-23 20:27:53:2753 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 550.047 ms[39m
+[35m[39m
+2023-08-23 20:27:59:2759 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 548.657 ms[39m
+[35m[39m

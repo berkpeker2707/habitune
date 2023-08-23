@@ -69,14 +69,18 @@ export const fetchUserProfile = async (req: IReq | any, res: Response) => {
 export const sendFriendship = async (req: IReq | any, res: Response) => {
   try {
     const userMail = req.body.userMail;
-    const user = await User.find({ email: userMail });
     const loggedinUser = await User.findById(req.user[0]._id);
 
-    if (!user) {
+    if (
+      (await User.find({ email: userMail })).length < 1 ||
+      req.user[0].email
+    ) {
       return res.json({
-        message: "Email with such user does not exists.",
+        message: "Invalid Email.",
       });
     }
+
+    const user = await User.find({ email: userMail });
 
     // const currentUserHasUserFriend = loggedinUser?.friends.some((element) => {
     //   return element.friend.toString() == user[0]._id.toString();
