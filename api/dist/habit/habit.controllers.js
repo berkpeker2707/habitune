@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.deleteHabit = exports.createHabit = void 0;
+exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.deleteHabit = exports.getSingleHabit = exports.getAllHabits = exports.createHabit = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const habit_model_1 = __importDefault(require("./habit.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
@@ -60,6 +60,29 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.createHabit = createHabit;
+const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.user[0]._id });
+        res.status(200).json(loggedinUsersHabits);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getAllHabits = getAllHabits;
+const getSingleHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const selectedHabit = req.body.selectedHabit;
+        const loggedinUsersHabits = yield habit_model_1.default.findById(selectedHabit);
+        res.status(200).json(loggedinUsersHabits);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getSingleHabit = getSingleHabit;
 const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield habit_model_1.default.findOneAndDelete({

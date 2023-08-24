@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {
   createHabit,
+  getAllHabits,
+  getSingleHabit,
   deleteHabit,
   updateHabitColor,
   updateHabitSharedWith,
@@ -14,6 +16,10 @@ import verifyToken from "../middlewares/verifyToken";
 const habitRoutes = Router();
 
 habitRoutes.get("/new", verifyToken, createHabit);
+
+habitRoutes.get("/all", verifyToken, getAllHabits);
+
+habitRoutes.get("/single", verifyToken, getSingleHabit);
 
 habitRoutes.delete("/delete", verifyToken, deleteHabit);
 

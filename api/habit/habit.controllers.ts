@@ -60,6 +60,29 @@ export const createHabit = async (req: IReq | any, res: Response) => {
   }
 };
 
+export const getAllHabits = async (req: IReq | any, res: Response) => {
+  try {
+    const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id });
+
+    res.status(200).json(loggedinUsersHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const getSingleHabit = async (req: IReq | any, res: Response) => {
+  try {
+    const selectedHabit = req.body.selectedHabit;
+    const loggedinUsersHabits = await Habit.findById(selectedHabit);
+
+    res.status(200).json(loggedinUsersHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const deleteHabit = async (req: IReq | any, res: Response) => {
   try {
     await Habit.findOneAndDelete({
