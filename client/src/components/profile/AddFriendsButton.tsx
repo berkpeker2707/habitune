@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { useState } from "react";
+
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 
+import { sendFriendshipAction } from "../../state/userSlice";
+import { useAppDispatch } from "../../state/store";
+
 const AddFriendsButton = () => {
+  const dispatch = useAppDispatch();
+
   const [text, setText] = useState("");
   const [buttonBoolean, setButtonBoolean] = useState(true);
 
@@ -50,7 +57,7 @@ const AddFriendsButton = () => {
           borderBottomRightRadius: 20,
         }}
         disabled={buttonBoolean}
-        onPress={() => console.log("Add Button Pressed")}
+        onPress={() => dispatch(sendFriendshipAction({ userMail: text }))}
       >
         <Text
           style={{

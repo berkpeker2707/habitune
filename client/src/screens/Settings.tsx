@@ -13,10 +13,14 @@ import {
 import SettingsButton from "../components/settings/SettingsButton";
 import { useState } from "react";
 import LinkButton from "../components/settings/LinkButton";
+import { useAppDispatch } from "../state/store";
+import { deleteUserAction, revertAll } from "../state/userSlice";
 
 const Settings = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [feedback, setFeedback] = useState<String>("");
+
+  const dispatch = useAppDispatch();
 
   return (
     <View
@@ -139,11 +143,11 @@ const Settings = () => {
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => console.log("TEST")}>
+        <TouchableOpacity onPress={() => dispatch(deleteUserAction())}>
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => console.log("TEST")}>
+        <TouchableOpacity onPress={() => dispatch(revertAll())}>
           <SettingsButton buttonName="Sign Out" />
         </TouchableOpacity>
       </ScrollView>
