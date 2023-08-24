@@ -253,7 +253,7 @@ export const updateHabitDatesAction = createAsyncThunk(
 export const updateHabitCompletedDateAction = createAsyncThunk(
   "habit/updateHabitCompletedDate",
   async (
-    updateHabitCompletedDatePayload,
+    updateHabitCompletedDatePayload: {},
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
