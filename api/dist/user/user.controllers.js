@@ -77,7 +77,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const userMail = req.body.userMail;
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
         if ((yield user_model_1.default.find({ email: userMail })).length < 1 ||
-            req.user[0].email) {
+            userMail === req.user[0].email) {
             return res.json({
                 message: "Invalid Email.",
             });

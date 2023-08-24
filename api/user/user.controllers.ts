@@ -69,11 +69,12 @@ export const fetchUserProfile = async (req: IReq | any, res: Response) => {
 export const sendFriendship = async (req: IReq | any, res: Response) => {
   try {
     const userMail = req.body.userMail;
+
     const loggedinUser = await User.findById(req.user[0]._id);
 
     if (
       (await User.find({ email: userMail })).length < 1 ||
-      req.user[0].email
+      userMail === req.user[0].email
     ) {
       return res.json({
         message: "Invalid Email.",
