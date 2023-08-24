@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Pressable, View } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
@@ -40,10 +44,16 @@ import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavba
 
 import { store, useAppDispatch, useSelector } from "./src/state/store";
 import { createHabitAction } from "./src/state/habitSlice";
-import { selectSignInWithGoogle } from "./src/state/userSlice";
+import {
+  fetchCurrentUserProfileAction,
+  selectFetchCurrentUserProfile,
+  selectSignInWithGoogle,
+  selectUserUpdated,
+} from "./src/state/userSlice";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { useCallback } from "react";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -66,6 +76,24 @@ const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
+
+  const controller = new AbortController();
+
+  const dispatch = useAppDispatch();
+
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+
+  const updated = useSelector(selectUserUpdated);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchCurrentUserProfileAction());
+
+      return () => {
+        controller.abort();
+      };
+    }, [updated])
+  );
 
   return (
     <StackNavigator.Navigator
@@ -129,9 +157,7 @@ const HomeSection = () => {
                   }}
                 >
                   <TopNavbarProfileImage
-                    imageSource={
-                      "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
-                    }
+                    imageSource={currentUser && currentUser.image}
                   />
                 </View>
               </Pressable>
@@ -425,6 +451,7 @@ const OverviewSection = () => {
                   <TopNavbarShareButton />
                 </Pressable>
               </View>
+              <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
                   onPress={() => {
