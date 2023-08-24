@@ -14,7 +14,7 @@ import SettingsButton from "../components/settings/SettingsButton";
 import { useState } from "react";
 import LinkButton from "../components/settings/LinkButton";
 import { useAppDispatch } from "../state/store";
-import { revertAll } from "../state/userSlice";
+import { deleteUserAction, revertAll } from "../state/userSlice";
 
 const Settings = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -131,7 +131,7 @@ const Settings = () => {
           />
         </View>
 
-        {/* <TouchableOpacity onPress={() => console.log("TEST")}>
+        <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Security" />
         </TouchableOpacity>
 
@@ -141,9 +141,9 @@ const Settings = () => {
 
         <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="About Us" />
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => console.log("TEST")}>
+        <TouchableOpacity onPress={() => dispatch(deleteUserAction())}>
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
 
