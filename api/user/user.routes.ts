@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  callbackSignInWithGoogle,
+  signInWithGoogleController,
   fetchCurrentUserProfile,
   fetchUserProfile,
   sendFriendship,
@@ -9,21 +9,9 @@ import {
 
 import verifyToken from "../middlewares/verifyToken";
 
-import passport from "passport";
-
 const userRoutes = Router();
 
-userRoutes.get("/google", [
-  passport.authenticate("google", {
-    scope: ["email", "profile"],
-  }),
-]);
-
-userRoutes.get(
-  "/google/callback",
-  passport.authenticate("google", { session: false }),
-  callbackSignInWithGoogle
-);
+userRoutes.post("/google", signInWithGoogleController);
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 

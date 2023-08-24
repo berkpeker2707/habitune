@@ -948,3 +948,170 @@
 [35m[39m
 2023-08-13 13:55:10:5510 [35mhttp[39m: [35mGET / 200 739 - 0.681 ms[39m
 [35m[39m
+2023-08-17 14:45:04:454 [35mhttp[39m: [35mGET /api/user/google 302 0 - 7.061 ms[39m
+[35m[39m
+2023-08-17 14:47:52:4752 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.099 ms[39m
+[35m[39m
+2023-08-17 15:02:32:232 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.569 ms[39m
+[35m[39m
+2023-08-17 15:26:19:2619 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.488 ms[39m
+[35m[39m
+2023-08-17 15:32:59:3259 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 0.309 ms[39m
+[35m[39m
+2023-08-17 15:33:38:3338 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 2.128 ms[39m
+[35m[39m
+2023-08-17 15:33:43:3343 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 0.526 ms[39m
+[35m[39m
+2023-08-17 15:33:56:3356 [35mhttp[39m: [35mGET /api/user/google/callback 302 0 - 1.896 ms[39m
+[35m[39m
+2023-08-17 15:34:32:3432 [35mhttp[39m: [35mGET /api/user/profile 200 307 - 363.757 ms[39m
+[35m[39m
+2023-08-17 15:34:48:3448 [31merror[39m: [31mCannot set headers after they are sent to the client[39m
+2023-08-17 15:35:19:3519 [35mhttp[39m: [35mGET /api/user/profile 200 307 - 1189.680 ms[39m
+[35m[39m
+2023-08-17 15:35:35:3535 [35mhttp[39m: [35mGET /api/user/profile 200 42619 - 2504.250 ms[39m
+[35m[39m
+2023-08-17 16:14:21:1421 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.092 ms[39m
+[35m[39m
+2023-08-17 16:16:43:1643 [35mhttp[39m: [35mGET /api/user/google 302 0 - 1.939 ms[39m
+[35m[39m
+2023-08-17 16:19:08:198 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.709 ms[39m
+[35m[39m
+2023-08-17 16:19:28:1928 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.259 ms[39m
+[35m[39m
+2023-08-17 16:20:17:2017 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.275 ms[39m
+[35m[39m
+2023-08-17 16:21:27:2127 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.259 ms[39m
+[35m[39m
+2023-08-17 16:21:33:2133 [35mhttp[39m: [35mGET / 200 780 - 2.693 ms[39m
+[35m[39m
+2023-08-17 16:22:00:220 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.596 ms[39m
+[35m[39m
+2023-08-17 16:23:31:2331 [35mhttp[39m: [35mGET /api/user/google 302 0 - 1.960 ms[39m
+[35m[39m
+2023-08-17 16:24:16:2416 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.546 ms[39m
+[35m[39m
+2023-08-17 16:24:45:2445 [35mhttp[39m: [35mGET /api/user/google 302 0 - 2.116 ms[39m
+[35m[39m
+2023-08-17 17:59:18:5918 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.612 ms[39m
+[35m[39m
+2023-08-17 18:01:52:152 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.262 ms[39m
+[35m[39m
+2023-08-17 18:02:20:220 [35mhttp[39m: [35mGET /api/user/google 302 0 - 0.420 ms[39m
+[35m[39m
+2023-08-22 17:59:23:5923 [35mhttp[39m: [35mPOST /api/user/google 200 175 - 6.209 ms[39m
+[35m[39m
+2023-08-22 18:00:10:010 [35mhttp[39m: [35mPOST /api/user/google 200 175 - 6.879 ms[39m
+[35m[39m
+2023-08-22 18:00:15:015 [35mhttp[39m: [35mPOST /api/user/google 200 175 - 3.200 ms[39m
+[35m[39m
+2023-08-22 18:00:54:054 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 4.888 ms[39m
+[35m[39m
+2023-08-22 18:08:54:854 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.162 ms[39m
+[35m[39m
+2023-08-22 18:09:24:924 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.443 ms[39m
+[35m[39m
+2023-08-22 18:09:58:958 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.398 ms[39m
+[35m[39m
+2023-08-22 18:10:33:1033 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.076 ms[39m
+[35m[39m
+2023-08-22 18:11:09:119 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.840 ms[39m
+[35m[39m
+2023-08-22 18:12:12:1212 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.276 ms[39m
+[35m[39m
+2023-08-22 18:49:19:4919 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.381 ms[39m
+[35m[39m
+2023-08-22 18:49:30:4930 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.806 ms[39m
+[35m[39m
+2023-08-22 18:49:38:4938 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.900 ms[39m
+[35m[39m
+2023-08-22 18:49:42:4942 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.535 ms[39m
+[35m[39m
+2023-08-22 18:50:04:504 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.758 ms[39m
+[35m[39m
+2023-08-22 18:50:30:5030 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.088 ms[39m
+[35m[39m
+2023-08-22 18:50:35:5035 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 2.232 ms[39m
+[35m[39m
+2023-08-22 18:50:38:5038 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.599 ms[39m
+[35m[39m
+2023-08-22 18:51:04:514 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.637 ms[39m
+[35m[39m
+2023-08-22 18:51:09:519 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.634 ms[39m
+[35m[39m
+2023-08-22 18:52:47:5247 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.712 ms[39m
+[35m[39m
+2023-08-22 18:53:21:5321 [35mhttp[39m: [35mPOST /api/user/google 200 522 - 1.524 ms[39m
+[35m[39m
+2023-08-23 20:01:14:114 [35mhttp[39m: [35mGET /api/user/profile 200 4994 - 453.188 ms[39m
+[35m[39m
+2023-08-23 20:01:59:159 [35mhttp[39m: [35mGET /api/user/profile 200 5309 - 431.015 ms[39m
+[35m[39m
+2023-08-23 20:20:48:2048 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:20:48:2048 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 752.785 ms[39m
+[35m[39m
+2023-08-23 20:21:51:2151 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:21:51:2151 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 1599.557 ms[39m
+[35m[39m
+2023-08-23 20:21:53:2153 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:21:53:2153 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 1261.478 ms[39m
+[35m[39m
+2023-08-23 20:22:40:2240 [31merror[39m: [31mCannot read properties of undefined (reading '_id')[39m
+2023-08-23 20:22:40:2240 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 500 61 - 690.663 ms[39m
+[35m[39m
+2023-08-23 20:23:15:2315 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 2724.106 ms[39m
+[35m[39m
+2023-08-23 20:24:14:2414 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 566.798 ms[39m
+[35m[39m
+2023-08-23 20:24:31:2431 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 567.893 ms[39m
+[35m[39m
+2023-08-23 20:25:28:2528 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 51 - 564.135 ms[39m
+[35m[39m
+2023-08-23 20:26:11:2611 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 850.864 ms[39m
+[35m[39m
+2023-08-23 20:26:21:2621 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 479 - 830.633 ms[39m
+[35m[39m
+2023-08-23 20:26:24:2624 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 834.875 ms[39m
+[35m[39m
+2023-08-23 20:26:35:2635 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 479 - 836.860 ms[39m
+[35m[39m
+2023-08-23 20:27:26:2726 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 849.335 ms[39m
+[35m[39m
+2023-08-23 20:27:28:2728 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 479 - 832.284 ms[39m
+[35m[39m
+2023-08-23 20:27:47:2747 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 562.398 ms[39m
+[35m[39m
+2023-08-23 20:27:49:2749 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 551.010 ms[39m
+[35m[39m
+2023-08-23 20:27:53:2753 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 550.047 ms[39m
+[35m[39m
+2023-08-23 20:27:59:2759 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 548.657 ms[39m
+[35m[39m
+2023-08-24 13:46:02:462 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 424.236 ms[39m
+[35m[39m
+2023-08-24 13:46:49:4649 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 429.590 ms[39m
+[35m[39m
+2023-08-24 13:47:41:4741 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 566.033 ms[39m
+[35m[39m
+2023-08-24 13:48:09:489 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 565.473 ms[39m
+[35m[39m
+2023-08-24 13:48:43:4843 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 425.267 ms[39m
+[35m[39m
+2023-08-24 13:50:39:5039 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 566.606 ms[39m
+[35m[39m
+2023-08-24 13:51:38:5138 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 422.095 ms[39m
+[35m[39m
+2023-08-24 13:51:40:5140 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 1013.390 ms[39m
+[35m[39m
+2023-08-24 13:56:31:5631 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 1570.085 ms[39m
+[35m[39m
+2023-08-24 13:57:20:5720 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 393 - 1928.812 ms[39m
+[35m[39m
+2023-08-24 13:57:30:5730 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 307 - 694.267 ms[39m
+[35m[39m
+2023-08-24 13:57:33:5733 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 392 - 696.998 ms[39m
+[35m[39m
+2023-08-24 13:57:52:5752 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 307 - 2060.051 ms[39m
+[35m[39m
+2023-08-24 14:01:27:127 [35mhttp[39m: [35mPOST /api/user/sendFriendshipRequest 200 28 - 1155.286 ms[39m
+[35m[39m

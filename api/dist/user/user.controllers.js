@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.callbackSignInWithGoogle = void 0;
+exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const habit_model_1 = __importDefault(require("../habit/habit.model"));
@@ -20,9 +20,9 @@ const jwt = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
-const callbackSignInWithGoogle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var token = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
+        var token = jwt.sign({ user: req.body }, process.env.JWT_SECRET, {
             expiresIn: "365d",
         });
         res.status(200).json({
@@ -35,10 +35,16 @@ const callbackSignInWithGoogle = (req, res) => __awaiter(void 0, void 0, void 0,
         return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
-exports.callbackSignInWithGoogle = callbackSignInWithGoogle;
+exports.signInWithGoogleController = signInWithGoogleController;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
+        const loggedinUser = yield user_model_1.default.findById(req.user[0]._id)
+            .populate({ path: "friends.friend", model: "User" })
+            .populate({
+            path: "habits",
+            model: "Habit",
+        })
+            .exec();
         res.status(200).json(loggedinUser);
     }
     catch (error) {
@@ -50,7 +56,13 @@ exports.fetchCurrentUserProfile = fetchCurrentUserProfile;
 const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userID = req.params.userID;
-        const user = yield user_model_1.default.findById(userID);
+        const user = yield user_model_1.default.findById(userID)
+            .populate({ path: "friends.friend", model: "User" })
+            .populate({
+            path: "habits",
+            model: "Habit",
+        })
+            .exec();
         res.status(200).json(user);
     }
     catch (error) {
@@ -63,13 +75,14 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a;
     try {
         const userMail = req.body.userMail;
-        const user = yield user_model_1.default.find({ email: userMail });
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
-        if (!user) {
+        if ((yield user_model_1.default.find({ email: userMail })).length < 1 ||
+            userMail === req.user[0].email) {
             return res.json({
-                message: "Email with such user does not exists.",
+                message: "Invalid Email.",
             });
         }
+        const user = yield user_model_1.default.find({ email: userMail });
         // const currentUserHasUserFriend = loggedinUser?.friends.some((element) => {
         //   return element.friend.toString() == user[0]._id.toString();
         // });

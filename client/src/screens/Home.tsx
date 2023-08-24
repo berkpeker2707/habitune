@@ -847,7 +847,10 @@ const Home = memo((props: any) => {
               //   props.navigation.getParent().getState().routes[0].params
               //     .homeEditState
               // );
-              console.log(item._id);
+              console.log(
+                "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
+                item._id
+              );
             }}
             onLongPress={() => {
               setNameChangable(() => true);
