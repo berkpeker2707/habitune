@@ -442,6 +442,9 @@ export const selectPostLoading = (state: any) => {
 export const selectPostError = (state: any) => {
   return state.habit.error;
 };
+export const selectHabitUpdated = (state: any) => {
+  return state.user.isHabitUpdated;
+};
 export const selectCreateHabit = (state: any) => {
   // return state.habit.createHabitData;
   return state.habit.habitData;
