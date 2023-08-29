@@ -11,6 +11,7 @@ import {
   fetchAllHabitsAction,
   selectHabitUpdated,
   selectHabits,
+  updateHabitCompletedDateAction,
 } from "../state/habitSlice";
 
 import uuid from "react-native-uuid";
@@ -65,7 +66,7 @@ const Home = memo((props: any) => {
 
   //need this for setting default hour 21
   //if backend is not 21 but 00, remove this
-  const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
+  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
 
   const isInArray = useCallback(
     (array: any[], value: Date) => {
@@ -73,7 +74,7 @@ const Home = memo((props: any) => {
         return new Date(item).getTime() == value.getTime();
       });
     },
-    [allHabits]
+    [allHabits, updated]
   );
 
   //data stuff ends
@@ -106,6 +107,13 @@ const Home = memo((props: any) => {
                 "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
                 item._id
               );
+
+              dispatch(
+                updateHabitCompletedDateAction({
+                  _id: item._id,
+                  date: Date.now(),
+                })
+              );
             }}
             onLongPress={() => {
               setNameChangable(() => true);
@@ -127,7 +135,7 @@ const Home = memo((props: any) => {
             <HabitBar
               item={item}
               itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-              filled={isInArray(item.dates, todayLocal21)}
+              filled={isInArray(item.dates, todayLocal)}
               nameChangable={
                 item._id.toString() === selectedItem ? nameChangable : false
               }

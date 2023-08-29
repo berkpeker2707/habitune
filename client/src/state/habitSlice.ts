@@ -443,7 +443,7 @@ export const selectPostError = (state: any) => {
   return state.habit.error;
 };
 export const selectHabitUpdated = (state: any) => {
-  return state.user.isHabitUpdated;
+  return state.habit.isHabitUpdated;
 };
 export const selectCreateHabit = (state: any) => {
   // return state.habit.createHabitData;
