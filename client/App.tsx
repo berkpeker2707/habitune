@@ -43,7 +43,12 @@ import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavba
 // import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
 import { store, useAppDispatch, useSelector } from "./src/state/store";
-import { createHabitAction } from "./src/state/habitSlice";
+import {
+  createHabitAction,
+  fetchAllHabitsAction,
+  selectHabitUpdated,
+  selectHabits,
+} from "./src/state/habitSlice";
 import {
   fetchCurrentUserProfileAction,
   selectFetchCurrentUserProfile,
@@ -82,8 +87,41 @@ const HomeSection = () => {
   const dispatch = useAppDispatch();
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
+  const allHabits = useSelector(selectHabits);
 
-  const updated = useSelector(selectUserUpdated);
+  const userUpdated = useSelector(selectUserUpdated);
+  const habitUpdated = useSelector(selectHabitUpdated);
+
+  //date stuff starts
+  const todayTemp = new Date();
+  const today = new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate()
+  );
+
+  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
+  //need this for setting default hour 21
+  //if backend is not 21 but 00, remove this
+  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
+
+  const isInArray = (array: any[], value: Date) => {
+    return array.some((item) => {
+      return new Date(item).getTime() == value.getTime();
+    });
+  };
+
+  //date stuff ends
+
+  var currentHabitDatesIncluded = useCallback(
+    allHabits.map((allHabitsItem: any) =>
+      isInArray(allHabitsItem.dates, todayLocal)
+    ),
+
+    [allHabits, habitUpdated]
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -92,7 +130,17 @@ const HomeSection = () => {
       return () => {
         controller.abort();
       };
-    }, [updated])
+    }, [userUpdated])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchAllHabitsAction());
+
+      return () => {
+        controller.abort();
+      };
+    }, [habitUpdated])
   );
 
   return (
@@ -103,7 +151,14 @@ const HomeSection = () => {
     >
       <StackNavigator.Screen
         name="Home"
-        component={Home}
+        children={(props: any) => (
+          <Home
+            {...props}
+            allHabits={allHabits}
+            habitUpdated={habitUpdated}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+          />
+        )}
         options={{
           headerTitle: !navigation.getState().routes[0].params?.homeEditState
             ? "Today"

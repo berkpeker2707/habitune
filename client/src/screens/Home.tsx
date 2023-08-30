@@ -1,39 +1,34 @@
 import * as React from "react";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
-import { useFocusEffect } from "@react-navigation/native";
 import { Text, View, TouchableOpacity, ScrollView } from "react-native";
 import HabitBar from "../components/home/HabitBar";
 
-import { useAppDispatch, useSelector } from "../state/store";
+import { useAppDispatch } from "../state/store";
 
-import {
-  fetchAllHabitsAction,
-  selectHabitUpdated,
-  selectHabits,
-  updateHabitCompletedDateAction,
-} from "../state/habitSlice";
+import { updateHabitCompletedDateAction } from "../state/habitSlice";
 
 import uuid from "react-native-uuid";
 
 const Home = memo((props: any) => {
-  const controller = new AbortController();
+  const { allHabits, habitUpdated, currentHabitDatesIncluded } = props;
 
   const dispatch = useAppDispatch();
 
-  const allHabits = useSelector(selectHabits);
+  const [tempBarFilled, setTempBarFilled] = useState<Array<Boolean>>(() => [
+    ...currentHabitDatesIncluded,
+  ]);
 
-  const updated = useSelector(selectHabitUpdated);
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchAllHabitsAction());
-
-      return () => {
-        controller.abort();
-      };
-    }, [updated])
-  );
+  function handleHabitClicked(index: number) {
+    const newHabitArray = tempBarFilled.map((nH, i) => {
+      if (i === index) {
+        return !nH;
+      } else {
+        return nH;
+      }
+    });
+    setTempBarFilled(newHabitArray);
+  }
 
   const [selectedItem, setSelectedItem] = useState("");
   const [nameChangable, setNameChangable] = useState(false);
@@ -53,32 +48,6 @@ const Home = memo((props: any) => {
     }
   }, [props.navigation.getParent().getState().routes[0].params?.homeEditState]);
 
-  //data stuff starts
-  const todayTemp = new Date();
-  const today = new Date(
-    todayTemp.getFullYear(),
-    todayTemp.getMonth(),
-    todayTemp.getDate()
-  );
-
-  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-
-  //need this for setting default hour 21
-  //if backend is not 21 but 00, remove this
-  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
-
-  const isInArray = useCallback(
-    (array: any[], value: Date) => {
-      return array.find((item) => {
-        return new Date(item).getTime() == value.getTime();
-      });
-    },
-    [allHabits, updated]
-  );
-
-  //data stuff ends
-
   return (
     <View
       style={{
@@ -95,7 +64,7 @@ const Home = memo((props: any) => {
         }}
       >
         <Text>Habits</Text>
-        {allHabits.map((item: any, index: any) => (
+        {allHabits?.map((item: any, index: any) => (
           <TouchableOpacity
             key={uuid.v4() as string}
             onPress={() => {
@@ -103,10 +72,10 @@ const Home = memo((props: any) => {
               //   props.navigation.getParent().getState().routes[0].params
               //     .homeEditState
               // );
-              console.log(
-                "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
-                item._id
-              );
+              // console.log(
+              //   "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
+              //   item._id
+              // );
 
               dispatch(
                 updateHabitCompletedDateAction({
@@ -114,6 +83,8 @@ const Home = memo((props: any) => {
                   date: Date.now(),
                 })
               );
+
+              handleHabitClicked(index);
             }}
             onLongPress={() => {
               setNameChangable(() => true);
@@ -135,7 +106,7 @@ const Home = memo((props: any) => {
             <HabitBar
               item={item}
               itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-              filled={isInArray(item.dates, todayLocal)}
+              filled={tempBarFilled[index]}
               nameChangable={
                 item._id.toString() === selectedItem ? nameChangable : false
               }
