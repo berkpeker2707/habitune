@@ -11,7 +11,8 @@ import { updateHabitCompletedDateAction } from "../state/habitSlice";
 import uuid from "react-native-uuid";
 
 const Home = memo((props: any) => {
-  const { allHabits, habitUpdated, currentHabitDatesIncluded } = props;
+  const { allHabits, habitUpdated, habitLoading, currentHabitDatesIncluded } =
+    props;
 
   const dispatch = useAppDispatch();
 
@@ -58,63 +59,75 @@ const Home = memo((props: any) => {
         alignItems: "center",
       }}
     >
-      <ScrollView
-        style={{
-          marginBottom: 85,
-        }}
-      >
-        <Text>Habits</Text>
-        {allHabits?.map((item: any, index: any) => (
-          <TouchableOpacity
-            key={uuid.v4() as string}
-            onPress={() => {
-              // console.log(
-              //   props.navigation.getParent().getState().routes[0].params
-              //     .homeEditState
-              // );
-              // console.log(
-              //   "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
-              //   item._id
-              // );
+      {!habitLoading ? (
+        <ScrollView
+          style={{
+            marginBottom: 85,
+          }}
+        >
+          <Text>Habits</Text>
+          {allHabits?.map((item: any, index: any) => (
+            <TouchableOpacity
+              key={uuid.v4() as string}
+              onPress={() => {
+                // console.log(
+                //   props.navigation.getParent().getState().routes[0].params
+                //     .homeEditState
+                // );
+                // console.log(
+                //   "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
+                //   item._id
+                // );
 
-              dispatch(
-                updateHabitCompletedDateAction({
-                  _id: item._id,
-                  date: Date.now(),
-                })
-              );
-
-              handleHabitClicked(index);
-            }}
-            onLongPress={() => {
-              setNameChangable(() => true);
-              props.navigation.getParent().getState().routes[0].params
-                .homeEditState
-                ? props.navigation.getParent().setParams({
-                    homeEditState: false,
-                  })
-                : props.navigation.getParent().setParams({
-                    homeEditState: true,
+                dispatch(
+                  updateHabitCompletedDateAction({
                     _id: item._id,
-                  });
+                    date: Date.now(),
+                  })
+                );
 
-              setSelectedItem(() =>
-                selectedItem === item._id.toString() ? "" : item._id.toString()
-              );
-            }}
-          >
-            <HabitBar
-              item={item}
-              itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-              filled={tempBarFilled[index]}
-              nameChangable={
-                item._id.toString() === selectedItem ? nameChangable : false
-              }
-              navigation={props.navigation}
-            />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+                handleHabitClicked(index);
+              }}
+              onLongPress={() => {
+                setNameChangable(() => true);
+                props.navigation.getParent().getState().routes[0].params
+                  .homeEditState
+                  ? props.navigation.getParent().setParams({
+                      homeEditState: false,
+                    })
+                  : props.navigation.getParent().setParams({
+                      homeEditState: true,
+                      _id: item._id,
+                    });
+
+                setSelectedItem(() =>
+                  selectedItem === item._id.toString()
+                    ? ""
+                    : item._id.toString()
+                );
+              }}
+            >
+              <HabitBar
+                item={item}
+                itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
+                filled={tempBarFilled[index]}
+                nameChangable={
+                  item._id.toString() === selectedItem ? nameChangable : false
+                }
+                navigation={props.navigation}
+              />
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      ) : (
+        <ScrollView
+          style={{
+            marginBottom: 85,
+          }}
+        >
+          <Text>Habits</Text>
+        </ScrollView>
+      )}
     </View>
   );
 });

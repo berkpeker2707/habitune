@@ -48,6 +48,7 @@ import {
   fetchAllHabitsAction,
   selectHabitUpdated,
   selectHabits,
+  selectPostLoading,
 } from "./src/state/habitSlice";
 import {
   fetchCurrentUserProfileAction,
@@ -91,6 +92,7 @@ const HomeSection = () => {
 
   const userUpdated = useSelector(selectUserUpdated);
   const habitUpdated = useSelector(selectHabitUpdated);
+  const habitLoading = useSelector(selectPostLoading);
 
   //date stuff starts
   const todayTemp = new Date();
@@ -156,6 +158,7 @@ const HomeSection = () => {
             {...props}
             allHabits={allHabits}
             habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
           />
         )}
