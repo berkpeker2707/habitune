@@ -16,7 +16,7 @@ import verifyToken from "../middlewares/verifyToken";
 
 const habitRoutes = Router();
 
-habitRoutes.get("/new", verifyToken, createHabit);
+habitRoutes.post("/new", verifyToken, createHabit);
 
 habitRoutes.get("/all", verifyToken, getAllHabits);
 
