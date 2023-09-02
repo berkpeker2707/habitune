@@ -24,8 +24,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
         name: req.body.name,
-        color: "",
-        sharedWith: [],
+        color: req.body.color ?? "#968EB0",
+        sharedWith: req.body.friendList,
         firstDate: req.body.firstDate ?? "",
         lastDate: req.body.lastDate ?? "",
         dates: [],

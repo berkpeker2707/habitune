@@ -21,7 +21,7 @@ const logger_1 = __importDefault(require("../middlewares/logger"));
 const calculateUpcomingDates_1 = __importDefault(require("../middlewares/calculateUpcomingDates"));
 dotenv_1.default.config();
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
         if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
@@ -34,10 +34,10 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             const newHabit = yield habit_model_1.default.create({
                 owner: req.user[0]._id,
                 name: req.body.name,
-                color: "",
-                sharedWith: [],
-                firstDate: (_a = req.body.firstDate) !== null && _a !== void 0 ? _a : "",
-                lastDate: (_b = req.body.lastDate) !== null && _b !== void 0 ? _b : "",
+                color: (_a = req.body.color) !== null && _a !== void 0 ? _a : "#968EB0",
+                sharedWith: req.body.friendList,
+                firstDate: (_b = req.body.firstDate) !== null && _b !== void 0 ? _b : "",
+                lastDate: (_c = req.body.lastDate) !== null && _c !== void 0 ? _c : "",
                 dates: [],
                 upcomingDates: [],
             });
