@@ -156,7 +156,11 @@ const HomeSection = () => {
         children={(props: any) => (
           <Home
             {...props}
+            homeEditState={
+              navigation.getState().routes[0].params?.homeEditState
+            }
             allHabits={allHabits}
+            allHabitsNumber={allHabits.length}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
