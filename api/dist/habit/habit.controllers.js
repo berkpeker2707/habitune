@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.deleteHabit = exports.getSingleHabit = exports.getAllHabits = exports.createHabit = void 0;
+exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.updateHabitName = exports.deleteHabit = exports.getSingleHabit = exports.getAllHabits = exports.createHabit = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const habit_model_1 = __importDefault(require("./habit.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
@@ -99,6 +99,19 @@ const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.deleteHabit = deleteHabit;
+const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
+            $set: { name: req.body.name },
+        }, { new: true });
+        res.status(200).json(selectedHabit);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.updateHabitName = updateHabitName;
 const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
