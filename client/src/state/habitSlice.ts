@@ -18,6 +18,7 @@ interface habitTypes {
   habitsData: Array<Object>;
   createHabitData: object;
   deleteHabitData: object;
+  updateHabitNameData: object;
   updateHabitColorData: object;
   updateHabitSharedWithData: object;
   updateHabitFirstAndLastDateData: object;
@@ -34,6 +35,7 @@ const initialState: habitTypes = {
   habitsData: [],
   createHabitData: {},
   deleteHabitData: {},
+  updateHabitNameData: {},
   updateHabitColorData: {},
   updateHabitSharedWithData: {},
   updateHabitFirstAndLastDateData: {},
@@ -131,6 +133,35 @@ export const deleteHabitAction = createAsyncThunk(
       const { data } = await axiosInstance.delete(
         `/habit/delete`,
         // deleteHabitPayload,
+        config
+      );
+
+      dispatch(updatedHabit());
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateHabitNameAction = createAsyncThunk(
+  "habit/updateHabitName",
+  async (
+    updateHabitNamePayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //get user token
+    const auth = (getState() as RootState).user.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+    try {
+      const { data } = await axiosInstance.put(
+        `/habit/update/name`,
+        updateHabitNamePayload,
         config
       );
 
@@ -296,7 +327,7 @@ const habitSlice = createSlice({
     builder.addCase(createHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.createHabitData = action?.payload;
+      state.habitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(createHabitAction.rejected, (state, action) => {
@@ -346,6 +377,21 @@ const habitSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
+    //update habit name reducer
+    builder.addCase(updateHabitNameAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(updateHabitNameAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
+    });
+    builder.addCase(updateHabitNameAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
     //update habit color reducer
     builder.addCase(updateHabitColorAction.pending, (state) => {
       state.loading = true;
@@ -354,7 +400,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitColorAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.updateHabitColorData = action?.payload;
+      state.habitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitColorAction.rejected, (state, action) => {
@@ -369,7 +415,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitSharedWithAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.updateHabitSharedWithData = action?.payload;
+      state.habitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitSharedWithAction.rejected, (state, action) => {
@@ -386,7 +432,7 @@ const habitSlice = createSlice({
       (state, action) => {
         state.loading = false;
         state.error = "";
-        state.updateHabitFirstAndLastDateData = action?.payload;
+        state.habitData = action?.payload;
         state.isHabitUpdated = false;
       }
     );
@@ -405,7 +451,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitDatesAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.updateHabitDatesData = action?.payload;
+      state.habitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitDatesAction.rejected, (state, action) => {
@@ -422,7 +468,7 @@ const habitSlice = createSlice({
       (state, action) => {
         state.loading = false;
         state.error = "";
-        state.updateHabitCompletedDateData = action?.payload;
+        state.habitData = action?.payload;
         state.isHabitUpdated = false;
       }
     );
@@ -457,6 +503,10 @@ export const selectHabit = (state: any) => {
 };
 export const selectDeleteHabit = (state: any) => {
   // return state.habit.deleteHabitData;
+  return state.habit.habitData;
+};
+export const selectUpdateHabitName = (state: any) => {
+  // return state.habit.updateHabitNameData;
   return state.habit.habitData;
 };
 export const selectUpdateHabitColor = (state: any) => {

@@ -49,6 +49,7 @@ import {
   selectHabitUpdated,
   selectHabits,
   selectPostLoading,
+  updateHabitNameAction,
 } from "./src/state/habitSlice";
 import {
   fetchCurrentUserProfileAction,
@@ -227,10 +228,15 @@ const HomeSection = () => {
               <View style={{ flexDirection: "row" }}>
                 <Pressable
                   onPress={() => {
-                    console.log(
-                      navigation.getState().routes[0].params
-                      // navigation.getState().routes[1].state?.routes[0]
+                    dispatch(
+                      updateHabitNameAction({
+                        _id: navigation.getState().routes[0].params?._id,
+                        name: navigation.getState().routes[0].params?.name,
+                      })
                     );
+                    navigation.setParams({
+                      homeEditState: false,
+                    });
                   }}
                 >
                   <View

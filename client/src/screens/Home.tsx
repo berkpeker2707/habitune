@@ -105,7 +105,6 @@ const Home = memo((props: any) => {
                         homeEditState: true,
                         _id: item._id,
                       });
-
                   setSelectedItem(() =>
                     selectedItem === item._id.toString()
                       ? ""
