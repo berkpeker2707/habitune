@@ -104,6 +104,23 @@ export const deleteHabit = async (req: IReq | any, res: Response) => {
   }
 };
 
+export const updateHabitName = async (req: IReq | any, res: Response) => {
+  try {
+    const selectedHabit = await Habit.findByIdAndUpdate(
+      req.body._id,
+      {
+        $set: { name: req.body.name },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(selectedHabit);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const updateHabitColor = async (req: IReq | any, res: Response) => {
   try {
     const selectedHabit = await Habit.findByIdAndUpdate(

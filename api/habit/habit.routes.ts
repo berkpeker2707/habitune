@@ -4,6 +4,7 @@ import {
   getAllHabits,
   getSingleHabit,
   deleteHabit,
+  updateHabitName,
   updateHabitColor,
   updateHabitSharedWith,
   updateHabitFirstAndLastDate,
@@ -22,6 +23,8 @@ habitRoutes.get("/all", verifyToken, getAllHabits);
 habitRoutes.get("/single", verifyToken, getSingleHabit);
 
 habitRoutes.delete("/delete", verifyToken, deleteHabit);
+
+habitRoutes.put("/update/name", verifyToken, updateHabitName);
 
 habitRoutes.put("/update/color", verifyToken, updateHabitColor);
 
