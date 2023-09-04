@@ -373,7 +373,7 @@ const habitSlice = createSlice({
     builder.addCase(deleteHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.deleteHabitData = action?.payload;
+      state.habitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(deleteHabitAction.rejected, (state, action) => {
