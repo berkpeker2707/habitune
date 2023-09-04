@@ -116,7 +116,6 @@ const HomeSection = () => {
       return new Date(item).getTime() == value.getTime();
     });
   };
-
   //date stuff ends
 
   var currentHabitDatesIncluded = useCallback(
@@ -195,9 +194,13 @@ const HomeSection = () => {
               >
                 <Pressable
                   onPress={() => {
-                    navigation.setParams({
-                      homeEditState: false,
-                    });
+                    try {
+                      navigation.setParams({
+                        homeEditState: false,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarBackButton />
@@ -209,7 +212,11 @@ const HomeSection = () => {
             !navigation.getState().routes[0].params?.homeEditState ? (
               <Pressable
                 onPress={() => {
-                  navigation.navigate("Profile");
+                  try {
+                    navigation.navigate("Profile");
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <View
@@ -229,15 +236,19 @@ const HomeSection = () => {
               <View style={{ flexDirection: "row" }}>
                 <Pressable
                   onPress={() => {
-                    dispatch(
-                      updateHabitNameAction({
-                        _id: navigation.getState().routes[0].params?._id,
-                        name: navigation.getState().routes[0].params?.name,
-                      })
-                    );
-                    navigation.setParams({
-                      homeEditState: false,
-                    });
+                    try {
+                      dispatch(
+                        updateHabitNameAction({
+                          _id: navigation.getState().routes[0].params?._id,
+                          name: navigation.getState().routes[0].params?.name,
+                        })
+                      );
+                      navigation.setParams({
+                        homeEditState: false,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <View
@@ -255,7 +266,11 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    console.log("share with friends pressed");
+                    try {
+                      console.log("share with friends pressed");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <View
@@ -272,11 +287,15 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    dispatch(
-                      deleteHabitAction({
-                        _id: navigation.getState().routes[0].params?._id,
-                      })
-                    );
+                    try {
+                      dispatch(
+                        deleteHabitAction({
+                          _id: navigation.getState().routes[0].params?._id,
+                        })
+                      );
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <View
@@ -325,7 +344,11 @@ const HomeSection = () => {
               <View>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarShareButton />
@@ -335,7 +358,11 @@ const HomeSection = () => {
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarSettingsButton />
@@ -361,7 +388,11 @@ const HomeSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -386,7 +417,11 @@ const HomeSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -426,7 +461,11 @@ const AddSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -459,10 +498,7 @@ const AddSection = () => {
                         navigation.getState().routes[1].state?.routes[0].params
                       )
                     );
-
-                    // console.log(
-                    //   navigation.getState().routes[1].state?.routes[0].params
-                    // );
+                    navigation.navigate("HomeSection");
                   } catch (error) {
                     console.log(error);
                   }
@@ -518,7 +554,11 @@ const OverviewSection = () => {
               <View>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarShareButton />
@@ -528,7 +568,11 @@ const OverviewSection = () => {
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarSettingsButton />
@@ -554,7 +598,11 @@ const OverviewSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -579,7 +627,11 @@ const OverviewSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
