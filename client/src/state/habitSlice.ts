@@ -121,7 +121,10 @@ export const fetchHabitAction = createAsyncThunk(
 
 export const deleteHabitAction = createAsyncThunk(
   "habit/deleteHabit",
-  async (deleteHabitPayload, { rejectWithValue, getState, dispatch }) => {
+  async (
+    deleteHabitPayload: { _id: any },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //get user token
     const auth = (getState() as RootState).user.token;
     const config = {
@@ -129,9 +132,10 @@ export const deleteHabitAction = createAsyncThunk(
         Authorization: `Bearer ${auth}`,
       },
     };
+
     try {
       const { data } = await axiosInstance.delete(
-        `/habit/delete`,
+        `/habit/delete/${deleteHabitPayload._id}`,
         // deleteHabitPayload,
         config
       );
@@ -482,7 +486,7 @@ const habitSlice = createSlice({
   },
 });
 
-export const selectPostLoading = (state: any) => {
+export const selectHabitLoading = (state: any) => {
   return state.habit.loading;
 };
 export const selectPostError = (state: any) => {
