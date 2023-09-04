@@ -277,8 +277,6 @@ const HomeSection = () => {
                         _id: navigation.getState().routes[0].params?._id,
                       })
                     );
-                    // console.log("delete habit is pressed");
-                    // console.log(navigation.getState().routes[0].params?._id);
                   }}
                 >
                   <View
