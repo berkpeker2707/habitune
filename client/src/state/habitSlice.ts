@@ -136,7 +136,6 @@ export const deleteHabitAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.delete(
         `/habit/delete/${deleteHabitPayload._id}`,
-        // deleteHabitPayload,
         config
       );
 
