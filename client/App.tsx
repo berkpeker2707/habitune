@@ -293,6 +293,9 @@ const HomeSection = () => {
                           _id: navigation.getState().routes[0].params?._id,
                         })
                       );
+                      navigation.setParams({
+                        homeEditState: false,
+                      });
                     } catch (error) {
                       console.log(error);
                     }
