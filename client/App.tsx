@@ -499,7 +499,7 @@ const AddSection = () => {
                         navigation.getState().routes[1].state?.routes[0].params
                       )
                     );
-                    navigation.navigate("HomeSection");
+                    navigation.goBack();
                   } catch (error) {
                     console.log(error);
                   }
