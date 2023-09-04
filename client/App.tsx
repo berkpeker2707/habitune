@@ -227,9 +227,7 @@ const HomeSection = () => {
                     padding: 5,
                   }}
                 >
-                  <TopNavbarProfileImage
-                    imageSource={currentUser && currentUser.image}
-                  />
+                  <TopNavbarProfileImage imageSource={currentUser.image} />
                 </View>
               </Pressable>
             ) : (
