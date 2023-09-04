@@ -48,8 +48,9 @@ import {
   fetchAllHabitsAction,
   selectHabitUpdated,
   selectHabits,
-  selectPostLoading,
+  selectHabitLoading,
   updateHabitNameAction,
+  deleteHabitAction,
 } from "./src/state/habitSlice";
 import {
   fetchCurrentUserProfileAction,
@@ -93,7 +94,7 @@ const HomeSection = () => {
 
   const userUpdated = useSelector(selectUserUpdated);
   const habitUpdated = useSelector(selectHabitUpdated);
-  const habitLoading = useSelector(selectPostLoading);
+  const habitLoading = useSelector(selectHabitLoading);
 
   //date stuff starts
   const todayTemp = new Date();
@@ -271,7 +272,13 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    console.log("delete habit is pressed");
+                    dispatch(
+                      deleteHabitAction({
+                        _id: navigation.getState().routes[0].params?._id,
+                      })
+                    );
+                    // console.log("delete habit is pressed");
+                    // console.log(navigation.getState().routes[0].params?._id);
                   }}
                 >
                   <View
