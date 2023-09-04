@@ -21,13 +21,26 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .status(500)
         .send(getErrorMessage("User already has 20 habits."));
     } else {
+      var todayReq = new Date(Date.now());
+      var today = new Date(
+        todayReq.getFullYear(),
+        todayReq.getMonth(),
+        todayReq.getDate()
+      );
+
+      var upComingDay = new Date(
+        todayReq.getFullYear() + 1,
+        todayReq.getMonth(),
+        todayReq.getDate()
+      );
+
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
         name: req.body.name,
         color: req.body.color ?? "#968EB0",
         sharedWith: req.body.friendList,
-        firstDate: req.body.firstDate ?? "",
-        lastDate: req.body.lastDate ?? "",
+        firstDate: req.body.firstDate ? req.body.firstDate : today,
+        lastDate: req.body.lastDate ? req.body.lastDate : upComingDay,
         dates: [],
         upcomingDates: [],
       });
@@ -44,8 +57,12 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         $push: {
           upcomingDates: [
             ...(await calculateUpcomingDates(
-              req && req.body && req.body.firstDate,
-              req && req.body && req.body.lastDate,
+              req && req.body && req.body.firstDate
+                ? req.body.firstDate
+                : today,
+              req && req.body && req.body.lastDate
+                ? req.body.lastDate
+                : upComingDay,
               req && req.body && req.body.upcomingDates
             )),
           ],

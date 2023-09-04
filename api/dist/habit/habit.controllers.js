@@ -21,7 +21,7 @@ const logger_1 = __importDefault(require("../middlewares/logger"));
 const calculateUpcomingDates_1 = __importDefault(require("../middlewares/calculateUpcomingDates"));
 dotenv_1.default.config();
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _a;
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
         if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
@@ -31,13 +31,16 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .send((0, errors_util_1.getErrorMessage)("User already has 20 habits."));
         }
         else {
+            var todayReq = new Date(Date.now());
+            var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate());
+            var upComingDay = new Date(todayReq.getFullYear() + 1, todayReq.getMonth(), todayReq.getDate());
             const newHabit = yield habit_model_1.default.create({
                 owner: req.user[0]._id,
                 name: req.body.name,
                 color: (_a = req.body.color) !== null && _a !== void 0 ? _a : "#968EB0",
                 sharedWith: req.body.friendList,
-                firstDate: (_b = req.body.firstDate) !== null && _b !== void 0 ? _b : "",
-                lastDate: (_c = req.body.lastDate) !== null && _c !== void 0 ? _c : "",
+                firstDate: req.body.firstDate ? req.body.firstDate : today,
+                lastDate: req.body.lastDate ? req.body.lastDate : upComingDay,
                 dates: [],
                 upcomingDates: [],
             });
@@ -47,7 +50,11 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield newHabit.updateOne({
                 $push: {
                     upcomingDates: [
-                        ...(yield (0, calculateUpcomingDates_1.default)(req && req.body && req.body.firstDate, req && req.body && req.body.lastDate, req && req.body && req.body.upcomingDates)),
+                        ...(yield (0, calculateUpcomingDates_1.default)(req && req.body && req.body.firstDate
+                            ? req.body.firstDate
+                            : today, req && req.body && req.body.lastDate
+                            ? req.body.lastDate
+                            : upComingDay, req && req.body && req.body.upcomingDates)),
                     ],
                 },
             });
