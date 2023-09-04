@@ -86,10 +86,10 @@ exports.getSingleHabit = getSingleHabit;
 const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield habit_model_1.default.findOneAndDelete({
-            _id: req.body._id,
+            _id: req.params.id,
         });
         yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
-            $pull: { habits: req.body._id },
+            $pull: { habits: req.params.id },
         }, { upsert: true });
         res.status(200).json("Habit deleted.");
     }

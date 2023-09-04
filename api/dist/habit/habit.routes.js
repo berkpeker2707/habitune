@@ -10,7 +10,7 @@ const habitRoutes = (0, express_1.Router)();
 habitRoutes.post("/new", verifyToken_1.default, habit_controllers_1.createHabit);
 habitRoutes.get("/all", verifyToken_1.default, habit_controllers_1.getAllHabits);
 habitRoutes.get("/single", verifyToken_1.default, habit_controllers_1.getSingleHabit);
-habitRoutes.delete("/delete", verifyToken_1.default, habit_controllers_1.deleteHabit);
+habitRoutes.delete("/delete/:id", verifyToken_1.default, habit_controllers_1.deleteHabit);
 habitRoutes.put("/update/name", verifyToken_1.default, habit_controllers_1.updateHabitName);
 habitRoutes.put("/update/color", verifyToken_1.default, habit_controllers_1.updateHabitColor);
 habitRoutes.put("/update/share", verifyToken_1.default, habit_controllers_1.updateHabitSharedWith);

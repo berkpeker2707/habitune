@@ -22,7 +22,7 @@ habitRoutes.get("/all", verifyToken, getAllHabits);
 
 habitRoutes.get("/single", verifyToken, getSingleHabit);
 
-habitRoutes.delete("/delete", verifyToken, deleteHabit);
+habitRoutes.delete("/delete/:id", verifyToken, deleteHabit);
 
 habitRoutes.put("/update/name", verifyToken, updateHabitName);
 

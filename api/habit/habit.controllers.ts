@@ -86,13 +86,13 @@ export const getSingleHabit = async (req: IReq | any, res: Response) => {
 export const deleteHabit = async (req: IReq | any, res: Response) => {
   try {
     await Habit.findOneAndDelete({
-      _id: req.body._id,
+      _id: req.params.id,
     });
 
     await User.findOneAndUpdate(
       { _id: req.user[0]._id },
       {
-        $pull: { habits: req.body._id },
+        $pull: { habits: req.params.id },
       },
       { upsert: true }
     );
