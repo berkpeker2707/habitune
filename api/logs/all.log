@@ -1135,3 +1135,98 @@
 [35m[39m
 2023-09-04 19:41:58:4158 [35mhttp[39m: [35mPOST /api/habit/new 200 242 - 722.331 ms[39m
 [35m[39m
+2023-09-04 20:03:06:36 [35mhttp[39m: [35mGET /api/habit/all 200 4741 - 282.291 ms[39m
+[35m[39m
+2023-09-05 14:40:36:4036 [35mhttp[39m: [35mGET /api/habit/all/today 200 2 - 2.342 ms[39m
+[35m[39m
+2023-09-05 14:40:38:4038 [35mhttp[39m: [35mGET /api/habit/all/today 200 2 - 0.590 ms[39m
+[35m[39m
+2023-09-05 14:40:42:4042 [35mhttp[39m: [35mGET /api/habit/all/today 200 4741 - 297.475 ms[39m
+[35m[39m
+2023-09-05 15:04:14:414 [35mhttp[39m: [35mGET /api/habit/all/today 200 4741 - 1026.346 ms[39m
+[35m[39m
+2023-09-05 15:06:06:66 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 290.603 ms[39m
+[35m[39m
+2023-09-05 15:20:55:2055 [31merror[39m: [31mallHabitsItem.some is not a function[39m
+2023-09-05 15:20:55:2055 [35mhttp[39m: [35mGET /api/habit/all/today 500 46 - 287.775 ms[39m
+[35m[39m
+2023-09-05 15:20:58:2058 [31merror[39m: [31mallHabitsItem.some is not a function[39m
+2023-09-05 15:20:58:2058 [35mhttp[39m: [35mGET /api/habit/all/today 500 46 - 279.727 ms[39m
+[35m[39m
+2023-09-05 15:21:28:2128 [31merror[39m: [31mallHabitsItem.some is not a function[39m
+2023-09-05 15:21:28:2128 [35mhttp[39m: [35mGET /api/habit/all/today 500 46 - 1545.893 ms[39m
+[35m[39m
+2023-09-05 15:21:30:2130 [31merror[39m: [31mallHabitsItem.some is not a function[39m
+2023-09-05 15:21:30:2130 [35mhttp[39m: [35mGET /api/habit/all/today 500 46 - 273.030 ms[39m
+[35m[39m
+2023-09-05 15:21:44:2144 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 2156.672 ms[39m
+[35m[39m
+2023-09-05 15:22:02:222 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 303.689 ms[39m
+[35m[39m
+2023-09-05 15:22:15:2215 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 302.947 ms[39m
+[35m[39m
+2023-09-05 15:22:46:2246 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 294.432 ms[39m
+[35m[39m
+2023-09-05 15:22:48:2248 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 279.554 ms[39m
+[35m[39m
+2023-09-05 15:23:16:2316 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 285.779 ms[39m
+[35m[39m
+2023-09-05 15:23:18:2318 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 271.033 ms[39m
+[35m[39m
+2023-09-05 15:25:05:255 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 285.659 ms[39m
+[35m[39m
+2023-09-05 15:25:09:259 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 273.156 ms[39m
+[35m[39m
+2023-09-05 15:25:24:2524 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 295.993 ms[39m
+[35m[39m
+2023-09-05 15:25:25:2525 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 267.517 ms[39m
+[35m[39m
+2023-09-05 15:32:13:3213 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 2266.703 ms[39m
+[35m[39m
+2023-09-05 15:32:26:3226 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 289.366 ms[39m
+[35m[39m
+2023-09-05 15:32:54:3254 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 286.497 ms[39m
+[35m[39m
+2023-09-05 15:33:00:330 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 272.561 ms[39m
+[35m[39m
+2023-09-05 15:33:12:3312 [31merror[39m: [31mCannot read properties of undefined (reading '0')[39m
+2023-09-05 15:33:12:3312 [35mhttp[39m: [35mGET /api/habit/all/today 500 59 - 282.070 ms[39m
+[35m[39m
+2023-09-05 15:33:17:3317 [31merror[39m: [31mCannot read properties of undefined (reading '0')[39m
+2023-09-05 15:33:17:3317 [35mhttp[39m: [35mGET /api/habit/all/today 500 59 - 269.324 ms[39m
+[35m[39m
+2023-09-05 15:33:28:3328 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 289.606 ms[39m
+[35m[39m
+2023-09-05 15:33:30:3330 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 275.131 ms[39m
+[35m[39m
+2023-09-05 15:34:27:3427 [31merror[39m: [31mCannot read properties of undefined (reading 'includes')[39m
+2023-09-05 15:34:27:3427 [35mhttp[39m: [35mGET /api/habit/all/today 500 66 - 983.984 ms[39m
+[35m[39m
+2023-09-05 15:34:29:3429 [31merror[39m: [31mCannot read properties of undefined (reading 'includes')[39m
+2023-09-05 15:34:29:3429 [35mhttp[39m: [35mGET /api/habit/all/today 500 66 - 268.645 ms[39m
+[35m[39m
+2023-09-05 15:36:42:3642 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 319.783 ms[39m
+[35m[39m
+2023-09-05 15:36:56:3656 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 448.440 ms[39m
+[35m[39m
+2023-09-05 15:37:28:3728 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 418.982 ms[39m
+[35m[39m
+2023-09-05 15:37:44:3744 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 417.962 ms[39m
+[35m[39m
+2023-09-05 15:41:53:4153 [31merror[39m: [31mCast to date failed for value "{ '$regex': 2023-09-05T00:00:00.000Z }" (type Object) at path "upcomingDates" for model "Habit"[39m
+2023-09-05 15:41:53:4153 [35mhttp[39m: [35mGET /api/habit/all/today 500 136 - 1030.999 ms[39m
+[35m[39m
+2023-09-05 15:42:10:4210 [31merror[39m: [31mCast to date failed for value "{ '$regex': '2023-09-05' }" (type Object) at path "upcomingDates" for model "Habit"[39m
+2023-09-05 15:42:10:4210 [35mhttp[39m: [35mGET /api/habit/all/today 500 124 - 292.645 ms[39m
+[35m[39m
+2023-09-05 15:43:51:4351 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 423.913 ms[39m
+[35m[39m
+2023-09-05 15:48:10:4810 [35mhttp[39m: [35mGET /api/habit/all/today 200 21 - 440.017 ms[39m
+[35m[39m
+2023-09-05 15:50:28:5028 [31merror[39m: [31mExpression $in takes exactly 2 arguments. 1 were passed in.[39m
+2023-09-05 15:50:28:5028 [35mhttp[39m: [35mGET /api/habit/all/today 500 69 - 283.448 ms[39m
+[35m[39m
+2023-09-05 15:50:52:5052 [35mhttp[39m: [35mGET /api/habit/all/today 200 10470 - 285.104 ms[39m
+[35m[39m
+2023-09-05 15:51:19:5119 [35mhttp[39m: [35mGET /api/habit/all 200 15210 - 273.047 ms[39m
+[35m[39m

@@ -88,6 +88,30 @@ export const getAllHabits = async (req: IReq | any, res: Response) => {
   }
 };
 
+export const getTodaysHabits = async (req: IReq | any, res: Response) => {
+  try {
+    const todayTemp = new Date();
+    const today = new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate()
+    );
+
+    const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
+    const loggedinUsersTodayHabits = await Habit.find({
+      owner: req.user[0]._id,
+      upcomingDates: { $in: [todayLocal] },
+    });
+
+    res.status(200).json(loggedinUsersTodayHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const getSingleHabit = async (req: IReq | any, res: Response) => {
   try {
     const selectedHabit = req.body.selectedHabit;
