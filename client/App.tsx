@@ -121,9 +121,9 @@ const HomeSection = () => {
   //date stuff ends
 
   var currentHabitDatesIncluded = useCallback(
-    allHabitsToday.map((allHabitsItem: any) =>
-      isInArray(allHabitsItem.dates, todayLocal)
-    ),
+    allHabitsToday.map((allHabitsItem: any) => {
+      return isInArray(allHabitsItem.dates, todayLocal);
+    }),
 
     [allHabitsToday, habitUpdated]
   );

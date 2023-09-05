@@ -1,12 +1,21 @@
 import * as React from "react";
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
-import { Text, View, TouchableOpacity, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import HabitBar from "../components/home/HabitBar";
 
 import { useAppDispatch } from "../state/store";
 
-import { updateHabitCompletedDateAction } from "../state/habitSlice";
+import {
+  fetchAllTodayHabitsAction,
+  updateHabitCompletedDateAction,
+} from "../state/habitSlice";
 
 import uuid from "react-native-uuid";
 
@@ -57,6 +66,17 @@ const Home = memo((props: any) => {
     }
   }, [props.navigation.getParent().getState().routes[0].params?.homeEditState]);
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTempBarFilled(() => [...currentHabitDatesIncluded]);
+    dispatch(fetchAllTodayHabitsAction());
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
     <View
       style={{
@@ -72,6 +92,9 @@ const Home = memo((props: any) => {
           style={{
             marginBottom: 85,
           }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <Text>Habits</Text>
           {allHabits?.map((item: any, index: any) => {
