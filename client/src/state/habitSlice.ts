@@ -15,6 +15,7 @@ interface habitTypes {
   error: string;
   isHabitUpdated: boolean;
   habitData: object;
+  habitsAllData: Array<Object>;
   habitsData: Array<Object>;
   createHabitData: object;
   deleteHabitData: object;
@@ -32,6 +33,7 @@ const initialState: habitTypes = {
   error: "",
   isHabitUpdated: false,
   habitData: {},
+  habitsAllData: [],
   habitsData: [],
   createHabitData: {},
   deleteHabitData: {},
@@ -97,6 +99,29 @@ export const fetchAllHabitsAction = createAsyncThunk(
     }
   }
 );
+
+export const fetchAllTodayHabitsAction = createAsyncThunk(
+  "habit/fetchAllTodayHabits",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.get(`/habit/all/today`, config);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const fetchHabitAction = createAsyncThunk(
   "habit/fetchSingleHabit",
   async (_, { rejectWithValue, getState, dispatch }) => {
@@ -345,9 +370,23 @@ const habitSlice = createSlice({
     builder.addCase(fetchAllHabitsAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitsData = action?.payload;
+      state.habitsAllData = action?.payload;
     });
     builder.addCase(fetchAllHabitsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //get all today habits reducer
+    builder.addCase(fetchAllTodayHabitsAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(fetchAllTodayHabitsAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.habitsData = action?.payload;
+    });
+    builder.addCase(fetchAllTodayHabitsAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.toString();
     });
@@ -499,6 +538,9 @@ export const selectCreateHabit = (state: any) => {
   return state.habit.habitData;
 };
 export const selectHabits = (state: any) => {
+  return state.habit.habitsAllData;
+};
+export const selectHabitsToday = (state: any) => {
   return state.habit.habitsData;
 };
 export const selectHabit = (state: any) => {

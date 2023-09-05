@@ -45,9 +45,11 @@ import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavba
 import { store, useAppDispatch, useSelector } from "./src/state/store";
 import {
   createHabitAction,
-  fetchAllHabitsAction,
+  // fetchAllHabitsAction,
+  fetchAllTodayHabitsAction,
   selectHabitUpdated,
-  selectHabits,
+  // selectHabits,
+  selectHabitsToday,
   selectHabitLoading,
   updateHabitNameAction,
   deleteHabitAction,
@@ -90,7 +92,7 @@ const HomeSection = () => {
   const dispatch = useAppDispatch();
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
-  const allHabits = useSelector(selectHabits);
+  const allHabitsToday = useSelector(selectHabitsToday);
 
   const userUpdated = useSelector(selectUserUpdated);
   const habitUpdated = useSelector(selectHabitUpdated);
@@ -119,11 +121,11 @@ const HomeSection = () => {
   //date stuff ends
 
   var currentHabitDatesIncluded = useCallback(
-    allHabits.map((allHabitsItem: any) =>
+    allHabitsToday.map((allHabitsItem: any) =>
       isInArray(allHabitsItem.dates, todayLocal)
     ),
 
-    [allHabits, habitUpdated]
+    [allHabitsToday, habitUpdated]
   );
 
   useFocusEffect(
@@ -138,7 +140,7 @@ const HomeSection = () => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(fetchAllHabitsAction());
+      dispatch(fetchAllTodayHabitsAction());
 
       return () => {
         controller.abort();
@@ -160,8 +162,8 @@ const HomeSection = () => {
             homeEditState={
               navigation.getState().routes[0].params?.homeEditState
             }
-            allHabits={allHabits}
-            allHabitsNumber={allHabits.length}
+            allHabits={allHabitsToday}
+            allHabitsNumber={allHabitsToday.length}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
