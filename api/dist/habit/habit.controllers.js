@@ -54,7 +54,9 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                             ? req.body.firstDate
                             : today, req && req.body && req.body.lastDate
                             ? req.body.lastDate
-                            : upComingDay, req && req.body && req.body.upcomingDates)),
+                            : upComingDay, req && req.body && req.body.upcomingDates
+                            ? req.body.upcomingDates
+                            : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])),
                     ],
                 },
             });

@@ -64,6 +64,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
                 ? req.body.lastDate
                 : upComingDay,
               req && req.body && req.body.upcomingDates
+                ? req.body.upcomingDates
+                : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             )),
           ],
         },
