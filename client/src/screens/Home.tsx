@@ -37,6 +37,10 @@ const Home = memo((props: any) => {
     ...currentHabitDatesIncluded,
   ]);
 
+  useEffect(() => {
+    setTempBarFilled(() => [...currentHabitDatesIncluded]);
+  }, [currentHabitDatesIncluded]);
+
   function handleHabitClicked(index: number) {
     const newHabitArray = tempBarFilled.map((nH, i) => {
       if (i === index) {
@@ -102,11 +106,6 @@ const Home = memo((props: any) => {
               <TouchableOpacity
                 key={uuid.v4() as string}
                 onPress={() => {
-                  // console.log(
-                  //   "🚀 ~ file: Home.tsx:851 ~ Home ~ item._id:",
-                  //   item._id
-                  // );
-
                   dispatch(
                     updateHabitCompletedDateAction({
                       _id: item._id,
