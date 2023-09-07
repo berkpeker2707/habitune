@@ -131,7 +131,7 @@ const StreakGraph = (props: any) => {
             editable={false}
             selectTextOnFocus={false}
           >
-            Top Streaks 🔥
+            Streaks 🔥
           </TextInput>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => {
             return (
