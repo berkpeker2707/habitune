@@ -110,7 +110,7 @@ const StreakGraph = (props: any) => {
     <View
       style={{
         display: "flex",
-        height: "100%",
+        // height: "100%",
         backgroundColor: "#FFFFFF",
         justifyContent: "flex-start",
         alignItems: "center",
@@ -180,8 +180,20 @@ const StreakGraph = (props: any) => {
           )
             .fill(0)
             .map((_, i) => (
-              <SkeletonPlaceholder key={i} />
+              <SkeletonPlaceholder
+                key={i}
+                colorMode={"light"}
+                width={345}
+                height={39.5}
+                radius={0}
+              />
             ))}
+          <SkeletonPlaceholder
+            colorMode={"light"}
+            width={345}
+            height={29.5}
+            radius={0}
+          />
         </ScrollView>
       ) : (
         <ScrollView
