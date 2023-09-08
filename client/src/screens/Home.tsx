@@ -157,7 +157,13 @@ const Home = memo((props: any) => {
           {Array(allHabitsNumber)
             .fill(0)
             .map((_, i) => (
-              <SkeletonPlaceholder key={i} />
+              <SkeletonPlaceholder
+                key={i}
+                colorMode={"light"}
+                width={372}
+                height={48}
+                radius={20}
+              />
             ))}
         </ScrollView>
       ) : (
