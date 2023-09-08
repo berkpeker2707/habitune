@@ -5,6 +5,7 @@ import FriendBar from "./FriendBar";
 import { useEffect, useState } from "react";
 
 const FriendList = (props: any) => {
+  const { currentUser } = props;
   const [shareWithFriendList, setShareWithFriendList] = useState<String[]>([]);
 
   //updating params if shareWithFriendList changes starts
@@ -23,24 +24,35 @@ const FriendList = (props: any) => {
           height: 49 * (5 + 1),
         }}
       >
-        <TouchableOpacity
-          onPress={() =>
-            shareWithFriendList.includes("tempId")
-              ? setShareWithFriendList(() =>
-                  shareWithFriendList.filter((item) => item !== "tempId")
-                )
-              : setShareWithFriendList((prevState) => [...prevState, "tempId"])
-          }
-        >
-          <FriendBar
-            friendProfilePicture={"https://i.pravatar.cc/300"}
-            friendName={"İrem"}
-            barPositionLevel={49 * 0}
-            friendSelected={
-              shareWithFriendList.includes("tempId") ? true : false
-            }
-          />
-        </TouchableOpacity>
+        {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                shareWithFriendList.includes(friendsItem.friend._id)
+                  ? setShareWithFriendList(() =>
+                      shareWithFriendList.filter(
+                        (item) => item !== friendsItem.friend._id
+                      )
+                    )
+                  : setShareWithFriendList((prevState) => [
+                      ...prevState,
+                      friendsItem.friend._id,
+                    ])
+              }
+            >
+              <FriendBar
+                friendProfilePicture={friendsItem.friend.image}
+                friendName={friendsItem.friend.firstName}
+                barPositionLevel={49 * friendsIndex}
+                friendSelected={
+                  shareWithFriendList.includes(friendsItem.friend._id)
+                    ? true
+                    : false
+                }
+              />
+            </TouchableOpacity>
+          );
+        })}
         {/* <FriendBar
           friendProfilePicture={"https://i.pravatar.cc/300"}
           friendName={"Tuğçe"}

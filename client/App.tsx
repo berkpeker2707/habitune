@@ -438,9 +438,25 @@ const HomeSection = () => {
 };
 
 const AddSection = () => {
+  const navigation = useNavigation<generalScreenProp>();
+
+  const controller = new AbortController();
+
   const dispatch = useAppDispatch();
 
-  const navigation = useNavigation<generalScreenProp>();
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+
+  const userUpdated = useSelector(selectUserUpdated);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchCurrentUserProfileAction());
+
+      return () => {
+        controller.abort();
+      };
+    }, [userUpdated])
+  );
 
   return (
     <StackNavigator.Navigator
@@ -450,7 +466,7 @@ const AddSection = () => {
     >
       <StackNavigator.Screen
         name="Add"
-        component={Add}
+        children={(props: any) => <Add {...props} currentUser={currentUser} />}
         options={{
           headerTitle: "New Habit",
           headerLeft: () => (
