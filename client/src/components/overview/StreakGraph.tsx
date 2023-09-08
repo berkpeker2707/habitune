@@ -9,6 +9,7 @@ import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
 
 const StreakGraph = (props: any) => {
   const { allHabits, habitUpdated, habitLoading } = props;
+
   //date stuff starts
   const todayTemp = new Date();
   const today = new Date(
