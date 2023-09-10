@@ -4,17 +4,22 @@ import { RootState } from "./store";
 
 // var api_url: string;
 // if (__DEV__) {
-//   api_url = "http://192.168.1.33:1111/api";
+//   api_url = "http://192.168.1.37:1111/api";
 // } else {
-//   api_url = "https://habitune.vercel.app/api";
+//   api_url = "https://www.habitune.net/api";
 // }
 
 interface habitTypes {
+  token: string;
   loading: boolean;
   error: string;
   isHabitUpdated: boolean;
+  habitData: object;
+  habitsAllData: Array<Object>;
+  habitsData: Array<Object>;
   createHabitData: object;
   deleteHabitData: object;
+  updateHabitNameData: object;
   updateHabitColorData: object;
   updateHabitSharedWithData: object;
   updateHabitFirstAndLastDateData: object;
@@ -23,11 +28,16 @@ interface habitTypes {
 }
 
 const initialState: habitTypes = {
+  token: "",
   loading: false,
   error: "",
   isHabitUpdated: false,
+  habitData: {},
+  habitsAllData: [],
+  habitsData: [],
   createHabitData: {},
   deleteHabitData: {},
+  updateHabitNameData: {},
   updateHabitColorData: {},
   updateHabitSharedWithData: {},
   updateHabitFirstAndLastDateData: {},
@@ -37,19 +47,19 @@ const initialState: habitTypes = {
 
 const axiosInstance = axios.create({
   // baseURL: "http://192.168.1.33:1111/api",
-  baseURL: "https://habitune.vercel.app/api",
+  baseURL: "https://www.habitune.net/api",
 });
 
 const updatedHabit = createAction("habit/update");
 
 export const createHabitAction = createAsyncThunk(
   "habit/createHabit",
-  async (createHabitPayload, { rejectWithValue, getState, dispatch }) => {
+  async (createHabitPayload: any, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
@@ -58,6 +68,74 @@ export const createHabitAction = createAsyncThunk(
         createHabitPayload,
         config
       );
+
+      dispatch(updatedHabit());
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchAllHabitsAction = createAsyncThunk(
+  "habit/fetchAllHabits",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.get(`/habit/all`, config);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchAllTodayHabitsAction = createAsyncThunk(
+  "habit/fetchAllTodayHabits",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.get(`/habit/all/today`, config);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchHabitAction = createAsyncThunk(
+  "habit/fetchSingleHabit",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.get(`/habit/single`, config);
 
       return data;
     } catch (error) {
@@ -68,20 +146,54 @@ export const createHabitAction = createAsyncThunk(
 
 export const deleteHabitAction = createAsyncThunk(
   "habit/deleteHabit",
-  async (deleteHabitPayload, { rejectWithValue, getState, dispatch }) => {
+  async (
+    deleteHabitPayload: { _id: any },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.delete(
+        `/habit/delete/${deleteHabitPayload._id}`,
+        config
+      );
+
+      dispatch(updatedHabit());
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateHabitNameAction = createAsyncThunk(
+  "habit/updateHabitName",
+  async (
+    updateHabitNamePayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //get user token
+    const auth = (getState() as RootState).user.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
-      const { data } = await axiosInstance.delete(
-        `/habit/delete`,
-        // deleteHabitPayload,
+      const { data } = await axiosInstance.put(
+        `/habit/update/name`,
+        updateHabitNamePayload,
         config
       );
+
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -94,10 +206,10 @@ export const updateHabitColorAction = createAsyncThunk(
   "habit/updateHabitColor",
   async (updateHabitColorPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
@@ -106,6 +218,8 @@ export const updateHabitColorAction = createAsyncThunk(
         updateHabitColorPayload,
         config
       );
+
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -118,10 +232,10 @@ export const updateHabitSharedWithAction = createAsyncThunk(
   "habit/updateHabitSharedWith",
   async (updateHabitSharedPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
@@ -130,6 +244,8 @@ export const updateHabitSharedWithAction = createAsyncThunk(
         updateHabitSharedPayload,
         config
       );
+
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -145,10 +261,10 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
@@ -157,6 +273,8 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
         updateHabitFirstAndLastDatePayload,
         config
       );
+
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -169,10 +287,10 @@ export const updateHabitDatesAction = createAsyncThunk(
   "habit/updateHabitDates",
   async (updateHabitDatesPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
@@ -181,6 +299,8 @@ export const updateHabitDatesAction = createAsyncThunk(
         updateHabitDatesPayload,
         config
       );
+
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -192,14 +312,14 @@ export const updateHabitDatesAction = createAsyncThunk(
 export const updateHabitCompletedDateAction = createAsyncThunk(
   "habit/updateHabitCompletedDate",
   async (
-    updateHabitCompletedDatePayload,
+    updateHabitCompletedDatePayload: {},
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = (getState() as RootState).user;
+    const auth = (getState() as RootState).user.token;
     const config = {
       headers: {
-        Authorization: `Bearer ${auth?.token}`,
+        Authorization: `Bearer ${auth}`,
       },
     };
     try {
@@ -208,6 +328,8 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
         updateHabitCompletedDatePayload,
         config
       );
+
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -233,9 +355,52 @@ const habitSlice = createSlice({
     builder.addCase(createHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.createHabitData = action?.payload;
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
     });
     builder.addCase(createHabitAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //get all habits reducer
+    builder.addCase(fetchAllHabitsAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(fetchAllHabitsAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.habitsAllData = action?.payload;
+    });
+    builder.addCase(fetchAllHabitsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //get all today habits reducer
+    builder.addCase(fetchAllTodayHabitsAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(fetchAllTodayHabitsAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.habitsData = action?.payload;
+    });
+    builder.addCase(fetchAllTodayHabitsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //get single habit reducer
+    builder.addCase(fetchHabitAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(fetchHabitAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.habitData = action?.payload;
+    });
+    builder.addCase(fetchHabitAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.toString();
     });
@@ -247,9 +412,25 @@ const habitSlice = createSlice({
     builder.addCase(deleteHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.deleteHabitData = action?.payload;
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
     });
     builder.addCase(deleteHabitAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //update habit name reducer
+    builder.addCase(updateHabitNameAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(updateHabitNameAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
+    });
+    builder.addCase(updateHabitNameAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.toString();
     });
@@ -261,7 +442,8 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitColorAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.updateHabitColorData = action?.payload;
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitColorAction.rejected, (state, action) => {
       state.loading = false;
@@ -275,7 +457,8 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitSharedWithAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.updateHabitSharedWithData = action?.payload;
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitSharedWithAction.rejected, (state, action) => {
       state.loading = false;
@@ -291,7 +474,8 @@ const habitSlice = createSlice({
       (state, action) => {
         state.loading = false;
         state.error = "";
-        state.updateHabitFirstAndLastDateData = action?.payload;
+        state.habitData = action?.payload;
+        state.isHabitUpdated = false;
       }
     );
     builder.addCase(
@@ -309,7 +493,8 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitDatesAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.updateHabitDatesData = action?.payload;
+      state.habitData = action?.payload;
+      state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitDatesAction.rejected, (state, action) => {
       state.loading = false;
@@ -325,7 +510,8 @@ const habitSlice = createSlice({
       (state, action) => {
         state.loading = false;
         state.error = "";
-        state.updateHabitCompletedDateData = action?.payload;
+        state.habitData = action?.payload;
+        state.isHabitUpdated = false;
       }
     );
     builder.addCase(
@@ -338,26 +524,55 @@ const habitSlice = createSlice({
   },
 });
 
-export const selectPostLoading = (state: any) => state.habit.loading;
-export const selectPostError = (state: any) => state.habit.error;
-export const selectCreateHabit = (state: any) => state.habit.createHabitData;
+export const selectHabitLoading = (state: any) => {
+  return state.habit.loading;
+};
+export const selectPostError = (state: any) => {
+  return state.habit.error;
+};
+export const selectHabitUpdated = (state: any) => {
+  return state.habit.isHabitUpdated;
+};
+export const selectCreateHabit = (state: any) => {
+  // return state.habit.createHabitData;
+  return state.habit.habitData;
+};
+export const selectHabits = (state: any) => {
+  return state.habit.habitsAllData;
+};
+export const selectHabitsToday = (state: any) => {
+  return state.habit.habitsData;
+};
+export const selectHabit = (state: any) => {
+  return state.habit.habitData;
+};
 export const selectDeleteHabit = (state: any) => {
-  return state.habit.deleteHabitData;
+  // return state.habit.deleteHabitData;
+  return state.habit.habitData;
+};
+export const selectUpdateHabitName = (state: any) => {
+  // return state.habit.updateHabitNameData;
+  return state.habit.habitData;
 };
 export const selectUpdateHabitColor = (state: any) => {
-  return state.habit.updateHabitColorData;
+  // return state.habit.updateHabitColorData;
+  return state.habit.habitData;
 };
 export const selectUpdateHabitSharedWith = (state: any) => {
-  return state.habit.updateHabitSharedWithData;
+  // return state.habit.updateHabitSharedWithData;
+  return state.habit.habitData;
 };
 export const selectUpdateHabitFirstAndLastDate = (state: any) => {
-  return state.habit.updateHabitFirstAndLastDateData;
+  // return state.habit.updateHabitFirstAndLastDateData;
+  return state.habit.habitData;
 };
 export const selectUpdateHabitDates = (state: any) => {
-  return state.habit.updateHabitDatesData;
+  // return state.habit.updateHabitDatesData;
+  return state.habit.habitData;
 };
 export const selectUpdateHabitCompletedDate = (state: any) => {
-  return state.habit.updateHabitCompletedDateData;
+  // return state.habit.updateHabitCompletedDateData;
+  return state.habit.habitData;
 };
 
 export default habitSlice.reducer;

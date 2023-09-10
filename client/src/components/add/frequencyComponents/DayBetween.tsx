@@ -24,8 +24,16 @@ const DayBetween = (props: any) => {
   const onConfirm = useCallback(
     ({ startDate, endDate }: { startDate: any; endDate: any }) => {
       setOpen(false);
-      setTaskFirstDate(() => startDate);
-      setTaskLastDate(() => endDate);
+      setTaskFirstDate(
+        () =>
+          new Date(
+            startDate?.getTime() - startDate?.getTimezoneOffset() * 60000
+          )
+      );
+      setTaskLastDate(
+        () =>
+          new Date(endDate?.getTime() - endDate?.getTimezoneOffset() * 60000)
+      );
     },
     [setOpen, taskFirstDate, taskLastDate]
   );

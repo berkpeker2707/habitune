@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.deleteHabit = exports.createHabit = void 0;
+exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.updateHabitName = exports.deleteHabit = exports.getSingleHabit = exports.getTodaysHabits = exports.getAllHabits = exports.createHabit = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const habit_model_1 = __importDefault(require("./habit.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
@@ -21,7 +21,7 @@ const logger_1 = __importDefault(require("../middlewares/logger"));
 const calculateUpcomingDates_1 = __importDefault(require("../middlewares/calculateUpcomingDates"));
 dotenv_1.default.config();
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a;
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
         if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
@@ -31,13 +31,16 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .send((0, errors_util_1.getErrorMessage)("User already has 20 habits."));
         }
         else {
+            var todayReq = new Date(Date.now());
+            var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate());
+            var upComingDay = new Date(todayReq.getFullYear() + 1, todayReq.getMonth(), todayReq.getDate());
             const newHabit = yield habit_model_1.default.create({
                 owner: req.user[0]._id,
                 name: req.body.name,
-                color: "",
-                sharedWith: [],
-                firstDate: (_a = req.body.firstDate) !== null && _a !== void 0 ? _a : "",
-                lastDate: (_b = req.body.lastDate) !== null && _b !== void 0 ? _b : "",
+                color: (_a = req.body.color) !== null && _a !== void 0 ? _a : "#968EB0",
+                sharedWith: req.body.friendList,
+                firstDate: req.body.firstDate ? req.body.firstDate : today,
+                lastDate: req.body.lastDate ? req.body.lastDate : upComingDay,
                 dates: [],
                 upcomingDates: [],
             });
@@ -47,7 +50,13 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield newHabit.updateOne({
                 $push: {
                     upcomingDates: [
-                        ...(yield (0, calculateUpcomingDates_1.default)(req && req.body && req.body.firstDate, req && req.body && req.body.lastDate, req && req.body && req.body.upcomingDates)),
+                        ...(yield (0, calculateUpcomingDates_1.default)(req && req.body && req.body.firstDate
+                            ? req.body.firstDate
+                            : today, req && req.body && req.body.lastDate
+                            ? req.body.lastDate
+                            : upComingDay, req && req.body && req.body.upcomingDates
+                            ? req.body.upcomingDates
+                            : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])),
                     ],
                 },
             });
@@ -60,13 +69,54 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.createHabit = createHabit;
+const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.user[0]._id });
+        res.status(200).json(loggedinUsersHabits);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getAllHabits = getAllHabits;
+const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const todayTemp = new Date();
+        const today = new Date(todayTemp.getFullYear(), todayTemp.getMonth(), todayTemp.getDate());
+        const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+        const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+        const loggedinUsersTodayHabits = yield habit_model_1.default.find({
+            owner: req.user[0]._id,
+            upcomingDates: { $in: [todayLocal] },
+        });
+        res.status(200).json(loggedinUsersTodayHabits);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getTodaysHabits = getTodaysHabits;
+const getSingleHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const selectedHabit = req.body.selectedHabit;
+        const loggedinUsersHabits = yield habit_model_1.default.findById(selectedHabit);
+        res.status(200).json(loggedinUsersHabits);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getSingleHabit = getSingleHabit;
 const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield habit_model_1.default.findOneAndDelete({
-            _id: req.body._id,
+            _id: req.params.id,
         });
         yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
-            $pull: { habits: req.body._id },
+            $pull: { habits: req.params.id },
         }, { upsert: true });
         res.status(200).json("Habit deleted.");
     }
@@ -76,6 +126,19 @@ const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.deleteHabit = deleteHabit;
+const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
+            $set: { name: req.body.name },
+        }, { new: true });
+        res.status(200).json(selectedHabit);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.updateHabitName = updateHabitName;
 const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {

@@ -7,6 +7,8 @@ import Share from "../components/add/shareComponents/Share";
 import Color from "../components/add/Color";
 
 const Add = (props: any) => {
+  const { currentUser } = props;
+
   return (
     <View
       style={{
@@ -25,7 +27,7 @@ const Add = (props: any) => {
         <Text>Add</Text>
         <TaskName navigation={props.navigation} />
         <Frequency navigation={props.navigation} />
-        <Share navigation={props.navigation} />
+        <Share navigation={props.navigation} currentUser={currentUser} />
         {/* <Reminder /> */}
         <Color navigation={props.navigation} />
       </ScrollView>

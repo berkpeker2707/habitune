@@ -21,13 +21,26 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .status(500)
         .send(getErrorMessage("User already has 20 habits."));
     } else {
+      var todayReq = new Date(Date.now());
+      var today = new Date(
+        todayReq.getFullYear(),
+        todayReq.getMonth(),
+        todayReq.getDate()
+      );
+
+      var upComingDay = new Date(
+        todayReq.getFullYear() + 1,
+        todayReq.getMonth(),
+        todayReq.getDate()
+      );
+
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
         name: req.body.name,
-        color: "",
-        sharedWith: [],
-        firstDate: req.body.firstDate ?? "",
-        lastDate: req.body.lastDate ?? "",
+        color: req.body.color ?? "#968EB0",
+        sharedWith: req.body.friendList,
+        firstDate: req.body.firstDate ? req.body.firstDate : today,
+        lastDate: req.body.lastDate ? req.body.lastDate : upComingDay,
         dates: [],
         upcomingDates: [],
       });
@@ -44,9 +57,15 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         $push: {
           upcomingDates: [
             ...(await calculateUpcomingDates(
-              req && req.body && req.body.firstDate,
-              req && req.body && req.body.lastDate,
+              req && req.body && req.body.firstDate
+                ? req.body.firstDate
+                : today,
+              req && req.body && req.body.lastDate
+                ? req.body.lastDate
+                : upComingDay,
               req && req.body && req.body.upcomingDates
+                ? req.body.upcomingDates
+                : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
             )),
           ],
         },
@@ -60,21 +79,85 @@ export const createHabit = async (req: IReq | any, res: Response) => {
   }
 };
 
+export const getAllHabits = async (req: IReq | any, res: Response) => {
+  try {
+    const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id });
+
+    res.status(200).json(loggedinUsersHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const getTodaysHabits = async (req: IReq | any, res: Response) => {
+  try {
+    const todayTemp = new Date();
+    const today = new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate()
+    );
+
+    const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
+    const loggedinUsersTodayHabits = await Habit.find({
+      owner: req.user[0]._id,
+      upcomingDates: { $in: [todayLocal] },
+    });
+
+    res.status(200).json(loggedinUsersTodayHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const getSingleHabit = async (req: IReq | any, res: Response) => {
+  try {
+    const selectedHabit = req.body.selectedHabit;
+    const loggedinUsersHabits = await Habit.findById(selectedHabit);
+
+    res.status(200).json(loggedinUsersHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const deleteHabit = async (req: IReq | any, res: Response) => {
   try {
     await Habit.findOneAndDelete({
-      _id: req.body._id,
+      _id: req.params.id,
     });
 
     await User.findOneAndUpdate(
       { _id: req.user[0]._id },
       {
-        $pull: { habits: req.body._id },
+        $pull: { habits: req.params.id },
       },
       { upsert: true }
     );
 
     res.status(200).json("Habit deleted.");
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const updateHabitName = async (req: IReq | any, res: Response) => {
+  try {
+    const selectedHabit = await Habit.findByIdAndUpdate(
+      req.body._id,
+      {
+        $set: { name: req.body.name },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(selectedHabit);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));

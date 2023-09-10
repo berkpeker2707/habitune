@@ -22,6 +22,7 @@ const HabitUndone = memo((props: any) => {
       name: text,
     });
   }, [text]);
+
   return (
     <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
       {!nameChangable ? (

@@ -246,10 +246,18 @@ const userSlice = createSlice({
   },
 });
 
-export const selectUserLoading = (state: any) => state.user.loading;
-export const selectUserError = (state: any) => state.user.error;
-export const selectUserUpdated = (state: any) => state.user.isUserUpdated;
-export const selectSignInWithGoogle = (state: any) => state.user.token;
+export const selectUserLoading = (state: any) => {
+  return state.user.loading;
+};
+export const selectUserError = (state: any) => {
+  return state.user.error;
+};
+export const selectUserUpdated = (state: any) => {
+  return state.user.isUserUpdated;
+};
+export const selectSignInWithGoogle = (state: any) => {
+  return state.user.token;
+};
 export const selectFetchCurrentUserProfile = (state: any) => {
   return state.user.currentUserData;
 };

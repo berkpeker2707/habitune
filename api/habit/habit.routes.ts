@@ -1,7 +1,11 @@
 import { Router } from "express";
 import {
   createHabit,
+  getAllHabits,
+  getTodaysHabits,
+  getSingleHabit,
   deleteHabit,
+  updateHabitName,
   updateHabitColor,
   updateHabitSharedWith,
   updateHabitFirstAndLastDate,
@@ -13,9 +17,17 @@ import verifyToken from "../middlewares/verifyToken";
 
 const habitRoutes = Router();
 
-habitRoutes.get("/new", verifyToken, createHabit);
+habitRoutes.post("/new", verifyToken, createHabit);
 
-habitRoutes.delete("/delete", verifyToken, deleteHabit);
+habitRoutes.get("/all", verifyToken, getAllHabits);
+
+habitRoutes.get("/all/today", verifyToken, getTodaysHabits);
+
+habitRoutes.get("/single", verifyToken, getSingleHabit);
+
+habitRoutes.delete("/delete/:id", verifyToken, deleteHabit);
+
+habitRoutes.put("/update/name", verifyToken, updateHabitName);
 
 habitRoutes.put("/update/color", verifyToken, updateHabitColor);
 

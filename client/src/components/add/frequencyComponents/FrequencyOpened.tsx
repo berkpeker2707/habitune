@@ -26,13 +26,13 @@ const FrequencyOpened = memo((props: any) => {
   //getting data from component and updating params if date between changes starts
   const sendDayBetweenState = (
     taskFirstDate: string,
-    taskLastDate: string,
-    taskUpcomingDates: String[]
+    taskLastDate: string
+    // taskUpcomingDates: String[]
   ) => {
     props.navigation.setParams({
       firstDate: Date.parse(taskFirstDate),
       lastDate: Date.parse(taskLastDate),
-      upcomingDates: taskUpcomingDates,
+      // upcomingDates: taskUpcomingDates,
     });
   };
   //getting data from component and updating params if date between changes ends
