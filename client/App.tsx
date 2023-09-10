@@ -58,12 +58,13 @@ import {
   fetchCurrentUserProfileAction,
   selectFetchCurrentUserProfile,
   selectSignInWithGoogle,
+  selectUserLoading,
   selectUserUpdated,
 } from "./src/state/userSlice";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -677,12 +678,20 @@ const AppWrapper = () => {
 };
 
 const App = () => {
+  // const controller = new AbortController();
+
+  // const dispatch = useAppDispatch();
+
+  // const userLoading = useSelector(selectUserLoading);
+
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+
   const token = useSelector(selectSignInWithGoogle);
 
   return (
     <NavigationContainer>
       <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-        {!token ? (
+        {!token && currentUser ? (
           <BottomTabNav.Screen
             name="Signin"
             component={Signin}
