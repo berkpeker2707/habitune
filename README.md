@@ -3,6 +3,12 @@
 ## APP PREVIEW
 
 <details>
+  <summary>Login</summary>
+  
+  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/f519ca61-4f0e-4381-8704-33ba23324af9" width="400" title="Home">
+  
+</details>
+<details>
   <summary>Home</summary>
   
   <img src="https://github.com/berkpeker2707/habitune/assets/15816386/3dfa7f49-3de3-490f-8acd-f363031859a7" width="400" title="Home">
@@ -12,12 +18,6 @@
   <summary>Home Edit</summary>
   
   <img src="https://github.com/berkpeker2707/habitune/assets/15816386/e1b426b4-8fe9-48a9-8d36-9ff668cb824d" width="400" title="Home">
-  
-</details>
-<details>
-  <summary>Login</summary>
-  
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/f519ca61-4f0e-4381-8704-33ba23324af9" width="400" title="Home">
   
 </details>
 <details>
