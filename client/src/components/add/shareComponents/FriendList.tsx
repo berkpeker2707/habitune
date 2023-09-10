@@ -4,6 +4,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import FriendBar from "./FriendBar";
 import { useEffect, useState } from "react";
 
+import uuid from "react-native-uuid";
+
 const FriendList = (props: any) => {
   const { currentUser } = props;
   const [shareWithFriendList, setShareWithFriendList] = useState<String[]>([]);
@@ -27,6 +29,7 @@ const FriendList = (props: any) => {
         {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
           return (
             <TouchableOpacity
+              key={uuid.v4() as string}
               onPress={() =>
                 shareWithFriendList.includes(friendsItem.friend._id)
                   ? setShareWithFriendList(() =>
