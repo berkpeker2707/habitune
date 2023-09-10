@@ -4,6 +4,8 @@ import ShareWithNumber from "./ShareWithNumber";
 import FriendList from "./FriendList";
 
 const ShareOpened = (props: any) => {
+  const { currentUser } = props;
+
   return (
     <>
       <View
@@ -18,7 +20,7 @@ const ShareOpened = (props: any) => {
         }}
       >
         <ShareWithNumber shareWithNum={1} />
-        <FriendList navigation={props.navigation} />
+        <FriendList navigation={props.navigation} currentUser={currentUser} />
       </View>
     </>
   );

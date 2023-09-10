@@ -5,6 +5,7 @@ import ShareWithPurpleIcon from "./ShareWithPurpleIcon";
 import ShareOpened from "./ShareOpened";
 
 const Share = (props: any) => {
+  const { currentUser } = props;
   const [openShare, setOpenShare] = useState(false);
   return (
     <>
@@ -18,7 +19,7 @@ const Share = (props: any) => {
           <ShareWithPurpleIcon textInputTitle={"Share With Your Friends"} />
         </TouchableOpacity>
       ) : (
-        <ShareOpened navigation={props.navigation} />
+        <ShareOpened navigation={props.navigation} currentUser={currentUser} />
       )}
     </>
   );

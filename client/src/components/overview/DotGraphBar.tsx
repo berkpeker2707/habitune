@@ -1,9 +1,10 @@
 import * as React from "react";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { View, Text } from "react-native";
 
 const DotGraphBar = memo((props: any) => {
-  const { name, color } = props;
+  const { name, color, allHabitDatesDots } = props;
+
   return (
     <View
       style={{
@@ -21,7 +22,7 @@ const DotGraphBar = memo((props: any) => {
       <View
         style={{
           position: "absolute",
-          height: 34,
+          height: 36,
           width: 300,
           left: 7,
           top: 20,
@@ -56,7 +57,7 @@ const DotGraphBar = memo((props: any) => {
             fontStyle: "normal",
           }}
         >
-          1
+          T
         </Text>
       </View>
       <View
@@ -67,7 +68,9 @@ const DotGraphBar = memo((props: any) => {
           left: 167,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor: allHabitDatesDots[0] ? color : "#FFF",
+          borderColor: color,
+          borderWidth: 1,
         }}
       ></View>
       <View
@@ -76,6 +79,40 @@ const DotGraphBar = memo((props: any) => {
           height: 18,
           width: 18,
           left: 193,
+          top: 2,
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            textAlign: "center",
+            fontSize: 16,
+            color: "#444",
+            fontStyle: "normal",
+          }}
+        >
+          1
+        </Text>
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          height: 18,
+          width: 18,
+          left: 193,
+          top: 29,
+          borderRadius: 15,
+          backgroundColor: allHabitDatesDots[1] ? color : "#FFF",
+          borderColor: color,
+          borderWidth: 1,
+        }}
+      ></View>
+      <View
+        style={{
+          position: "absolute",
+          height: 18,
+          width: 18,
+          left: 219,
           top: 2,
           justifyContent: "center",
         }}
@@ -96,10 +133,10 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 193,
+          left: 219,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor: allHabitDatesDots[2] ? color : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -109,7 +146,7 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 219,
+          left: 245,
           top: 2,
           justifyContent: "center",
         }}
@@ -130,10 +167,10 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 219,
+          left: 245,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor: allHabitDatesDots[3] ? color : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -143,7 +180,7 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 245,
+          left: 271,
           top: 2,
           justifyContent: "center",
         }}
@@ -164,10 +201,10 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 245,
+          left: 271,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor: allHabitDatesDots[4] ? color : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -177,7 +214,7 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 271,
+          left: 297,
           top: 2,
           justifyContent: "center",
         }}
@@ -198,10 +235,10 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 271,
+          left: 297,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor: allHabitDatesDots[5] ? color : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -211,7 +248,7 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 297,
+          left: 323,
           top: 2,
           justifyContent: "center",
         }}
@@ -232,44 +269,10 @@ const DotGraphBar = memo((props: any) => {
           position: "absolute",
           height: 18,
           width: 18,
-          left: 297,
-          top: 29,
-          borderRadius: 15,
-          backgroundColor: color,
-          borderColor: color,
-          borderWidth: 1,
-        }}
-      ></View>
-      <View
-        style={{
-          position: "absolute",
-          height: 18,
-          width: 18,
-          left: 323,
-          top: 2,
-          justifyContent: "center",
-        }}
-      >
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 16,
-            color: "#444",
-            fontStyle: "normal",
-          }}
-        >
-          7
-        </Text>
-      </View>
-      <View
-        style={{
-          position: "absolute",
-          height: 18,
-          width: 18,
           left: 323,
           top: 29,
           borderRadius: 15,
-          backgroundColor: "#FFF",
+          backgroundColor: allHabitDatesDots[6] ? color : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}

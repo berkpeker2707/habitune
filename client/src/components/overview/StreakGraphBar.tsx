@@ -4,15 +4,15 @@ import { View, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 const StreakGraphBar = memo((props: any) => {
-  const { name, color } = props;
-  return (
+  const { name, color, currentHabitWeekStreak } = props;
+
+  return currentHabitWeekStreak !== 0 ? (
     <View
       style={{
         width: 345,
         height: 39.5,
         paddingLeft: 20,
         marginBottom: 20,
-
         borderTopWidth: 0.5,
         // borderBottomWidth: 0.5,
         borderTopColor: "#968EB0",
@@ -74,7 +74,7 @@ const StreakGraphBar = memo((props: any) => {
             color: "#444",
           }}
         >
-          33
+          {currentHabitWeekStreak}
         </Text>
       </View>
       <View
@@ -85,7 +85,12 @@ const StreakGraphBar = memo((props: any) => {
           left: 109,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor:
+            currentHabitWeekStreak === 1 || currentHabitWeekStreak > 1
+              ? color
+              : "#FFF",
+          borderColor: color,
+          borderWidth: 1,
         }}
       ></View>
       <View
@@ -96,7 +101,10 @@ const StreakGraphBar = memo((props: any) => {
           left: 137,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor:
+            currentHabitWeekStreak === 2 || currentHabitWeekStreak > 2
+              ? color
+              : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -109,7 +117,10 @@ const StreakGraphBar = memo((props: any) => {
           left: 165,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor:
+            currentHabitWeekStreak === 3 || currentHabitWeekStreak > 3
+              ? color
+              : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -122,7 +133,10 @@ const StreakGraphBar = memo((props: any) => {
           left: 193,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor:
+            currentHabitWeekStreak === 4 || currentHabitWeekStreak > 4
+              ? color
+              : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -135,7 +149,10 @@ const StreakGraphBar = memo((props: any) => {
           left: 221,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor:
+            currentHabitWeekStreak === 5 || currentHabitWeekStreak > 5
+              ? color
+              : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -148,7 +165,10 @@ const StreakGraphBar = memo((props: any) => {
           left: 249,
           top: 29,
           borderRadius: 15,
-          backgroundColor: color,
+          backgroundColor:
+            currentHabitWeekStreak === 6 || currentHabitWeekStreak > 6
+              ? color
+              : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
@@ -161,12 +181,17 @@ const StreakGraphBar = memo((props: any) => {
           left: 277,
           top: 29,
           borderRadius: 15,
-          backgroundColor: "#FFF",
+          backgroundColor:
+            currentHabitWeekStreak === 7 || currentHabitWeekStreak > 7
+              ? color
+              : "#FFF",
           borderColor: color,
           borderWidth: 1,
         }}
       ></View>
     </View>
+  ) : (
+    <></>
   );
 });
 

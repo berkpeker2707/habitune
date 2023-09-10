@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Image, Platform, View } from "react-native";
+import SkeletonProfilePlaceholder from "../../profile/SkeletonProfilePlaceholder";
 
 const TopNavbarProfileImage = (props: any) => {
   const { imageSource } = props;
 
-  return (
+  return imageSource ? (
     <View
       style={
         Platform.OS === "android"
@@ -31,6 +32,8 @@ const TopNavbarProfileImage = (props: any) => {
         }}
       />
     </View>
+  ) : (
+    <SkeletonProfilePlaceholder />
   );
 };
 

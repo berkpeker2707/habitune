@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Pressable, View } from "react-native";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
@@ -39,11 +43,28 @@ import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavba
 // import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
 import { store, useAppDispatch, useSelector } from "./src/state/store";
-import { createHabitAction } from "./src/state/habitSlice";
-import { selectSignInWithGoogle } from "./src/state/userSlice";
+import {
+  createHabitAction,
+  // fetchAllHabitsAction,
+  fetchAllTodayHabitsAction,
+  selectHabitUpdated,
+  // selectHabits,
+  selectHabitsToday,
+  selectHabitLoading,
+  updateHabitNameAction,
+  deleteHabitAction,
+} from "./src/state/habitSlice";
+import {
+  fetchCurrentUserProfileAction,
+  selectFetchCurrentUserProfile,
+  selectSignInWithGoogle,
+  selectUserLoading,
+  selectUserUpdated,
+} from "./src/state/userSlice";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { useCallback, useEffect } from "react";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -67,6 +88,67 @@ const StackNavigator = createStackNavigator<StackNavParamList>();
 const HomeSection = () => {
   const navigation = useNavigation<generalScreenProp>();
 
+  const controller = new AbortController();
+
+  const dispatch = useAppDispatch();
+
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+  const allHabitsToday = useSelector(selectHabitsToday);
+
+  const userUpdated = useSelector(selectUserUpdated);
+  const habitUpdated = useSelector(selectHabitUpdated);
+  const habitLoading = useSelector(selectHabitLoading);
+
+  //date stuff starts
+  const todayTemp = new Date();
+  const today = new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate()
+  );
+
+  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
+  //need this for setting default hour 21
+  //if backend is not 21 but 00, remove this
+  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
+
+  const isInArray = (array: any[], value: Date) => {
+    return array.some((item) => {
+      return new Date(item).getTime() == value.getTime();
+    });
+  };
+  //date stuff ends
+
+  var currentHabitDatesIncluded = useCallback(
+    allHabitsToday.map((allHabitsItem: any) => {
+      return isInArray(allHabitsItem.dates, todayLocal);
+    }),
+
+    [allHabitsToday, habitUpdated]
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchCurrentUserProfileAction());
+
+      return () => {
+        controller.abort();
+      };
+    }, [userUpdated])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchAllTodayHabitsAction());
+
+      return () => {
+        controller.abort();
+      };
+    }, [habitUpdated])
+  );
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -75,7 +157,19 @@ const HomeSection = () => {
     >
       <StackNavigator.Screen
         name="Home"
-        component={Home}
+        children={(props: any) => (
+          <Home
+            {...props}
+            homeEditState={
+              navigation.getState().routes[0].params?.homeEditState
+            }
+            allHabits={allHabitsToday}
+            allHabitsNumber={allHabitsToday.length}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+          />
+        )}
         options={{
           headerTitle: !navigation.getState().routes[0].params?.homeEditState
             ? "Today"
@@ -103,9 +197,13 @@ const HomeSection = () => {
               >
                 <Pressable
                   onPress={() => {
-                    navigation.setParams({
-                      homeEditState: false,
-                    });
+                    try {
+                      navigation.setParams({
+                        homeEditState: false,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarBackButton />
@@ -117,7 +215,11 @@ const HomeSection = () => {
             !navigation.getState().routes[0].params?.homeEditState ? (
               <Pressable
                 onPress={() => {
-                  navigation.navigate("Profile");
+                  try {
+                    navigation.navigate("Profile");
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <View
@@ -128,21 +230,26 @@ const HomeSection = () => {
                     padding: 5,
                   }}
                 >
-                  <TopNavbarProfileImage
-                    imageSource={
-                      "https://fastly.picsum.photos/id/100/300/300.jpg?hmac=rRJwCdAq0dwpM7tpG0mEUD9l4HJLw_ZX0pbnCw5xn_U"
-                    }
-                  />
+                  <TopNavbarProfileImage imageSource={currentUser.image} />
                 </View>
               </Pressable>
             ) : (
               <View style={{ flexDirection: "row" }}>
                 <Pressable
                   onPress={() => {
-                    console.log(
-                      navigation.getState().routes[0].params
-                      // navigation.getState().routes[1].state?.routes[0]
-                    );
+                    try {
+                      dispatch(
+                        updateHabitNameAction({
+                          _id: navigation.getState().routes[0].params?._id,
+                          name: navigation.getState().routes[0].params?.name,
+                        })
+                      );
+                      navigation.setParams({
+                        homeEditState: false,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <View
@@ -160,7 +267,11 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    console.log("share with friends pressed");
+                    try {
+                      console.log("share with friends pressed");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <View
@@ -177,7 +288,18 @@ const HomeSection = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    console.log("delete habit is pressed");
+                    try {
+                      dispatch(
+                        deleteHabitAction({
+                          _id: navigation.getState().routes[0].params?._id,
+                        })
+                      );
+                      navigation.setParams({
+                        homeEditState: false,
+                      });
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <View
@@ -226,7 +348,11 @@ const HomeSection = () => {
               <View>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarShareButton />
@@ -236,7 +362,11 @@ const HomeSection = () => {
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarSettingsButton />
@@ -262,7 +392,11 @@ const HomeSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -287,7 +421,11 @@ const HomeSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -301,9 +439,25 @@ const HomeSection = () => {
 };
 
 const AddSection = () => {
+  const navigation = useNavigation<generalScreenProp>();
+
+  const controller = new AbortController();
+
   const dispatch = useAppDispatch();
 
-  const navigation = useNavigation<generalScreenProp>();
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+
+  const userUpdated = useSelector(selectUserUpdated);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchCurrentUserProfileAction());
+
+      return () => {
+        controller.abort();
+      };
+    }, [userUpdated])
+  );
 
   return (
     <StackNavigator.Navigator
@@ -313,7 +467,7 @@ const AddSection = () => {
     >
       <StackNavigator.Screen
         name="Add"
-        component={Add}
+        children={(props: any) => <Add {...props} currentUser={currentUser} />}
         options={{
           headerTitle: "New Habit",
           headerLeft: () => (
@@ -327,7 +481,11 @@ const AddSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -344,15 +502,15 @@ const AddSection = () => {
               }}
             >
               <Pressable
-                // disabled={
-                //   navigation.getState().routes[1].state?.routes[0].params?.firstDate &&
-                //   navigation.getState().routes[1].state?.routes[0].params?.lastDate &&
-                //   navigation.getState().routes[1].state?.routes[0].params?.upcomingDates &&
-                //   navigation.getState().routes[1].state?.routes[0].params?.name &&
-                //   navigation.getState().routes[1].state?.routes[0].params?.color
-                //     ? true
-                //     : false
-                // }
+                disabled={
+                  // navigation.getState().routes[1].state?.routes[0].params?.firstDate &&
+                  // navigation.getState().routes[1].state?.routes[0].params?.lastDate &&
+                  // navigation.getState().routes[1].state?.routes[0].params?.upcomingDates &&
+                  // navigation.getState().routes[1].state?.routes[0].params?.color &&
+                  navigation.getState().routes[1].state?.routes[0].params?.name
+                    ? false
+                    : true
+                }
                 onPress={() => {
                   try {
                     dispatch(
@@ -360,10 +518,7 @@ const AddSection = () => {
                         navigation.getState().routes[1].state?.routes[0].params
                       )
                     );
-
-                    // console.log(
-                    //   navigation.getState().routes[1].state?.routes[0].params
-                    // );
+                    navigation.goBack();
                   } catch (error) {
                     console.log(error);
                   }
@@ -419,16 +574,25 @@ const OverviewSection = () => {
               <View>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarShareButton />
                 </Pressable>
               </View>
+              <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
                   onPress={() => {
-                    navigation.navigate("Settings");
+                    try {
+                      navigation.navigate("Settings");
+                    } catch (error) {
+                      console.log(error);
+                    }
                   }}
                 >
                   <TopNavbarSettingsButton />
@@ -454,7 +618,11 @@ const OverviewSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -479,7 +647,11 @@ const OverviewSection = () => {
             >
               <Pressable
                 onPress={() => {
-                  navigation.goBack();
+                  try {
+                    navigation.goBack();
+                  } catch (error) {
+                    console.log(error);
+                  }
                 }}
               >
                 <TopNavbarBackButton />
@@ -506,12 +678,20 @@ const AppWrapper = () => {
 };
 
 const App = () => {
+  // const controller = new AbortController();
+
+  // const dispatch = useAppDispatch();
+
+  // const userLoading = useSelector(selectUserLoading);
+
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+
   const token = useSelector(selectSignInWithGoogle);
 
   return (
     <NavigationContainer>
       <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-        {!token ? (
+        {!token && currentUser ? (
           <BottomTabNav.Screen
             name="Signin"
             component={Signin}

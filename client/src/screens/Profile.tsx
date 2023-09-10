@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 import { useFocusEffect } from "@react-navigation/native";
 
-import { ScrollView, View } from "react-native";
+import { View, ScrollView, RefreshControl } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
@@ -35,6 +35,16 @@ const Profile = () => {
     }, [updated])
   );
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(fetchCurrentUserProfileAction());
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
     <View
       style={{
@@ -49,6 +59,9 @@ const Profile = () => {
         style={{
           marginBottom: 85,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {currentUser &&
           currentUser.firstName &&
