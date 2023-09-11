@@ -5,43 +5,43 @@
 <details>
   <summary>Login</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/f519ca61-4f0e-4381-8704-33ba23324af9" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962836-bad05767-a977-4d16-ae4f-d1f592d95469.jpg" width="400" title="Home">
   
 </details>
 <details>
   <summary>Home</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/3dfa7f49-3de3-490f-8acd-f363031859a7" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962834-abef1cbb-fefb-4522-ac0f-600931e4fc13.jpg" width="400" title="Home">
   
 </details>
 <details>
   <summary>Home Edit</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/e1b426b4-8fe9-48a9-8d36-9ff668cb824d" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962831-371b3226-d567-4ae1-b134-a2073704f7ee.jpg" width="400" title="Home">
   
 </details>
 <details>
   <summary>Add</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/4897a737-c4c7-4bf9-9d87-9fb64941fbee" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962827-282a3901-204f-4da3-8384-2b956da82f8d.jpg" width="400" title="Home">
   
 </details>
 <details>
   <summary>Add Calendar</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/e4ebfac7-d2ad-4140-9b4f-28e8abd21467" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962820-350dc24f-6219-4f7f-908c-f182dee1cc0e.jpg" width="400" title="Home">
   
 </details>
 <details>
   <summary>Overview</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/cb39fef9-a8a8-4c6f-914c-631a773cab2f" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962841-2ceccd2b-24a6-420e-9d02-5c22c9d25352.jpg" width="400" title="Home">
   
 </details>
 <details>
   <summary>Settings</summary>
   
-  <img src="https://github.com/berkpeker2707/habitune/assets/15816386/7f0c95c0-8910-4751-ada7-d61c1fea9673" width="400" title="Home">
+  <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/15816386/266962842-2032fbd9-b25f-412f-82c7-833ec58b560a.jpg" width="400" title="Home">
   
 </details>
 
