@@ -46,9 +46,9 @@ export const signInWithGoogleAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.post(`/user/google`, userInfo);
 
-      await AsyncStorage.setItem("Token", JSON.stringify(data.accessToken));
+      // await AsyncStorage.setItem("Token", JSON.stringify(data.accessToken));
 
-      return data.accessToken;
+      return await data?.accessToken;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -146,7 +146,18 @@ export const deleteUserAction = createAsyncThunk(
   }
 );
 
-export const revertAll = createAction("revertAll");
+export const revertAll = createAsyncThunk(
+  "user/logout",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    try {
+      await AsyncStorage.clear();
+
+      return {};
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -235,13 +246,21 @@ const userSlice = createSlice({
       state.error = action?.error.toString();
     });
     //logout
-    builder.addCase(revertAll, (initialState) => {
+    builder.addCase(revertAll.pending, (state, action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(revertAll.fulfilled, (initialState) => {
       (initialState.token = ""),
         (initialState.loading = false),
         (initialState.error = ""),
         (initialState.isUserUpdated = false),
         (initialState.currentUserData = {});
       initialState.selectedUserData = {};
+    });
+    builder.addCase(revertAll.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
     });
   },
 });
