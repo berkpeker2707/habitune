@@ -18,7 +18,7 @@ const HabitUndone = memo((props: any) => {
   const [text, onChangeText] = useState("");
 
   useEffect(() => {
-    navigation.getParent().setParams({
+    navigation.setParams({
       name: text,
     });
   }, [text]);
