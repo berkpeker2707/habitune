@@ -23,6 +23,7 @@ import SkeletonPlaceholder from "../components/home/SkeletonPlaceholder";
 
 const Home = memo((props: any) => {
   const {
+    navigation,
     homeEditState,
     allHabits,
     allHabitsNumber,
@@ -56,19 +57,16 @@ const Home = memo((props: any) => {
   const [nameChangable, setNameChangable] = useState(false);
 
   useEffect(() => {
-    props.navigation.getParent().setParams({ homeEditState: false });
+    navigation.setParams({ homeEditState: false });
   }, []);
 
   useEffect(() => {
-    if (
-      props.navigation.getParent().getState().routes[0].params.homeEditState ===
-      false
-    ) {
+    if (homeEditState === false) {
       setSelectedItem(() => "");
 
       setNameChangable(() => false);
     }
-  }, [props.navigation.getParent().getState().routes[0].params?.homeEditState]);
+  }, [homeEditState]);
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -117,13 +115,11 @@ const Home = memo((props: any) => {
                 }}
                 onLongPress={() => {
                   setNameChangable(() => true);
-                  // props.navigation.getParent().getState().routes[0].params
-                  //   .homeEditState
                   homeEditState
-                    ? props.navigation.getParent().setParams({
+                    ? navigation.setParams({
                         homeEditState: false,
                       })
-                    : props.navigation.getParent().setParams({
+                    : navigation.setParams({
                         homeEditState: true,
                         _id: item._id,
                       });
@@ -141,7 +137,7 @@ const Home = memo((props: any) => {
                   nameChangable={
                     item._id.toString() === selectedItem ? nameChangable : false
                   }
-                  navigation={props.navigation}
+                  navigation={navigation}
                 />
               </TouchableOpacity>
             );
