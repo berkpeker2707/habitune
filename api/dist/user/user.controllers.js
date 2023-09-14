@@ -25,10 +25,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
         var token = jwt.sign({ user: req.body }, process.env.JWT_SECRET, {
             expiresIn: "365d",
         });
-        res.status(200).json({
-            accessToken: token,
-            message: "Login Successful",
-        });
+        res.status(200).json(token);
     }
     catch (error) {
         logger_1.default.error(error);
