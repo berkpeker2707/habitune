@@ -26,6 +26,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         }
         const user = yield user_model_1.default.find({ email: decoded.user[0].email });
         req.user = user;
+        console.log("🚀 ~ file: verifyToken.ts:33 ~ verifyToken ~ req.user:", req.user);
         next();
     }
     catch (error) {

@@ -13,11 +13,12 @@ dotenv.config();
 
 export const signInWithGoogleController = async (req: any, res: any) => {
   try {
-    console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
-    var foundUser = await User.find({ email: req?.body?.email });
-    console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
+    // console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
+    // console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
+    //
+    if (await User.find({ email: req.body.email })) {
+      var foundUser = await User.find({ email: req.body.email });
 
-    if (foundUser) {
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
