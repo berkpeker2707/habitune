@@ -19,7 +19,11 @@ export const signInWithGoogleController = async (
     var foundUser = await User.find({ email: req.body.email });
 
     if (foundUser) {
-      res.status(200).json(foundUser);
+      var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+        expiresIn: "365d",
+      });
+      res.status(200).json(token);
+      // res.status(200).json(foundUser);
     } else {
       const user = await User.create({
         id: req?.body?.id,
@@ -27,14 +31,15 @@ export const signInWithGoogleController = async (
         email: req?.body?.email,
         image: req?.body?.picture,
       });
+      await user.save();
 
-      res.status(200).json(user);
+      var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+        expiresIn: "365d",
+      });
+      res.status(200).json(token);
+
+      // res.status(200).json(user);
     }
-
-    // var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
-    //   expiresIn: "365d",
-    // });
-    // res.status(200).json(token);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));

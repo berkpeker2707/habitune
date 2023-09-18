@@ -25,7 +25,11 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     try {
         var foundUser = yield user_model_1.default.find({ email: req.body.email });
         if (foundUser) {
-            res.status(200).json(foundUser);
+            var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+                expiresIn: "365d",
+            });
+            res.status(200).json(token);
+            // res.status(200).json(foundUser);
         }
         else {
             const user = yield user_model_1.default.create({
@@ -34,12 +38,13 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 email: (_c = req === null || req === void 0 ? void 0 : req.body) === null || _c === void 0 ? void 0 : _c.email,
                 image: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.picture,
             });
-            res.status(200).json(user);
+            yield user.save();
+            var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+                expiresIn: "365d",
+            });
+            res.status(200).json(token);
+            // res.status(200).json(user);
         }
-        // var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
-        //   expiresIn: "365d",
-        // });
-        // res.status(200).json(token);
     }
     catch (error) {
         logger_1.default.error(error);
