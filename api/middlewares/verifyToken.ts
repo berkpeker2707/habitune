@@ -3,15 +3,17 @@ require("dotenv").config();
 import User from "../user/user.model";
 
 interface idecoded {
-  user: {
-    _id: number;
-    id: number;
-    firstName: string;
-    email: string;
-    image: string;
-    habits: [];
-    friends: [];
-  };
+  user: [
+    {
+      _id: number;
+      id: number;
+      firstName: string;
+      email: string;
+      image: string;
+      habits: [];
+      friends: [];
+    }
+  ];
 }
 
 const verifyToken = async (req: any, res: any, next: any) => {
@@ -26,7 +28,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
       return res.json({ message: "Unauthorized!" });
     }
 
-    const user = await User.find({ email: decoded.user.email });
+    const user = await User.find({ email: decoded.user[0].email });
     req.user = user;
 
     next();
