@@ -21,23 +21,20 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c, _d;
     try {
-        console.log("first");
         var foundUser = yield user_model_1.default.find({ email: req.body.email });
-        console.log("SECOND");
         if (foundUser) {
-            console.log(foundUser);
-            res.status(200).json("foundUser");
+            res.status(200).json(foundUser);
         }
         else {
-            // const user = await User.create({
-            //   id: req?.body?.id,
-            //   firstName: req?.body?.email,
-            //   email: req?.body?.firstname,
-            //   image: req?.body?.lastname,
-            // });
-            console.log("req.body: ", req.body);
-            res.status(200).json("no foundUser, create new user");
+            const user = yield user_model_1.default.create({
+                id: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.id,
+                firstName: (_b = req === null || req === void 0 ? void 0 : req.body) === null || _b === void 0 ? void 0 : _b.name,
+                email: (_c = req === null || req === void 0 ? void 0 : req.body) === null || _c === void 0 ? void 0 : _c.email,
+                image: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.picture,
+            });
+            res.status(200).json(user);
         }
         // var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         //   expiresIn: "365d",
@@ -86,7 +83,7 @@ const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.fetchUserProfile = fetchUserProfile;
 const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _e;
     try {
         const userMail = req.body.userMail;
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
@@ -146,7 +143,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
                 $pull: { friends: { friend: user[0]._id } },
             }, { multi: true }));
-            yield ((_a = user[0]) === null || _a === void 0 ? void 0 : _a.updateOne({
+            yield ((_e = user[0]) === null || _e === void 0 ? void 0 : _e.updateOne({
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
             res.status(200).json(loggedinUser);

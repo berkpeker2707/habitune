@@ -16,23 +16,19 @@ export const signInWithGoogleController = async (
   res: Response
 ) => {
   try {
-    console.log("first");
     var foundUser = await User.find({ email: req.body.email });
-    console.log("SECOND");
 
     if (foundUser) {
-      console.log(foundUser);
-      res.status(200).json("foundUser");
+      res.status(200).json(foundUser);
     } else {
-      // const user = await User.create({
-      //   id: req?.body?.id,
-      //   firstName: req?.body?.email,
-      //   email: req?.body?.firstname,
-      //   image: req?.body?.lastname,
-      // });
+      const user = await User.create({
+        id: req?.body?.id,
+        firstName: req?.body?.name,
+        email: req?.body?.email,
+        image: req?.body?.picture,
+      });
 
-      console.log("req.body: ", req.body);
-      res.status(200).json("no foundUser, create new user");
+      res.status(200).json(user);
     }
 
     // var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
