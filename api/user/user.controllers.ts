@@ -53,6 +53,7 @@ export const fetchCurrentUserProfile = async (
   res: Response
 ) => {
   try {
+    console.log("🚀 ~ file: user.controllers.ts:57 ~ req.user:", req.user);
     const loggedinUser = await User.findById(req.user[0]._id)
       .populate({ path: "friends.friend", model: "User" })
       .populate({

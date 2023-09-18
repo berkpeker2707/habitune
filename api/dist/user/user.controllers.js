@@ -56,6 +56,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
 exports.signInWithGoogleController = signInWithGoogleController;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("🚀 ~ file: user.controllers.ts:57 ~ req.user:", req.user);
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id)
             .populate({ path: "friends.friend", model: "User" })
             .populate({

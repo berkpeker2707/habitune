@@ -23,10 +23,6 @@ const verifyToken = async (req: any, res: any, next: any) => {
     const bearerHeader = req.headers["authorization"];
     const token = bearerHeader.split(" ")[1];
     const decoded: idecoded = jwt.verify(token, jwtS);
-    console.log(
-      "🚀 ~ file: verifyToken.ts:26 ~ verifyToken ~ decoded:",
-      decoded
-    );
 
     if (!decoded) {
       return res.json({ message: "Unauthorized!" });
