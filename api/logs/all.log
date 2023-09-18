@@ -1230,3 +1230,68 @@
 [35m[39m
 2023-09-05 15:51:19:5119 [35mhttp[39m: [35mGET /api/habit/all 200 15210 - 273.047 ms[39m
 [35m[39m
+2023-09-17 23:02:44:244 [35mhttp[39m: [35mPOST /api/user/google 200 187 - 4.467 ms[39m
+[35m[39m
+2023-09-17 23:03:22:322 [35mhttp[39m: [35mPOST /api/user/google 200 187 - 3.885 ms[39m
+[35m[39m
+2023-09-17 23:03:24:324 [35mhttp[39m: [35mPOST /api/user/google 200 187 - 1.577 ms[39m
+[35m[39m
+2023-09-17 23:05:20:520 [35mhttp[39m: [35mPOST /api/user/google 200 187 - 2352.184 ms[39m
+[35m[39m
+2023-09-17 23:05:23:523 [35mhttp[39m: [35mPOST /api/user/google 200 187 - 172.820 ms[39m
+[35m[39m
+2023-09-17 23:05:31:531 [35mhttp[39m: [35mPOST /api/user/google 200 183 - 177.100 ms[39m
+[35m[39m
+2023-09-17 23:07:08:78 [31merror[39m: [31mExpected "payload" to be a plain object.[39m
+2023-09-17 23:07:08:78 [35mhttp[39m: [35mPOST /api/user/google 500 50 - 180.347 ms[39m
+[35m[39m
+2023-09-17 23:07:29:729 [35mhttp[39m: [35mPOST /api/user/google 200 814 - 190.172 ms[39m
+[35m[39m
+2023-09-17 23:07:31:731 [35mhttp[39m: [35mPOST /api/user/google 200 814 - 164.897 ms[39m
+[35m[39m
+2023-09-17 23:07:44:744 [35mhttp[39m: [35mPOST /api/user/google 200 807 - 1292.402 ms[39m
+[35m[39m
+2023-09-17 23:07:45:745 [35mhttp[39m: [35mPOST /api/user/google 200 807 - 165.887 ms[39m
+[35m[39m
+2023-09-18 14:24:32:2432 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:24:32:2432 [35mhttp[39m: [35mPOST /api/user/google 500 71 - 10026.779 ms[39m
+[35m[39m
+2023-09-18 14:24:47:2447 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:24:47:2447 [35mhttp[39m: [35mPOST /api/user/google 500 71 - 10009.579 ms[39m
+[35m[39m
+2023-09-18 14:25:10:2510 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:25:10:2510 [35mhttp[39m: [35mPOST /api/user/google 500 71 - 10014.323 ms[39m
+[35m[39m
+2023-09-18 14:26:29:2629 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:26:29:2629 [35mhttp[39m: [35mPOST /api/user/google 500 71 - 10021.688 ms[39m
+[35m[39m
+2023-09-18 14:27:17:2717 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:27:17:2717 [35mhttp[39m: [35mPOST /api/user/google 500 68 - 10020.853 ms[39m
+[35m[39m
+2023-09-18 14:28:14:2814 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:28:14:2814 [35mhttp[39m: [35mPOST /api/user/google 500 68 - 10015.087 ms[39m
+[35m[39m
+2023-09-18 14:29:01:291 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:29:01:291 [35mhttp[39m: [35mPOST /api/user/google 500 68 - 10019.391 ms[39m
+[35m[39m
+2023-09-18 14:29:38:2938 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:29:38:2938 [35mhttp[39m: [35mPOST /api/user/google 500 68 - 10013.983 ms[39m
+[35m[39m
+2023-09-18 14:31:18:3118 [35mhttp[39m: [35mGET /api/user/profile 200 2 - 10017.143 ms[39m
+[35m[39m
+2023-09-18 14:31:39:3139 [35mhttp[39m: [35mGET /api/user/selectedUser/profile/643933a420ccb64a40e171a8 200 2 - 10013.297 ms[39m
+[35m[39m
+2023-09-18 14:31:44:3144 [35mhttp[39m: [35mGET /api/habit/all 200 2 - 10013.817 ms[39m
+[35m[39m
+2023-09-18 14:32:57:3257 [35mhttp[39m: [35mGET /api/habit/all 200 2 - 10003.177 ms[39m
+[35m[39m
+2023-09-18 15:04:00:40 [35mhttp[39m: [35mGET /api/habit/all 200 25926 - 326.802 ms[39m
+[35m[39m
+2023-09-18 15:07:53:753 [35mhttp[39m: [35mGET /api/habit/all 200 25926 - 315.448 ms[39m
+[35m[39m
+2023-09-18 15:08:22:822 [35mhttp[39m: [35mPOST /api/user/google 200 11 - 147.016 ms[39m
+[35m[39m
+2023-09-18 15:10:11:1011 [35mhttp[39m: [35mPOST /api/user/google 200 11 - 169.993 ms[39m
+[35m[39m
+2023-09-18 15:13:03:133 [35mhttp[39m: [35mPOST /api/user/google 200 11 - 150.738 ms[39m
+[35m[39m

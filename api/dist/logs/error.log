@@ -14,3 +14,12 @@
 2023-09-05 15:41:53:4153 [31merror[39m: [31mCast to date failed for value "{ '$regex': 2023-09-05T00:00:00.000Z }" (type Object) at path "upcomingDates" for model "Habit"[39m
 2023-09-05 15:42:10:4210 [31merror[39m: [31mCast to date failed for value "{ '$regex': '2023-09-05' }" (type Object) at path "upcomingDates" for model "Habit"[39m
 2023-09-05 15:50:28:5028 [31merror[39m: [31mExpression $in takes exactly 2 arguments. 1 were passed in.[39m
+2023-09-17 23:07:08:78 [31merror[39m: [31mExpected "payload" to be a plain object.[39m
+2023-09-18 14:24:32:2432 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:24:47:2447 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:25:10:2510 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:26:29:2629 [31merror[39m: [31mOperation `users.findOne()` buffering timed out after 10000ms[39m
+2023-09-18 14:27:17:2717 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:28:14:2814 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:29:01:291 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m
+2023-09-18 14:29:38:2938 [31merror[39m: [31mOperation `users.find()` buffering timed out after 10000ms[39m

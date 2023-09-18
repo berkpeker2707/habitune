@@ -16,10 +16,29 @@ export const signInWithGoogleController = async (
   res: Response
 ) => {
   try {
-    var token = jwt.sign({ user: req.body }, process.env.JWT_SECRET, {
-      expiresIn: "365d",
-    });
-    res.status(200).json(token);
+    console.log("first");
+    var foundUser = await User.find({ email: req.body.email });
+    console.log("SECOND");
+
+    if (foundUser) {
+      console.log(foundUser);
+      res.status(200).json("foundUser");
+    } else {
+      // const user = await User.create({
+      //   id: req?.body?.id,
+      //   firstName: req?.body?.email,
+      //   email: req?.body?.firstname,
+      //   image: req?.body?.lastname,
+      // });
+
+      console.log("req.body: ", req.body);
+      res.status(200).json("no foundUser, create new user");
+    }
+
+    // var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+    //   expiresIn: "365d",
+    // });
+    // res.status(200).json(token);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
