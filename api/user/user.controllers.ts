@@ -14,16 +14,18 @@ dotenv.config();
 export const signInWithGoogleController = async (req: any, res: any) => {
   try {
     // console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
+    var foundUser = await User.find({ email: req.body.email });
     // console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
-    //
-    if (await User.find({ email: req.body.email })) {
-      var foundUser = await User.find({ email: req.body.email });
 
+    if (foundUser) {
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
+      console.log(
+        "🚀 ~ file: user.controllers.ts:25 ~ signInWithGoogleController ~ token:",
+        token
+      );
       res.status(200).json(token);
-      // res.status(200).json(foundUser);
     } else {
       const user = await User.create({
         id: req?.body?.id,
@@ -38,8 +40,6 @@ export const signInWithGoogleController = async (req: any, res: any) => {
         expiresIn: "365d",
       });
       res.status(200).json(token);
-
-      // res.status(200).json(user);
     }
   } catch (error) {
     Logger.error(error);

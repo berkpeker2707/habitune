@@ -30,10 +30,6 @@ const verifyToken = async (req: any, res: any, next: any) => {
 
     const user = await User.find({ email: decoded.user[0].email });
     req.user = user;
-    console.log(
-      "🚀 ~ file: verifyToken.ts:33 ~ verifyToken ~ req.user:",
-      req.user
-    );
 
     next();
   } catch (error) {

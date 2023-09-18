@@ -32,13 +32,13 @@ app.use(
 );
 app.use(helmet());
 
-// app.use(
-//   require("express-session")({
-//     secret: "Enter your secret key",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
+app.use(
+  require("express-session")({
+    secret: "Enter your secret key",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 db();
 app.listen(port, () => console.log(`Server running at port: ${port}`));

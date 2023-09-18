@@ -27,13 +27,11 @@ app.use((0, cors_1.default)({
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use((0, helmet_1.default)());
-// app.use(
-//   require("express-session")({
-//     secret: "Enter your secret key",
-//     resave: true,
-//     saveUninitialized: true,
-//   })
-// );
+app.use(require("express-session")({
+    secret: "Enter your secret key",
+    resave: true,
+    saveUninitialized: true,
+}));
 (0, db_1.default)();
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 //test requests for winston and morgan

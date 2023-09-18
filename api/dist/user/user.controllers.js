@@ -24,15 +24,14 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     var _a, _b, _c, _d;
     try {
         // console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
+        var foundUser = yield user_model_1.default.find({ email: req.body.email });
         // console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
-        //
-        if (yield user_model_1.default.find({ email: req.body.email })) {
-            var foundUser = yield user_model_1.default.find({ email: req.body.email });
+        if (foundUser) {
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
+            console.log("🚀 ~ file: user.controllers.ts:25 ~ signInWithGoogleController ~ token:", token);
             res.status(200).json(token);
-            // res.status(200).json(foundUser);
         }
         else {
             const user = yield user_model_1.default.create({
@@ -47,7 +46,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 expiresIn: "365d",
             });
             res.status(200).json(token);
-            // res.status(200).json(user);
         }
     }
     catch (error) {
