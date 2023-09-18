@@ -17,6 +17,7 @@ export const signInWithGoogleController = async (
 ) => {
   try {
     var foundUser = await User.find({ email: req.body.email });
+    console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
 
     if (foundUser) {
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
@@ -32,6 +33,7 @@ export const signInWithGoogleController = async (
         image: req?.body?.picture,
       });
       await user.save();
+      console.log("🚀 ~ file: user.controllers.ts:36 ~ user:", user);
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",

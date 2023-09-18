@@ -8,7 +8,7 @@ const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
-const passport_1 = __importDefault(require("passport"));
+// import passport from "passport";
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
 //morgan is for checking requests
@@ -29,14 +29,16 @@ app.use((0, cors_1.default)({
 }));
 app.use((0, helmet_1.default)());
 // passport config
-require("./config/passport")(passport_1.default);
-app.use(require("express-session")({
-    secret: "Enter your secret key",
-    resave: true,
-    saveUninitialized: true,
-}));
-app.use(passport_1.default.initialize());
-app.use(passport_1.default.session());
+// require("./config/passport")(passport);
+// app.use(
+//   require("express-session")({
+//     secret: "Enter your secret key",
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
+// app.use(passport.initialize());
+// app.use(passport.session());
 (0, db_1.default)();
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 //test requests for winston and morgan

@@ -24,6 +24,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     var _a, _b, _c, _d;
     try {
         var foundUser = yield user_model_1.default.find({ email: req.body.email });
+        console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
         if (foundUser) {
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
@@ -39,6 +40,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 image: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.picture,
             });
             yield user.save();
+            console.log("🚀 ~ file: user.controllers.ts:36 ~ user:", user);
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });

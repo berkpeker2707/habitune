@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 
-import passport from "passport";
+// import passport from "passport";
 
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
@@ -35,17 +35,17 @@ app.use(
 app.use(helmet());
 
 // passport config
-require("./config/passport")(passport);
+// require("./config/passport")(passport);
 
-app.use(
-  require("express-session")({
-    secret: "Enter your secret key",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(
+//   require("express-session")({
+//     secret: "Enter your secret key",
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 db();
 app.listen(port, () => console.log(`Server running at port: ${port}`));
