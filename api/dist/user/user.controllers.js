@@ -21,9 +21,10 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     try {
-        var foundUser = yield user_model_1.default.find({ email: req.body.email });
+        console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
+        var foundUser = yield user_model_1.default.find({ email: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.email });
         console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
         if (foundUser) {
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
@@ -34,10 +35,10 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
         }
         else {
             const user = yield user_model_1.default.create({
-                id: (_a = req === null || req === void 0 ? void 0 : req.body) === null || _a === void 0 ? void 0 : _a.id,
-                firstName: (_b = req === null || req === void 0 ? void 0 : req.body) === null || _b === void 0 ? void 0 : _b.name,
-                email: (_c = req === null || req === void 0 ? void 0 : req.body) === null || _c === void 0 ? void 0 : _c.email,
-                image: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.picture,
+                id: (_b = req === null || req === void 0 ? void 0 : req.body) === null || _b === void 0 ? void 0 : _b.id,
+                firstName: (_c = req === null || req === void 0 ? void 0 : req.body) === null || _c === void 0 ? void 0 : _c.name,
+                email: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.email,
+                image: (_e = req === null || req === void 0 ? void 0 : req.body) === null || _e === void 0 ? void 0 : _e.picture,
             });
             yield user.save();
             console.log("🚀 ~ file: user.controllers.ts:36 ~ user:", user);
@@ -91,7 +92,7 @@ const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.fetchUserProfile = fetchUserProfile;
 const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e;
+    var _f;
     try {
         const userMail = req.body.userMail;
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
@@ -151,7 +152,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
                 $pull: { friends: { friend: user[0]._id } },
             }, { multi: true }));
-            yield ((_e = user[0]) === null || _e === void 0 ? void 0 : _e.updateOne({
+            yield ((_f = user[0]) === null || _f === void 0 ? void 0 : _f.updateOne({
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
             res.status(200).json(loggedinUser);

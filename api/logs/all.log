@@ -1353,3 +1353,27 @@
 [35m[39m
 2023-09-18 17:29:19:2919 [35mhttp[39m: [35mPOST /api/user/google 200 810 - 166.666 ms[39m
 [35m[39m
+2023-09-18 17:37:19:3719 [35mhttp[39m: [35mGET /api/user/profile 200 61 - 2.541 ms[39m
+[35m[39m
+2023-09-18 17:37:35:3735 [35mhttp[39m: [35mGET /api/user/profile 304 - - 1.083 ms[39m
+[35m[39m
+2023-09-18 17:37:48:3748 [35mhttp[39m: [35mPOST /api/user/google 200 810 - 161.603 ms[39m
+[35m[39m
+2023-09-18 17:37:49:3749 [35mhttp[39m: [35mGET /api/user/profile 200 26241 - 444.644 ms[39m
+[35m[39m
+2023-09-18 17:43:02:432 [35mhttp[39m: [35mGET /api/user/profile 304 - - 578.814 ms[39m
+[35m[39m
+2023-09-18 17:43:15:4315 [35mhttp[39m: [35mGET /api/user/profile 304 - - 439.003 ms[39m
+[35m[39m
+2023-09-18 17:43:34:4334 [35mhttp[39m: [35mGET /api/user/profile 304 - - 455.840 ms[39m
+[35m[39m
+2023-09-18 17:43:40:4340 [35mhttp[39m: [35mGET /api/user/profile 304 - - 437.537 ms[39m
+[35m[39m
+2023-09-18 17:43:48:4348 [35mhttp[39m: [35mGET /api/user/profile 304 - - 464.018 ms[39m
+[35m[39m
+2023-09-18 17:44:06:446 [35mhttp[39m: [35mGET /api/user/profile 304 - - 440.432 ms[39m
+[35m[39m
+2023-09-18 17:44:19:4419 [35mhttp[39m: [35mGET /api/user/profile 304 - - 432.138 ms[39m
+[35m[39m
+2023-09-18 17:44:30:4430 [35mhttp[39m: [35mGET /api/user/profile 304 - - 451.987 ms[39m
+[35m[39m

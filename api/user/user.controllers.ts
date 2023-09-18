@@ -11,12 +11,10 @@ import Logger from "../middlewares/logger";
 
 dotenv.config();
 
-export const signInWithGoogleController = async (
-  req: Request,
-  res: Response
-) => {
+export const signInWithGoogleController = async (req: any, res: any) => {
   try {
-    var foundUser = await User.find({ email: req.body.email });
+    console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
+    var foundUser = await User.find({ email: req?.body?.email });
     console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
 
     if (foundUser) {
@@ -48,10 +46,7 @@ export const signInWithGoogleController = async (
   }
 };
 
-export const fetchCurrentUserProfile = async (
-  req: IReq | any,
-  res: Response
-) => {
+export const fetchCurrentUserProfile = async (req: IReq | any, res: any) => {
   try {
     console.log("🚀 ~ file: user.controllers.ts:57 ~ req.user:", req.user);
     const loggedinUser = await User.findById(req.user[0]._id)
