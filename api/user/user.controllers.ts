@@ -33,7 +33,7 @@ export const signInWithGoogleController = async (
       });
       await user.save();
 
-      var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+      var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
       res.status(200).json(token);

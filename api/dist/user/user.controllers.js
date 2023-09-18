@@ -39,7 +39,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 image: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.picture,
             });
             yield user.save();
-            var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+            var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
             res.status(200).json(token);
