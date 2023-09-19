@@ -15,7 +15,6 @@ interface userTypes {
   loading: boolean;
   error: string;
   isUserUpdated: boolean;
-  auth: string;
   currentUserData: object;
   selectedUserData: object;
 
@@ -27,14 +26,13 @@ const initialState: userTypes = {
   loading: false,
   error: "",
   isUserUpdated: false,
-  auth: "",
   currentUserData: {},
   selectedUserData: {},
   deleteUserData: {},
 };
 
 const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.66:1111/api",
+  // baseURL: "http://192.168.1.33:1111/api",
   baseURL: "https://www.habitune.net/api",
 });
 
@@ -47,9 +45,11 @@ export const signInWithGoogleAction = createAsyncThunk(
       const { data } = await axiosInstance.post(`/user/google`, userInfo);
 
       // await AsyncStorage.setItem("Token", JSON.stringify(data.accessToken));
+      await AsyncStorage.setItem("user", JSON.stringify(data));
 
-      return await data?.accessToken;
+      return data;
     } catch (error) {
+      console.log("error1: ", error);
       return rejectWithValue(error);
     }
   }
@@ -72,6 +72,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error2: ", error);
       return rejectWithValue(error);
     }
   }
@@ -95,6 +96,7 @@ export const fetchUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error3: ", error);
       return rejectWithValue(error);
     }
   }
@@ -121,6 +123,7 @@ export const sendFriendshipAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error4: ", error);
       return rejectWithValue(error);
     }
   }
@@ -141,6 +144,7 @@ export const deleteUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error5: ", error);
       return rejectWithValue(error);
     }
   }
@@ -154,6 +158,7 @@ export const revertAll = createAsyncThunk(
 
       return {};
     } catch (error) {
+      console.log("error6: ", error);
       return rejectWithValue(error);
     }
   }

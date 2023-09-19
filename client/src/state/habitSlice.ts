@@ -73,6 +73,7 @@ export const createHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error1: ", error);
       return rejectWithValue(error);
     }
   }
@@ -95,6 +96,7 @@ export const fetchAllHabitsAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error2: ", error);
       return rejectWithValue(error);
     }
   }
@@ -117,6 +119,7 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error3: ", error);
       return rejectWithValue(error);
     }
   }
@@ -139,6 +142,7 @@ export const fetchHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error4: ", error);
       return rejectWithValue(error);
     }
   }
@@ -168,6 +172,7 @@ export const deleteHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error5: ", error);
       return rejectWithValue(error);
     }
   }
@@ -197,6 +202,7 @@ export const updateHabitNameAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error6: ", error);
       return rejectWithValue(error);
     }
   }
@@ -223,6 +229,7 @@ export const updateHabitColorAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error7: ", error);
       return rejectWithValue(error);
     }
   }
@@ -249,6 +256,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error8: ", error);
       return rejectWithValue(error);
     }
   }
@@ -278,6 +286,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error9: ", error);
       return rejectWithValue(error);
     }
   }
@@ -304,6 +313,7 @@ export const updateHabitDatesAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error10: ", error);
       return rejectWithValue(error);
     }
   }
@@ -333,6 +343,7 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("error11: ", error);
       return rejectWithValue(error);
     }
   }
