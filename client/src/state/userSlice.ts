@@ -49,7 +49,7 @@ export const signInWithGoogleAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("error1: ", error);
+      console.log("user error1: ", error);
       return rejectWithValue(error);
     }
   }
@@ -72,7 +72,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("error2: ", error);
+      console.log("user error2: ", error);
       return rejectWithValue(error);
     }
   }
@@ -96,7 +96,7 @@ export const fetchUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("error3: ", error);
+      console.log("user error3: ", error);
       return rejectWithValue(error);
     }
   }
@@ -123,7 +123,7 @@ export const sendFriendshipAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("error4: ", error);
+      console.log("user error4: ", error);
       return rejectWithValue(error);
     }
   }
@@ -144,7 +144,7 @@ export const deleteUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("error5: ", error);
+      console.log("user error5: ", error);
       return rejectWithValue(error);
     }
   }
@@ -158,7 +158,7 @@ export const revertAll = createAsyncThunk(
 
       return {};
     } catch (error) {
-      console.log("error6: ", error);
+      console.log("user error6: ", error);
       return rejectWithValue(error);
     }
   }
