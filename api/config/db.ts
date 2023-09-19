@@ -10,6 +10,7 @@ const dbConnect = async () => {
     await mongoose.connect(process.env.MONGODB_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
+      dbName: "habitapp_db",
     });
 
     console.log("Database connected");
