@@ -11,20 +11,18 @@ import Logger from "../middlewares/logger";
 
 dotenv.config();
 
-export const signInWithGoogleController = async (req: any, res: any) => {
+export const signInWithGoogleController = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    // console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
     var foundUser = await User.find({ email: req.body.email });
-    // console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
 
     if (foundUser) {
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
-      console.log(
-        "🚀 ~ file: user.controllers.ts:25 ~ signInWithGoogleController ~ token:",
-        token
-      );
+
       res.status(200).json(token);
     } else {
       const user = await User.create({
@@ -34,7 +32,6 @@ export const signInWithGoogleController = async (req: any, res: any) => {
         image: req?.body?.picture,
       });
       await user.save();
-      console.log("🚀 ~ file: user.controllers.ts:36 ~ user:", user);
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -47,9 +44,11 @@ export const signInWithGoogleController = async (req: any, res: any) => {
   }
 };
 
-export const fetchCurrentUserProfile = async (req: IReq | any, res: any) => {
+export const fetchCurrentUserProfile = async (
+  req: IReq | any,
+  res: Response
+) => {
   try {
-    console.log("🚀 ~ file: user.controllers.ts:57 ~ req.user:", req.user);
     const loggedinUser = await User.findById(req.user[0]._id)
       .populate({ path: "friends.friend", model: "User" })
       .populate({

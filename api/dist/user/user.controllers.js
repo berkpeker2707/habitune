@@ -23,14 +23,11 @@ dotenv_1.default.config();
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d;
     try {
-        // console.log("🚀 ~ file: user.controllers.ts:20 ~ req.body:", req.body);
         var foundUser = yield user_model_1.default.find({ email: req.body.email });
-        // console.log("🚀 ~ file: user.controllers.ts:20 ~ foundUser:", foundUser);
         if (foundUser) {
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
-            console.log("🚀 ~ file: user.controllers.ts:25 ~ signInWithGoogleController ~ token:", token);
             res.status(200).json(token);
         }
         else {
@@ -41,7 +38,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 image: (_d = req === null || req === void 0 ? void 0 : req.body) === null || _d === void 0 ? void 0 : _d.picture,
             });
             yield user.save();
-            console.log("🚀 ~ file: user.controllers.ts:36 ~ user:", user);
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
@@ -56,7 +52,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
 exports.signInWithGoogleController = signInWithGoogleController;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("🚀 ~ file: user.controllers.ts:57 ~ req.user:", req.user);
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id)
             .populate({ path: "friends.friend", model: "User" })
             .populate({
