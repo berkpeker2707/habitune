@@ -12,15 +12,24 @@ import SinginText from "../components/signin/SinginText";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signInWithGoogleAction } from "../state/userSlice";
-import { useAppDispatch } from "../state/store";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const Signin = () => {
+const Signin = (props: any) => {
+  const {
+    navigation,
+    controller,
+    dispatch,
+    token,
+    currentUser,
+    allHabitsToday,
+    userUpdated,
+    habitUpdated,
+    habitLoading,
+  } = props;
+
   const [userInfo, setUserInfo] = useState();
-  const dispatch = useAppDispatch();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
       "1018578640461-ujr095rgmk9315k12ror4q07h3fdnq8l.apps.googleusercontent.com",
@@ -29,36 +38,29 @@ const Signin = () => {
   });
 
   useEffect(() => {
-    handleSigninWithGoogle();
-    if (userInfo && userInfo["email"]) {
-      dispatch(signInWithGoogleAction(userInfo));
-    }
+    (async () => {
+      await handleSigninWithGoogle();
+    })();
   }, [response]);
 
   async function handleSigninWithGoogle() {
-    const user = await AsyncStorage.getItem("@user");
-    if (!user) {
+    if (!userInfo) {
       if (response?.type === "success") {
-        await getUserInfo(response.authentication?.accessToken);
+        const responseFromGoogle = await fetch(
+          "https://www.googleapis.com/userinfo/v2/me",
+          {
+            headers: {
+              Authorization: `Bearer ${response.authentication?.accessToken}`,
+            },
+          }
+        );
+
+        const user = await responseFromGoogle.json();
+
+        await dispatch(signInWithGoogleAction(user));
       }
-    } else {
-      setUserInfo(JSON.parse(user));
     }
   }
-
-  const getUserInfo = async (token: any) => {
-    if (!token) return;
-    try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      const user = await response.json();
-      await AsyncStorage.setItem("@user", JSON.stringify(user));
-      setUserInfo(user);
-    } catch (error) {}
-  };
 
   return (
     <>
