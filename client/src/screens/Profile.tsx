@@ -7,23 +7,17 @@ import { View, ScrollView, RefreshControl } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
-import {
-  fetchCurrentUserProfileAction,
-  selectFetchCurrentUserProfile,
-  selectUserUpdated,
-} from "../state/userSlice";
-import { useAppDispatch, useSelector } from "../state/store";
+import { fetchCurrentUserProfileAction } from "../state/userSlice";
+import { useAppDispatch } from "../state/store";
 
 import uuid from "react-native-uuid";
 
-const Profile = () => {
+const Profile = ({ route }: { route: any }) => {
+  const { currentUser, userUpdated } = route.params;
+
   const controller = new AbortController();
 
   const dispatch = useAppDispatch();
-
-  const currentUser = useSelector(selectFetchCurrentUserProfile);
-
-  const updated = useSelector(selectUserUpdated);
 
   useFocusEffect(
     useCallback(() => {
@@ -32,7 +26,7 @@ const Profile = () => {
       return () => {
         controller.abort();
       };
-    }, [updated])
+    }, [userUpdated])
   );
 
   const [refreshing, setRefreshing] = React.useState(false);
