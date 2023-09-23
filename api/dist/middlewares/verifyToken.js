@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (!decoded) {
             return res.json({ message: "Unauthorized!" });
         }
-        const user = yield user_model_1.default.find({ email: decoded.user[0].email });
+        const user = yield user_model_1.default.find({ email: decoded.user.email });
         req.user = user;
         next();
     }
