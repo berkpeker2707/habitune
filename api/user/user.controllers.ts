@@ -26,20 +26,23 @@ export const signInWithGoogleController = async (
       res.status(200).json(token);
     } else {
       const user = await User.create({
-        id: req?.body?.id,
-        firstName: req?.body?.name,
-        email: req?.body?.email,
-        image: req?.body?.picture,
+        id: req.body.id,
+        firstName: req.body.name,
+        email: req.body.email,
+        image: req.body.picture,
       });
       await user.save();
+      console.log("🚀 ~ file: user.controllers.ts:35 ~ user:", user);
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
+      console.log("🚀 ~ file: user.controllers.ts:40 ~ token:", token);
       res.status(200).json(token);
     }
   } catch (error) {
     Logger.error(error);
+    console.log("🚀 ~ file: user.controllers.ts:45 ~ error:", error);
     return res.status(500).send(getErrorMessage(error));
   }
 };
