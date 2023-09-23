@@ -30,19 +30,25 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
             res.status(200).json(token);
         }
         else {
-            const user = yield user_model_1.default.create({
-                id: req.body.id,
-                firstName: req.body.name,
-                email: req.body.email,
-                image: req.body.picture,
-            });
-            yield user.save();
-            console.log("🚀 ~ file: user.controllers.ts:35 ~ user:", user);
-            var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
-                expiresIn: "365d",
-            });
-            console.log("🚀 ~ file: user.controllers.ts:40 ~ token:", token);
-            res.status(200).json(token);
+            if (req.body.email) {
+                const user = yield user_model_1.default.create({
+                    id: req.body.id,
+                    firstName: req.body.name,
+                    email: req.body.email,
+                    image: req.body.picture,
+                });
+                yield user.save();
+                console.log("🚀 ~ file: user.controllers.ts:35 ~ user:", user);
+                var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
+                    expiresIn: "365d",
+                });
+                console.log("🚀 ~ file: user.controllers.ts:40 ~ token:", token);
+                res.status(200).json(token);
+            }
+            else {
+                logger_1.default.error("Couldn't find body of google response.");
+                res.status(500).json("Couldn't find body of google response");
+            }
         }
     }
     catch (error) {
