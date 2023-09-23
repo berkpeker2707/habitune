@@ -23,7 +23,7 @@ dotenv_1.default.config();
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var foundUser = yield user_model_1.default.find({ email: req.body.email });
-        if (foundUser) {
+        if (foundUser.length > 0) {
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
@@ -38,11 +38,9 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                     image: req.body.picture,
                 });
                 yield user.save();
-                console.log("🚀 ~ file: user.controllers.ts:35 ~ user:", user);
                 var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                     expiresIn: "365d",
                 });
-                console.log("🚀 ~ file: user.controllers.ts:40 ~ token:", token);
                 res.status(200).json(token);
             }
             else {
@@ -53,7 +51,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     }
     catch (error) {
         logger_1.default.error(error);
-        console.log("🚀 ~ file: user.controllers.ts:45 ~ error:", error);
         return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });

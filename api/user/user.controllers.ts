@@ -17,8 +17,7 @@ export const signInWithGoogleController = async (
 ) => {
   try {
     var foundUser = await User.find({ email: req.body.email });
-
-    if (foundUser) {
+    if (foundUser.length > 0) {
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
@@ -33,12 +32,10 @@ export const signInWithGoogleController = async (
           image: req.body.picture,
         });
         await user.save();
-        console.log("🚀 ~ file: user.controllers.ts:35 ~ user:", user);
 
         var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
           expiresIn: "365d",
         });
-        console.log("🚀 ~ file: user.controllers.ts:40 ~ token:", token);
         res.status(200).json(token);
       } else {
         Logger.error("Couldn't find body of google response.");
@@ -47,7 +44,6 @@ export const signInWithGoogleController = async (
     }
   } catch (error) {
     Logger.error(error);
-    console.log("🚀 ~ file: user.controllers.ts:45 ~ error:", error);
     return res.status(500).send(getErrorMessage(error));
   }
 };
