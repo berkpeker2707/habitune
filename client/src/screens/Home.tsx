@@ -34,16 +34,17 @@ const Home = memo((props: any) => {
 
   const dispatch = useAppDispatch();
 
-  const [tempBarFilled, setTempBarFilled] = useState<Array<Boolean>>(() => [
-    ...currentHabitDatesIncluded,
-  ]);
+  const [tempBarFilled, setTempBarFilled] = useState<Array<Boolean>>();
+  () => [];
 
   useEffect(() => {
-    setTempBarFilled(() => [...currentHabitDatesIncluded]);
+    if (currentHabitDatesIncluded) {
+      setTempBarFilled(() => [...currentHabitDatesIncluded]);
+    }
   }, [currentHabitDatesIncluded]);
 
   function handleHabitClicked(index: number) {
-    const newHabitArray = tempBarFilled.map((nH, i) => {
+    const newHabitArray = tempBarFilled?.map((nH, i) => {
       if (i === index) {
         return !nH;
       } else {
@@ -63,7 +64,6 @@ const Home = memo((props: any) => {
   useEffect(() => {
     if (homeEditState === false) {
       setSelectedItem(() => "");
-
       setNameChangable(() => false);
     }
   }, [homeEditState]);
@@ -89,7 +89,7 @@ const Home = memo((props: any) => {
         alignItems: "center",
       }}
     >
-      {!habitLoading && allHabitsNumber ? (
+      {!habitLoading && allHabits && allHabitsNumber > 0 && tempBarFilled ? (
         <ScrollView
           style={{
             marginBottom: 85,
@@ -99,7 +99,7 @@ const Home = memo((props: any) => {
           }
         >
           <Text>Habits</Text>
-          {allHabits?.map((item: any, index: any) => {
+          {allHabits.map((item: any, index: any) => {
             return (
               <TouchableOpacity
                 key={uuid.v4() as string}
