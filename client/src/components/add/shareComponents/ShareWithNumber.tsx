@@ -29,7 +29,9 @@ const ShareWithNumber = (props: { shareWithNum: number }) => {
         editable={false}
         selectTextOnFocus={false}
       >
-        Share With Your Friends ({shareWithNum})
+        {shareWithNum > 0
+          ? "Share With Your Friends (" + shareWithNum + ")"
+          : "Share With Your Friends"}
       </TextInput>
     </>
   );
