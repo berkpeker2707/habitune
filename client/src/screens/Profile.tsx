@@ -14,7 +14,6 @@ import uuid from "react-native-uuid";
 
 const Profile = ({ route }: { route: any }) => {
   const { currentUser, userUpdated } = route.params;
-
   const controller = new AbortController();
 
   const dispatch = useAppDispatch();
