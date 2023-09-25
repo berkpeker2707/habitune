@@ -2,15 +2,7 @@ import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "./store";
 
-// var api_url: string;
-// if (__DEV__) {
-//   api_url = "http://192.168.1.37:1111/api";
-// } else {
-//   api_url = "https://www.habitune.net/api";
-// }
-
 interface habitTypes {
-  token: string;
   loading: boolean;
   error: string;
   isHabitUpdated: boolean;
@@ -28,7 +20,6 @@ interface habitTypes {
 }
 
 const initialState: habitTypes = {
-  token: "",
   loading: false,
   error: "",
   isHabitUpdated: false,
@@ -56,7 +47,7 @@ export const createHabitAction = createAsyncThunk(
   "habit/createHabit",
   async (createHabitPayload: any, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -73,6 +64,7 @@ export const createHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error1: ", error);
       return rejectWithValue(error);
     }
   }
@@ -82,7 +74,7 @@ export const fetchAllHabitsAction = createAsyncThunk(
   "habit/fetchAllHabits",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
 
     const config = {
       headers: {
@@ -95,6 +87,7 @@ export const fetchAllHabitsAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error2: ", error);
       return rejectWithValue(error);
     }
   }
@@ -104,7 +97,7 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
   "habit/fetchAllTodayHabits",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
 
     const config = {
       headers: {
@@ -117,6 +110,7 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error3: ", error);
       return rejectWithValue(error);
     }
   }
@@ -126,7 +120,7 @@ export const fetchHabitAction = createAsyncThunk(
   "habit/fetchSingleHabit",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
 
     const config = {
       headers: {
@@ -139,6 +133,7 @@ export const fetchHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error4: ", error);
       return rejectWithValue(error);
     }
   }
@@ -151,7 +146,7 @@ export const deleteHabitAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -168,6 +163,7 @@ export const deleteHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error5: ", error);
       return rejectWithValue(error);
     }
   }
@@ -180,7 +176,7 @@ export const updateHabitNameAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -197,6 +193,7 @@ export const updateHabitNameAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error6: ", error);
       return rejectWithValue(error);
     }
   }
@@ -206,7 +203,7 @@ export const updateHabitColorAction = createAsyncThunk(
   "habit/updateHabitColor",
   async (updateHabitColorPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -223,6 +220,7 @@ export const updateHabitColorAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error7: ", error);
       return rejectWithValue(error);
     }
   }
@@ -232,7 +230,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
   "habit/updateHabitSharedWith",
   async (updateHabitSharedPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -249,6 +247,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error8: ", error);
       return rejectWithValue(error);
     }
   }
@@ -261,7 +260,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -278,6 +277,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error9: ", error);
       return rejectWithValue(error);
     }
   }
@@ -287,7 +287,7 @@ export const updateHabitDatesAction = createAsyncThunk(
   "habit/updateHabitDates",
   async (updateHabitDatesPayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -304,6 +304,7 @@ export const updateHabitDatesAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error10: ", error);
       return rejectWithValue(error);
     }
   }
@@ -316,7 +317,7 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -333,6 +334,21 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("habit error11: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const revertAllHabit = createAsyncThunk(
+  "habit/logout",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    try {
+      // await AsyncStorage.clear();
+
+      return {};
+    } catch (error) {
+      console.log("habit error12: ", error);
       return rejectWithValue(error);
     }
   }
@@ -521,6 +537,23 @@ const habitSlice = createSlice({
         state.error = action.error.toString();
       }
     );
+    //logout
+    builder.addCase(revertAllHabit.pending, (state, action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(revertAllHabit.fulfilled, (initialState) => {
+      (initialState.loading = false),
+        (initialState.error = ""),
+        (initialState.isHabitUpdated = false),
+        (initialState.habitData = {});
+      initialState.habitsAllData = [];
+      initialState.habitsData = [];
+    });
+    builder.addCase(revertAllHabit.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
+    });
   },
 });
 

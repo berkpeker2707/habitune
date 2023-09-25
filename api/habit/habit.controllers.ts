@@ -243,7 +243,7 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         { $pull: { dates: req.body.date } },
         { new: true }
       );
-      console.log(true);
+      // console.log(true);
       res.status(200).json(updatedSelectedHabit);
     } else {
       const updatedSelectedHabit = await Habit.findByIdAndUpdate(
@@ -251,7 +251,7 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         { $push: { dates: req.body.date } },
         { new: true }
       );
-      console.log(false);
+      // console.log(false);
       res.status(200).json(updatedSelectedHabit);
     }
   } catch (error) {

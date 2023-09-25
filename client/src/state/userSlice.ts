@@ -3,19 +3,11 @@ import axios from "axios";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// var api_url: string;
-// if (__DEV__) {
-//   api_url = "http://192.168.1.37:1111/api";
-// } else {
-//   api_url = "https://www.habitune.net/api";
-// }
-
 interface userTypes {
   token: string;
   loading: boolean;
   error: string;
   isUserUpdated: boolean;
-  auth: string;
   currentUserData: object;
   selectedUserData: object;
 
@@ -27,14 +19,13 @@ const initialState: userTypes = {
   loading: false,
   error: "",
   isUserUpdated: false,
-  auth: "",
   currentUserData: {},
   selectedUserData: {},
   deleteUserData: {},
 };
 
 const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.66:1111/api",
+  // baseURL: "http://192.168.1.33:1111/api",
   baseURL: "https://www.habitune.net/api",
 });
 
@@ -46,10 +37,9 @@ export const signInWithGoogleAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.post(`/user/google`, userInfo);
 
-      await AsyncStorage.setItem("Token", JSON.stringify(data.accessToken));
-
-      return data.accessToken;
+      return data;
     } catch (error) {
+      console.log("user error1: ", error);
       return rejectWithValue(error);
     }
   }
@@ -59,7 +49,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
   "user/fetchCurrentUserProfile",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
 
     const config = {
       headers: {
@@ -72,6 +62,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("user error2: ", error);
       return rejectWithValue(error);
     }
   }
@@ -81,7 +72,7 @@ export const fetchUserProfileAction = createAsyncThunk(
   "user/fetchUserProfile",
   async (fetchUserProfilePayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -95,6 +86,7 @@ export const fetchUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("user error3: ", error);
       return rejectWithValue(error);
     }
   }
@@ -104,7 +96,7 @@ export const sendFriendshipAction = createAsyncThunk(
   "user/sendFriendship",
   async (sendFriendshipData: {}, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -121,6 +113,7 @@ export const sendFriendshipAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("user error4: ", error);
       return rejectWithValue(error);
     }
   }
@@ -130,7 +123,7 @@ export const deleteUserAction = createAsyncThunk(
   "user/deleteUser",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -141,12 +134,25 @@ export const deleteUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
+      console.log("user error5: ", error);
       return rejectWithValue(error);
     }
   }
 );
 
-export const revertAll = createAction("revertAll");
+export const revertAll = createAsyncThunk(
+  "user/logout",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    try {
+      await AsyncStorage.clear();
+
+      return {};
+    } catch (error) {
+      console.log("user error6: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -235,13 +241,21 @@ const userSlice = createSlice({
       state.error = action?.error.toString();
     });
     //logout
-    builder.addCase(revertAll, (initialState) => {
+    builder.addCase(revertAll.pending, (state, action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(revertAll.fulfilled, (initialState) => {
       (initialState.token = ""),
         (initialState.loading = false),
         (initialState.error = ""),
         (initialState.isUserUpdated = false),
         (initialState.currentUserData = {});
       initialState.selectedUserData = {};
+    });
+    builder.addCase(revertAll.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
     });
   },
 });

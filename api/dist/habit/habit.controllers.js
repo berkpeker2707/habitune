@@ -199,12 +199,12 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
         if (dateExists) {
             const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $pull: { dates: req.body.date } }, { new: true });
-            console.log(true);
+            // console.log(true);
             res.status(200).json(updatedSelectedHabit);
         }
         else {
             const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { dates: req.body.date } }, { new: true });
-            console.log(false);
+            // console.log(false);
             res.status(200).json(updatedSelectedHabit);
         }
     }

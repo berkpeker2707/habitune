@@ -2,13 +2,12 @@ FROM node:18.16.0-alpine
 
 ENV PORT=1111
 
-ENV MONGODB_URI=mongodb+srv://berkpeker94:OspIu8q0OzZgxini@cluster0.fvqrzko.mongodb.net/habitapp_db?retryWrites=true&w=majority
+ENV MONGODB_URI=
+ENV GOOGLE_CLIENT_ID=
+ENV GOOGLE_CLIENT_SECRET=
+ENV GOOGLE_CALLBACK=
 
-ENV GOOGLE_CLIENT_ID=1018578640461-408uqjlu20adjmfobm3ibajmfh1j6kkt.apps.googleusercontent.com
-ENV GOOGLE_CLIENT_SECRET=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
-ENV GOOGLE_CALLBACK=http://localhost:1111/api/user/google/callback
-
-ENV JWT_SECRET=lglIVZN2vAclmzCkAkBCN3hBDBrHmDrWlLq1rh47Ck4ECDyBAY
+ENV JWT_SECRET=
 
 COPY . /habituneContainer/
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useCallback, useEffect } from "react";
 import { Pressable, View } from "react-native";
 import {
   NavigationContainer,
@@ -10,7 +11,6 @@ import {
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import "react-native-gesture-handler";
 
 //types
 import {
@@ -42,7 +42,21 @@ import TopNavbarDeleteButton from "./src/components/navbarComponents/TopNavbarCo
 import TopNavbarAddFriendButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
 // import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
-import { store, useAppDispatch, useSelector } from "./src/state/store";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import {
+  persistor,
+  store,
+  useAppDispatch,
+  useSelector,
+} from "./src/state/store";
+import {
+  fetchCurrentUserProfileAction,
+  selectFetchCurrentUserProfile,
+  selectSignInWithGoogle,
+  selectUserLoading,
+  selectUserUpdated,
+} from "./src/state/userSlice";
 import {
   createHabitAction,
   // fetchAllHabitsAction,
@@ -54,17 +68,6 @@ import {
   updateHabitNameAction,
   deleteHabitAction,
 } from "./src/state/habitSlice";
-import {
-  fetchCurrentUserProfileAction,
-  selectFetchCurrentUserProfile,
-  selectSignInWithGoogle,
-  selectUserLoading,
-  selectUserUpdated,
-} from "./src/state/userSlice";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistStore } from "redux-persist";
-import { useCallback, useEffect } from "react";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -85,69 +88,19 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
-const HomeSection = () => {
-  const navigation = useNavigation<generalScreenProp>();
-
-  const controller = new AbortController();
-
-  const dispatch = useAppDispatch();
-
-  const currentUser = useSelector(selectFetchCurrentUserProfile);
-  const allHabitsToday = useSelector(selectHabitsToday);
-
-  const userUpdated = useSelector(selectUserUpdated);
-  const habitUpdated = useSelector(selectHabitUpdated);
-  const habitLoading = useSelector(selectHabitLoading);
-
-  //date stuff starts
-  const todayTemp = new Date();
-  const today = new Date(
-    todayTemp.getFullYear(),
-    todayTemp.getMonth(),
-    todayTemp.getDate()
-  );
-
-  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-
-  //need this for setting default hour 21
-  //if backend is not 21 but 00, remove this
-  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
-
-  const isInArray = (array: any[], value: Date) => {
-    return array.some((item) => {
-      return new Date(item).getTime() == value.getTime();
-    });
-  };
-  //date stuff ends
-
-  var currentHabitDatesIncluded = useCallback(
-    allHabitsToday.map((allHabitsItem: any) => {
-      return isInArray(allHabitsItem.dates, todayLocal);
-    }),
-
-    [allHabitsToday, habitUpdated]
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchCurrentUserProfileAction());
-
-      return () => {
-        controller.abort();
-      };
-    }, [userUpdated])
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchAllTodayHabitsAction());
-
-      return () => {
-        controller.abort();
-      };
-    }, [habitUpdated])
-  );
+const HomeSection = (props: any) => {
+  const {
+    navigation,
+    controller,
+    dispatch,
+    token,
+    currentUser,
+    allHabitsToday,
+    currentHabitDatesIncluded,
+    userUpdated,
+    habitUpdated,
+    habitLoading,
+  } = props;
 
   return (
     <StackNavigator.Navigator
@@ -160,22 +113,21 @@ const HomeSection = () => {
         children={(props: any) => (
           <Home
             {...props}
-            homeEditState={
-              navigation.getState().routes[0].params?.homeEditState
-            }
-            allHabits={allHabitsToday}
-            allHabitsNumber={allHabitsToday.length}
+            navigation={navigation}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
-            currentHabitDatesIncluded={currentHabitDatesIncluded}
           />
         )}
         options={{
-          headerTitle: !navigation.getState().routes[0].params?.homeEditState
+          headerTitle: !navigation.getState().routes[0].params.homeEditState
             ? "Today"
             : "",
           headerLeft: () =>
-            !navigation.getState().routes[0].params?.homeEditState ? (
+            !navigation.getState().routes[0].params.homeEditState ? (
               <View
                 style={{
                   display: "flex",
@@ -212,11 +164,14 @@ const HomeSection = () => {
             ),
 
           headerRight: () =>
-            !navigation.getState().routes[0].params?.homeEditState ? (
+            !navigation.getState().routes[0].params.homeEditState ? (
               <Pressable
                 onPress={() => {
                   try {
-                    navigation.navigate("Profile");
+                    navigation.navigate("Profile", {
+                      currentUser: currentUser,
+                      userUpdated: userUpdated,
+                    });
                   } catch (error) {
                     console.log(error);
                   }
@@ -438,26 +393,19 @@ const HomeSection = () => {
   );
 };
 
-const AddSection = () => {
-  const navigation = useNavigation<generalScreenProp>();
-
-  const controller = new AbortController();
-
-  const dispatch = useAppDispatch();
-
-  const currentUser = useSelector(selectFetchCurrentUserProfile);
-
-  const userUpdated = useSelector(selectUserUpdated);
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchCurrentUserProfileAction());
-
-      return () => {
-        controller.abort();
-      };
-    }, [userUpdated])
-  );
+const AddSection = (props: any) => {
+  const {
+    navigation,
+    controller,
+    dispatch,
+    token,
+    currentUser,
+    allHabitsToday,
+    currentHabitDatesIncluded,
+    userUpdated,
+    habitUpdated,
+    habitLoading,
+  } = props;
 
   return (
     <StackNavigator.Navigator
@@ -467,7 +415,9 @@ const AddSection = () => {
     >
       <StackNavigator.Screen
         name="Add"
-        children={(props: any) => <Add {...props} currentUser={currentUser} />}
+        children={(props: any) => (
+          <Add {...props} navigation={navigation} currentUser={currentUser} />
+        )}
         options={{
           headerTitle: "New Habit",
           headerLeft: () => (
@@ -503,20 +453,16 @@ const AddSection = () => {
             >
               <Pressable
                 disabled={
-                  // navigation.getState().routes[1].state?.routes[0].params?.firstDate &&
-                  // navigation.getState().routes[1].state?.routes[0].params?.lastDate &&
-                  // navigation.getState().routes[1].state?.routes[0].params?.upcomingDates &&
-                  // navigation.getState().routes[1].state?.routes[0].params?.color &&
-                  navigation.getState().routes[1].state?.routes[0].params?.name
-                    ? false
-                    : true
+                  // navigation.getState().routes[1].params?.firstDate &&
+                  // navigation.getState().routes[1].params?.lastDate &&
+                  // navigation.getState().routes[1].params?.upcomingDates &&
+                  // navigation.getState().routes[1].params?.color &&
+                  navigation.getState().routes[1].params?.name ? false : true
                 }
                 onPress={() => {
                   try {
                     dispatch(
-                      createHabitAction(
-                        navigation.getState().routes[1].state?.routes[0].params
-                      )
+                      createHabitAction(navigation.getState().routes[1].params)
                     );
                     navigation.goBack();
                   } catch (error) {
@@ -534,8 +480,19 @@ const AddSection = () => {
   );
 };
 
-const OverviewSection = () => {
-  const navigation = useNavigation<generalScreenProp>();
+const OverviewSection = (props: any) => {
+  const {
+    navigation,
+    controller,
+    dispatch,
+    token,
+    currentUser,
+    allHabitsToday,
+    currentHabitDatesIncluded,
+    userUpdated,
+    habitUpdated,
+    habitLoading,
+  } = props;
 
   return (
     <StackNavigator.Navigator
@@ -545,7 +502,18 @@ const OverviewSection = () => {
     >
       <StackNavigator.Screen
         name="Overview"
-        component={Overview}
+        children={(props: any) => (
+          <Overview
+            {...props}
+            navigation={navigation}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+          />
+        )}
         options={{
           headerTitle: "Overview",
           headerLeft: () => (
@@ -621,7 +589,7 @@ const OverviewSection = () => {
                   try {
                     navigation.goBack();
                   } catch (error) {
-                    console.log(error);
+                    console.log("Share Error: ", error);
                   }
                 }}
               >
@@ -650,7 +618,7 @@ const OverviewSection = () => {
                   try {
                     navigation.goBack();
                   } catch (error) {
-                    console.log(error);
+                    console.log("Settings Error: ", error);
                   }
                 }}
               >
@@ -666,68 +634,175 @@ const OverviewSection = () => {
 
 //wrapper for state
 const AppWrapper = () => {
-  let persistor = persistStore(store);
-
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <App />
+        <NavigationContainer>
+          <App />
+        </NavigationContainer>
       </PersistGate>
     </Provider>
   );
 };
 
 const App = () => {
-  // const controller = new AbortController();
+  const navigation = useNavigation<generalScreenProp>();
 
-  // const dispatch = useAppDispatch();
+  const controller = new AbortController();
 
-  // const userLoading = useSelector(selectUserLoading);
-
-  const currentUser = useSelector(selectFetchCurrentUserProfile);
+  const dispatch = useAppDispatch();
 
   const token = useSelector(selectSignInWithGoogle);
 
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+
+  const userUpdated = useSelector(selectUserUpdated);
+
+  const userLoading = useSelector(selectUserLoading);
+
+  const allHabitsToday = useSelector(selectHabitsToday);
+
+  const habitUpdated = useSelector(selectHabitUpdated);
+
+  const habitLoading = useSelector(selectHabitLoading);
+
+  try {
+    //date stuff starts
+    const todayTemp = new Date();
+    const today = new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate()
+    );
+
+    const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
+    //need this for setting default hour 21
+    //if backend is not 21 but 00, remove this
+    // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
+
+    const isInArray = (array: any[], value: Date) => {
+      return array.some((item) => {
+        return new Date(item).getTime() == value.getTime();
+      });
+    };
+    // date stuff ends
+
+    var currentHabitDatesIncluded = useCallback(
+      allHabitsToday &&
+        allHabitsToday.map((allHabitsItem: any) => {
+          return isInArray(allHabitsItem.dates, todayLocal);
+        }),
+      [allHabitsToday, habitUpdated]
+    );
+  } catch (error) {
+    console.log("currentHabitDatesIncluded error: ", error);
+  }
+
+  useEffect(() => {
+    if (token && token.length > 0) {
+      dispatch(fetchCurrentUserProfileAction());
+
+      // console.log(
+      //   "🚀 ~ file: App.tsx:799 ~ useEffect ~ currentUser:",
+      //   currentUser
+      // );
+
+      // console.log("🚀 ~ file: App.tsx:803 ~ useEffect ~ token:", token);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token && token.length > 0) {
+      dispatch(fetchAllTodayHabitsAction());
+      // console.log(
+      //   "🚀 ~ file: App.tsx:811 ~ App ~ allHabitsToday:",
+      //   allHabitsToday
+      // );
+    }
+  }, [currentUser, habitUpdated]);
+
   return (
-    <NavigationContainer>
-      <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-        {!token && currentUser ? (
+    <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
+      {!token ? (
+        <BottomTabNav.Screen
+          name="Signin"
+          children={(props: any) => <Signin {...props} dispatch={dispatch} />}
+          options={{
+            tabBarButton: () => null,
+          }}
+        />
+      ) : (
+        <>
           <BottomTabNav.Screen
-            name="Signin"
-            component={Signin}
+            name="HomeSection"
+            initialParams={{ homeEditState: false }}
+            children={(props: any) => (
+              <HomeSection
+                {...props}
+                controller={controller}
+                dispatch={dispatch}
+                token={token}
+                currentUser={currentUser}
+                allHabitsToday={allHabitsToday}
+                currentHabitDatesIncluded={currentHabitDatesIncluded}
+                userUpdated={userUpdated}
+                habitUpdated={habitUpdated}
+                habitLoading={habitLoading}
+              />
+            )}
             options={{
-              tabBarButton: () => null,
+              // resets screen states below
+              // unmountOnBlur: true,
+              tabBarButton: (props) => <BottomTabHomeButton {...props} />,
             }}
           />
-        ) : (
-          <>
-            <BottomTabNav.Screen
-              name="HomeSection"
-              component={HomeSection}
-              options={{
-                // resets screen states below
-                // unmountOnBlur: true,
-                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
-              }}
-            />
-            <BottomTabNav.Screen
-              name="AddSection"
-              component={AddSection}
-              options={{
-                tabBarButton: (props) => <BottomTabAddButton {...props} />,
-              }}
-            />
-            <BottomTabNav.Screen
-              name="OverviewSection"
-              component={OverviewSection}
-              options={{
-                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
-              }}
-            />
-          </>
-        )}
-      </BottomTabNav.Navigator>
-    </NavigationContainer>
+          <BottomTabNav.Screen
+            name="AddSection"
+            children={(props: any) => (
+              <AddSection
+                {...props}
+                // navigation={navigation}
+                controller={controller}
+                dispatch={dispatch}
+                token={token}
+                currentUser={currentUser}
+                allHabitsToday={allHabitsToday}
+                currentHabitDatesIncluded={currentHabitDatesIncluded}
+                userUpdated={userUpdated}
+                habitUpdated={habitUpdated}
+                habitLoading={habitLoading}
+              />
+            )}
+            options={{
+              tabBarButton: (props) => <BottomTabAddButton {...props} />,
+            }}
+          />
+          <BottomTabNav.Screen
+            name="OverviewSection"
+            children={(props: any) => (
+              <OverviewSection
+                {...props}
+                // navigation={navigation}
+                controller={controller}
+                dispatch={dispatch}
+                token={token}
+                currentUser={currentUser}
+                allHabitsToday={allHabitsToday}
+                currentHabitDatesIncluded={currentHabitDatesIncluded}
+                userUpdated={userUpdated}
+                habitUpdated={habitUpdated}
+                habitLoading={habitLoading}
+              />
+            )}
+            options={{
+              tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
+            }}
+          />
+        </>
+      )}
+    </BottomTabNav.Navigator>
   );
 };
 

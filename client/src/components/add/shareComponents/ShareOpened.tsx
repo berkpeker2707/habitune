@@ -19,7 +19,9 @@ const ShareOpened = (props: any) => {
           marginBottom: 10,
         }}
       >
-        <ShareWithNumber shareWithNum={1} />
+        <ShareWithNumber
+          shareWithNum={currentUser.friends ? currentUser.friends.length : ""}
+        />
         <FriendList navigation={props.navigation} currentUser={currentUser} />
       </View>
     </>
