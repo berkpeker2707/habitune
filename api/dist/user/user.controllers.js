@@ -22,31 +22,26 @@ const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var foundUser = yield user_model_1.default.find({ email: req.body.email });
-        if (foundUser.length > 0) {
+        var userExists = yield user_model_1.default.exists({ email: req.body.email });
+        if (userExists) {
+            var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
             res.status(200).json(token);
         }
         else {
-            if (req.body.email) {
-                const user = yield user_model_1.default.create({
-                    id: req.body.id,
-                    firstName: req.body.name,
-                    email: req.body.email,
-                    image: req.body.picture,
-                });
-                yield user.save();
-                var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
-                    expiresIn: "365d",
-                });
-                res.status(200).json(token);
-            }
-            else {
-                logger_1.default.error("Couldn't find body of google response.");
-                res.status(500).json("Couldn't find body of google response");
-            }
+            const user = yield user_model_1.default.create({
+                id: req.body.id,
+                firstName: req.body.name,
+                email: req.body.email,
+                image: req.body.picture,
+            });
+            yield user.save();
+            var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
+                expiresIn: "365d",
+            });
+            res.status(200).json(token);
         }
     }
     catch (error) {
