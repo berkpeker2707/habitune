@@ -488,6 +488,7 @@ const OverviewSection = (props: any) => {
     token,
     currentUser,
     allHabitsToday,
+    currentHabitDatesIncluded,
     userUpdated,
     habitUpdated,
     habitLoading,
@@ -501,7 +502,18 @@ const OverviewSection = (props: any) => {
     >
       <StackNavigator.Screen
         name="Overview"
-        component={Overview}
+        children={(props: any) => (
+          <Overview
+            {...props}
+            navigation={navigation}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+          />
+        )}
         options={{
           headerTitle: "Overview",
           headerLeft: () => (
@@ -767,7 +779,7 @@ const App = () => {
               tabBarButton: (props) => <BottomTabAddButton {...props} />,
             }}
           />
-          {/* <BottomTabNav.Screen
+          <BottomTabNav.Screen
             name="OverviewSection"
             children={(props: any) => (
               <OverviewSection
@@ -778,6 +790,7 @@ const App = () => {
                 token={token}
                 currentUser={currentUser}
                 allHabitsToday={allHabitsToday}
+                currentHabitDatesIncluded={currentHabitDatesIncluded}
                 userUpdated={userUpdated}
                 habitUpdated={habitUpdated}
                 habitLoading={habitLoading}
@@ -786,7 +799,7 @@ const App = () => {
             options={{
               tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
             }}
-          /> */}
+          />
         </>
       )}
     </BottomTabNav.Navigator>
