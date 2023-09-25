@@ -8,7 +8,7 @@ import { View } from "moti";
 import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
 
 const StreakGraph = (props: any) => {
-  const { allHabits, habitUpdated, habitLoading } = props;
+  const { allHabits, allHabitsNumber, habitUpdated, habitLoading } = props;
 
   //date stuff starts
   const todayTemp = new Date();
@@ -118,6 +118,7 @@ const StreakGraph = (props: any) => {
       }}
     >
       {!habitLoading &&
+      allHabitsNumber &&
       currentHabitWeekStreak.filter((currentHabitWeekStreakFilter: number) => {
         return currentHabitWeekStreakFilter !== 0;
       }).length ? (
