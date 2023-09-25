@@ -3,13 +3,6 @@ import axios from "axios";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// var api_url: string;
-// if (__DEV__) {
-//   api_url = "http://192.168.1.37:1111/api";
-// } else {
-//   api_url = "https://www.habitune.net/api";
-// }
-
 interface userTypes {
   token: string;
   loading: boolean;
@@ -44,9 +37,6 @@ export const signInWithGoogleAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.post(`/user/google`, userInfo);
 
-      // await AsyncStorage.setItem("Token", JSON.stringify(data.accessToken));
-      await AsyncStorage.setItem("user", JSON.stringify(data));
-
       return data;
     } catch (error) {
       console.log("user error1: ", error);
@@ -59,7 +49,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
   "user/fetchCurrentUserProfile",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
 
     const config = {
       headers: {
@@ -82,7 +72,7 @@ export const fetchUserProfileAction = createAsyncThunk(
   "user/fetchUserProfile",
   async (fetchUserProfilePayload, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -106,7 +96,7 @@ export const sendFriendshipAction = createAsyncThunk(
   "user/sendFriendship",
   async (sendFriendshipData: {}, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
@@ -133,7 +123,7 @@ export const deleteUserAction = createAsyncThunk(
   "user/deleteUser",
   async (_, { rejectWithValue, getState, dispatch }) => {
     //get user token
-    const auth = (getState() as RootState).user.token;
+    const auth = (getState() as RootState).user?.token;
     const config = {
       headers: {
         Authorization: `Bearer ${auth}`,
