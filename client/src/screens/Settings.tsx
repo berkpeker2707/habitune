@@ -15,6 +15,7 @@ import { useState } from "react";
 import LinkButton from "../components/settings/LinkButton";
 import { useAppDispatch } from "../state/store";
 import { deleteUserAction, revertAll } from "../state/userSlice";
+import { revertAllHabit } from "../state/habitSlice";
 
 const Settings = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -152,7 +153,12 @@ const Settings = () => {
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => dispatch(revertAll())}>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(revertAll());
+            dispatch(revertAllHabit());
+          }}
+        >
           <SettingsButton buttonName="Sign Out" />
         </TouchableOpacity>
       </ScrollView>
