@@ -401,20 +401,11 @@ const AddSection = (props: any) => {
     token,
     currentUser,
     allHabitsToday,
+    currentHabitDatesIncluded,
     userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
-
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchCurrentUserProfileAction());
-
-      return () => {
-        controller.abort();
-      };
-    }, [userUpdated])
-  );
 
   return (
     <StackNavigator.Navigator
@@ -461,21 +452,23 @@ const AddSection = (props: any) => {
               }}
             >
               <Pressable
+                style={{
+                  backgroundColor: navigation.getState().routes[1].state
+                    ?.routes[0].params?.name
+                    ? "red"
+                    : "green",
+                }}
                 disabled={
-                  // navigation.getState().routes[1].state?.routes[0].params?.firstDate &&
-                  // navigation.getState().routes[1].state?.routes[0].params?.lastDate &&
-                  // navigation.getState().routes[1].state?.routes[0].params?.upcomingDates &&
-                  // navigation.getState().routes[1].state?.routes[0].params?.color &&
-                  navigation.getState().routes[1].state?.routes[0].params?.name
-                    ? false
-                    : true
+                  // navigation.getState().routes[1].params.firstDate &&
+                  // navigation.getState().routes[1].params.lastDate &&
+                  // navigation.getState().routes[1].params.upcomingDates &&
+                  // navigation.getState().routes[1].params.color &&
+                  navigation.getState().routes[1].params.name ? false : true
                 }
                 onPress={() => {
                   try {
                     dispatch(
-                      createHabitAction(
-                        navigation.getState().routes[1].state?.routes[0].params
-                      )
+                      createHabitAction(navigation.getState().routes[1].params)
                     );
                     navigation.goBack();
                   } catch (error) {
@@ -759,7 +752,7 @@ const App = () => {
               tabBarButton: (props) => <BottomTabHomeButton {...props} />,
             }}
           />
-          {/* <BottomTabNav.Screen
+          <BottomTabNav.Screen
             name="AddSection"
             children={(props: any) => (
               <AddSection
@@ -770,6 +763,7 @@ const App = () => {
                 token={token}
                 currentUser={currentUser}
                 allHabitsToday={allHabitsToday}
+                currentHabitDatesIncluded={currentHabitDatesIncluded}
                 userUpdated={userUpdated}
                 habitUpdated={habitUpdated}
                 habitLoading={habitLoading}
@@ -779,7 +773,7 @@ const App = () => {
               tabBarButton: (props) => <BottomTabAddButton {...props} />,
             }}
           />
-          <BottomTabNav.Screen
+          {/* <BottomTabNav.Screen
             name="OverviewSection"
             children={(props: any) => (
               <OverviewSection
