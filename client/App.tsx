@@ -452,18 +452,12 @@ const AddSection = (props: any) => {
               }}
             >
               <Pressable
-                style={{
-                  backgroundColor: navigation.getState().routes[1].state
-                    ?.routes[0].params?.name
-                    ? "red"
-                    : "green",
-                }}
                 disabled={
-                  // navigation.getState().routes[1].params.firstDate &&
-                  // navigation.getState().routes[1].params.lastDate &&
-                  // navigation.getState().routes[1].params.upcomingDates &&
-                  // navigation.getState().routes[1].params.color &&
-                  navigation.getState().routes[1].params.name ? false : true
+                  // navigation.getState().routes[1].params?.firstDate &&
+                  // navigation.getState().routes[1].params?.lastDate &&
+                  // navigation.getState().routes[1].params?.upcomingDates &&
+                  // navigation.getState().routes[1].params?.color &&
+                  navigation.getState().routes[1].params?.name ? false : true
                 }
                 onPress={() => {
                   try {
