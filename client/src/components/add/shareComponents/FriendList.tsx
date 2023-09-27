@@ -8,6 +8,7 @@ import uuid from "react-native-uuid";
 
 const FriendList = (props: any) => {
   const { currentUser } = props;
+
   const [shareWithFriendList, setShareWithFriendList] = useState<String[]>([]);
 
   //updating params if shareWithFriendList changes starts
@@ -37,10 +38,13 @@ const FriendList = (props: any) => {
                         (item) => item !== friendsItem.friend._id
                       )
                     )
-                  : setShareWithFriendList((prevState) => [
-                      ...prevState,
-                      friendsItem.friend._id,
-                    ])
+                  : setShareWithFriendList(() =>
+                      //prevState
+                      [
+                        //...prevState,
+                        friendsItem.friend._id,
+                      ]
+                    )
               }
             >
               <FriendBar
@@ -52,6 +56,7 @@ const FriendList = (props: any) => {
                     ? true
                     : false
                 }
+                pending={friendsItem.pending}
               />
             </TouchableOpacity>
           );
