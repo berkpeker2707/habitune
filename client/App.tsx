@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import {
   NavigationContainer,
@@ -102,6 +102,8 @@ const HomeSection = (props: any) => {
     habitLoading,
   } = props;
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -115,11 +117,15 @@ const HomeSection = (props: any) => {
             {...props}
             navigation={navigation}
             homeEditState={navigation.getState().routes[0].params.homeEditState}
+            dispatch={dispatch}
+            currentUser={currentUser}
             allHabits={allHabitsToday ? allHabitsToday : []}
             allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
           />
         )}
         options={{
@@ -223,7 +229,7 @@ const HomeSection = (props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      console.log("share with friends pressed");
+                      setModalVisible(!modalVisible);
                     } catch (error) {
                       console.log(error);
                     }

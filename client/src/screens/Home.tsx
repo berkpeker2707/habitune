@@ -7,32 +7,36 @@ import {
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  Pressable,
+  Modal,
 } from "react-native";
 import HabitBar from "../components/home/HabitBar";
-
-import { useAppDispatch } from "../state/store";
 
 import {
   fetchAllTodayHabitsAction,
   updateHabitCompletedDateAction,
+  updateHabitSharedWithAction,
 } from "../state/habitSlice";
 
 import uuid from "react-native-uuid";
 
 import SkeletonPlaceholder from "../components/home/SkeletonPlaceholder";
+import ShareOpened from "../components/add/shareComponents/ShareOpened";
 
 const Home = memo((props: any) => {
   const {
     navigation,
     homeEditState,
+    dispatch,
+    currentUser,
     allHabits,
     allHabitsNumber,
     habitUpdated,
     habitLoading,
     currentHabitDatesIncluded,
+    modalVisible,
+    setModalVisible,
   } = props;
-
-  const dispatch = useAppDispatch();
 
   const [tempBarFilled, setTempBarFilled] = useState<Array<Boolean>>();
   () => [];
@@ -80,98 +84,171 @@ const Home = memo((props: any) => {
   }, []);
 
   return (
-    <View
-      style={{
-        display: "flex",
-        height: "100%",
-        backgroundColor: "#FFFFFF",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      {!habitLoading && allHabits && allHabitsNumber > 0 && tempBarFilled ? (
-        <ScrollView
+    <>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View
           style={{
-            marginBottom: 85,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
           }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
         >
-          <Text>Habits</Text>
-          {allHabits.map((item: any, index: any) => {
-            return (
-              <TouchableOpacity
-                key={uuid.v4() as string}
-                onPress={() => {
-                  dispatch(
-                    updateHabitCompletedDateAction({
-                      _id: item._id,
-                      date: Date.now(),
-                    })
-                  );
+          <View
+            style={{
+              margin: 20,
+              backgroundColor: "white",
+              borderRadius: 20,
+              padding: 35,
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            <ShareOpened
+              navigation={props.navigation}
+              currentUser={currentUser}
+            />
 
-                  handleHabitClicked(index);
-                }}
-                onLongPress={() => {
-                  setNameChangable(() => true);
-                  homeEditState
-                    ? navigation.setParams({
-                        homeEditState: false,
-                      })
-                    : navigation.setParams({
-                        homeEditState: true,
-                        _id: item._id,
-                      });
-                  setSelectedItem(() =>
-                    selectedItem === item._id.toString()
-                      ? ""
-                      : item._id.toString()
-                  );
+            <Pressable
+              style={[
+                { borderRadius: 20, padding: 10, elevation: 2 },
+                { backgroundColor: "#968EB0" },
+              ]}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                dispatch(
+                  updateHabitSharedWithAction({
+                    _id: navigation.getState().routes[0].params._id,
+                    userId:
+                      navigation.getState().routes[0].params.friendList[0],
+                  })
+                );
+                navigation.setParams({ homeEditState: false });
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
                 }}
               >
-                <HabitBar
-                  item={item}
-                  itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-                  filled={tempBarFilled[index]}
-                  nameChangable={
-                    item._id.toString() === selectedItem ? nameChangable : false
-                  }
-                  navigation={navigation}
+                Share
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: "#FFFFFF",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        {!habitLoading && allHabits && allHabitsNumber > 0 && tempBarFilled ? (
+          <ScrollView
+            style={{
+              marginBottom: 85,
+            }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <Text>Habits</Text>
+            {allHabits.map((item: any, index: any) => {
+              return (
+                <TouchableOpacity
+                  key={uuid.v4() as string}
+                  onPress={() => {
+                    dispatch(
+                      updateHabitCompletedDateAction({
+                        _id: item._id,
+                        date: Date.now(),
+                      })
+                    );
+
+                    handleHabitClicked(index);
+                  }}
+                  onLongPress={() => {
+                    setNameChangable(() => true);
+                    homeEditState
+                      ? navigation.setParams({
+                          homeEditState: false,
+                        })
+                      : navigation.setParams({
+                          homeEditState: true,
+                          _id: item._id,
+                        });
+                    setSelectedItem(() =>
+                      selectedItem === item._id.toString()
+                        ? ""
+                        : item._id.toString()
+                    );
+                  }}
+                >
+                  <HabitBar
+                    item={item}
+                    itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
+                    filled={tempBarFilled[index]}
+                    nameChangable={
+                      item._id.toString() === selectedItem
+                        ? nameChangable
+                        : false
+                    }
+                    navigation={navigation}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        ) : allHabitsNumber && allHabitsNumber > 0 ? (
+          <ScrollView
+            style={{
+              marginBottom: 85,
+            }}
+          >
+            <Text>Habits</Text>
+            {Array(allHabitsNumber)
+              .fill(0)
+              .map((_, i) => (
+                <SkeletonPlaceholder
+                  key={i}
+                  colorMode={"light"}
+                  width={372}
+                  height={48}
+                  radius={20}
                 />
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      ) : allHabitsNumber && allHabitsNumber > 0 ? (
-        <ScrollView
-          style={{
-            marginBottom: 85,
-          }}
-        >
-          <Text>Habits</Text>
-          {Array(allHabitsNumber)
-            .fill(0)
-            .map((_, i) => (
-              <SkeletonPlaceholder
-                key={i}
-                colorMode={"light"}
-                width={372}
-                height={48}
-                radius={20}
-              />
-            ))}
-        </ScrollView>
-      ) : (
-        <ScrollView
-          style={{
-            marginBottom: 85,
-          }}
-        >
-          <Text>Habits Empty :(</Text>
-        </ScrollView>
-      )}
-    </View>
+              ))}
+          </ScrollView>
+        ) : (
+          <ScrollView
+            style={{
+              marginBottom: 85,
+            }}
+          >
+            <Text>Habits Empty :(</Text>
+          </ScrollView>
+        )}
+      </View>
+    </>
   );
 });
 

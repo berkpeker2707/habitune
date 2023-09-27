@@ -9,12 +9,14 @@ const FriendBar = memo(
     friendName: string;
     friendSelected: boolean;
     barPositionLevel: number;
+    pending: boolean;
   }) => {
     const {
       friendProfilePicture,
       friendName,
       friendSelected,
       barPositionLevel,
+      pending,
     } = props;
 
     return (
@@ -77,7 +79,10 @@ const FriendBar = memo(
               <></>
             )}
             {/* marking ends */}
-            <Text style={{ position: "absolute", left: 50 }}>{friendName}</Text>
+            <Text style={{ position: "absolute", left: 50 }}>
+              {friendName}
+              {pending ? " (pending)" : ""}
+            </Text>
           </View>
         </View>
       </>
