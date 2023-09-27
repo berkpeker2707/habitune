@@ -47,7 +47,8 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
                 $push: { habits: [newHabit._id] },
             }, { upsert: true });
-            yield newHabit.updateOne({
+            yield newHabit
+                .updateOne({
                 $push: {
                     upcomingDates: [
                         ...(yield (0, calculateUpcomingDates_1.default)(req && req.body && req.body.firstDate
@@ -59,7 +60,9 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                             : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])),
                     ],
                 },
-            });
+            })
+                .populate({ path: "sharedWith", model: "User" })
+                .exec();
             res.status(200).json(newHabit);
         }
     }
@@ -71,7 +74,9 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.createHabit = createHabit;
 const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.user[0]._id });
+        const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.user[0]._id })
+            .populate({ path: "sharedWith", model: "User" })
+            .exec();
         res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
@@ -89,7 +94,9 @@ const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
             upcomingDates: { $in: [todayLocal] },
-        });
+        })
+            .populate({ path: "sharedWith", model: "User" })
+            .exec();
         res.status(200).json(loggedinUsersTodayHabits);
     }
     catch (error) {
@@ -101,7 +108,9 @@ exports.getTodaysHabits = getTodaysHabits;
 const getSingleHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const selectedHabit = req.body.selectedHabit;
-        const loggedinUsersHabits = yield habit_model_1.default.findById(selectedHabit);
+        const loggedinUsersHabits = yield habit_model_1.default.findById(selectedHabit)
+            .populate({ path: "sharedWith", model: "User" })
+            .exec();
         res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
@@ -130,7 +139,9 @@ const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
             $set: { name: req.body.name },
-        }, { new: true });
+        }, { new: true })
+            .populate({ path: "sharedWith", model: "User" })
+            .exec();
         res.status(200).json(selectedHabit);
     }
     catch (error) {
@@ -143,7 +154,9 @@ const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
             $set: { color: req.body.color },
-        }, { new: true });
+        }, { new: true })
+            .populate({ path: "sharedWith", model: "User" })
+            .exec();
         res.status(200).json(selectedHabit);
     }
     catch (error) {
@@ -178,7 +191,9 @@ const updateHabitFirstAndLastDate = (req, res) => __awaiter(void 0, void 0, void
         if (req.body.lastDate > req.body.firstDate) {
             const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
                 $set: { firstDate: req.body.firstDate, lastDate: req.body.lastDate },
-            }, { upsert: false, new: true });
+            }, { upsert: false, new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .exec();
             res.status(200).json(selectedHabit);
         }
         else {
@@ -198,12 +213,16 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
             return elemfriends.getTime().toString() === req.body.date.toString();
         });
         if (dateExists) {
-            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $pull: { dates: req.body.date } }, { new: true });
+            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $pull: { dates: req.body.date } }, { new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .exec();
             // console.log(true);
             res.status(200).json(updatedSelectedHabit);
         }
         else {
-            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { dates: req.body.date } }, { new: true });
+            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { dates: req.body.date } }, { new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .exec();
             // console.log(false);
             res.status(200).json(updatedSelectedHabit);
         }
@@ -226,11 +245,11 @@ const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0,
         const selectedHabit = yield habit_model_1.default.findById(req.body._id);
         //if it is already in dates, pull the date back, else push the date in
         if (!isInCompletedDates(selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.dates, today)) {
-            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $push: { dates: today } }));
+            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $push: { dates: today } }).populate({ path: "sharedWith", model: "User" }).exec());
             res.status(200).json(selectedHabit);
         }
         else {
-            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $pull: { dates: today } }));
+            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $pull: { dates: today } }).populate({ path: "sharedWith", model: "User" }).exec());
             res.status(200).json(selectedHabit);
         }
     }

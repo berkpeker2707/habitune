@@ -53,24 +53,26 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         { upsert: true }
       );
 
-      await newHabit.updateOne({
-        $push: {
-          upcomingDates: [
-            ...(await calculateUpcomingDates(
-              req && req.body && req.body.firstDate
-                ? req.body.firstDate
-                : today,
-              req && req.body && req.body.lastDate
-                ? req.body.lastDate
-                : upComingDay,
-              req && req.body && req.body.upcomingDates
-                ? req.body.upcomingDates
-                : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-            )),
-          ],
-        },
-      });
-
+      await newHabit
+        .updateOne({
+          $push: {
+            upcomingDates: [
+              ...(await calculateUpcomingDates(
+                req && req.body && req.body.firstDate
+                  ? req.body.firstDate
+                  : today,
+                req && req.body && req.body.lastDate
+                  ? req.body.lastDate
+                  : upComingDay,
+                req && req.body && req.body.upcomingDates
+                  ? req.body.upcomingDates
+                  : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+              )),
+            ],
+          },
+        })
+        .populate({ path: "sharedWith", model: "User" })
+        .exec();
       res.status(200).json(newHabit);
     }
   } catch (error) {
@@ -81,7 +83,9 @@ export const createHabit = async (req: IReq | any, res: Response) => {
 
 export const getAllHabits = async (req: IReq | any, res: Response) => {
   try {
-    const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id });
+    const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id })
+      .populate({ path: "sharedWith", model: "User" })
+      .exec();
 
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
@@ -105,7 +109,9 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
       upcomingDates: { $in: [todayLocal] },
-    });
+    })
+      .populate({ path: "sharedWith", model: "User" })
+      .exec();
 
     res.status(200).json(loggedinUsersTodayHabits);
   } catch (error) {
@@ -117,7 +123,9 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
 export const getSingleHabit = async (req: IReq | any, res: Response) => {
   try {
     const selectedHabit = req.body.selectedHabit;
-    const loggedinUsersHabits = await Habit.findById(selectedHabit);
+    const loggedinUsersHabits = await Habit.findById(selectedHabit)
+      .populate({ path: "sharedWith", model: "User" })
+      .exec();
 
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
@@ -155,7 +163,9 @@ export const updateHabitName = async (req: IReq | any, res: Response) => {
         $set: { name: req.body.name },
       },
       { new: true }
-    );
+    )
+      .populate({ path: "sharedWith", model: "User" })
+      .exec();
 
     res.status(200).json(selectedHabit);
   } catch (error) {
@@ -172,7 +182,9 @@ export const updateHabitColor = async (req: IReq | any, res: Response) => {
         $set: { color: req.body.color },
       },
       { new: true }
-    );
+    )
+      .populate({ path: "sharedWith", model: "User" })
+      .exec();
 
     res.status(200).json(selectedHabit);
   } catch (error) {
@@ -220,7 +232,9 @@ export const updateHabitFirstAndLastDate = async (
           $set: { firstDate: req.body.firstDate, lastDate: req.body.lastDate },
         },
         { upsert: false, new: true }
-      );
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .exec();
       res.status(200).json(selectedHabit);
     } else {
       res.status(500).json("Last date cannot be earlier than first date.");
@@ -242,7 +256,9 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         req.body._id,
         { $pull: { dates: req.body.date } },
         { new: true }
-      );
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .exec();
       // console.log(true);
       res.status(200).json(updatedSelectedHabit);
     } else {
@@ -250,7 +266,9 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         req.body._id,
         { $push: { dates: req.body.date } },
         { new: true }
-      );
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .exec();
       // console.log(false);
       res.status(200).json(updatedSelectedHabit);
     }
@@ -279,10 +297,16 @@ export const updateHabitCompletedDate = async (
     const selectedHabit = await Habit.findById(req.body._id);
     //if it is already in dates, pull the date back, else push the date in
     if (!isInCompletedDates(selectedHabit?.dates, today)) {
-      await selectedHabit?.updateOne({ $push: { dates: today } });
+      await selectedHabit
+        ?.updateOne({ $push: { dates: today } })
+        .populate({ path: "sharedWith", model: "User" })
+        .exec();
       res.status(200).json(selectedHabit);
     } else {
-      await selectedHabit?.updateOne({ $pull: { dates: today } });
+      await selectedHabit
+        ?.updateOne({ $pull: { dates: today } })
+        .populate({ path: "sharedWith", model: "User" })
+        .exec();
       res.status(200).json(selectedHabit);
     }
   } catch (error) {
