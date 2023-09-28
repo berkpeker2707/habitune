@@ -244,7 +244,7 @@ const Home = memo((props: any) => {
               marginBottom: 85,
             }}
           >
-            <Text>Habits Empty :(</Text>
+            <Text>Habits Empty 😔</Text>
           </ScrollView>
         )}
       </View>
