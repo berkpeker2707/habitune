@@ -72,6 +72,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
           },
         })
         .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
         .exec();
       res.status(200).json(newHabit);
     }
@@ -85,6 +87,8 @@ export const getAllHabits = async (req: IReq | any, res: Response) => {
   try {
     const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id })
       .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
       .exec();
 
     res.status(200).json(loggedinUsersHabits);
@@ -111,6 +115,8 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
       upcomingDates: { $in: [todayLocal] },
     })
       .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
       .exec();
 
     res.status(200).json(loggedinUsersTodayHabits);
@@ -125,6 +131,8 @@ export const getSingleHabit = async (req: IReq | any, res: Response) => {
     const selectedHabit = req.body.selectedHabit;
     const loggedinUsersHabits = await Habit.findById(selectedHabit)
       .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
       .exec();
 
     res.status(200).json(loggedinUsersHabits);
@@ -165,6 +173,8 @@ export const updateHabitName = async (req: IReq | any, res: Response) => {
       { new: true }
     )
       .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
       .exec();
 
     res.status(200).json(selectedHabit);
@@ -184,6 +194,8 @@ export const updateHabitColor = async (req: IReq | any, res: Response) => {
       { new: true }
     )
       .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
       .exec();
 
     res.status(200).json(selectedHabit);
@@ -204,14 +216,22 @@ export const updateHabitSharedWith = async (req: IReq | any, res: Response) => {
         req.body._id,
         { $pull: { sharedWith: req.body.userId } },
         { new: true }
-      );
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
+        .exec();
       res.status(200).json(updatedSelectedHabit);
     } else {
       const updatedSelectedHabit = await Habit.findByIdAndUpdate(
         req.body._id,
         { $push: { sharedWith: req.body.userId } },
         { new: true }
-      );
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
+        .exec();
       res.status(200).json(updatedSelectedHabit);
     }
   } catch (error) {
@@ -234,6 +254,8 @@ export const updateHabitFirstAndLastDate = async (
         { upsert: false, new: true }
       )
         .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
         .exec();
       res.status(200).json(selectedHabit);
     } else {
@@ -258,6 +280,8 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         { new: true }
       )
         .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
         .exec();
       // console.log(true);
       res.status(200).json(updatedSelectedHabit);
@@ -268,6 +292,8 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         { new: true }
       )
         .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
         .exec();
       // console.log(false);
       res.status(200).json(updatedSelectedHabit);
@@ -300,12 +326,16 @@ export const updateHabitCompletedDate = async (
       await selectedHabit
         ?.updateOne({ $push: { dates: today } })
         .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
         .exec();
       res.status(200).json(selectedHabit);
     } else {
       await selectedHabit
         ?.updateOne({ $pull: { dates: today } })
         .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
         .exec();
       res.status(200).json(selectedHabit);
     }

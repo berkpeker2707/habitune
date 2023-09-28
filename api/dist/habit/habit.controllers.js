@@ -62,6 +62,8 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 },
             })
                 .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
                 .exec();
             res.status(200).json(newHabit);
         }
@@ -76,6 +78,8 @@ const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.user[0]._id })
             .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
             .exec();
         res.status(200).json(loggedinUsersHabits);
     }
@@ -96,6 +100,8 @@ const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function
             upcomingDates: { $in: [todayLocal] },
         })
             .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
             .exec();
         res.status(200).json(loggedinUsersTodayHabits);
     }
@@ -110,6 +116,8 @@ const getSingleHabit = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const selectedHabit = req.body.selectedHabit;
         const loggedinUsersHabits = yield habit_model_1.default.findById(selectedHabit)
             .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
             .exec();
         res.status(200).json(loggedinUsersHabits);
     }
@@ -141,6 +149,8 @@ const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function
             $set: { name: req.body.name },
         }, { new: true })
             .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
             .exec();
         res.status(200).json(selectedHabit);
     }
@@ -156,6 +166,8 @@ const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, functio
             $set: { color: req.body.color },
         }, { new: true })
             .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
             .exec();
         res.status(200).json(selectedHabit);
     }
@@ -172,11 +184,19 @@ const updateHabitSharedWith = (req, res) => __awaiter(void 0, void 0, void 0, fu
             return elemfriends.toString() === req.body.userId.toString();
         });
         if (alreadySharedWith) {
-            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $pull: { sharedWith: req.body.userId } }, { new: true });
+            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $pull: { sharedWith: req.body.userId } }, { new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
+                .exec();
             res.status(200).json(updatedSelectedHabit);
         }
         else {
-            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { sharedWith: req.body.userId } }, { new: true });
+            const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { sharedWith: req.body.userId } }, { new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
+                .exec();
             res.status(200).json(updatedSelectedHabit);
         }
     }
@@ -193,6 +213,8 @@ const updateHabitFirstAndLastDate = (req, res) => __awaiter(void 0, void 0, void
                 $set: { firstDate: req.body.firstDate, lastDate: req.body.lastDate },
             }, { upsert: false, new: true })
                 .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
                 .exec();
             res.status(200).json(selectedHabit);
         }
@@ -215,6 +237,8 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (dateExists) {
             const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $pull: { dates: req.body.date } }, { new: true })
                 .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
                 .exec();
             // console.log(true);
             res.status(200).json(updatedSelectedHabit);
@@ -222,6 +246,8 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
         else {
             const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { dates: req.body.date } }, { new: true })
                 .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
                 .exec();
             // console.log(false);
             res.status(200).json(updatedSelectedHabit);
@@ -245,11 +271,11 @@ const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0,
         const selectedHabit = yield habit_model_1.default.findById(req.body._id);
         //if it is already in dates, pull the date back, else push the date in
         if (!isInCompletedDates(selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.dates, today)) {
-            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $push: { dates: today } }).populate({ path: "sharedWith", model: "User" }).exec());
+            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $push: { dates: today } }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
             res.status(200).json(selectedHabit);
         }
         else {
-            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $pull: { dates: today } }).populate({ path: "sharedWith", model: "User" }).exec());
+            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $pull: { dates: today } }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
             res.status(200).json(selectedHabit);
         }
     }
