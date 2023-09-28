@@ -25,8 +25,8 @@ const Overview = (props: any) => {
         alignItems: "center",
       }}
     >
-      {/* changed from scrollview */}
-      <View
+      {/* changed from ScrollView */}
+      <ScrollView
         style={{
           marginBottom: 85,
         }}
@@ -44,7 +44,7 @@ const Overview = (props: any) => {
           habitUpdated={habitUpdated}
           habitLoading={habitLoading}
         />
-      </View>
+      </ScrollView>
     </View>
   );
 };

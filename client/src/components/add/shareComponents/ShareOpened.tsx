@@ -12,7 +12,7 @@ const ShareOpened = (props: any) => {
         style={{
           backgroundColor: "#FFFFFF",
           width: 345,
-          height: 189,
+          height: 190,
           borderRadius: 20,
           borderColor: "#968EB0",
           borderWidth: 0.5,

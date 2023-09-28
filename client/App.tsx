@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useEffect } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import {
   NavigationContainer,
@@ -88,7 +88,7 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
-const HomeSection = (props: any) => {
+const HomeSection = memo((props: any) => {
   const {
     navigation,
     controller,
@@ -101,6 +101,8 @@ const HomeSection = (props: any) => {
     habitUpdated,
     habitLoading,
   } = props;
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <StackNavigator.Navigator
@@ -115,11 +117,15 @@ const HomeSection = (props: any) => {
             {...props}
             navigation={navigation}
             homeEditState={navigation.getState().routes[0].params.homeEditState}
+            dispatch={dispatch}
+            currentUser={currentUser}
             allHabits={allHabitsToday ? allHabitsToday : []}
             allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
           />
         )}
         options={{
@@ -223,7 +229,7 @@ const HomeSection = (props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      console.log("share with friends pressed");
+                      setModalVisible(!modalVisible);
                     } catch (error) {
                       console.log(error);
                     }
@@ -391,9 +397,9 @@ const HomeSection = (props: any) => {
       />
     </StackNavigator.Navigator>
   );
-};
+});
 
-const AddSection = (props: any) => {
+const AddSection = memo((props: any) => {
   const {
     navigation,
     controller,
@@ -478,9 +484,9 @@ const AddSection = (props: any) => {
       />
     </StackNavigator.Navigator>
   );
-};
+});
 
-const OverviewSection = (props: any) => {
+const OverviewSection = memo((props: any) => {
   const {
     navigation,
     controller,
@@ -630,7 +636,7 @@ const OverviewSection = (props: any) => {
       />
     </StackNavigator.Navigator>
   );
-};
+});
 
 //wrapper for state
 const AppWrapper = () => {

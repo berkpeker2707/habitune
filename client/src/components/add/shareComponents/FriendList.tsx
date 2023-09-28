@@ -8,6 +8,7 @@ import uuid from "react-native-uuid";
 
 const FriendList = (props: any) => {
   const { currentUser } = props;
+
   const [shareWithFriendList, setShareWithFriendList] = useState<String[]>([]);
 
   //updating params if shareWithFriendList changes starts
@@ -20,16 +21,16 @@ const FriendList = (props: any) => {
 
   return (
     <ScrollView>
-      <View
-        style={{
-          flex: 1,
-          height: 49 * (5 + 1),
-        }}
-      >
-        {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
-          return (
+      {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
+        return (
+          <View
+            key={uuid.v4() as string}
+            style={{
+              flex: 1,
+              height: 49,
+            }}
+          >
             <TouchableOpacity
-              key={uuid.v4() as string}
               onPress={() =>
                 shareWithFriendList.includes(friendsItem.friend._id)
                   ? setShareWithFriendList(() =>
@@ -37,26 +38,29 @@ const FriendList = (props: any) => {
                         (item) => item !== friendsItem.friend._id
                       )
                     )
-                  : setShareWithFriendList((prevState) => [
-                      ...prevState,
-                      friendsItem.friend._id,
-                    ])
+                  : setShareWithFriendList(() =>
+                      //prevState
+                      [
+                        //...prevState,
+                        friendsItem.friend._id,
+                      ]
+                    )
               }
             >
               <FriendBar
                 friendProfilePicture={friendsItem.friend.image}
                 friendName={friendsItem.friend.firstName}
-                barPositionLevel={49 * friendsIndex}
                 friendSelected={
                   shareWithFriendList.includes(friendsItem.friend._id)
                     ? true
                     : false
                 }
+                pending={friendsItem.pending}
               />
             </TouchableOpacity>
-          );
-        })}
-      </View>
+          </View>
+        );
+      })}
     </ScrollView>
   );
 };

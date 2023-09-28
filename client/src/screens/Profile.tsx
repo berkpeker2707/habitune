@@ -82,6 +82,7 @@ const Profile = ({ route }: { route: any }) => {
                 image={friendElem.friend.image}
                 i={index}
                 key={uuid.v4() as string}
+                pending={friendElem.pending}
               />
             ))}
         </View>

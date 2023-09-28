@@ -108,21 +108,21 @@ const StreakGraph = (props: any) => {
   );
 
   return (
-    <View
-      style={{
-        display: "flex",
-        // height: "100%",
-        backgroundColor: "#FFFFFF",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
+    <View>
       {!habitLoading &&
       allHabitsNumber &&
       currentHabitWeekStreak.filter((currentHabitWeekStreakFilter: number) => {
         return currentHabitWeekStreakFilter !== 0;
       }).length ? (
-        <>
+        <View
+          style={{
+            display: "flex",
+            // height: "100%",
+            backgroundColor: "#FFFFFF",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
           <TextInput
             style={{
               height: 29.5,
@@ -145,7 +145,7 @@ const StreakGraph = (props: any) => {
               />
             );
           })}
-        </>
+        </View>
       ) : currentHabitWeekStreak.filter(
           (currentHabitWeekStreakFilter: number) => {
             return currentHabitWeekStreakFilter !== 0;
@@ -200,7 +200,7 @@ const StreakGraph = (props: any) => {
       ) : (
         <ScrollView
           style={{
-            marginBottom: 85,
+            marginBottom: 0,
           }}
         >
           <TextInput
@@ -213,7 +213,7 @@ const StreakGraph = (props: any) => {
             editable={false}
             selectTextOnFocus={false}
           >
-            Habits Empty :(
+            Streaks Empty 😔
           </TextInput>
         </ScrollView>
       )}

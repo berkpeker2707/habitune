@@ -102,7 +102,7 @@ const DotGraph = (props: any) => {
             editable={false}
             selectTextOnFocus={false}
           >
-            All Tasks 🐌
+            All Habits 🐌
           </TextInput>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => (
             <DotGraphBar
@@ -132,7 +132,7 @@ const DotGraph = (props: any) => {
             editable={false}
             selectTextOnFocus={false}
           >
-            All Tasks 🐌
+            All Habits 🐌
           </TextInput>
           {Array(allHabitsNumber)
             .fill(0)
@@ -162,7 +162,7 @@ const DotGraph = (props: any) => {
             editable={false}
             selectTextOnFocus={false}
           >
-            Habits Empty :(
+            All Habits Empty 😔
           </TextInput>
         </ScrollView>
       )}

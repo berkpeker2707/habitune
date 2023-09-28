@@ -228,7 +228,10 @@ export const updateHabitColorAction = createAsyncThunk(
 
 export const updateHabitSharedWithAction = createAsyncThunk(
   "habit/updateHabitSharedWith",
-  async (updateHabitSharedPayload, { rejectWithValue, getState, dispatch }) => {
+  async (
+    updateHabitSharedPayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
     const config = {
