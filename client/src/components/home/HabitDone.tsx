@@ -87,7 +87,7 @@ const HabitDone = memo((props: any) => {
           <Stop offset={1} stopColor={item.color} />
         </LinearGradient>
         {item && item.sharedWith && item.sharedWith.length > 2 ? (
-          <View style={{ flex: 1, zIndex: 20 }}>
+          <View style={{ flex: 1, zIndex: 30 }}>
             <View
               style={{
                 width: 34,
@@ -119,41 +119,19 @@ const HabitDone = memo((props: any) => {
           <></>
         )}
         {item &&
-        item.sharedWith[item.sharedWith.length - 2] &&
-        item.sharedWith[item.sharedWith.length - 2].image ? (
-          <View style={{ flex: 1, zIndex: 10 }}>
-            <Image
-              style={{
-                width: 34,
-                height: 34,
-                marginLeft: item.sharedWith.length === 2 ? 326 : 286,
-                marginTop: 6,
-                borderColor: "#FFFFFF",
-                borderWidth: 1,
-                borderRadius: 25,
-              }}
-              source={{
-                uri: item.sharedWith[item.sharedWith.length - 2].image,
-              }}
-            />
-          </View>
-        ) : (
-          <></>
-        )}
-        {item &&
         item.sharedWith[item.sharedWith.length - 1] &&
         item.sharedWith[item.sharedWith.length - 1].image ? (
           <View
             style={{
               flex: 1,
-              zIndex: 15,
+              zIndex: 20,
             }}
           >
             <Image
               style={{
                 width: 34,
                 height: 34,
-                marginLeft: item.sharedWith.length === 1 ? 326 : 306,
+                marginLeft: item.sharedWith.length <= 2 ? 326 : 306,
                 marginTop: 6,
                 borderColor: "#FFFFFF",
                 borderWidth: 1,
@@ -161,6 +139,28 @@ const HabitDone = memo((props: any) => {
               }}
               source={{
                 uri: item.sharedWith[item.sharedWith.length - 1].image,
+              }}
+            />
+          </View>
+        ) : (
+          <></>
+        )}
+        {item &&
+        item.sharedWith[item.sharedWith.length - 2] &&
+        item.sharedWith[item.sharedWith.length - 2].image ? (
+          <View style={{ flex: 1, zIndex: 10 }}>
+            <Image
+              style={{
+                width: 34,
+                height: 34,
+                marginLeft: item.sharedWith.length < 3 ? 306 : 286,
+                marginTop: 6,
+                borderColor: "#FFFFFF",
+                borderWidth: 1,
+                borderRadius: 25,
+              }}
+              source={{
+                uri: item.sharedWith[item.sharedWith.length - 2].image,
               }}
             />
           </View>
