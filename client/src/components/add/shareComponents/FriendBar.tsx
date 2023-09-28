@@ -8,16 +8,9 @@ const FriendBar = memo(
     friendProfilePicture: string;
     friendName: string;
     friendSelected: boolean;
-    barPositionLevel: number;
     pending: boolean;
   }) => {
-    const {
-      friendProfilePicture,
-      friendName,
-      friendSelected,
-      barPositionLevel,
-      pending,
-    } = props;
+    const { friendProfilePicture, friendName, friendSelected, pending } = props;
 
     return (
       <>
@@ -27,7 +20,6 @@ const FriendBar = memo(
             width: 303,
             height: 45,
             left: 21,
-            top: barPositionLevel,
             borderWidth: 0.5,
             borderColor: "#968EB0",
             borderRadius: 50,

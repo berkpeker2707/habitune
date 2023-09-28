@@ -21,16 +21,16 @@ const FriendList = (props: any) => {
 
   return (
     <ScrollView>
-      <View
-        style={{
-          flex: 1,
-          height: 49 * (5 + 1),
-        }}
-      >
-        {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
-          return (
+      {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
+        return (
+          <View
+            key={uuid.v4() as string}
+            style={{
+              flex: 1,
+              height: 49,
+            }}
+          >
             <TouchableOpacity
-              key={uuid.v4() as string}
               onPress={() =>
                 shareWithFriendList.includes(friendsItem.friend._id)
                   ? setShareWithFriendList(() =>
@@ -50,7 +50,6 @@ const FriendList = (props: any) => {
               <FriendBar
                 friendProfilePicture={friendsItem.friend.image}
                 friendName={friendsItem.friend.firstName}
-                barPositionLevel={49 * friendsIndex}
                 friendSelected={
                   shareWithFriendList.includes(friendsItem.friend._id)
                     ? true
@@ -59,9 +58,9 @@ const FriendList = (props: any) => {
                 pending={friendsItem.pending}
               />
             </TouchableOpacity>
-          );
-        })}
-      </View>
+          </View>
+        );
+      })}
     </ScrollView>
   );
 };

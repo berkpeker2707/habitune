@@ -13,13 +13,12 @@ const FriendsCard = memo(
         <View
           style={{
             flex: 1,
-            height: 49 * (5 + 1),
+            height: 49,
           }}
         >
           <FriendBar
             friendProfilePicture={image}
             friendName={name}
-            barPositionLevel={49 * i}
             friendSelected={false}
             pending={pending}
           />
