@@ -1,7 +1,6 @@
 import * as React from "react";
 import { memo, useEffect, useState } from "react";
-import { View } from "react-native";
-import { TextInput, Image, Text as RText } from "react-native";
+import { TextInput, View, Image, Text as RText } from "react-native";
 import Svg, {
   G,
   Rect,
