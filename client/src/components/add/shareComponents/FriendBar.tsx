@@ -21,6 +21,7 @@ const FriendBar = memo(
             height: 45,
             left: 21,
             borderWidth: 0.5,
+            backgroundColor: "#FFFFFF",
             borderColor: "#968EB0",
             borderRadius: 50,
             //   shadow starts
