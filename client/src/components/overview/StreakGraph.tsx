@@ -118,7 +118,7 @@ const StreakGraph = (props: any) => {
           style={{
             display: "flex",
             // height: "100%",
-            backgroundColor: "red",
+            backgroundColor: "#FFFFFF",
             justifyContent: "flex-start",
             alignItems: "center",
           }}
