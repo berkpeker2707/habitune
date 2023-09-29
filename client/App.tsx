@@ -197,6 +197,9 @@ const HomeSection = memo((props: any) => {
             ) : (
               <View style={{ flexDirection: "row" }}>
                 <Pressable
+                  disabled={
+                    navigation.getState().routes[0].params?.name ? false : true
+                  }
                   onPress={() => {
                     try {
                       dispatch(
