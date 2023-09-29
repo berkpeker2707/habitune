@@ -144,12 +144,7 @@ const Settings = () => {
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() =>
-            //  dispatch(deleteUserAction())
-            console.log("delete button is pressed")
-          }
-        >
+        <TouchableOpacity onPress={() => dispatch(deleteUserAction())}>
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
 
