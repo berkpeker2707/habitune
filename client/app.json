@@ -3,7 +3,7 @@
     "name": "Habitune",
     "slug": "Habitune",
     "scheme": "Habitune",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "src/assets/images/icon.png",
     "userInterfaceStyle": "light",
@@ -12,9 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.thelittleteaclipper.habitune"
@@ -29,21 +27,12 @@
     "web": {
       "favicon": "src/assets/images/favicon.png"
     },
-    "sourceExts": [
-      "js",
-      "json",
-      "ts",
-      "tsx",
-      "jsx",
-      "vue"
-    ],
+    "sourceExts": ["js", "json", "ts", "tsx", "jsx", "vue"],
     "extra": {
       "eas": {
         "projectId": "9adf561e-3713-4a21-a115-f42212038642"
       }
     },
-    "plugins": [
-      "react-native-health"
-    ]
+    "plugins": ["react-native-health"]
   }
 }
