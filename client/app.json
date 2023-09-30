@@ -18,6 +18,7 @@
       "bundleIdentifier": "com.thelittleteaclipper.habitune"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
