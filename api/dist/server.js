@@ -47,8 +47,14 @@ app.use(morganMiddleware_1.default);
 app.get("/privacy", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });
+app.get("/privacy", function (req, res) {
+    res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
+});
 app.get("/", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
+});
+app.get("/image/empty-shell", function (req, res) {
+    res.sendFile(path_1.default.join(__dirname, "/public/images/empty-shell.png"));
 });
 //routing
 app.use("/api/user", user_routes_1.default);

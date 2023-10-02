@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInWithGoogleController = void 0;
+exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const habit_model_1 = __importDefault(require("../habit/habit.model"));
@@ -50,6 +50,36 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     }
 });
 exports.signInWithGoogleController = signInWithGoogleController;
+const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        var userExists = yield user_model_1.default.exists({ email: req.body.email });
+        if (userExists) {
+            var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
+            var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+                expiresIn: "365d",
+            });
+            res.status(200).json(token);
+        }
+        else {
+            const user = yield user_model_1.default.create({
+                id: req.body.id,
+                firstName: req.body.name,
+                email: req.body.email,
+                image: "https://www.habitune.net/image/empty-shell",
+            });
+            yield user.save();
+            var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
+                expiresIn: "365d",
+            });
+            res.status(200).json(token);
+        }
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.signInController = signInController;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id)

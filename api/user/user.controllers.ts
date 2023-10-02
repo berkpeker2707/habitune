@@ -45,6 +45,37 @@ export const signInWithGoogleController = async (
   }
 };
 
+export const signInController = async (req: Request, res: Response) => {
+  try {
+    var userExists = await User.exists({ email: req.body.email });
+
+    if (userExists) {
+      var foundUser = await User.findOne({ email: req.body.email });
+      var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+        expiresIn: "365d",
+      });
+
+      res.status(200).json(token);
+    } else {
+      const user = await User.create({
+        id: req.body.id,
+        firstName: req.body.name,
+        email: req.body.email,
+        image: "https://www.habitune.net/image/empty-shell",
+      });
+      await user.save();
+
+      var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
+        expiresIn: "365d",
+      });
+      res.status(200).json(token);
+    }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const fetchCurrentUserProfile = async (
   req: IReq | any,
   res: Response
