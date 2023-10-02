@@ -47,9 +47,6 @@ app.use(morganMiddleware_1.default);
 app.get("/privacy", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });
-app.get("/privacy", function (req, res) {
-    res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
-});
 app.get("/", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
 });
