@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   signInWithGoogleController,
+  signInController,
   fetchCurrentUserProfile,
   fetchUserProfile,
   sendFriendship,
@@ -12,6 +13,8 @@ import verifyToken from "../middlewares/verifyToken";
 const userRoutes = Router();
 
 userRoutes.post("/google", signInWithGoogleController);
+
+userRoutes.post("/signin", signInController);
 
 userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
 
