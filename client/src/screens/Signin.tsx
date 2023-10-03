@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, ImageBackground } from "react-native";
+import { TouchableOpacity, View, ImageBackground, Text } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -8,6 +8,9 @@ import SigninBackground from "../assets/images/signin/signinBackground.png";
 import GoogleSigninButton from "../components/signin/GoogleSigninButton";
 import SigninLogo from "../components/signin/SigninLogo";
 import SinginText from "../components/signin/SinginText";
+
+import LoginModal from "../components/signin/LoginModal";
+import RegisterModal from "../components/signin/RegisterModal";
 
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
@@ -29,6 +32,8 @@ const Signin = (props: any) => {
     habitLoading,
   } = props;
 
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
+  const [registerModalVisible, setRegisterModalVisible] = useState(false);
   const [userInfo, setUserInfo] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
@@ -65,12 +70,23 @@ const Signin = (props: any) => {
   return (
     <>
       <StatusBar style="light" />
+      <LoginModal
+        dispatch={dispatch}
+        loginModalVisible={loginModalVisible}
+        setLoginModalVisible={setLoginModalVisible}
+      />
+      <RegisterModal
+        dispatch={dispatch}
+        registerModalVisible={registerModalVisible}
+        setRegisterModalVisible={setRegisterModalVisible}
+      />
       <View
         style={{
           display: "flex",
           height: "100%",
           backgroundColor: "#FFFFFF",
           justifyContent: "flex-start",
+          opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
           // alignItems: "center",
         }}
       >
@@ -88,7 +104,6 @@ const Signin = (props: any) => {
             >
               <SigninLogo />
             </View>
-
             <View
               style={{
                 position: "relative",
@@ -98,7 +113,6 @@ const Signin = (props: any) => {
             >
               <SinginText />
             </View>
-
             <TouchableOpacity
               style={{
                 position: "relative",
@@ -118,6 +132,47 @@ const Signin = (props: any) => {
                 <GoogleSigninButton />
               </View>
             </TouchableOpacity>
+            {/* without google login/register else starts */}
+            <View
+              style={{
+                position: "relative",
+                paddingBottom: 0.1,
+                borderRadius: 50,
+                width: 327,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  position: "relative",
+                  top: 150,
+                  bottom: 0,
+                  width: "100%",
+                  padding: 5,
+                  alignItems: "center",
+                  alignContent: "center",
+                }}
+                onPress={() => setLoginModalVisible(!loginModalVisible)}
+              >
+                <Text style={{ textDecorationLine: "underline" }}>Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  position: "relative",
+                  top: 150,
+                  bottom: 0,
+                  width: "100%",
+                  padding: 5,
+                  alignItems: "center",
+                  alignContent: "center",
+                }}
+                onPress={() => setRegisterModalVisible(!registerModalVisible)}
+              >
+                <Text style={{ textDecorationLine: "underline" }}>
+                  Register
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {/* without google login/register else ends */}
           </View>
         </ImageBackground>
       </View>

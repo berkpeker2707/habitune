@@ -45,6 +45,20 @@ export const signInWithGoogleAction = createAsyncThunk(
   }
 );
 
+export const signInAction = createAsyncThunk(
+  "user/signIn",
+  async (userInfo: any, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axiosInstance.post(`/user/signin`, userInfo);
+
+      return data;
+    } catch (error) {
+      console.log("user error1: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const fetchCurrentUserProfileAction = createAsyncThunk(
   "user/fetchCurrentUserProfile",
   async (_, { rejectWithValue, getState, dispatch }) => {
@@ -177,6 +191,20 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
+    //sign in with google reducer
+    builder.addCase(signInAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(signInAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.token = action?.payload;
+    });
+    builder.addCase(signInAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
     //fetch current user profile reducer
     builder.addCase(fetchCurrentUserProfileAction.pending, (state) => {
       state.loading = true;
@@ -270,6 +298,9 @@ export const selectUserUpdated = (state: any) => {
   return state.user.isUserUpdated;
 };
 export const selectSignInWithGoogle = (state: any) => {
+  return state.user.token;
+};
+export const selectSignIn = (state: any) => {
   return state.user.token;
 };
 export const selectFetchCurrentUserProfile = (state: any) => {
