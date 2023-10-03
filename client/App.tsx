@@ -1,6 +1,10 @@
 import * as React from "react";
-import { memo, useCallback, useEffect, useState } from "react";
-import { Pressable, View } from "react-native";
+import { memo, useCallback, useRef, useEffect, useState } from "react";
+import { Pressable, View, Text, Button, Platform } from "react-native";
+
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+
 import {
   NavigationContainer,
   useFocusEffect,
@@ -53,6 +57,7 @@ import {
 import {
   fetchCurrentUserProfileAction,
   selectFetchCurrentUserProfile,
+  selectSignIn,
   selectSignInWithGoogle,
   selectUserLoading,
   selectUserUpdated,
@@ -663,6 +668,8 @@ const App = () => {
 
   const token = useSelector(selectSignInWithGoogle);
 
+  const tokenSecondOption = useSelector(selectSignIn);
+
   const currentUser = useSelector(selectFetchCurrentUserProfile);
 
   const userUpdated = useSelector(selectUserUpdated);
@@ -712,29 +719,55 @@ const App = () => {
   useEffect(() => {
     if (token && token.length > 0) {
       dispatch(fetchCurrentUserProfileAction());
-
-      // console.log(
-      //   "🚀 ~ file: App.tsx:799 ~ useEffect ~ currentUser:",
-      //   currentUser
-      // );
-
-      // console.log("🚀 ~ file: App.tsx:803 ~ useEffect ~ token:", token);
     }
   }, [token]);
 
   useEffect(() => {
     if (token && token.length > 0) {
       dispatch(fetchAllTodayHabitsAction());
-      // console.log(
-      //   "🚀 ~ file: App.tsx:811 ~ App ~ allHabitsToday:",
-      //   allHabitsToday
-      // );
     }
   }, [currentUser, habitUpdated]);
 
+  useEffect(() => {
+    if (tokenSecondOption && tokenSecondOption.length > 0) {
+      dispatch(fetchCurrentUserProfileAction());
+    }
+  }, [tokenSecondOption]);
+
+  useEffect(() => {
+    if (tokenSecondOption && tokenSecondOption.length > 0) {
+      dispatch(fetchAllTodayHabitsAction());
+    }
+  }, [currentUser, habitUpdated]);
+
+  async function registerForPushNotificationsAsync() {
+    let deviceToken;
+
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    deviceToken = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("deviceToken:", deviceToken);
+
+    return deviceToken;
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
+
   return (
     <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-      {!token ? (
+      {!token || !tokenSecondOption ? (
         <BottomTabNav.Screen
           name="Signin"
           children={(props: any) => <Signin {...props} dispatch={dispatch} />}
