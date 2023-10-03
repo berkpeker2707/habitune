@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
+const bcrypt = require("bcrypt");
 
 dotenv.config();
 
@@ -45,30 +46,67 @@ export const signInWithGoogleController = async (
   }
 };
 
-export const signInController = async (req: Request, res: Response) => {
+export const signInController = async (req: IReq | any, res: Response) => {
   try {
-    var userExists = await User.exists({ email: req.body.email });
+    const emailRegex = new RegExp(
+      "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+    );
 
-    if (userExists) {
-      var foundUser = await User.findOne({ email: req.body.email });
-      var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
-        expiresIn: "365d",
-      });
-
-      res.status(200).json(token);
+    if (!emailRegex.test(req.body.email)) {
+      Logger.error("Unacceptable email");
+      res.status(500).send(getErrorMessage("Unacceptable email"));
     } else {
-      const user = await User.create({
-        id: req.body.id,
-        firstName: req.body.name,
-        email: req.body.email,
-        image: "https://www.habitune.net/image/empty-shell",
-      });
-      await user.save();
+      var userExists = await User.exists({ email: req.body.email });
 
-      var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
-        expiresIn: "365d",
-      });
-      res.status(200).json(token);
+      if (userExists) {
+        const thatUser = await User.findOne({ email: req.body.email });
+
+        const result = await bcrypt.compare(
+          req.body.password,
+          thatUser?.password
+        );
+        if (result) {
+          var foundUser = await User.findOne({ email: req.body.email });
+          var token = await jwt.sign(
+            { user: foundUser },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "365d",
+            }
+          );
+
+          res.status(200).json(token);
+        } else {
+          Logger.error("Wrong password or email.");
+          return res
+            .status(500)
+            .send(getErrorMessage("Wrong password or email."));
+        }
+      } else {
+        if (
+          (!req.body.id && req.body.id !== 0) ||
+          (!req.body.name && req.body.name === "") ||
+          (!req.body.email && req.body.email === "") ||
+          (!req.body.password && req.body.password === "")
+        ) {
+          Logger.error("Need all required data");
+          res.status(500).send(getErrorMessage("Need all required data"));
+        } else {
+          const user = await User.create({
+            id: req.body.id,
+            firstName: req.body.name,
+            email: req.body.email,
+            image: "https://www.habitune.net/image/empty-shell",
+            password: await bcrypt.hash(req.body.password, 10),
+          });
+          await user.save();
+
+          var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
+            expiresIn: "365d",
+          });
+          res.status(200).json(token);
+        }
+      }
     }
   } catch (error) {
     Logger.error(error);

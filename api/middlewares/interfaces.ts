@@ -10,6 +10,7 @@ export interface IUser {
   image: string;
   habits: Types.ObjectId[];
   friends: [{ friend: Types.ObjectId; pending: boolean }];
+  password: any;
 }
 
 export interface IHabit {

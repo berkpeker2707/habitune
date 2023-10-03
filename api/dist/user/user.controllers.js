@@ -19,6 +19,7 @@ const habit_model_1 = __importDefault(require("../habit/habit.model"));
 const jwt = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
+const bcrypt = require("bcrypt");
 dotenv_1.default.config();
 const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -52,26 +53,53 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
 exports.signInWithGoogleController = signInWithGoogleController;
 const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var userExists = yield user_model_1.default.exists({ email: req.body.email });
-        if (userExists) {
-            var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
-            var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
-                expiresIn: "365d",
-            });
-            res.status(200).json(token);
+        const emailRegex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])");
+        if (!emailRegex.test(req.body.email)) {
+            logger_1.default.error("Unacceptable email");
+            res.status(500).send((0, errors_util_1.getErrorMessage)("Unacceptable email"));
         }
         else {
-            const user = yield user_model_1.default.create({
-                id: req.body.id,
-                firstName: req.body.name,
-                email: req.body.email,
-                image: "https://www.habitune.net/image/empty-shell",
-            });
-            yield user.save();
-            var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
-                expiresIn: "365d",
-            });
-            res.status(200).json(token);
+            var userExists = yield user_model_1.default.exists({ email: req.body.email });
+            if (userExists) {
+                const thatUser = yield user_model_1.default.findOne({ email: req.body.email });
+                const result = yield bcrypt.compare(req.body.password, thatUser === null || thatUser === void 0 ? void 0 : thatUser.password);
+                if (result) {
+                    var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
+                    var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
+                        expiresIn: "365d",
+                    });
+                    res.status(200).json(token);
+                }
+                else {
+                    logger_1.default.error("Wrong password or email.");
+                    return res
+                        .status(500)
+                        .send((0, errors_util_1.getErrorMessage)("Wrong password or email."));
+                }
+            }
+            else {
+                if ((!req.body.id && req.body.id !== 0) ||
+                    (!req.body.name && req.body.name === "") ||
+                    (!req.body.email && req.body.email === "") ||
+                    (!req.body.password && req.body.password === "")) {
+                    logger_1.default.error("Need all required data");
+                    res.status(500).send((0, errors_util_1.getErrorMessage)("Need all required data"));
+                }
+                else {
+                    const user = yield user_model_1.default.create({
+                        id: req.body.id,
+                        firstName: req.body.name,
+                        email: req.body.email,
+                        image: "https://www.habitune.net/image/empty-shell",
+                        password: yield bcrypt.hash(req.body.password, 10),
+                    });
+                    yield user.save();
+                    var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
+                        expiresIn: "365d",
+                    });
+                    res.status(200).json(token);
+                }
+            }
         }
     }
     catch (error) {
