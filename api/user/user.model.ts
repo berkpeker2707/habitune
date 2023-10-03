@@ -9,6 +9,7 @@ const userSchema = new Schema<IUser>({
   image: { type: String },
   habits: [mongoose.Schema.Types.ObjectId],
   friends: [{ friend: mongoose.Schema.Types.ObjectId, pending: Boolean }],
+  password: { type: String },
 });
 
 export = mongoose.model<IUser>("User", userSchema);
