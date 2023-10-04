@@ -125,12 +125,16 @@ const Settings = () => {
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
-        <View>
+        {/* <View>
           <LinkButton
             buttonName="Rate Us"
             url="https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf&hl=en&gl=US"
           />
-        </View>
+        </View> */}
+
+        <TouchableOpacity onPress={() => console.log("TEST")}>
+          <SettingsButton buttonName="Rate Us" />
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Security" />
