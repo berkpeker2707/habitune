@@ -4,6 +4,7 @@ import { Pressable, View, Text, Button, Platform } from "react-native";
 
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import messaging from "@react-native-firebase/messaging";
 
 import {
   NavigationContainer,
@@ -92,6 +93,25 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
+
+const registerDeviceForMessaging = async () => {
+  await messaging().registerDeviceForRemoteMessages();
+  const token = await messaging().getToken();
+
+  // await deviceStorage.saveItem("FCMToken", token);
+
+  console.log("FCM Token: ", token);
+  // Register the token
+  // await register(token);
+};
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const HomeSection = memo((props: any) => {
   const {
@@ -763,6 +783,33 @@ const App = () => {
 
   useEffect(() => {
     registerForPushNotificationsAsync();
+  }, []);
+
+  useEffect(() => {
+    registerDeviceForMessaging();
+  }, []);
+
+  useEffect(() => {
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log(
+        "Notification caused app to open from background state:",
+        remoteMessage.notification
+      );
+    });
+
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            "Notification caused app to open from quit state:",
+            remoteMessage.notification
+          );
+        }
+      });
   }, []);
 
   return (
