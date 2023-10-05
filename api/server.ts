@@ -11,6 +11,7 @@ import morganMiddleware from "./middlewares/morganMiddleware";
 
 import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
+import notificationRoutes from "./notifications/notification.routes";
 import path from "path";
 
 dotenv.config();
@@ -54,6 +55,12 @@ app.use(morganMiddleware);
 //   res.send("Hello world");
 // });
 
+var admin = require("firebase-admin");
+var serviceAccount = require("./habitune-395006-firebase-adminsdk-yxw8e-3842870d9c.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
 app.get("/privacy", function (req, res) {
   res.sendFile(path.join(__dirname, "/view/privacy.html"));
 });
@@ -67,5 +74,6 @@ app.get("/image/empty-shell", function (req, res) {
 //routing
 app.use("/api/user", userRoutes);
 app.use("/api/habit", habitRoutes);
+app.use("/api/notification", notificationRoutes);
 
 export default app;
