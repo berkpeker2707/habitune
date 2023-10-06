@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 import User from "../user/user.model";
+import Logger from "./logger";
 
 interface idecoded {
   user: {
@@ -31,6 +32,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
 
     next();
   } catch (error) {
+    Logger.error(error);
     res.json(error);
   }
 };
