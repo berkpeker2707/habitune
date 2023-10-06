@@ -1,8 +1,9 @@
 import * as React from "react";
 import HabitDone from "./HabitDone";
 import HabitUndone from "./HabitUndone";
+import { memo } from "react";
 
-const HabitBar = (props: any) => {
+const HabitBar = memo((props: any) => {
   const { item, itemStroke, filled, nameChangable, navigation } = props;
 
   return !filled ? (
@@ -20,6 +21,6 @@ const HabitBar = (props: any) => {
       navigation={navigation}
     />
   );
-};
+});
 
 export default HabitBar;
