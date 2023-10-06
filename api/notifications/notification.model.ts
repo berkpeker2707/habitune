@@ -7,13 +7,9 @@ const notificationSchema = new Schema<any>({
   },
   tokenID: {
     type: String,
-    required: true,
   },
   notifications: {
     type: [Object],
-  },
-  data: {
-    type: Object,
   },
   createdAt: {
     type: Date,

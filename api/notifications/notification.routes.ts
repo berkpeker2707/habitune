@@ -1,14 +1,23 @@
 import { Router } from "express";
-import { notificationPush } from "./notification.controllers";
+import {
+  notificationUpdateToken,
+  notificationSend,
+} from "./notification.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
 
 const notificationRoutes = Router();
 
-notificationRoutes.put(
-  "/notification/push/test",
+notificationRoutes.post(
+  "/notification/update/token",
   verifyToken,
-  notificationPush
+  notificationUpdateToken
+);
+
+notificationRoutes.put(
+  "/notification/update/push",
+  verifyToken,
+  notificationSend
 );
 
 export default notificationRoutes;
