@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
 import User from "./user.model";
+import Notification from "../notifications/notification.model";
 import Habit from "../habit/habit.model";
 
 import { IReq } from "../middlewares/interfaces";
@@ -34,6 +35,11 @@ export const signInWithGoogleController = async (
         image: req.body.picture,
       });
       await user.save();
+
+      await Notification.create({
+        userID: user?._id,
+        tokenID: "",
+      });
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -100,6 +106,11 @@ export const signInController = async (req: IReq | any, res: Response) => {
             password: await bcrypt.hash(req.body.password, 10),
           });
           await user.save();
+
+          await Notification.create({
+            userID: user?._id,
+            tokenID: "",
+          });
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
