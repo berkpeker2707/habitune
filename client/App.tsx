@@ -94,17 +94,6 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
-const registerDeviceForMessaging = async () => {
-  await messaging().registerDeviceForRemoteMessages();
-  const token = await messaging().getToken();
-
-  // await deviceStorage.saveItem("FCMToken", token);
-
-  console.log("FCM Token: ", token);
-  // Register the token
-  // await register(token);
-};
-
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -760,6 +749,7 @@ const App = () => {
     }
   }, [currentUser, habitUpdated]);
 
+  // expo notifications
   async function registerForPushNotificationsAsync() {
     let deviceToken;
 
@@ -780,6 +770,18 @@ const App = () => {
 
     return deviceToken;
   }
+
+  // fcm notifications
+  const registerDeviceForMessaging = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+
+    // await deviceStorage.saveItem("FCMToken", token);
+
+    console.log("FCM Token: ", token);
+    // Register the token
+    // await register(token);
+  };
 
   useEffect(() => {
     registerForPushNotificationsAsync();
