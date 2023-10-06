@@ -12,6 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import userSlice from "./userSlice";
 import habitSlice from "./habitSlice";
+import notificationSlice from "./notificationSlice";
 import {
   TypedUseSelectorHook,
   useDispatch,
@@ -27,6 +28,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userSlice,
   habit: habitSlice,
+  notification: notificationSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
