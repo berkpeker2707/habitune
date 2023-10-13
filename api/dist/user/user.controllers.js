@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
+const notification_model_1 = __importDefault(require("../notifications/notification.model"));
 const habit_model_1 = __importDefault(require("../habit/habit.model"));
 const jwt = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -39,6 +40,10 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 image: req.body.picture,
             });
             yield user.save();
+            yield notification_model_1.default.create({
+                userID: user === null || user === void 0 ? void 0 : user._id,
+                tokenID: "",
+            });
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
@@ -94,6 +99,10 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         password: yield bcrypt.hash(req.body.password, 10),
                     });
                     yield user.save();
+                    yield notification_model_1.default.create({
+                        userID: user === null || user === void 0 ? void 0 : user._id,
+                        tokenID: "",
+                    });
                     var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });

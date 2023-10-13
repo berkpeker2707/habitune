@@ -14,6 +14,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
+const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -44,6 +45,11 @@ app.use(morganMiddleware_1.default);
 //   Logger.debug("This is a debug log");
 //   res.send("Hello world");
 // });
+var admin = require("firebase-admin");
+var serviceAccount = require("./habitune-395006-firebase-adminsdk-yxw8e-3842870d9c.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
 app.get("/privacy", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });
@@ -56,4 +62,5 @@ app.get("/image/empty-shell", function (req, res) {
 //routing
 app.use("/api/user", user_routes_1.default);
 app.use("/api/habit", habit_routes_1.default);
+app.use("/api/notification", notification_routes_1.default);
 exports.default = app;
