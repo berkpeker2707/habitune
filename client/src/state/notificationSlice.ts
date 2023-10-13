@@ -20,7 +20,7 @@ const initialState: notificationTypes = {
 };
 
 const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.33:1111/api",
+  // baseURL: "http://192.168.1.66:1111/api",
   baseURL: "https://www.habitune.net/api",
 });
 
@@ -28,7 +28,7 @@ const updatedNotification = createAction("notification/update");
 
 export const notificationUpdateTokenAction = createAsyncThunk(
   "notification/notificationUpdateToken",
-  async (token: string, { rejectWithValue, getState, dispatch }) => {
+  async (token: {}, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
 
@@ -40,8 +40,39 @@ export const notificationUpdateTokenAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.post(
-        `/notification/notification/update/token`,
-        token,
+        `/notification/update/token`,
+        { token: token },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      console.log("notification error1: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const notificationSendAction = createAsyncThunk(
+  "notification/notificationSend",
+  async (notificationSendData: {}, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    console.log(
+      "🚀 ~ file: notificationSlice.ts:59 ~ notificationSendData:",
+      notificationSendData
+    );
+    try {
+      const { data } = await axiosInstance.put(
+        `/notification/update/push`,
+        notificationSendData,
         config
       );
 
