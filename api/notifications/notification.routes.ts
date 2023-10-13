@@ -8,16 +8,8 @@ import verifyToken from "../middlewares/verifyToken";
 
 const notificationRoutes = Router();
 
-notificationRoutes.post(
-  "/notification/update/token",
-  verifyToken,
-  notificationUpdateToken
-);
+notificationRoutes.post("/update/token", verifyToken, notificationUpdateToken);
 
-notificationRoutes.put(
-  "/notification/update/push",
-  verifyToken,
-  notificationSend
-);
+notificationRoutes.put("/update/push", verifyToken, notificationSend);
 
 export default notificationRoutes;
