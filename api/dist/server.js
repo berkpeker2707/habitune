@@ -47,7 +47,6 @@ app.use(morganMiddleware_1.default);
 //   Logger.debug("This is a debug log");
 //   res.send("Hello world");
 // });
-// const key = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY?.replace(/\\n/g, "\n");
 const key = (_a = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY) === null || _a === void 0 ? void 0 : _a.replace(/Ö/g, "").replace(/\\n/g, "\n");
 var admin = require("firebase-admin");
 var habitune_395006_firebase_adminsdk_yxw8e_3842870d9c = {

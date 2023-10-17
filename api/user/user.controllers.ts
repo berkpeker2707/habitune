@@ -138,6 +138,16 @@ export const fetchCurrentUserProfile = async (
       })
       .exec();
 
+    var foundNotification = await Notification.findOne({
+      userID: loggedinUser?._id,
+    });
+    if (!foundNotification) {
+      await Notification.create({
+        userID: loggedinUser?._id,
+        tokenID: "",
+      });
+    }
+
     res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);

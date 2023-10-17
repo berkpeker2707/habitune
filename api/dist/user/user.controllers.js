@@ -126,6 +126,15 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
             model: "Habit",
         })
             .exec();
+        var foundNotification = yield notification_model_1.default.findOne({
+            userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
+        });
+        if (!foundNotification) {
+            yield notification_model_1.default.create({
+                userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
+                tokenID: "",
+            });
+        }
         res.status(200).json(loggedinUser);
     }
     catch (error) {
