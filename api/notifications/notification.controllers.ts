@@ -70,6 +70,7 @@ export const notificationSend = async (req: any, res: Response) => {
 
     res.status(200).json(notification);
   } catch (error) {
+    console.log("error controller noti: ", error);
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
   }

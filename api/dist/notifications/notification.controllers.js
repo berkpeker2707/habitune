@@ -73,6 +73,7 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(200).json(notification);
     }
     catch (error) {
+        console.log("error controller noti: ", error);
         logger_1.default.error(error);
         return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
