@@ -42,9 +42,7 @@ export const notificationSend = async (req: any, res: Response) => {
     });
 
     const notificationResponse = await admin.messaging().sendMulticast({
-      tokens: [
-        "fjos6G6vRnqJ32qJV1ZLFZ:APA91bEgayotbn5TVJue7fgFlIvebEKejTwrmAzIi7Xy77KgrTlnWZkj7xsk058lVgSE_FsEJkqe7b2_Dxe3yDkWjncF_OHCllcavuR2N29NosluEjv5KR-yfeBqF0iNkb5-yTpiiUB8",
-      ],
+      tokens: req.body.tokens,
       notification: {
         title: `${req.body.firstName} is busy!`,
         body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,

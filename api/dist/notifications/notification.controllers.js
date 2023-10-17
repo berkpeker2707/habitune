@@ -46,9 +46,7 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
             userID: req.user[0]._id,
         });
         const notificationResponse = yield admin.messaging().sendMulticast({
-            tokens: [
-                "fjos6G6vRnqJ32qJV1ZLFZ:APA91bEgayotbn5TVJue7fgFlIvebEKejTwrmAzIi7Xy77KgrTlnWZkj7xsk058lVgSE_FsEJkqe7b2_Dxe3yDkWjncF_OHCllcavuR2N29NosluEjv5KR-yfeBqF0iNkb5-yTpiiUB8",
-            ],
+            tokens: req.body.tokens,
             notification: {
                 title: `${req.body.firstName} is busy!`,
                 body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
