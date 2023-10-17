@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
 import Notification from "./notification.model";
-// import User from "../user/user.model";
+import User from "../user/user.model";
 
 import { IReq } from "../middlewares/interfaces";
 
@@ -24,6 +24,10 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
     ) {
       await notification.updateOne({ tokenID: req.body.token }).exec();
 
+      await User.findByIdAndUpdate(req.user[0]._id, {
+        fcmToken: req.body.token,
+      });
+
       res.status(200).json(notification);
     } else {
       res.status(200).json(notification);
@@ -36,7 +40,6 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
 
 export const notificationSend = async (req: any, res: Response) => {
   try {
-    // const loggedInUser = await User.findById(req.user[0]._id);
     const notification = await Notification.findOne({
       userID: req.user[0]._id,
     });
@@ -54,8 +57,8 @@ export const notificationSend = async (req: any, res: Response) => {
       .updateOne({
         $push: {
           notifications: {
-            title: req.body.title,
-            body: req.body.body,
+            title: `${req.body.firstName} is busy!`,
+            body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
             imageUrl: req.body.imageUrl,
             friend: req.body.friend,
             firstName: req.body.firstName,
