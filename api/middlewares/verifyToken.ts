@@ -33,6 +33,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
     next();
   } catch (error) {
     Logger.error(error);
+    console.log("token error: ", error);
     res.json(error);
   }
 };

@@ -31,6 +31,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
     catch (error) {
         logger_1.default.error(error);
+        console.log("token error: ", error);
         res.json(error);
     }
 });
