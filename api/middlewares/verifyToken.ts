@@ -21,6 +21,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
 
     const bearerHeader = req.headers["authorization"];
     const token = bearerHeader.split(" ")[1];
+    console.log("🚀 ~ file: verifyToken.ts:24 ~ verifyToken ~ token:", token);
     const decoded: idecoded = jwt.verify(token, jwtS);
 
     if (!decoded) {

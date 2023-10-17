@@ -21,6 +21,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         var jwtS = process.env.JWT_SECRET;
         const bearerHeader = req.headers["authorization"];
         const token = bearerHeader.split(" ")[1];
+        console.log("🚀 ~ file: verifyToken.ts:24 ~ verifyToken ~ token:", token);
         const decoded = jwt.verify(token, jwtS);
         if (!decoded) {
             return res.json({ message: "Unauthorized!" });
