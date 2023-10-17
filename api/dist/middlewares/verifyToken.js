@@ -20,6 +20,7 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         var jwtS = process.env.JWT_SECRET;
         const bearerHeader = req.headers["authorization"];
+        console.log("🚀 ~ file: verifyToken.ts:23 ~ verifyToken ~ bearerHeader:", bearerHeader);
         const token = bearerHeader.split(" ")[1];
         console.log("🚀 ~ file: verifyToken.ts:24 ~ verifyToken ~ token:", token);
         const decoded = jwt.verify(token, jwtS);

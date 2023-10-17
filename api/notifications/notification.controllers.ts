@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
 import Notification from "./notification.model";
-import User from "../user/user.model";
+// import User from "../user/user.model";
 
 import { IReq } from "../middlewares/interfaces";
 
@@ -12,10 +12,7 @@ dotenv.config();
 
 const admin = require("firebase-admin");
 
-export const notificationUpdateToken = async (
-  req: IReq | any,
-  res: Response
-) => {
+export const notificationUpdateToken = async (req: any, res: Response) => {
   try {
     const notification = await Notification.findOne({
       userID: req.user[0]._id,
@@ -37,9 +34,9 @@ export const notificationUpdateToken = async (
   }
 };
 
-export const notificationSend = async (req: IReq | any, res: Response) => {
+export const notificationSend = async (req: any, res: Response) => {
   try {
-    const loggedInUser = await User.findById(req.user[0]._id);
+    // const loggedInUser = await User.findById(req.user[0]._id);
     const notification = await Notification.findOne({
       userID: req.user[0]._id,
     });

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.notificationSend = exports.notificationUpdateToken = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const notification_model_1 = __importDefault(require("./notification.model"));
-const user_model_1 = __importDefault(require("../user/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
@@ -42,7 +41,7 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.notificationUpdateToken = notificationUpdateToken;
 const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const loggedInUser = yield user_model_1.default.findById(req.user[0]._id);
+        // const loggedInUser = await User.findById(req.user[0]._id);
         const notification = yield notification_model_1.default.findOne({
             userID: req.user[0]._id,
         });
