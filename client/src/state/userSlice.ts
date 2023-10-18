@@ -10,7 +10,6 @@ interface userTypes {
   isUserUpdated: boolean;
   currentUserData: object;
   selectedUserData: object;
-
   deleteUserData: object;
 }
 
