@@ -22,6 +22,7 @@ import uuid from "react-native-uuid";
 
 import SkeletonPlaceholder from "../components/home/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
+import { notificationSendAction } from "../state/notificationSlice";
 
 const Home = memo((props: any) => {
   const {
@@ -184,7 +185,27 @@ const Home = memo((props: any) => {
                         date: Date.now(),
                       })
                     );
-
+                    //only if habit is checked send notification
+                    !tempBarFilled[index]
+                      ? dispatch(
+                          notificationSendAction({
+                            imageUrl: "image",
+                            friend: item.sharedWith.map(
+                              (sharedWithIds: any) => sharedWithIds._id
+                            ),
+                            firstName: currentUser.firstName,
+                            friendImage: item.sharedWith.map(
+                              (sharedWithFriendImage: any) =>
+                                sharedWithFriendImage.image
+                            ),
+                            habitName: item.name,
+                            tokens: item.sharedWith.map(
+                              (sharedWithTokens: any) =>
+                                sharedWithTokens.fcmToken
+                            ),
+                          })
+                        )
+                      : "";
                     handleHabitClicked(index);
                   }}
                   onLongPress={() => {

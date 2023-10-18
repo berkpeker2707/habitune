@@ -2,18 +2,21 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
+const bcrypt = require("bcrypt");
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
 //morgan is for checking requests
 const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
+const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
 const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -44,6 +47,24 @@ app.use(morganMiddleware_1.default);
 //   Logger.debug("This is a debug log");
 //   res.send("Hello world");
 // });
+const key = (_a = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY) === null || _a === void 0 ? void 0 : _a.replace(/Ö/g, "").replace(/\\n/g, "\n");
+var admin = require("firebase-admin");
+var habitune_395006_firebase_adminsdk_yxw8e_3842870d9c = {
+    type: process.env.FIREBASE_ADMINSDK_TYPE,
+    project_id: process.env.FIREBASE_ADMINSDK_PROJECT_ID,
+    private_key_id: process.env.FIREBASE_ADMINSDK_PRIVATE_KEY_ID,
+    private_key: key,
+    client_email: process.env.FIREBASE_ADMINSDK_CLIENT_EMAIL,
+    client_id: process.env.FIREBASE_ADMINSDK_CLIENT_ID,
+    auth_uri: process.env.FIREBASE_ADMINSDK_AUTH_URI,
+    token_uri: process.env.FIREBASE_ADMINSDK_TOKEN_URI,
+    auth_provider_x509_cert_url: process.env.FIREBASE_ADMINSDK_AUTH_CERT_URL,
+    client_x509_cert_url: process.env.FIREBASE_ADMINSDK_CLIENT_CERT_URL,
+    universe_domain: process.env.FIREBASE_ADMINSDK_UNIVERSE_DOMAIN,
+};
+admin.initializeApp({
+    credential: admin.credential.cert(habitune_395006_firebase_adminsdk_yxw8e_3842870d9c),
+});
 app.get("/privacy", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });
@@ -56,4 +77,5 @@ app.get("/image/empty-shell", function (req, res) {
 //routing
 app.use("/api/user", user_routes_1.default);
 app.use("/api/habit", habit_routes_1.default);
+app.use("/api/notification", notification_routes_1.default);
 exports.default = app;

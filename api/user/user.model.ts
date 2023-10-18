@@ -10,6 +10,7 @@ const userSchema = new Schema<IUser>({
   habits: [mongoose.Schema.Types.ObjectId],
   friends: [{ friend: mongoose.Schema.Types.ObjectId, pending: Boolean }],
   password: { type: String },
+  fcmToken: { type: String },
 });
 
 export = mongoose.model<IUser>("User", userSchema);

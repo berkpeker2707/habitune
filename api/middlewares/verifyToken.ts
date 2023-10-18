@@ -20,7 +20,9 @@ const verifyToken = async (req: any, res: any, next: any) => {
     var jwtS = process.env.JWT_SECRET;
 
     const bearerHeader = req.headers["authorization"];
+
     const token = bearerHeader.split(" ")[1];
+
     const decoded: idecoded = jwt.verify(token, jwtS);
 
     if (!decoded) {
@@ -33,6 +35,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
     next();
   } catch (error) {
     Logger.error(error);
+    console.log("token error: ", error);
     res.json(error);
   }
 };

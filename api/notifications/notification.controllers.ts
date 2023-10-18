@@ -12,10 +12,7 @@ dotenv.config();
 
 const admin = require("firebase-admin");
 
-export const notificationUpdateToken = async (
-  req: IReq | any,
-  res: Response
-) => {
+export const notificationUpdateToken = async (req: any, res: Response) => {
   try {
     const notification = await Notification.findOne({
       userID: req.user[0]._id,
@@ -27,6 +24,10 @@ export const notificationUpdateToken = async (
     ) {
       await notification.updateOne({ tokenID: req.body.token }).exec();
 
+      await User.findByIdAndUpdate(req.user[0]._id, {
+        fcmToken: req.body.token,
+      });
+
       res.status(200).json(notification);
     } else {
       res.status(200).json(notification);
@@ -37,17 +38,16 @@ export const notificationUpdateToken = async (
   }
 };
 
-export const notificationSend = async (req: IReq | any, res: Response) => {
+export const notificationSend = async (req: any, res: Response) => {
   try {
-    const loggedInUser = await User.findById(req.user[0]._id);
     const notification = await Notification.findOne({
       userID: req.user[0]._id,
     });
 
+    console.log(req.body.tokens);
+
     const notificationResponse = await admin.messaging().sendMulticast({
-      tokens: [
-        "fjos6G6vRnqJ32qJV1ZLFZ:APA91bEgayotbn5TVJue7fgFlIvebEKejTwrmAzIi7Xy77KgrTlnWZkj7xsk058lVgSE_FsEJkqe7b2_Dxe3yDkWjncF_OHCllcavuR2N29NosluEjv5KR-yfeBqF0iNkb5-yTpiiUB8",
-      ],
+      tokens: req.body.tokens,
       notification: {
         title: `${req.body.firstName} is busy!`,
         body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
@@ -59,8 +59,8 @@ export const notificationSend = async (req: IReq | any, res: Response) => {
       .updateOne({
         $push: {
           notifications: {
-            title: req.body.title,
-            body: req.body.body,
+            title: `${req.body.firstName} is busy!`,
+            body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
             imageUrl: req.body.imageUrl,
             friend: req.body.friend,
             firstName: req.body.firstName,
@@ -73,6 +73,7 @@ export const notificationSend = async (req: IReq | any, res: Response) => {
 
     res.status(200).json(notification);
   } catch (error) {
+    console.log("error controller noti: ", error);
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
   }

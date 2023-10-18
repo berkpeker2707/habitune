@@ -65,10 +65,6 @@ export const notificationSendAction = createAsyncThunk(
       },
     };
 
-    console.log(
-      "🚀 ~ file: notificationSlice.ts:59 ~ notificationSendData:",
-      notificationSendData
-    );
     try {
       const { data } = await axiosInstance.put(
         `/notification/update/push`,
