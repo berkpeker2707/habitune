@@ -26,6 +26,16 @@ export const signInWithGoogleController = async (
         expiresIn: "365d",
       });
 
+      var foundNotification = await Notification.findOne({
+        userID: foundUser?._id,
+      });
+      if (!foundNotification) {
+        await Notification.create({
+          userID: foundUser?._id,
+          tokenID: "empty",
+        });
+      }
+
       res.status(200).json(token);
     } else {
       const user = await User.create({
@@ -37,10 +47,15 @@ export const signInWithGoogleController = async (
       });
       await user.save();
 
-      await Notification.create({
+      var foundNotification = await Notification.findOne({
         userID: user?._id,
-        tokenID: "empty",
       });
+      if (!foundNotification) {
+        await Notification.create({
+          userID: user?._id,
+          tokenID: "empty",
+        });
+      }
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -82,6 +97,16 @@ export const signInController = async (req: IReq | any, res: Response) => {
             }
           );
 
+          var foundNotification = await Notification.findOne({
+            userID: foundUser?._id,
+          });
+          if (!foundNotification) {
+            await Notification.create({
+              userID: foundUser?._id,
+              tokenID: "empty",
+            });
+          }
+
           res.status(200).json(token);
         } else {
           Logger.error("Wrong password or email.");
@@ -109,10 +134,15 @@ export const signInController = async (req: IReq | any, res: Response) => {
           });
           await user.save();
 
-          await Notification.create({
+          var foundNotification = await Notification.findOne({
             userID: user?._id,
-            tokenID: "empty",
           });
+          if (!foundNotification) {
+            await Notification.create({
+              userID: user?._id,
+              tokenID: "empty",
+            });
+          }
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
@@ -141,11 +171,11 @@ export const fetchCurrentUserProfile = async (
       .exec();
 
     var foundNotification = await Notification.findOne({
-      userID: loggedinUser?._id,
+      userID: req.user[0]._id,
     });
     if (!foundNotification) {
       await Notification.create({
-        userID: loggedinUser?._id,
+        userID: req.user[0]._id,
         tokenID: "empty",
       });
     }
@@ -335,11 +365,20 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
       await User.findOneAndDelete({
         _id: req.user[0]._id,
       });
+
+      await Notification.findOneAndDelete({
+        userID: req.user[0]._id,
+      });
+
       res.status(200).json(loggedinUser);
     } else {
       // console.log("No habit detected.");
       await User.findOneAndDelete({
         _id: req.user[0]._id,
+      });
+
+      await Notification.findOneAndDelete({
+        userID: req.user[0]._id,
       });
       res.status(200).json(loggedinUser);
     }
