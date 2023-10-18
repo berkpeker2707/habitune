@@ -210,6 +210,8 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
     const loggedinUser = await User.findById(req.user[0]._id);
 
+    const targetUser = await User.findOne({ email: userMail });
+
     if (
       (await User.find({ email: userMail })).length < 1 ||
       userMail === req.user[0].email
@@ -352,16 +354,25 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 export const deleteUser = async (req: IReq | any, res: Response) => {
   try {
     const loggedinUser = await User.findById(req.user[0]._id);
-    if (
-      loggedinUser &&
-      loggedinUser.habits.length &&
-      loggedinUser.habits.length > 0
-    ) {
+    if (loggedinUser?.habits.length && loggedinUser.habits.length > 0) {
       for (let i = 0; i < loggedinUser.habits.length; i++) {
         await Habit.findOneAndDelete({
           _id: loggedinUser.habits[i],
         });
       }
+
+      for (let y = 0; y < loggedinUser.friends.length; y++) {
+        await User.findOneAndUpdate(
+          {
+            _id: loggedinUser.friends[y].friend,
+          },
+          {
+            $pull: { friends: loggedinUser._id },
+          },
+          { upsert: true }
+        );
+      }
+
       await User.findOneAndDelete({
         _id: req.user[0]._id,
       });
@@ -372,7 +383,22 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
 
       res.status(200).json(loggedinUser);
     } else {
-      // console.log("No habit detected.");
+      console.log("No habit detected.");
+
+      if (loggedinUser?.friends) {
+        for (let y = 0; y < loggedinUser.friends.length; y++) {
+          await User.findOneAndUpdate(
+            {
+              _id: loggedinUser?.friends[y].friend,
+            },
+            {
+              $pull: { friends: { friend: loggedinUser?._id } },
+            },
+            { upsert: true }
+          );
+        }
+      }
+
       await User.findOneAndDelete({
         _id: req.user[0]._id,
       });
