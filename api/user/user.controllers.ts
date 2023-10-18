@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
 import User from "./user.model";
+import Notification from "../notifications/notification.model";
 import Habit from "../habit/habit.model";
 
 import { IReq } from "../middlewares/interfaces";
@@ -32,8 +33,14 @@ export const signInWithGoogleController = async (
         firstName: req.body.name,
         email: req.body.email,
         image: req.body.picture,
+        fcmToken: "empty",
       });
       await user.save();
+
+      await Notification.create({
+        userID: user?._id,
+        tokenID: "empty",
+      });
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -98,8 +105,14 @@ export const signInController = async (req: IReq | any, res: Response) => {
             email: req.body.email,
             image: "https://www.habitune.net/image/empty-shell",
             password: await bcrypt.hash(req.body.password, 10),
+            fcmToken: "empty",
           });
           await user.save();
+
+          await Notification.create({
+            userID: user?._id,
+            tokenID: "empty",
+          });
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
@@ -126,6 +139,16 @@ export const fetchCurrentUserProfile = async (
         model: "Habit",
       })
       .exec();
+
+    var foundNotification = await Notification.findOne({
+      userID: loggedinUser?._id,
+    });
+    if (!foundNotification) {
+      await Notification.create({
+        userID: loggedinUser?._id,
+        tokenID: "empty",
+      });
+    }
 
     res.status(200).json(loggedinUser);
   } catch (error) {

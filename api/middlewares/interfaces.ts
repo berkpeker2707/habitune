@@ -11,6 +11,7 @@ export interface IUser {
   habits: Types.ObjectId[];
   friends: [{ friend: Types.ObjectId; pending: boolean }];
   password: any;
+  fcmToken: string;
 }
 
 export interface IHabit {

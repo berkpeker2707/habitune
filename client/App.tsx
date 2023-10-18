@@ -4,6 +4,7 @@ import { Pressable, View, Text, Button, Platform } from "react-native";
 
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import messaging from "@react-native-firebase/messaging";
 
 import {
   NavigationContainer,
@@ -73,6 +74,7 @@ import {
   updateHabitNameAction,
   deleteHabitAction,
 } from "./src/state/habitSlice";
+import FlashMessage from "react-native-flash-message";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
   headerShown: false,
@@ -92,6 +94,17 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
 const StackNavigator = createStackNavigator<StackNavParamList>();
+
+import { showMessage, hideMessage } from "react-native-flash-message";
+import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const HomeSection = memo((props: any) => {
   const {
@@ -740,6 +753,7 @@ const App = () => {
     }
   }, [currentUser, habitUpdated]);
 
+  // expo notifications
   async function registerForPushNotificationsAsync() {
     let deviceToken;
 
@@ -756,95 +770,170 @@ const App = () => {
       return;
     }
     deviceToken = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("deviceToken:", deviceToken);
+    // console.log("deviceToken:", deviceToken);
 
     return deviceToken;
   }
+
+  // fcm notifications
+  const registerDeviceForMessaging = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+
+    dispatch(notificationUpdateTokenAction(token));
+    // console.log("FCM Token: ", token);
+  };
 
   useEffect(() => {
     registerForPushNotificationsAsync();
   }, []);
 
+  useEffect(() => {
+    registerDeviceForMessaging();
+  }, [token]);
+
+  // check whether an initial notification is available
+  useEffect(() => {
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          // console.log(
+          //   "Notification caused app to open from quit state:",
+          //   remoteMessage.notification
+          // );
+          return;
+        }
+      });
+  }, []);
+
+  // do stuff if app background notification is pressed
+  useEffect(() => {
+    const unsubscribe = messaging().setBackgroundMessageHandler(
+      async (remoteMessage) => {
+        // Update a users messages list using AsyncStorage
+        // const currentMessages = await AsyncStorage.getItem('messages');
+        // const messageArray = JSON.parse(currentMessages);
+        // messageArray.push(remoteMessage.data);
+        // await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
+        // console.log(remoteMessage);
+        return unsubscribe;
+      }
+    );
+  }, []);
+
+  // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  useEffect(() => {
+    const unsubscribe = messaging().onNotificationOpenedApp(
+      async (remoteMessage) => {
+        // console.log(
+        //   "Notification caused app to open from background state:",
+        //   remoteMessage.notification
+        // )
+        return unsubscribe;
+      }
+    );
+  }, []);
+
+  // do stuff if app foreground notification is pressed
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      showMessage({
+        message: remoteMessage.notification?.title as string,
+        description: remoteMessage.notification?.body as string,
+        type: "default",
+        backgroundColor: "#968EB0",
+        color: "#FFFFFF",
+        duration: 5000,
+      });
+      // console.log("A new FCM message arrived!", JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  }, []);
+
   return (
-    <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
-      {!token || !tokenSecondOption ? (
-        <BottomTabNav.Screen
-          name="Signin"
-          children={(props: any) => <Signin {...props} dispatch={dispatch} />}
-          options={{
-            tabBarButton: () => null,
-          }}
-        />
-      ) : (
-        <>
+    <>
+      <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
+        {!token || !tokenSecondOption ? (
           <BottomTabNav.Screen
-            name="HomeSection"
-            initialParams={{ homeEditState: false }}
-            children={(props: any) => (
-              <HomeSection
-                {...props}
-                controller={controller}
-                dispatch={dispatch}
-                token={token}
-                currentUser={currentUser}
-                allHabitsToday={allHabitsToday}
-                currentHabitDatesIncluded={currentHabitDatesIncluded}
-                userUpdated={userUpdated}
-                habitUpdated={habitUpdated}
-                habitLoading={habitLoading}
-              />
-            )}
+            name="Signin"
+            children={(props: any) => <Signin {...props} dispatch={dispatch} />}
             options={{
-              // resets screen states below
-              // unmountOnBlur: true,
-              tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+              tabBarButton: () => null,
             }}
           />
-          <BottomTabNav.Screen
-            name="AddSection"
-            children={(props: any) => (
-              <AddSection
-                {...props}
-                // navigation={navigation}
-                controller={controller}
-                dispatch={dispatch}
-                token={token}
-                currentUser={currentUser}
-                allHabitsToday={allHabitsToday}
-                currentHabitDatesIncluded={currentHabitDatesIncluded}
-                userUpdated={userUpdated}
-                habitUpdated={habitUpdated}
-                habitLoading={habitLoading}
-              />
-            )}
-            options={{
-              tabBarButton: (props) => <BottomTabAddButton {...props} />,
-            }}
-          />
-          <BottomTabNav.Screen
-            name="OverviewSection"
-            children={(props: any) => (
-              <OverviewSection
-                {...props}
-                // navigation={navigation}
-                controller={controller}
-                dispatch={dispatch}
-                token={token}
-                currentUser={currentUser}
-                allHabitsToday={allHabitsToday}
-                currentHabitDatesIncluded={currentHabitDatesIncluded}
-                userUpdated={userUpdated}
-                habitUpdated={habitUpdated}
-                habitLoading={habitLoading}
-              />
-            )}
-            options={{
-              tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
-            }}
-          />
-        </>
-      )}
-    </BottomTabNav.Navigator>
+        ) : (
+          <>
+            <BottomTabNav.Screen
+              name="HomeSection"
+              initialParams={{ homeEditState: false }}
+              children={(props: any) => (
+                <HomeSection
+                  {...props}
+                  controller={controller}
+                  dispatch={dispatch}
+                  token={token}
+                  currentUser={currentUser}
+                  allHabitsToday={allHabitsToday}
+                  currentHabitDatesIncluded={currentHabitDatesIncluded}
+                  userUpdated={userUpdated}
+                  habitUpdated={habitUpdated}
+                  habitLoading={habitLoading}
+                />
+              )}
+              options={{
+                // resets screen states below
+                // unmountOnBlur: true,
+                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+              }}
+            />
+            <BottomTabNav.Screen
+              name="AddSection"
+              children={(props: any) => (
+                <AddSection
+                  {...props}
+                  // navigation={navigation}
+                  controller={controller}
+                  dispatch={dispatch}
+                  token={token}
+                  currentUser={currentUser}
+                  allHabitsToday={allHabitsToday}
+                  currentHabitDatesIncluded={currentHabitDatesIncluded}
+                  userUpdated={userUpdated}
+                  habitUpdated={habitUpdated}
+                  habitLoading={habitLoading}
+                />
+              )}
+              options={{
+                tabBarButton: (props) => <BottomTabAddButton {...props} />,
+              }}
+            />
+            <BottomTabNav.Screen
+              name="OverviewSection"
+              children={(props: any) => (
+                <OverviewSection
+                  {...props}
+                  // navigation={navigation}
+                  controller={controller}
+                  dispatch={dispatch}
+                  token={token}
+                  currentUser={currentUser}
+                  allHabitsToday={allHabitsToday}
+                  currentHabitDatesIncluded={currentHabitDatesIncluded}
+                  userUpdated={userUpdated}
+                  habitUpdated={habitUpdated}
+                  habitLoading={habitLoading}
+                />
+              )}
+              options={{
+                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
+              }}
+            />
+          </>
+        )}
+      </BottomTabNav.Navigator>
+      <FlashMessage position="top" />
+    </>
   );
 };
 

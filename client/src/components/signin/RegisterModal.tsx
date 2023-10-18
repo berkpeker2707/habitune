@@ -43,6 +43,16 @@ const RegisterModal = (props: any) => {
             elevation: 5,
           }}
         >
+          <Text
+            style={{
+              color: "#968EB0",
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingBottom: 10,
+            }}
+          >
+            Register without Google
+          </Text>
           <TextInput
             style={{
               width: 345,
@@ -109,7 +119,7 @@ const RegisterModal = (props: any) => {
                 textAlign: "center",
               }}
             >
-              Share
+              Register
             </Text>
           </Pressable>
         </View>

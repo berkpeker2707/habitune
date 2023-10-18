@@ -23,15 +23,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 const mongoose_1 = __importStar(require("mongoose"));
-const userSchema = new mongoose_1.Schema({
-    id: { type: Number },
-    firstName: { type: String },
-    lastName: { type: String },
-    email: { type: String },
-    image: { type: String },
-    habits: [mongoose_1.default.Schema.Types.ObjectId],
-    friends: [{ friend: mongoose_1.default.Schema.Types.ObjectId, pending: Boolean }],
-    password: { type: String },
-    fcmToken: { type: String },
+const notificationSchema = new mongoose_1.Schema({
+    userID: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "User",
+    },
+    tokenID: {
+        type: String,
+    },
+    notifications: {
+        type: [Object],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
-module.exports = mongoose_1.default.model("User", userSchema);
+module.exports = mongoose_1.default.model("Notification", notificationSchema);

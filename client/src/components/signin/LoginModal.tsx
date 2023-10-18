@@ -42,6 +42,16 @@ const LoginModal = (props: any) => {
             elevation: 5,
           }}
         >
+          <Text
+            style={{
+              color: "#968EB0",
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingBottom: 10,
+            }}
+          >
+            Login without Google
+          </Text>
           <TextInput
             style={{
               width: 345,
@@ -92,7 +102,7 @@ const LoginModal = (props: any) => {
                 textAlign: "center",
               }}
             >
-              Share
+              Login
             </Text>
           </Pressable>
         </View>

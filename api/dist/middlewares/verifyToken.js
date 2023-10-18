@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const user_model_1 = __importDefault(require("../user/user.model"));
+const logger_1 = __importDefault(require("./logger"));
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var jwtS = process.env.JWT_SECRET;
@@ -29,6 +30,8 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         next();
     }
     catch (error) {
+        logger_1.default.error(error);
+        console.log("token error: ", error);
         res.json(error);
     }
 });
