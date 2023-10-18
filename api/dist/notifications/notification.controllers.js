@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.notificationSend = exports.notificationUpdateToken = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const notification_model_1 = __importDefault(require("./notification.model"));
+const user_model_1 = __importDefault(require("../user/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 dotenv_1.default.config();
@@ -27,6 +28,9 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (notification.tokenID === "" ||
             notification.tokenID !== req.body.token) {
             yield notification.updateOne({ tokenID: req.body.token }).exec();
+            yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
+                fcmToken: req.body.token,
+            });
             res.status(200).json(notification);
         }
         else {
@@ -41,10 +45,10 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.notificationUpdateToken = notificationUpdateToken;
 const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const loggedInUser = await User.findById(req.user[0]._id);
         const notification = yield notification_model_1.default.findOne({
             userID: req.user[0]._id,
         });
+        console.log(req.body.tokens);
         const notificationResponse = yield admin.messaging().sendMulticast({
             tokens: req.body.tokens,
             notification: {
@@ -57,8 +61,8 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
             .updateOne({
             $push: {
                 notifications: {
-                    title: req.body.title,
-                    body: req.body.body,
+                    title: `${req.body.firstName} is busy!`,
+                    body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
                     imageUrl: req.body.imageUrl,
                     friend: req.body.friend,
                     firstName: req.body.firstName,

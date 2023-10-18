@@ -32,5 +32,6 @@ const userSchema = new mongoose_1.Schema({
     habits: [mongoose_1.default.Schema.Types.ObjectId],
     friends: [{ friend: mongoose_1.default.Schema.Types.ObjectId, pending: Boolean }],
     password: { type: String },
+    fcmToken: { type: String },
 });
 module.exports = mongoose_1.default.model("User", userSchema);

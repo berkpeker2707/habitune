@@ -38,11 +38,12 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 firstName: req.body.name,
                 email: req.body.email,
                 image: req.body.picture,
+                fcmToken: "empty",
             });
             yield user.save();
             yield notification_model_1.default.create({
                 userID: user === null || user === void 0 ? void 0 : user._id,
-                tokenID: "",
+                tokenID: "empty",
             });
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
@@ -97,11 +98,12 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         email: req.body.email,
                         image: "https://www.habitune.net/image/empty-shell",
                         password: yield bcrypt.hash(req.body.password, 10),
+                        fcmToken: "empty",
                     });
                     yield user.save();
                     yield notification_model_1.default.create({
                         userID: user === null || user === void 0 ? void 0 : user._id,
-                        tokenID: "",
+                        tokenID: "empty",
                     });
                     var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
@@ -132,7 +134,7 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (!foundNotification) {
             yield notification_model_1.default.create({
                 userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
-                tokenID: "",
+                tokenID: "empty",
             });
         }
         res.status(200).json(loggedinUser);

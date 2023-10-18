@@ -33,13 +33,13 @@ export const signInWithGoogleController = async (
         firstName: req.body.name,
         email: req.body.email,
         image: req.body.picture,
-        fcmToken: "",
+        fcmToken: "empty",
       });
       await user.save();
 
       await Notification.create({
         userID: user?._id,
-        tokenID: "",
+        tokenID: "empty",
       });
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
@@ -105,13 +105,13 @@ export const signInController = async (req: IReq | any, res: Response) => {
             email: req.body.email,
             image: "https://www.habitune.net/image/empty-shell",
             password: await bcrypt.hash(req.body.password, 10),
-            fcmToken: "",
+            fcmToken: "empty",
           });
           await user.save();
 
           await Notification.create({
             userID: user?._id,
-            tokenID: "",
+            tokenID: "empty",
           });
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
@@ -146,7 +146,7 @@ export const fetchCurrentUserProfile = async (
     if (!foundNotification) {
       await Notification.create({
         userID: loggedinUser?._id,
-        tokenID: "",
+        tokenID: "empty",
       });
     }
 

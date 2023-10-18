@@ -44,6 +44,8 @@ export const notificationSend = async (req: any, res: Response) => {
       userID: req.user[0]._id,
     });
 
+    console.log(req.body.tokens);
+
     const notificationResponse = await admin.messaging().sendMulticast({
       tokens: req.body.tokens,
       notification: {
