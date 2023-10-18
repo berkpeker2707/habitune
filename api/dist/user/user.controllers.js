@@ -30,6 +30,15 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
+            var foundNotification = yield notification_model_1.default.findOne({
+                userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+            });
+            if (!foundNotification) {
+                yield notification_model_1.default.create({
+                    userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                    tokenID: "empty",
+                });
+            }
             res.status(200).json(token);
         }
         else {
@@ -41,10 +50,15 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 fcmToken: "empty",
             });
             yield user.save();
-            yield notification_model_1.default.create({
+            var foundNotification = yield notification_model_1.default.findOne({
                 userID: user === null || user === void 0 ? void 0 : user._id,
-                tokenID: "empty",
             });
+            if (!foundNotification) {
+                yield notification_model_1.default.create({
+                    userID: user === null || user === void 0 ? void 0 : user._id,
+                    tokenID: "empty",
+                });
+            }
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
@@ -74,6 +88,15 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
+                    var foundNotification = yield notification_model_1.default.findOne({
+                        userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                    });
+                    if (!foundNotification) {
+                        yield notification_model_1.default.create({
+                            userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                            tokenID: "empty",
+                        });
+                    }
                     res.status(200).json(token);
                 }
                 else {
@@ -101,10 +124,15 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         fcmToken: "empty",
                     });
                     yield user.save();
-                    yield notification_model_1.default.create({
+                    var foundNotification = yield notification_model_1.default.findOne({
                         userID: user === null || user === void 0 ? void 0 : user._id,
-                        tokenID: "empty",
                     });
+                    if (!foundNotification) {
+                        yield notification_model_1.default.create({
+                            userID: user === null || user === void 0 ? void 0 : user._id,
+                            tokenID: "empty",
+                        });
+                    }
                     var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
@@ -129,11 +157,11 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
         })
             .exec();
         var foundNotification = yield notification_model_1.default.findOne({
-            userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
+            userID: req.user[0]._id,
         });
         if (!foundNotification) {
             yield notification_model_1.default.create({
-                userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
+                userID: req.user[0]._id,
                 tokenID: "empty",
             });
         }
@@ -268,12 +296,18 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             yield user_model_1.default.findOneAndDelete({
                 _id: req.user[0]._id,
             });
+            yield notification_model_1.default.findOneAndDelete({
+                userID: req.user[0]._id,
+            });
             res.status(200).json(loggedinUser);
         }
         else {
             // console.log("No habit detected.");
             yield user_model_1.default.findOneAndDelete({
                 _id: req.user[0]._id,
+            });
+            yield notification_model_1.default.findOneAndDelete({
+                userID: req.user[0]._id,
             });
             res.status(200).json(loggedinUser);
         }
