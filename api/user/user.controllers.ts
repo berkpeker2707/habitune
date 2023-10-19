@@ -210,8 +210,6 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
     const loggedinUser = await User.findById(req.user[0]._id);
 
-    const targetUser = await User.findOne({ email: userMail });
-
     if (
       (await User.find({ email: userMail })).length < 1 ||
       userMail === req.user[0].email
@@ -273,24 +271,45 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       !targetUserHasPendingCurrentUser &&
       !targetUserAlreadyHasCurrentUser
     ) {
-      // console.log("only loggedinUser wants friendship ///// DONE");
+      // console.log(
+      //   "condition #1: only loggedinUser wants friendship ///// DONE"
+      // );
 
       await loggedinUser?.updateOne(
         {
-          $push: { friends: [{ friend: user[0]._id, pending: true }] },
+          $push: { friends: [{ friend: user[0]._id, pending: false }] },
+        },
+        { upsert: true }
+      );
+
+      await user[0]?.updateOne(
+        {
+          $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
         },
         { upsert: true }
       );
 
       res.status(200).json(loggedinUser);
-    } else if (currentUserHasPendingUserFriend) {
+    } else if (
+      !currentUserHasPendingUserFriend &&
+      currentUserAlreadyHasUserFriend &&
+      targetUserHasPendingCurrentUser &&
+      !targetUserAlreadyHasCurrentUser
+    ) {
       // console.log(
-      //   "currentUser has already added target user but still pending --- remove pending ///// DONE"
+      //   "condition #2: currentUser has already added target user but still pending --- remove pending ///// DONE"
       // );
 
       await loggedinUser?.updateOne(
         {
           $pull: { friends: { friend: user[0]._id } },
+        },
+        { multi: true }
+      );
+
+      await user[0]?.updateOne(
+        {
+          $pull: { friends: { friend: req.user[0]._id } },
         },
         { multi: true }
       );
@@ -301,7 +320,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       targetUserAlreadyHasCurrentUser
     ) {
       // console.log(
-      //   "currentUser and target user has agreed friendship with --- break friendship ///// DONE"
+      //   "condition #3: currentUser and target user has agreed friendship with --- break friendship ///// DONE"
       // );
 
       await loggedinUser?.updateOne(
@@ -318,23 +337,20 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         { multi: true }
       );
       res.status(200).json(loggedinUser);
-    } else if (targetUserHasPendingCurrentUser) {
+    } else if (
+      currentUserHasPendingUserFriend &&
+      !currentUserAlreadyHasUserFriend &&
+      !targetUserHasPendingCurrentUser &&
+      targetUserAlreadyHasCurrentUser
+    ) {
       // console.log(
-      //   "target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
+      //   "condition #4: target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
       // );
-
-      await loggedinUser?.updateOne(
-        {
-          $push: { friends: [{ friend: user[0]._id, pending: false }] },
-        },
-        { upsert: true }
-      );
 
       await User.findOneAndUpdate(
         {
-          friends: { $elemMatch: { friend: req.user[0]._id, pending: true } },
+          friends: { $elemMatch: { friend: user[0]._id, pending: true } },
         },
-
         {
           $set: { "friends.$.pending": false },
         }
