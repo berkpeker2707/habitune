@@ -113,9 +113,10 @@ const HomeSection = memo((props: any) => {
     dispatch,
     token,
     currentUser,
+    userLoading,
+    userUpdated,
     allHabitsToday,
     currentHabitDatesIncluded,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
@@ -302,7 +303,24 @@ const HomeSection = memo((props: any) => {
       />
       <StackNavigator.Screen
         name="Profile"
-        component={Profile}
+        children={(props: any) => (
+          <Profile
+            {...props}
+            navigation={navigation}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            dispatch={dispatch}
+            currentUser={currentUser}
+            userLoading={userLoading}
+            userUpdated={userUpdated}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        )}
         options={{
           headerTitle: "Profile",
           headerLeft: () => (
