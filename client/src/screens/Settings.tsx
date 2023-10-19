@@ -7,8 +7,6 @@ import {
   Pressable,
   Text,
   TextInput,
-  Linking,
-  Button,
 } from "react-native";
 import SettingsButton from "../components/settings/SettingsButton";
 import { useState } from "react";

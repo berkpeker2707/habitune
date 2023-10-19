@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo, useCallback, useEffect, useState } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Share, View } from "react-native";
 
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -103,6 +103,27 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+const onShare = async () => {
+  try {
+    const result = await Share.share({
+      title: "App link",
+      message: `Join me in Habitune!\n https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune`,
+      url: "https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune",
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const HomeSection = memo((props: any) => {
   const {
@@ -347,7 +368,7 @@ const HomeSection = memo((props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      navigation.navigate("Settings");
+                      onShare();
                     } catch (error) {
                       console.log(error);
                     }
@@ -557,7 +578,7 @@ const OverviewSection = memo((props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      navigation.navigate("Settings");
+                      onShare();
                     } catch (error) {
                       console.log(error);
                     }
