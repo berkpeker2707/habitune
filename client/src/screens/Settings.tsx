@@ -18,7 +18,8 @@ import { deleteUserAction, revertAll } from "../state/userSlice";
 import { revertAllHabit } from "../state/habitSlice";
 
 const Settings = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
+  const [aboutUsModalVisible, setAboutUsModalVisible] = useState(false);
   const [feedback, setFeedback] = useState<String>("");
 
   const dispatch = useAppDispatch();
@@ -37,9 +38,9 @@ const Settings = () => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={feedbackModalVisible}
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
+          setFeedbackModalVisible(!feedbackModalVisible);
         }}
       >
         <View
@@ -97,7 +98,8 @@ const Settings = () => {
                 backgroundColor: "#968EB0",
               }}
               onPress={() => {
-                setModalVisible(!modalVisible), console.log(feedback);
+                setFeedbackModalVisible(!feedbackModalVisible),
+                  console.log(feedback);
               }}
             >
               <Text
@@ -107,44 +109,109 @@ const Settings = () => {
                   textAlign: "center",
                 }}
               >
-                Hide Modal
+                Send
               </Text>
             </Pressable>
           </View>
         </View>
       </Modal>
       {/* send us feedback modal ends */}
+      {/* abous us starts */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={aboutUsModalVisible}
+        onRequestClose={() => {
+          setAboutUsModalVisible(!aboutUsModalVisible);
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
+          }}
+        >
+          <View
+            style={{
+              height: 400,
+              width: 400,
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+              padding: 35,
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            <Text style={{ marginBottom: 10, textAlign: "center" }}>
+              Habitune is habit building application, that allows you to track
+              habits, improve behaviours, schedule habits and customize them
+              according to desired week day; in short period and color. Habitune
+              also allows users to socialize and share their individual habits
+              with friends and notifiy friends once you check your habits to
+              improve productivity. {"\n\n"}
+              For further assistance:{"\n"}📧habitune.contact@gmail.com
+            </Text>
+            <Pressable
+              style={{
+                borderRadius: 20,
+                padding: 10,
+                elevation: 2,
+                backgroundColor: "#968EB0",
+              }}
+              onPress={() => {
+                setAboutUsModalVisible(!aboutUsModalVisible);
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Okay
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      {/* about us ends */}
 
       <ScrollView
         style={{
           marginTop: 20,
           marginBottom: 85,
-          opacity: !modalVisible ? 1 : 0.3,
+          opacity: !feedbackModalVisible ? 1 : 0.3,
         }}
       >
-        <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <TouchableOpacity onPress={() => setFeedbackModalVisible(true)}>
           <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
-        {/* <View>
+        <View>
           <LinkButton
             buttonName="Rate Us"
-            url="https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf&hl=en&gl=US"
+            url="https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune"
           />
-        </View> */}
+        </View>
 
-        <TouchableOpacity onPress={() => console.log("TEST")}>
-          <SettingsButton buttonName="Rate Us" />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => console.log("TEST")}>
+        {/* <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Security" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity onPress={() => console.log("TEST")}>
+        {/* <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Notification Settings" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity onPress={() => console.log("TEST")}>
+        <TouchableOpacity onPress={() => setAboutUsModalVisible(true)}>
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>
 
