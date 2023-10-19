@@ -19,7 +19,8 @@ const DotGraph = (props: any) => {
     todayTemp.getDate()
   );
 
-  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+  // const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+  const userTimezoneOffset = 0;
 
   const todayLocal = new Date(today.getTime() - userTimezoneOffset);
   const OneDayAgo = new Date(

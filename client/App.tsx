@@ -1,6 +1,6 @@
 import * as React from "react";
-import { memo, useCallback, useRef, useEffect, useState } from "react";
-import { Pressable, View, Text, Button, Platform } from "react-native";
+import { memo, useCallback, useEffect, useState } from "react";
+import { Pressable, View } from "react-native";
 
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -23,14 +23,12 @@ import {
   StackNavParamList,
   generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
-
 // screens
 import Signin from "./src/screens/Signin";
 import Home from "./src/screens/Home";
 import Add from "./src/screens/Add";
 import Overview from "./src/screens/Overview";
 import Profile from "./src/screens/Profile";
-import Share from "./src/screens/Share";
 import Settings from "./src/screens/Settings";
 
 //navbar components
@@ -377,35 +375,6 @@ const HomeSection = memo((props: any) => {
         }}
       />
       <StackNavigator.Screen
-        name="Share"
-        component={Share}
-        options={{
-          headerTitle: "Share",
-          headerLeft: () => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 10,
-              }}
-            >
-              <Pressable
-                onPress={() => {
-                  try {
-                    navigation.goBack();
-                  } catch (error) {
-                    console.log(error);
-                  }
-                }}
-              >
-                <TopNavbarBackButton />
-              </Pressable>
-            </View>
-          ),
-        }}
-      />
-      <StackNavigator.Screen
         name="Settings"
         component={Settings}
         options={{
@@ -616,35 +585,6 @@ const OverviewSection = memo((props: any) => {
         }}
       />
       <StackNavigator.Screen
-        name="Share"
-        component={Share}
-        options={{
-          headerTitle: "Share",
-          headerLeft: () => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 10,
-              }}
-            >
-              <Pressable
-                onPress={() => {
-                  try {
-                    navigation.goBack();
-                  } catch (error) {
-                    console.log("Share Error: ", error);
-                  }
-                }}
-              >
-                <TopNavbarBackButton />
-              </Pressable>
-            </View>
-          ),
-        }}
-      />
-      <StackNavigator.Screen
         name="Settings"
         component={Settings}
         options={{
@@ -739,7 +679,7 @@ const App = () => {
     var currentHabitDatesIncluded = useCallback(
       allHabitsToday &&
         allHabitsToday.map((allHabitsItem: any) => {
-          return isInArray(allHabitsItem.dates, todayLocal);
+          return isInArray(allHabitsItem.dates, today);
         }),
       [allHabitsToday, habitUpdated]
     );

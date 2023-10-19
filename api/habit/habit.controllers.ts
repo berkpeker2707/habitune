@@ -112,7 +112,8 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
-      upcomingDates: { $in: [todayLocal] },
+      // upcomingDates: { $in: [todayLocal] },
+      upcomingDates: { $in: [today] },
     })
       .populate({ path: "sharedWith", model: "User" })
       .slice("dates", -10) //last 10 numbers of the dates array
