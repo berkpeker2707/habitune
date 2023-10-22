@@ -9,7 +9,8 @@ import { useCallback } from "react";
 import uuid from "react-native-uuid";
 
 const DotGraph = (props: any) => {
-  const { allHabits, allHabitsNumber, habitUpdated, habitLoading } = props;
+  const { dispatch, allHabits, allHabitsNumber, habitUpdated, habitLoading } =
+    props;
 
   //date stuff starts
   const todayTemp = new Date();
@@ -63,7 +64,6 @@ const DotGraph = (props: any) => {
     allHabitDatesDots.push(isInArray(allHabits[i].dates, SixDayAgo));
   }
 
-  const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = useCallback(() => {

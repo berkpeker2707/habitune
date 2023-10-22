@@ -7,6 +7,7 @@ import StreakGraph from "../components/overview/StreakGraph";
 const Overview = (props: any) => {
   const {
     navigation,
+    dispatch,
     homeEditState,
     allHabits,
     allHabitsNumber,
@@ -39,6 +40,7 @@ const Overview = (props: any) => {
         />
         <View style={{ margin: 20 }}></View>
         <DotGraph
+          dispatch={dispatch}
           allHabits={allHabits}
           allHabitsNumber={allHabits.length}
           habitUpdated={habitUpdated}
