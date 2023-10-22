@@ -126,7 +126,7 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
     );
 
     const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+    // const todayLocal = new Date(today.getTime() - userTimezoneOffset);
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
