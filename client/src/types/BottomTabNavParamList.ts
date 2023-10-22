@@ -15,6 +15,7 @@ export type StackNavParamList = {
   Profile: any;
   Share: any;
   Settings: any;
+  FriendOverview: any;
   Add: any;
   Overview: any;
 };
