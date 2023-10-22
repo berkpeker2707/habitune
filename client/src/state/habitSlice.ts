@@ -8,6 +8,7 @@ interface habitTypes {
   isHabitUpdated: boolean;
   habitData: object;
   habitsAllData: Array<Object>;
+  allHabitsOfSelectedUserData: Array<Object>;
   habitsData: Array<Object>;
   createHabitData: object;
   deleteHabitData: object;
@@ -25,6 +26,7 @@ const initialState: habitTypes = {
   isHabitUpdated: false,
   habitData: {},
   habitsAllData: [],
+  allHabitsOfSelectedUserData: [],
   habitsData: [],
   createHabitData: {},
   deleteHabitData: {},
@@ -37,8 +39,8 @@ const initialState: habitTypes = {
 };
 
 const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.66:1111/api",
-  baseURL: "https://www.habitune.net/api",
+  baseURL: "http://192.168.1.66:1111/api",
+  // baseURL: "https://www.habitune.net/api",
 });
 
 const updatedHabit = createAction("habit/update");
@@ -60,7 +62,7 @@ export const createHabitAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -84,6 +86,35 @@ export const fetchAllHabitsAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.get(`/habit/all`, config);
+
+      return data;
+    } catch (error) {
+      console.log("habit error2: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
+  "habit/fetchAllHabitsOfSelectedUser",
+  async (
+    fetchAllHabitsOfSelectedUserPayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.get(
+        `/habit/all/of/selected/user/${fetchAllHabitsOfSelectedUserPayload}`,
+        config
+      );
 
       return data;
     } catch (error) {
@@ -159,7 +190,7 @@ export const deleteHabitAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -189,7 +220,7 @@ export const updateHabitNameAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -216,7 +247,7 @@ export const updateHabitColorAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -246,7 +277,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -276,7 +307,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -303,7 +334,7 @@ export const updateHabitDatesAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -333,7 +364,7 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -395,6 +426,26 @@ const habitSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
+    //fetch all habits of selected user reducer
+    builder.addCase(fetchAllHabitsOfSelectedUserAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(
+      fetchAllHabitsOfSelectedUserAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.allHabitsOfSelectedUserData = action?.payload;
+      }
+    );
+    builder.addCase(
+      fetchAllHabitsOfSelectedUserAction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.toString();
+      }
+    );
     //get all today habits reducer
     builder.addCase(fetchAllTodayHabitsAction.pending, (state) => {
       state.loading = true;
@@ -575,6 +626,9 @@ export const selectCreateHabit = (state: any) => {
 };
 export const selectHabits = (state: any) => {
   return state.habit.habitsAllData;
+};
+export const selectHabitsOfSelectedUser = (state: any) => {
+  return state.habit.allHabitsOfSelectedUserData;
 };
 export const selectHabitsToday = (state: any) => {
   return state.habit.habitsData;
