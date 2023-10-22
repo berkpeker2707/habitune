@@ -27,7 +27,8 @@ const DotGraph = (props: any) => {
 
   const userTimezoneOffset = today.getTimezoneOffset() * 60000;
 
-  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+  // const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
   const OneDayAgo = new Date(
     today.getTime() - 86400000 * 1 - userTimezoneOffset
   );
@@ -47,10 +48,6 @@ const DotGraph = (props: any) => {
     today.getTime() - 86400000 * 6 - userTimezoneOffset
   );
 
-  //need this for setting default hour 21
-  //if backend is not 21 but 00, remove this
-  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
-
   const isInArray = (array: any[], value: Date) => {
     return array.some((item) => {
       return new Date(item).getTime() == value.getTime();
@@ -59,7 +56,7 @@ const DotGraph = (props: any) => {
 
   var allHabitDatesDots: Array<boolean> = [];
   for (var i = 0; i < allHabits.length; i++) {
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, todayLocal));
+    allHabitDatesDots.push(isInArray(allHabits[i].dates, today));
     allHabitDatesDots.push(isInArray(allHabits[i].dates, OneDayAgo));
     allHabitDatesDots.push(isInArray(allHabits[i].dates, TwoDayAgo));
     allHabitDatesDots.push(isInArray(allHabits[i].dates, ThreeDayAgo));

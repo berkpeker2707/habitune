@@ -20,7 +20,8 @@ const StreakGraph = (props: any) => {
 
   const userTimezoneOffset = today.getTimezoneOffset() * 60000;
 
-  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+  // const todayLocal = new Date(today.getTime() - userTimezoneOffset);
+
   const OneDayAgo = new Date(
     today.getTime() - 86400000 * 1 - userTimezoneOffset
   );
@@ -40,10 +41,6 @@ const StreakGraph = (props: any) => {
     today.getTime() - 86400000 * 6 - userTimezoneOffset
   );
 
-  //need this for setting default hour 21
-  //if backend is not 21 but 00, remove this
-  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
-
   const isInArray = (array: any[], value: Date) => {
     return array.find((item) => {
       return new Date(item).getTime() == value.getTime();
@@ -59,7 +56,7 @@ const StreakGraph = (props: any) => {
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, today)
       ) {
         return 7;
       } else if (
@@ -68,7 +65,7 @@ const StreakGraph = (props: any) => {
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, today)
       ) {
         return 6;
       } else if (
@@ -76,28 +73,28 @@ const StreakGraph = (props: any) => {
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, today)
       ) {
         return 5;
       } else if (
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, today)
       ) {
         return 4;
       } else if (
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, today)
       ) {
         return 3;
       } else if (
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, today)
       ) {
         return 2;
-      } else if (isInArray(allHabitsItem.dates, todayLocal)) {
+      } else if (isInArray(allHabitsItem.dates, today)) {
         return 1;
       } else {
         return 0;
