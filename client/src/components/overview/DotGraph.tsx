@@ -3,14 +3,19 @@ import { RefreshControl, ScrollView, TextInput, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
 import { fetchAllHabitsAction } from "../../state/habitSlice";
-import { useAppDispatch } from "../../state/store";
 import { useCallback } from "react";
 
 import uuid from "react-native-uuid";
 
 const DotGraph = (props: any) => {
-  const { dispatch, allHabits, allHabitsNumber, habitUpdated, habitLoading } =
-    props;
+  const {
+    dispatch,
+    allHabits,
+    allHabitsNumber,
+    habitUpdated,
+    habitLoading,
+    isItCurrentUser,
+  } = props;
 
   //date stuff starts
   const todayTemp = new Date();
@@ -20,8 +25,7 @@ const DotGraph = (props: any) => {
     todayTemp.getDate()
   );
 
-  // const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-  const userTimezoneOffset = 0;
+  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
 
   const todayLocal = new Date(today.getTime() - userTimezoneOffset);
   const OneDayAgo = new Date(
@@ -68,7 +72,8 @@ const DotGraph = (props: any) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchAllHabitsAction());
+
+    isItCurrentUser ? dispatch(fetchAllHabitsAction()) : "";
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
