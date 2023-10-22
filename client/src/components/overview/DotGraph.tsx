@@ -25,38 +25,44 @@ const DotGraph = (props: any) => {
     todayTemp.getDate()
   );
 
-  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+  function convertUTCDateToLocalDate(date: any) {
+    var newDate = new Date(date);
+    newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return newDate;
+  }
 
-  // const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-
-  const OneDayAgo = new Date(
-    today.getTime() - 86400000 * 1 - userTimezoneOffset
+  const OneDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 1)
   );
-  const TwoDayAgo = new Date(
-    today.getTime() - 86400000 * 2 - userTimezoneOffset
+  const TwoDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 2)
   );
-  const ThreeDayAgo = new Date(
-    today.getTime() - 86400000 * 3 - userTimezoneOffset
+  const ThreeDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 3)
   );
-  const FourDayAgo = new Date(
-    today.getTime() - 86400000 * 4 - userTimezoneOffset
+  const FourDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 4)
   );
-  const FiveDayAgo = new Date(
-    today.getTime() - 86400000 * 5 - userTimezoneOffset
+  const FiveDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 5)
   );
-  const SixDayAgo = new Date(
-    today.getTime() - 86400000 * 6 - userTimezoneOffset
+  const SixDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 6)
   );
 
   const isInArray = (array: any[], value: Date) => {
     return array.some((item) => {
-      return new Date(item).getTime() == value.getTime();
+      return (
+        convertUTCDateToLocalDate(new Date(item)).getTime() == value.getTime()
+      );
     });
   };
 
   var allHabitDatesDots: Array<boolean> = [];
   for (var i = 0; i < allHabits.length; i++) {
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, today));
+    allHabitDatesDots.push(
+      isInArray(allHabits[i].dates, convertUTCDateToLocalDate(today))
+    );
     allHabitDatesDots.push(isInArray(allHabits[i].dates, OneDayAgo));
     allHabitDatesDots.push(isInArray(allHabits[i].dates, TwoDayAgo));
     allHabitDatesDots.push(isInArray(allHabits[i].dates, ThreeDayAgo));
