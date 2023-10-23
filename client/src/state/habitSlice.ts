@@ -39,8 +39,8 @@ const initialState: habitTypes = {
 };
 
 const axiosInstance = axios.create({
-  baseURL: "http://192.168.1.66:1111/api",
-  // baseURL: "https://www.habitune.net/api",
+  // baseURL: "http://192.168.1.66:1111/api",
+  baseURL: "https://www.habitune.net/api",
 });
 
 const updatedHabit = createAction("habit/update");
