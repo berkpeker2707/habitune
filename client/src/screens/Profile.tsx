@@ -29,7 +29,6 @@ const Profile = memo((props: any) => {
     dispatch,
     currentUser,
     userLoading,
-    userUpdated,
     allHabits,
     allHabitsNumber,
     habitUpdated,
@@ -50,16 +49,6 @@ const Profile = memo((props: any) => {
     pending: false,
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(fetchCurrentUserProfileAction());
-
-      return () => {
-        controller.abort();
-      };
-    }, [userUpdated])
-  );
-
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = useCallback(() => {
@@ -70,7 +59,7 @@ const Profile = memo((props: any) => {
     }, 2000);
   }, []);
 
-  return (
+  return currentUser.friends ? (
     <View
       style={{
         // display: "flex",
@@ -204,6 +193,8 @@ const Profile = memo((props: any) => {
             currentUser.friends.length > 0 &&
             currentUser.friends.map((friendElem: any, index: number) => (
               <FriendsCard
+                navigation={navigation}
+                friendID={friendElem.friend._id}
                 name={friendElem.friend.firstName}
                 image={friendElem.friend.image}
                 email={friendElem.friend.email}
@@ -221,6 +212,8 @@ const Profile = memo((props: any) => {
         </View>
       </ScrollView>
     </View>
+  ) : (
+    <></>
   );
 });
 
