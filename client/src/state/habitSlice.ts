@@ -62,7 +62,7 @@ export const createHabitAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -190,7 +190,7 @@ export const deleteHabitAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -220,7 +220,7 @@ export const updateHabitNameAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -247,7 +247,7 @@ export const updateHabitColorAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -277,7 +277,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -307,7 +307,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -334,7 +334,7 @@ export const updateHabitDatesAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
@@ -364,7 +364,7 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
         config
       );
 
-      // dispatch(updatedHabit());
+      dispatch(updatedHabit());
 
       return data;
     } catch (error) {
