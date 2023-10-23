@@ -45,6 +45,7 @@ const Overview = (props: any) => {
           allHabitsNumber={allHabits.length}
           habitUpdated={habitUpdated}
           habitLoading={habitLoading}
+          isItCurrentUser={true}
         />
       </ScrollView>
     </View>
