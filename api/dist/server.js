@@ -9,7 +9,7 @@ const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
-const bcrypt = require("bcrypt");
+const rateLimit = require("express-rate-limit");
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
 //morgan is for checking requests
@@ -30,6 +30,14 @@ app.use((0, cors_1.default)({
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use((0, helmet_1.default)());
+//rate limitter
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+app.use(limiter);
 app.use(require("express-session")({
     secret: "Enter your secret key",
     resave: true,
