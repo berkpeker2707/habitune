@@ -6,6 +6,8 @@ import FriendBar from "../add/shareComponents/FriendBar";
 
 const FriendsCard = memo(
   (props: {
+    navigation: any;
+    friendID: any;
     name: string;
     image: string;
     email: string;
@@ -19,6 +21,8 @@ const FriendsCard = memo(
     setSelectedUser: any;
   }) => {
     const {
+      navigation,
+      friendID,
       name,
       image,
       email,
@@ -42,11 +46,17 @@ const FriendsCard = memo(
         >
           <TouchableOpacity
             onPress={() => {
-              setShowInfoText(!showInfoText);
+              // setShowInfoText(!showInfoText);
               setTimeout(() => {
                 setShowInfoText(false);
               }, 5000);
-              console.log(selectedUser);
+              // console.log(selectedUser);
+              navigation.navigate("FriendOverview", {
+                // currentUser: currentUser,
+                // userUpdated: userUpdated,
+                name: name,
+                friendID: friendID,
+              });
             }}
             onLongPress={() => {
               setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
