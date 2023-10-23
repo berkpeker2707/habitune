@@ -1,9 +1,8 @@
 import * as React from "react";
-import { memo } from "react";
 import { View, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-const StreakGraphBar = memo((props: any) => {
+const StreakGraphBar = (props: any) => {
   const { name, color, currentHabitWeekStreak } = props;
 
   return currentHabitWeekStreak !== 0 ? (
@@ -193,6 +192,6 @@ const StreakGraphBar = memo((props: any) => {
   ) : (
     <></>
   );
-});
+};
 
 export default StreakGraphBar;
