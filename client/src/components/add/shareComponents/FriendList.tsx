@@ -21,12 +21,13 @@ const FriendList = (props: any) => {
 
   return (
     <ScrollView>
+      {/* filter and map only pending is false, friendship accepted users */}
       {currentUser.friends
         .filter(
           (friendsItemPending: { pending: boolean }) =>
             friendsItemPending.pending == false
         )
-        .map((friendsItem: any, friendsIndex: number) => {
+        .map((friendsItem: any) => {
           return (
             <View
               key={uuid.v4() as string}
@@ -43,13 +44,7 @@ const FriendList = (props: any) => {
                           (item) => item !== friendsItem.friend._id
                         )
                       )
-                    : setShareWithFriendList(() =>
-                        //prevState
-                        [
-                          //...prevState,
-                          friendsItem.friend._id,
-                        ]
-                      )
+                    : setShareWithFriendList(() => [friendsItem.friend._id])
                 }
               >
                 <FriendBar
