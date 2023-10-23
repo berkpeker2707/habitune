@@ -21,46 +21,46 @@ const FriendList = (props: any) => {
 
   return (
     <ScrollView>
-      {currentUser.friends.map((friendsItem: any, friendsIndex: number) => {
-        return (
-          <View
-            key={uuid.v4() as string}
-            style={{
-              flex: 1,
-              height: 49,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() =>
-                shareWithFriendList.includes(friendsItem.friend._id)
-                  ? setShareWithFriendList(() =>
-                      shareWithFriendList.filter(
-                        (item) => item !== friendsItem.friend._id
-                      )
-                    )
-                  : setShareWithFriendList(() =>
-                      //prevState
-                      [
-                        //...prevState,
-                        friendsItem.friend._id,
-                      ]
-                    )
-              }
+      {/* filter and map only pending is false, friendship accepted users */}
+      {currentUser.friends
+        .filter(
+          (friendsItemPending: { pending: boolean }) =>
+            friendsItemPending.pending == false
+        )
+        .map((friendsItem: any) => {
+          return (
+            <View
+              key={uuid.v4() as string}
+              style={{
+                flex: 1,
+                height: 49,
+              }}
             >
-              <FriendBar
-                friendProfilePicture={friendsItem.friend.image}
-                friendName={friendsItem.friend.firstName}
-                friendSelected={
+              <TouchableOpacity
+                onPress={() =>
                   shareWithFriendList.includes(friendsItem.friend._id)
-                    ? true
-                    : false
+                    ? setShareWithFriendList(() =>
+                        shareWithFriendList.filter(
+                          (item) => item !== friendsItem.friend._id
+                        )
+                      )
+                    : setShareWithFriendList(() => [friendsItem.friend._id])
                 }
-                pending={friendsItem.pending}
-              />
-            </TouchableOpacity>
-          </View>
-        );
-      })}
+              >
+                <FriendBar
+                  friendProfilePicture={friendsItem.friend.image}
+                  friendName={friendsItem.friend.firstName}
+                  friendSelected={
+                    shareWithFriendList.includes(friendsItem.friend._id)
+                      ? true
+                      : false
+                  }
+                  pending={friendsItem.pending}
+                />
+              </TouchableOpacity>
+            </View>
+          );
+        })}
     </ScrollView>
   );
 };

@@ -4,6 +4,8 @@ const notificationSchema = new Schema<any>({
   userID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    unique: true,
+    index: true,
   },
   tokenID: {
     type: String,

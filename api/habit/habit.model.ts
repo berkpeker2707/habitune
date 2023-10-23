@@ -3,7 +3,7 @@ import { IHabit } from "../middlewares/interfaces";
 
 const habitSchema = new Schema<IHabit>({
   owner: { type: mongoose.Schema.Types.ObjectId },
-  name: { type: String },
+  name: { type: String, unique: true, index: true },
   color: { type: String },
   sharedWith: [{ type: mongoose.Schema.Types.ObjectId }],
   firstDate: { type: Date },

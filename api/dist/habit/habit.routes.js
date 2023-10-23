@@ -9,6 +9,7 @@ const verifyToken_1 = __importDefault(require("../middlewares/verifyToken"));
 const habitRoutes = (0, express_1.Router)();
 habitRoutes.post("/new", verifyToken_1.default, habit_controllers_1.createHabit);
 habitRoutes.get("/all", verifyToken_1.default, habit_controllers_1.getAllHabits);
+habitRoutes.get("/all/of/selected/user/:id", verifyToken_1.default, habit_controllers_1.getAllHabitsOfSelectedUser);
 habitRoutes.get("/all/today", verifyToken_1.default, habit_controllers_1.getTodaysHabits);
 habitRoutes.get("/single", verifyToken_1.default, habit_controllers_1.getSingleHabit);
 habitRoutes.delete("/delete/:id", verifyToken_1.default, habit_controllers_1.deleteHabit);

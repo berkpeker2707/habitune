@@ -18,11 +18,10 @@ import {
   updateHabitSharedWithAction,
 } from "../state/habitSlice";
 
-import uuid from "react-native-uuid";
-
 import SkeletonPlaceholder from "../components/home/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
 import { notificationSendAction } from "../state/notificationSlice";
+import HabitBarParent from "../components/home/HabitBarParent";
 
 const Home = memo((props: any) => {
   const {
@@ -32,9 +31,8 @@ const Home = memo((props: any) => {
     currentUser,
     allHabits,
     allHabitsNumber,
-    habitUpdated,
-    habitLoading,
     currentHabitDatesIncluded,
+    habitLoading,
     modalVisible,
     setModalVisible,
   } = props;
@@ -164,110 +162,60 @@ const Home = memo((props: any) => {
           alignItems: "center",
         }}
       >
-        {!habitLoading && allHabits && allHabitsNumber > 0 && tempBarFilled ? (
-          <ScrollView
-            style={{
-              marginBottom: 85,
-            }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            <Text>Habits</Text>
-            {allHabits.map((item: any, index: any) => {
-              return (
-                <TouchableOpacity
-                  key={uuid.v4() as string}
-                  onPress={() => {
-                    dispatch(
-                      updateHabitCompletedDateAction({
-                        _id: item._id,
-                        date: Date.now(),
-                      })
-                    );
-                    //only if habit is checked send notification
-                    !tempBarFilled[index]
-                      ? dispatch(
-                          notificationSendAction({
-                            imageUrl: "image",
-                            friend: item.sharedWith.map(
-                              (sharedWithIds: any) => sharedWithIds._id
-                            ),
-                            firstName: currentUser.firstName,
-                            friendImage: item.sharedWith.map(
-                              (sharedWithFriendImage: any) =>
-                                sharedWithFriendImage.image
-                            ),
-                            habitName: item.name,
-                            tokens: item.sharedWith.map(
-                              (sharedWithTokens: any) =>
-                                sharedWithTokens.fcmToken
-                            ),
-                          })
-                        )
-                      : "";
-                    handleHabitClicked(index);
-                  }}
-                  onLongPress={() => {
-                    setNameChangable(() => true);
-                    homeEditState
-                      ? navigation.setParams({
-                          homeEditState: false,
-                        })
-                      : navigation.setParams({
-                          homeEditState: true,
-                          _id: item._id,
-                        });
-                    setSelectedItem(() =>
-                      selectedItem === item._id.toString()
-                        ? ""
-                        : item._id.toString()
-                    );
-                  }}
-                >
-                  <HabitBar
-                    item={item}
-                    itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-                    filled={tempBarFilled[index]}
-                    nameChangable={
-                      item._id.toString() === selectedItem
-                        ? nameChangable
-                        : false
-                    }
-                    navigation={navigation}
+        <ScrollView
+          style={{
+            marginBottom: 85,
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {!habitLoading &&
+          allHabits &&
+          allHabitsNumber > 0 &&
+          tempBarFilled ? (
+            <>
+              <Text>Habits</Text>
+              <HabitBarParent
+                habitLoading={habitLoading}
+                allHabitsNumber={allHabitsNumber}
+                tempBarFilled={tempBarFilled}
+                dispatch={dispatch}
+                // item={item}
+                allHabits={allHabits}
+                // index={index}
+                // tempBarFilled={tempBarFilled}
+                currentUser={currentUser}
+                homeEditState={homeEditState}
+                navigation={navigation}
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
+                updateHabitCompletedDateAction={updateHabitCompletedDateAction}
+                notificationSendAction={notificationSendAction}
+                handleHabitClicked={handleHabitClicked}
+                nameChangable={nameChangable}
+                setNameChangable={setNameChangable}
+              />
+            </>
+          ) : allHabitsNumber && allHabitsNumber > 0 ? (
+            <>
+              <Text>Habits</Text>
+              {Array(allHabitsNumber)
+                .fill(0)
+                .map((_, i) => (
+                  <SkeletonPlaceholder
+                    key={i}
+                    colorMode={"light"}
+                    width={372}
+                    height={48}
+                    radius={20}
                   />
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        ) : allHabitsNumber && allHabitsNumber > 0 ? (
-          <ScrollView
-            style={{
-              marginBottom: 85,
-            }}
-          >
-            <Text>Habits</Text>
-            {Array(allHabitsNumber)
-              .fill(0)
-              .map((_, i) => (
-                <SkeletonPlaceholder
-                  key={i}
-                  colorMode={"light"}
-                  width={372}
-                  height={48}
-                  radius={20}
-                />
-              ))}
-          </ScrollView>
-        ) : (
-          <ScrollView
-            style={{
-              marginBottom: 85,
-            }}
-          >
+                ))}
+            </>
+          ) : (
             <Text>Habits Empty 😔</Text>
-          </ScrollView>
-        )}
+          )}
+        </ScrollView>
       </View>
     </>
   );

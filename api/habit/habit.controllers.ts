@@ -98,6 +98,24 @@ export const getAllHabits = async (req: IReq | any, res: Response) => {
   }
 };
 
+export const getAllHabitsOfSelectedUser = async (
+  req: IReq | any,
+  res: Response
+) => {
+  try {
+    const loggedinUsersHabits = await Habit.find({ owner: req.params.id })
+      .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
+      .exec();
+
+    res.status(200).json(loggedinUsersHabits);
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const getTodaysHabits = async (req: IReq | any, res: Response) => {
   try {
     const todayTemp = new Date();
@@ -107,12 +125,10 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
       todayTemp.getDate()
     );
 
-    const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
-      upcomingDates: { $in: [todayLocal] },
+      // upcomingDates: { $in: [todayLocal] },
+      upcomingDates: { $in: [today] },
     })
       .populate({ path: "sharedWith", model: "User" })
       .slice("dates", -10) //last 10 numbers of the dates array

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createHabit,
   getAllHabits,
+  getAllHabitsOfSelectedUser,
   getTodaysHabits,
   getSingleHabit,
   deleteHabit,
@@ -20,6 +21,12 @@ const habitRoutes = Router();
 habitRoutes.post("/new", verifyToken, createHabit);
 
 habitRoutes.get("/all", verifyToken, getAllHabits);
+
+habitRoutes.get(
+  "/all/of/selected/user/:id",
+  verifyToken,
+  getAllHabitsOfSelectedUser
+);
 
 habitRoutes.get("/all/today", verifyToken, getTodaysHabits);
 

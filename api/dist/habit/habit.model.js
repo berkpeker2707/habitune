@@ -25,7 +25,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 const mongoose_1 = __importStar(require("mongoose"));
 const habitSchema = new mongoose_1.Schema({
     owner: { type: mongoose_1.default.Schema.Types.ObjectId },
-    name: { type: String },
+    name: { type: String, unique: true, index: true },
     color: { type: String },
     sharedWith: [{ type: mongoose_1.default.Schema.Types.ObjectId }],
     firstDate: { type: Date },
