@@ -30,6 +30,7 @@ import Add from "./src/screens/Add";
 import Overview from "./src/screens/Overview";
 import Profile from "./src/screens/Profile";
 import Settings from "./src/screens/Settings";
+import Friend from "./src/screens/Friend";
 
 //navbar components
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
@@ -63,14 +64,15 @@ import {
 } from "./src/state/userSlice";
 import {
   createHabitAction,
-  // fetchAllHabitsAction,
+  fetchAllHabitsAction,
   fetchAllTodayHabitsAction,
   selectHabitUpdated,
-  // selectHabits,
+  selectHabits,
   selectHabitsToday,
   selectHabitLoading,
   updateHabitNameAction,
   deleteHabitAction,
+  fetchAllHabitsOfSelectedUserAction,
 } from "./src/state/habitSlice";
 import FlashMessage from "react-native-flash-message";
 
@@ -125,7 +127,7 @@ const onShare = async () => {
   }
 };
 
-const HomeSection = memo((props: any) => {
+const HomeSection = (props: any) => {
   const {
     navigation,
     controller,
@@ -133,7 +135,6 @@ const HomeSection = memo((props: any) => {
     token,
     currentUser,
     userLoading,
-    userUpdated,
     allHabitsToday,
     currentHabitDatesIncluded,
     habitUpdated,
@@ -141,6 +142,7 @@ const HomeSection = memo((props: any) => {
   } = props;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState();
 
   return (
     <StackNavigator.Navigator
@@ -160,7 +162,6 @@ const HomeSection = memo((props: any) => {
             allHabits={allHabitsToday ? allHabitsToday : []}
             allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
-            habitUpdated={habitUpdated}
             habitLoading={habitLoading}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
@@ -214,7 +215,6 @@ const HomeSection = memo((props: any) => {
                   try {
                     navigation.navigate("Profile", {
                       currentUser: currentUser,
-                      userUpdated: userUpdated,
                     });
                   } catch (error) {
                     console.log(error);
@@ -330,7 +330,6 @@ const HomeSection = memo((props: any) => {
             dispatch={dispatch}
             currentUser={currentUser}
             userLoading={userLoading}
-            userUpdated={userUpdated}
             allHabits={allHabitsToday ? allHabitsToday : []}
             allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
@@ -424,9 +423,25 @@ const HomeSection = memo((props: any) => {
           ),
         }}
       />
+      <StackNavigator.Screen
+        name="Friend"
+        children={(props: any) => (
+          <Friend
+            {...props}
+            navigation={navigation}
+            dispatch={dispatch}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+          />
+        )}
+      />
     </StackNavigator.Navigator>
   );
-});
+};
 
 const AddSection = memo((props: any) => {
   const {
@@ -437,7 +452,6 @@ const AddSection = memo((props: any) => {
     currentUser,
     allHabitsToday,
     currentHabitDatesIncluded,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
@@ -515,16 +529,16 @@ const AddSection = memo((props: any) => {
   );
 });
 
-const OverviewSection = memo((props: any) => {
+const OverviewSection = (props: any) => {
   const {
     navigation,
     controller,
     dispatch,
     token,
     currentUser,
+    allHabits,
     allHabitsToday,
     currentHabitDatesIncluded,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
@@ -541,9 +555,10 @@ const OverviewSection = memo((props: any) => {
           <Overview
             {...props}
             navigation={navigation}
+            dispatch={dispatch}
             homeEditState={navigation.getState().routes[0].params.homeEditState}
-            allHabits={allHabitsToday ? allHabitsToday : []}
-            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            allHabits={allHabits ? allHabits : []}
+            allHabitsNumber={allHabits ? allHabits.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
@@ -636,7 +651,7 @@ const OverviewSection = memo((props: any) => {
       />
     </StackNavigator.Navigator>
   );
-});
+};
 
 //wrapper for state
 const AppWrapper = () => {
@@ -664,9 +679,11 @@ const App = () => {
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
 
+  const userLoading = useSelector(selectUserLoading);
+
   const userUpdated = useSelector(selectUserUpdated);
 
-  const userLoading = useSelector(selectUserLoading);
+  const allHabits = useSelector(selectHabits);
 
   const allHabitsToday = useSelector(selectHabitsToday);
 
@@ -683,13 +700,6 @@ const App = () => {
       todayTemp.getDate()
     );
 
-    const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-
-    //need this for setting default hour 21
-    //if backend is not 21 but 00, remove this
-    // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
-
     const isInArray = (array: any[], value: Date) => {
       return array.some((item) => {
         return new Date(item).getTime() == value.getTime();
@@ -702,35 +712,69 @@ const App = () => {
         allHabitsToday.map((allHabitsItem: any) => {
           return isInArray(allHabitsItem.dates, today);
         }),
-      [allHabitsToday, habitUpdated]
+      [
+        allHabitsToday,
+        // , habitUpdated
+      ]
     );
   } catch (error) {
     console.log("currentHabitDatesIncluded error: ", error);
   }
 
   useEffect(() => {
-    if (token && token.length > 0) {
+    if (
+      (token && token.length > 0) ||
+      (tokenSecondOption && tokenSecondOption.length > 0)
+    ) {
       dispatch(fetchCurrentUserProfileAction());
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (token && token.length > 0) {
+      dispatch(fetchAllHabitsAction());
       dispatch(fetchAllTodayHabitsAction());
     }
-  }, [currentUser, habitUpdated]);
+  }, [token, tokenSecondOption, currentUser._id, userUpdated, habitUpdated]);
 
-  useEffect(() => {
-    if (tokenSecondOption && tokenSecondOption.length > 0) {
-      dispatch(fetchCurrentUserProfileAction());
-    }
-  }, [tokenSecondOption]);
+  // useEffect(() => {
+  //   if (token && token.length > 0) {
+  //     dispatch(fetchCurrentUserProfileAction());
+  //   }
+  // }, [token, userUpdated]);
 
-  useEffect(() => {
-    if (tokenSecondOption && tokenSecondOption.length > 0) {
-      dispatch(fetchAllTodayHabitsAction());
-    }
-  }, [currentUser, habitUpdated]);
+  // useEffect(() => {
+  //   if (token && token.length > 0) {
+  //     dispatch(fetchAllTodayHabitsAction());
+  //     dispatch(fetchAllHabitsAction());
+  //   }
+  // }, [currentUser, habitUpdated]);
+
+  // useEffect(() => {
+  //   if (tokenSecondOption && tokenSecondOption.length > 0) {
+  //     dispatch(fetchCurrentUserProfileAction());
+  //   }
+  // }, [tokenSecondOption]);
+
+  // useEffect(() => {
+  //   if (tokenSecondOption && tokenSecondOption.length > 0) {
+  //     dispatch(fetchAllTodayHabitsAction());
+  //     dispatch(fetchAllHabitsAction());
+  //   }
+  // }, [currentUser, habitUpdated]);
+
+  //get selected friend habits
+  // useEffect(() => {
+  //   // console.log(navigation.getState()?.routes[0].state?.routes[2].params);
+  //   if (navigation.getState()?.routes[0].state?.routes[2].params) {
+  //     console.log(navigation.getState()?.routes[0].state?.routes[2].params);
+  //   }
+  //   // dispatch(
+  //   //   fetchAllHabitsOfSelectedUserAction(
+  //   //     navigation.getState().routes[0].state.routes[2].params.friendID
+  //   //   )
+  //   // );
+  // }, [
+  //   // navigation.getState().routes[0].state.routes[2].params.friendID
+  //   navigation,
+  // ]);
+
+  // console.log("APP RENDERED");
 
   // expo notifications
   async function registerForPushNotificationsAsync() {
@@ -768,8 +812,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    registerDeviceForMessaging();
-  }, [token]);
+    if (
+      (token && token.length > 0) ||
+      (tokenSecondOption && tokenSecondOption.length > 0)
+    ) {
+      registerDeviceForMessaging();
+    }
+  }, [token, tokenSecondOption]);
 
   // check whether an initial notification is available
   useEffect(() => {
@@ -855,7 +904,6 @@ const App = () => {
                   currentUser={currentUser}
                   allHabitsToday={allHabitsToday}
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
-                  userUpdated={userUpdated}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                 />
@@ -878,7 +926,6 @@ const App = () => {
                   currentUser={currentUser}
                   allHabitsToday={allHabitsToday}
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
-                  userUpdated={userUpdated}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                 />
@@ -897,9 +944,9 @@ const App = () => {
                   dispatch={dispatch}
                   token={token}
                   currentUser={currentUser}
+                  allHabits={allHabits}
                   allHabitsToday={allHabitsToday}
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
-                  userUpdated={userUpdated}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                 />
