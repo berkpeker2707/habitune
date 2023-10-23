@@ -51,7 +51,7 @@ const FriendsCard = memo(
                 setShowInfoText(false);
               }, 5000);
               // console.log(selectedUser);
-              navigation.navigate("FriendOverview", {
+              navigation.navigate("Friend", {
                 // currentUser: currentUser,
                 // userUpdated: userUpdated,
                 name: name,

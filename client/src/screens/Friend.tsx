@@ -10,7 +10,7 @@ import {
 import { useSelector } from "../state/store";
 import { useEffect } from "react";
 
-const FriendOverview = (props: any) => {
+const Friend = (props: any) => {
   const {
     navigation,
     homeEditState,
@@ -68,4 +68,4 @@ const FriendOverview = (props: any) => {
   );
 };
 
-export default FriendOverview;
+export default Friend;
