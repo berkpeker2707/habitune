@@ -48,7 +48,6 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const notification = yield notification_model_1.default.findOne({
             userID: req.user[0]._id,
         });
-        console.log(req.body.tokens);
         const notificationResponse = yield admin.messaging().sendMulticast({
             tokens: req.body.tokens,
             notification: {

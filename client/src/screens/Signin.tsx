@@ -27,7 +27,6 @@ const Signin = (props: any) => {
     token,
     currentUser,
     allHabitsToday,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;

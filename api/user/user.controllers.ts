@@ -26,6 +26,16 @@ export const signInWithGoogleController = async (
         expiresIn: "365d",
       });
 
+      var foundNotification = await Notification.findOne({
+        userID: foundUser?._id,
+      });
+      if (!foundNotification) {
+        await Notification.create({
+          userID: foundUser?._id,
+          tokenID: "empty",
+        });
+      }
+
       res.status(200).json(token);
     } else {
       const user = await User.create({
@@ -37,10 +47,15 @@ export const signInWithGoogleController = async (
       });
       await user.save();
 
-      await Notification.create({
+      var foundNotification = await Notification.findOne({
         userID: user?._id,
-        tokenID: "empty",
       });
+      if (!foundNotification) {
+        await Notification.create({
+          userID: user?._id,
+          tokenID: "empty",
+        });
+      }
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -82,6 +97,16 @@ export const signInController = async (req: IReq | any, res: Response) => {
             }
           );
 
+          var foundNotification = await Notification.findOne({
+            userID: foundUser?._id,
+          });
+          if (!foundNotification) {
+            await Notification.create({
+              userID: foundUser?._id,
+              tokenID: "empty",
+            });
+          }
+
           res.status(200).json(token);
         } else {
           Logger.error("Wrong password or email.");
@@ -109,10 +134,15 @@ export const signInController = async (req: IReq | any, res: Response) => {
           });
           await user.save();
 
-          await Notification.create({
+          var foundNotification = await Notification.findOne({
             userID: user?._id,
-            tokenID: "empty",
           });
+          if (!foundNotification) {
+            await Notification.create({
+              userID: user?._id,
+              tokenID: "empty",
+            });
+          }
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
@@ -141,11 +171,11 @@ export const fetchCurrentUserProfile = async (
       .exec();
 
     var foundNotification = await Notification.findOne({
-      userID: loggedinUser?._id,
+      userID: req.user[0]._id,
     });
     if (!foundNotification) {
       await Notification.create({
-        userID: loggedinUser?._id,
+        userID: req.user[0]._id,
         tokenID: "empty",
       });
     }
@@ -241,24 +271,45 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       !targetUserHasPendingCurrentUser &&
       !targetUserAlreadyHasCurrentUser
     ) {
-      // console.log("only loggedinUser wants friendship ///// DONE");
+      // console.log(
+      //   "condition #1: only loggedinUser wants friendship ///// DONE"
+      // );
 
       await loggedinUser?.updateOne(
         {
-          $push: { friends: [{ friend: user[0]._id, pending: true }] },
+          $push: { friends: [{ friend: user[0]._id, pending: false }] },
+        },
+        { upsert: true }
+      );
+
+      await user[0]?.updateOne(
+        {
+          $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
         },
         { upsert: true }
       );
 
       res.status(200).json(loggedinUser);
-    } else if (currentUserHasPendingUserFriend) {
+    } else if (
+      !currentUserHasPendingUserFriend &&
+      currentUserAlreadyHasUserFriend &&
+      targetUserHasPendingCurrentUser &&
+      !targetUserAlreadyHasCurrentUser
+    ) {
       // console.log(
-      //   "currentUser has already added target user but still pending --- remove pending ///// DONE"
+      //   "condition #2: currentUser has already added target user but still pending --- remove pending ///// DONE"
       // );
 
       await loggedinUser?.updateOne(
         {
           $pull: { friends: { friend: user[0]._id } },
+        },
+        { multi: true }
+      );
+
+      await user[0]?.updateOne(
+        {
+          $pull: { friends: { friend: req.user[0]._id } },
         },
         { multi: true }
       );
@@ -269,7 +320,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       targetUserAlreadyHasCurrentUser
     ) {
       // console.log(
-      //   "currentUser and target user has agreed friendship with --- break friendship ///// DONE"
+      //   "condition #3: currentUser and target user has agreed friendship with --- break friendship ///// DONE"
       // );
 
       await loggedinUser?.updateOne(
@@ -286,23 +337,20 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         { multi: true }
       );
       res.status(200).json(loggedinUser);
-    } else if (targetUserHasPendingCurrentUser) {
+    } else if (
+      currentUserHasPendingUserFriend &&
+      !currentUserAlreadyHasUserFriend &&
+      !targetUserHasPendingCurrentUser &&
+      targetUserAlreadyHasCurrentUser
+    ) {
       // console.log(
-      //   "target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
+      //   "condition #4: target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
       // );
-
-      await loggedinUser?.updateOne(
-        {
-          $push: { friends: [{ friend: user[0]._id, pending: false }] },
-        },
-        { upsert: true }
-      );
 
       await User.findOneAndUpdate(
         {
-          friends: { $elemMatch: { friend: req.user[0]._id, pending: true } },
+          friends: { $elemMatch: { friend: user[0]._id, pending: true } },
         },
-
         {
           $set: { "friends.$.pending": false },
         }
@@ -322,24 +370,57 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 export const deleteUser = async (req: IReq | any, res: Response) => {
   try {
     const loggedinUser = await User.findById(req.user[0]._id);
-    if (
-      loggedinUser &&
-      loggedinUser.habits.length &&
-      loggedinUser.habits.length > 0
-    ) {
+    if (loggedinUser?.habits.length && loggedinUser.habits.length > 0) {
       for (let i = 0; i < loggedinUser.habits.length; i++) {
         await Habit.findOneAndDelete({
           _id: loggedinUser.habits[i],
         });
       }
+
+      for (let y = 0; y < loggedinUser.friends.length; y++) {
+        await User.findOneAndUpdate(
+          {
+            _id: loggedinUser.friends[y].friend,
+          },
+          {
+            $pull: { friends: loggedinUser._id },
+          },
+          { upsert: true }
+        );
+      }
+
       await User.findOneAndDelete({
         _id: req.user[0]._id,
       });
+
+      await Notification.findOneAndDelete({
+        userID: req.user[0]._id,
+      });
+
       res.status(200).json(loggedinUser);
     } else {
-      // console.log("No habit detected.");
+      console.log("No habit detected.");
+
+      if (loggedinUser?.friends) {
+        for (let y = 0; y < loggedinUser.friends.length; y++) {
+          await User.findOneAndUpdate(
+            {
+              _id: loggedinUser?.friends[y].friend,
+            },
+            {
+              $pull: { friends: { friend: loggedinUser?._id } },
+            },
+            { upsert: true }
+          );
+        }
+      }
+
       await User.findOneAndDelete({
         _id: req.user[0]._id,
+      });
+
+      await Notification.findOneAndDelete({
+        userID: req.user[0]._id,
       });
       res.status(200).json(loggedinUser);
     }

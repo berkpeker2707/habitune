@@ -27,7 +27,7 @@ const userSchema = new mongoose_1.Schema({
     id: { type: Number },
     firstName: { type: String },
     lastName: { type: String },
-    email: { type: String },
+    email: { type: String, unique: true, index: true },
     image: { type: String },
     habits: [mongoose_1.default.Schema.Types.ObjectId],
     friends: [{ friend: mongoose_1.default.Schema.Types.ObjectId, pending: Boolean }],

@@ -30,6 +30,15 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
+            var foundNotification = yield notification_model_1.default.findOne({
+                userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+            });
+            if (!foundNotification) {
+                yield notification_model_1.default.create({
+                    userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                    tokenID: "empty",
+                });
+            }
             res.status(200).json(token);
         }
         else {
@@ -41,10 +50,15 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 fcmToken: "empty",
             });
             yield user.save();
-            yield notification_model_1.default.create({
+            var foundNotification = yield notification_model_1.default.findOne({
                 userID: user === null || user === void 0 ? void 0 : user._id,
-                tokenID: "empty",
             });
+            if (!foundNotification) {
+                yield notification_model_1.default.create({
+                    userID: user === null || user === void 0 ? void 0 : user._id,
+                    tokenID: "empty",
+                });
+            }
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
@@ -74,6 +88,15 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
+                    var foundNotification = yield notification_model_1.default.findOne({
+                        userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                    });
+                    if (!foundNotification) {
+                        yield notification_model_1.default.create({
+                            userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                            tokenID: "empty",
+                        });
+                    }
                     res.status(200).json(token);
                 }
                 else {
@@ -101,10 +124,15 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         fcmToken: "empty",
                     });
                     yield user.save();
-                    yield notification_model_1.default.create({
+                    var foundNotification = yield notification_model_1.default.findOne({
                         userID: user === null || user === void 0 ? void 0 : user._id,
-                        tokenID: "empty",
                     });
+                    if (!foundNotification) {
+                        yield notification_model_1.default.create({
+                            userID: user === null || user === void 0 ? void 0 : user._id,
+                            tokenID: "empty",
+                        });
+                    }
                     var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
@@ -129,11 +157,11 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
         })
             .exec();
         var foundNotification = yield notification_model_1.default.findOne({
-            userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
+            userID: req.user[0]._id,
         });
         if (!foundNotification) {
             yield notification_model_1.default.create({
-                userID: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id,
+                userID: req.user[0]._id,
                 tokenID: "empty",
             });
         }
@@ -164,7 +192,7 @@ const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.fetchUserProfile = fetchUserProfile;
 const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b, _c;
     try {
         const userMail = req.body.userMail;
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
@@ -201,43 +229,54 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             !currentUserAlreadyHasUserFriend &&
             !targetUserHasPendingCurrentUser &&
             !targetUserAlreadyHasCurrentUser) {
-            // console.log("only loggedinUser wants friendship ///// DONE");
+            // console.log(
+            //   "condition #1: only loggedinUser wants friendship ///// DONE"
+            // );
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
-                $push: { friends: [{ friend: user[0]._id, pending: true }] },
+                $push: { friends: [{ friend: user[0]._id, pending: false }] },
+            }, { upsert: true }));
+            yield ((_a = user[0]) === null || _a === void 0 ? void 0 : _a.updateOne({
+                $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
             }, { upsert: true }));
             res.status(200).json(loggedinUser);
         }
-        else if (currentUserHasPendingUserFriend) {
+        else if (!currentUserHasPendingUserFriend &&
+            currentUserAlreadyHasUserFriend &&
+            targetUserHasPendingCurrentUser &&
+            !targetUserAlreadyHasCurrentUser) {
             // console.log(
-            //   "currentUser has already added target user but still pending --- remove pending ///// DONE"
+            //   "condition #2: currentUser has already added target user but still pending --- remove pending ///// DONE"
             // );
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
                 $pull: { friends: { friend: user[0]._id } },
+            }, { multi: true }));
+            yield ((_b = user[0]) === null || _b === void 0 ? void 0 : _b.updateOne({
+                $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
             res.status(200).json(loggedinUser);
         }
         else if (currentUserAlreadyHasUserFriend &&
             targetUserAlreadyHasCurrentUser) {
             // console.log(
-            //   "currentUser and target user has agreed friendship with --- break friendship ///// DONE"
+            //   "condition #3: currentUser and target user has agreed friendship with --- break friendship ///// DONE"
             // );
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
                 $pull: { friends: { friend: user[0]._id } },
             }, { multi: true }));
-            yield ((_a = user[0]) === null || _a === void 0 ? void 0 : _a.updateOne({
+            yield ((_c = user[0]) === null || _c === void 0 ? void 0 : _c.updateOne({
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
             res.status(200).json(loggedinUser);
         }
-        else if (targetUserHasPendingCurrentUser) {
+        else if (currentUserHasPendingUserFriend &&
+            !currentUserAlreadyHasUserFriend &&
+            !targetUserHasPendingCurrentUser &&
+            targetUserAlreadyHasCurrentUser) {
             // console.log(
-            //   "target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
+            //   "condition #4: target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
             // );
-            yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
-                $push: { friends: [{ friend: user[0]._id, pending: false }] },
-            }, { upsert: true }));
             yield user_model_1.default.findOneAndUpdate({
-                friends: { $elemMatch: { friend: req.user[0]._id, pending: true } },
+                friends: { $elemMatch: { friend: user[0]._id, pending: true } },
             }, {
                 $set: { "friends.$.pending": false },
             });
@@ -257,23 +296,43 @@ exports.sendFriendship = sendFriendship;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
-        if (loggedinUser &&
-            loggedinUser.habits.length &&
-            loggedinUser.habits.length > 0) {
+        if ((loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.habits.length) && loggedinUser.habits.length > 0) {
             for (let i = 0; i < loggedinUser.habits.length; i++) {
                 yield habit_model_1.default.findOneAndDelete({
                     _id: loggedinUser.habits[i],
                 });
             }
+            for (let y = 0; y < loggedinUser.friends.length; y++) {
+                yield user_model_1.default.findOneAndUpdate({
+                    _id: loggedinUser.friends[y].friend,
+                }, {
+                    $pull: { friends: loggedinUser._id },
+                }, { upsert: true });
+            }
             yield user_model_1.default.findOneAndDelete({
                 _id: req.user[0]._id,
+            });
+            yield notification_model_1.default.findOneAndDelete({
+                userID: req.user[0]._id,
             });
             res.status(200).json(loggedinUser);
         }
         else {
-            // console.log("No habit detected.");
+            console.log("No habit detected.");
+            if (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.friends) {
+                for (let y = 0; y < loggedinUser.friends.length; y++) {
+                    yield user_model_1.default.findOneAndUpdate({
+                        _id: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.friends[y].friend,
+                    }, {
+                        $pull: { friends: { friend: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id } },
+                    }, { upsert: true });
+                }
+            }
             yield user_model_1.default.findOneAndDelete({
                 _id: req.user[0]._id,
+            });
+            yield notification_model_1.default.findOneAndDelete({
+                userID: req.user[0]._id,
             });
             res.status(200).json(loggedinUser);
         }

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { memo, useCallback, useRef, useEffect, useState } from "react";
-import { Pressable, View, Text, Button, Platform } from "react-native";
+import { memo, useCallback, useEffect, useState } from "react";
+import { Pressable, Share, View } from "react-native";
 
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -23,15 +23,14 @@ import {
   StackNavParamList,
   generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
-
 // screens
 import Signin from "./src/screens/Signin";
 import Home from "./src/screens/Home";
 import Add from "./src/screens/Add";
 import Overview from "./src/screens/Overview";
 import Profile from "./src/screens/Profile";
-import Share from "./src/screens/Share";
 import Settings from "./src/screens/Settings";
+import Friend from "./src/screens/Friend";
 
 //navbar components
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
@@ -65,14 +64,15 @@ import {
 } from "./src/state/userSlice";
 import {
   createHabitAction,
-  // fetchAllHabitsAction,
+  fetchAllHabitsAction,
   fetchAllTodayHabitsAction,
   selectHabitUpdated,
-  // selectHabits,
+  selectHabits,
   selectHabitsToday,
   selectHabitLoading,
   updateHabitNameAction,
   deleteHabitAction,
+  fetchAllHabitsOfSelectedUserAction,
 } from "./src/state/habitSlice";
 import FlashMessage from "react-native-flash-message";
 
@@ -106,21 +106,43 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const HomeSection = memo((props: any) => {
+const onShare = async () => {
+  try {
+    const result = await Share.share({
+      title: "App link",
+      message: `Join me in Habitune!\n https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune`,
+      url: "https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune",
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const HomeSection = (props: any) => {
   const {
     navigation,
     controller,
     dispatch,
     token,
     currentUser,
+    userLoading,
     allHabitsToday,
     currentHabitDatesIncluded,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [selectedFriend, setSelectedFriend] = useState();
 
   return (
     <StackNavigator.Navigator
@@ -140,7 +162,6 @@ const HomeSection = memo((props: any) => {
             allHabits={allHabitsToday ? allHabitsToday : []}
             allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
-            habitUpdated={habitUpdated}
             habitLoading={habitLoading}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
@@ -194,7 +215,6 @@ const HomeSection = memo((props: any) => {
                   try {
                     navigation.navigate("Profile", {
                       currentUser: currentUser,
-                      userUpdated: userUpdated,
                     });
                   } catch (error) {
                     console.log(error);
@@ -302,7 +322,23 @@ const HomeSection = memo((props: any) => {
       />
       <StackNavigator.Screen
         name="Profile"
-        component={Profile}
+        children={(props: any) => (
+          <Profile
+            {...props}
+            navigation={navigation}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            dispatch={dispatch}
+            currentUser={currentUser}
+            userLoading={userLoading}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        )}
         options={{
           headerTitle: "Profile",
           headerLeft: () => (
@@ -331,7 +367,7 @@ const HomeSection = memo((props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      navigation.navigate("Settings");
+                      onShare();
                     } catch (error) {
                       console.log(error);
                     }
@@ -354,35 +390,6 @@ const HomeSection = memo((props: any) => {
                   <TopNavbarSettingsButton />
                 </Pressable>
               </View>
-            </View>
-          ),
-        }}
-      />
-      <StackNavigator.Screen
-        name="Share"
-        component={Share}
-        options={{
-          headerTitle: "Share",
-          headerLeft: () => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 10,
-              }}
-            >
-              <Pressable
-                onPress={() => {
-                  try {
-                    navigation.goBack();
-                  } catch (error) {
-                    console.log(error);
-                  }
-                }}
-              >
-                <TopNavbarBackButton />
-              </Pressable>
             </View>
           ),
         }}
@@ -416,9 +423,25 @@ const HomeSection = memo((props: any) => {
           ),
         }}
       />
+      <StackNavigator.Screen
+        name="Friend"
+        children={(props: any) => (
+          <Friend
+            {...props}
+            navigation={navigation}
+            dispatch={dispatch}
+            homeEditState={navigation.getState().routes[0].params.homeEditState}
+            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            currentHabitDatesIncluded={currentHabitDatesIncluded}
+            habitUpdated={habitUpdated}
+            habitLoading={habitLoading}
+          />
+        )}
+      />
     </StackNavigator.Navigator>
   );
-});
+};
 
 const AddSection = memo((props: any) => {
   const {
@@ -429,7 +452,6 @@ const AddSection = memo((props: any) => {
     currentUser,
     allHabitsToday,
     currentHabitDatesIncluded,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
@@ -507,16 +529,16 @@ const AddSection = memo((props: any) => {
   );
 });
 
-const OverviewSection = memo((props: any) => {
+const OverviewSection = (props: any) => {
   const {
     navigation,
     controller,
     dispatch,
     token,
     currentUser,
+    allHabits,
     allHabitsToday,
     currentHabitDatesIncluded,
-    userUpdated,
     habitUpdated,
     habitLoading,
   } = props;
@@ -533,9 +555,10 @@ const OverviewSection = memo((props: any) => {
           <Overview
             {...props}
             navigation={navigation}
+            dispatch={dispatch}
             homeEditState={navigation.getState().routes[0].params.homeEditState}
-            allHabits={allHabitsToday ? allHabitsToday : []}
-            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            allHabits={allHabits ? allHabits : []}
+            allHabitsNumber={allHabits ? allHabits.length : 0}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}
@@ -570,7 +593,7 @@ const OverviewSection = memo((props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      navigation.navigate("Settings");
+                      onShare();
                     } catch (error) {
                       console.log(error);
                     }
@@ -593,35 +616,6 @@ const OverviewSection = memo((props: any) => {
                   <TopNavbarSettingsButton />
                 </Pressable>
               </View>
-            </View>
-          ),
-        }}
-      />
-      <StackNavigator.Screen
-        name="Share"
-        component={Share}
-        options={{
-          headerTitle: "Share",
-          headerLeft: () => (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingLeft: 10,
-              }}
-            >
-              <Pressable
-                onPress={() => {
-                  try {
-                    navigation.goBack();
-                  } catch (error) {
-                    console.log("Share Error: ", error);
-                  }
-                }}
-              >
-                <TopNavbarBackButton />
-              </Pressable>
             </View>
           ),
         }}
@@ -657,7 +651,7 @@ const OverviewSection = memo((props: any) => {
       />
     </StackNavigator.Navigator>
   );
-});
+};
 
 //wrapper for state
 const AppWrapper = () => {
@@ -685,9 +679,11 @@ const App = () => {
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
 
+  const userLoading = useSelector(selectUserLoading);
+
   const userUpdated = useSelector(selectUserUpdated);
 
-  const userLoading = useSelector(selectUserLoading);
+  const allHabits = useSelector(selectHabits);
 
   const allHabitsToday = useSelector(selectHabitsToday);
 
@@ -704,13 +700,6 @@ const App = () => {
       todayTemp.getDate()
     );
 
-    const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-    const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-
-    //need this for setting default hour 21
-    //if backend is not 21 but 00, remove this
-    // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
-
     const isInArray = (array: any[], value: Date) => {
       return array.some((item) => {
         return new Date(item).getTime() == value.getTime();
@@ -721,37 +710,71 @@ const App = () => {
     var currentHabitDatesIncluded = useCallback(
       allHabitsToday &&
         allHabitsToday.map((allHabitsItem: any) => {
-          return isInArray(allHabitsItem.dates, todayLocal);
+          return isInArray(allHabitsItem.dates, today);
         }),
-      [allHabitsToday, habitUpdated]
+      [
+        allHabitsToday,
+        // , habitUpdated
+      ]
     );
   } catch (error) {
     console.log("currentHabitDatesIncluded error: ", error);
   }
 
   useEffect(() => {
-    if (token && token.length > 0) {
+    if (
+      (token && token.length > 0) ||
+      (tokenSecondOption && tokenSecondOption.length > 0)
+    ) {
       dispatch(fetchCurrentUserProfileAction());
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (token && token.length > 0) {
+      dispatch(fetchAllHabitsAction());
       dispatch(fetchAllTodayHabitsAction());
     }
-  }, [currentUser, habitUpdated]);
+  }, [token, tokenSecondOption, currentUser._id, userUpdated, habitUpdated]);
 
-  useEffect(() => {
-    if (tokenSecondOption && tokenSecondOption.length > 0) {
-      dispatch(fetchCurrentUserProfileAction());
-    }
-  }, [tokenSecondOption]);
+  // useEffect(() => {
+  //   if (token && token.length > 0) {
+  //     dispatch(fetchCurrentUserProfileAction());
+  //   }
+  // }, [token, userUpdated]);
 
-  useEffect(() => {
-    if (tokenSecondOption && tokenSecondOption.length > 0) {
-      dispatch(fetchAllTodayHabitsAction());
-    }
-  }, [currentUser, habitUpdated]);
+  // useEffect(() => {
+  //   if (token && token.length > 0) {
+  //     dispatch(fetchAllTodayHabitsAction());
+  //     dispatch(fetchAllHabitsAction());
+  //   }
+  // }, [currentUser, habitUpdated]);
+
+  // useEffect(() => {
+  //   if (tokenSecondOption && tokenSecondOption.length > 0) {
+  //     dispatch(fetchCurrentUserProfileAction());
+  //   }
+  // }, [tokenSecondOption]);
+
+  // useEffect(() => {
+  //   if (tokenSecondOption && tokenSecondOption.length > 0) {
+  //     dispatch(fetchAllTodayHabitsAction());
+  //     dispatch(fetchAllHabitsAction());
+  //   }
+  // }, [currentUser, habitUpdated]);
+
+  //get selected friend habits
+  // useEffect(() => {
+  //   // console.log(navigation.getState()?.routes[0].state?.routes[2].params);
+  //   if (navigation.getState()?.routes[0].state?.routes[2].params) {
+  //     console.log(navigation.getState()?.routes[0].state?.routes[2].params);
+  //   }
+  //   // dispatch(
+  //   //   fetchAllHabitsOfSelectedUserAction(
+  //   //     navigation.getState().routes[0].state.routes[2].params.friendID
+  //   //   )
+  //   // );
+  // }, [
+  //   // navigation.getState().routes[0].state.routes[2].params.friendID
+  //   navigation,
+  // ]);
+
+  // console.log("APP RENDERED");
 
   // expo notifications
   async function registerForPushNotificationsAsync() {
@@ -789,8 +812,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    registerDeviceForMessaging();
-  }, [token]);
+    if (
+      (token && token.length > 0) ||
+      (tokenSecondOption && tokenSecondOption.length > 0)
+    ) {
+      registerDeviceForMessaging();
+    }
+  }, [token, tokenSecondOption]);
 
   // check whether an initial notification is available
   useEffect(() => {
@@ -876,7 +904,6 @@ const App = () => {
                   currentUser={currentUser}
                   allHabitsToday={allHabitsToday}
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
-                  userUpdated={userUpdated}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                 />
@@ -899,7 +926,6 @@ const App = () => {
                   currentUser={currentUser}
                   allHabitsToday={allHabitsToday}
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
-                  userUpdated={userUpdated}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                 />
@@ -918,9 +944,9 @@ const App = () => {
                   dispatch={dispatch}
                   token={token}
                   currentUser={currentUser}
+                  allHabits={allHabits}
                   allHabitsToday={allHabitsToday}
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
-                  userUpdated={userUpdated}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                 />

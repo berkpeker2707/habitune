@@ -18,35 +18,36 @@ const StreakGraph = (props: any) => {
     todayTemp.getDate()
   );
 
-  const userTimezoneOffset = today.getTimezoneOffset() * 60000;
+  function convertUTCDateToLocalDate(date: any) {
+    var newDate = new Date(date);
+    newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return newDate;
+  }
 
-  const todayLocal = new Date(today.getTime() - userTimezoneOffset);
-  const OneDayAgo = new Date(
-    today.getTime() - 86400000 * 1 - userTimezoneOffset
+  const OneDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 1)
   );
-  const TwoDayAgo = new Date(
-    today.getTime() - 86400000 * 2 - userTimezoneOffset
+  const TwoDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 2)
   );
-  const ThreeDayAgo = new Date(
-    today.getTime() - 86400000 * 3 - userTimezoneOffset
+  const ThreeDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 3)
   );
-  const FourDayAgo = new Date(
-    today.getTime() - 86400000 * 4 - userTimezoneOffset
+  const FourDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 4)
   );
-  const FiveDayAgo = new Date(
-    today.getTime() - 86400000 * 5 - userTimezoneOffset
+  const FiveDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 5)
   );
-  const SixDayAgo = new Date(
-    today.getTime() - 86400000 * 6 - userTimezoneOffset
+  const SixDayAgo = convertUTCDateToLocalDate(
+    new Date(today.getTime() - 86400000 * 6)
   );
-
-  //need this for setting default hour 21
-  //if backend is not 21 but 00, remove this
-  // const todayLocal21 = new Date(todayLocal.getTime() + 3600000 * 21);
 
   const isInArray = (array: any[], value: Date) => {
-    return array.find((item) => {
-      return new Date(item).getTime() == value.getTime();
+    return array.some((item) => {
+      return (
+        convertUTCDateToLocalDate(new Date(item)).getTime() == value.getTime()
+      );
     });
   };
 
@@ -59,7 +60,7 @@ const StreakGraph = (props: any) => {
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
       ) {
         return 7;
       } else if (
@@ -68,7 +69,7 @@ const StreakGraph = (props: any) => {
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
       ) {
         return 6;
       } else if (
@@ -76,28 +77,30 @@ const StreakGraph = (props: any) => {
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
       ) {
         return 5;
       } else if (
         isInArray(allHabitsItem.dates, ThreeDayAgo) &&
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
       ) {
         return 4;
       } else if (
         isInArray(allHabitsItem.dates, TwoDayAgo) &&
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
       ) {
         return 3;
       } else if (
         isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, todayLocal)
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
       ) {
         return 2;
-      } else if (isInArray(allHabitsItem.dates, todayLocal)) {
+      } else if (
+        isInArray(allHabitsItem.dates, convertUTCDateToLocalDate(today))
+      ) {
         return 1;
       } else {
         return 0;

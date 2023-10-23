@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.updateHabitName = exports.deleteHabit = exports.getSingleHabit = exports.getTodaysHabits = exports.getAllHabits = exports.createHabit = void 0;
+exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.updateHabitName = exports.deleteHabit = exports.getSingleHabit = exports.getTodaysHabits = exports.getAllHabitsOfSelectedUser = exports.getAllHabits = exports.createHabit = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const habit_model_1 = __importDefault(require("./habit.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
@@ -89,15 +89,29 @@ const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getAllHabits = getAllHabits;
+const getAllHabitsOfSelectedUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.params.id })
+            .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
+            .exec();
+        res.status(200).json(loggedinUsersHabits);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getAllHabitsOfSelectedUser = getAllHabitsOfSelectedUser;
 const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const todayTemp = new Date();
         const today = new Date(todayTemp.getFullYear(), todayTemp.getMonth(), todayTemp.getDate());
-        const userTimezoneOffset = today.getTimezoneOffset() * 60000;
-        const todayLocal = new Date(today.getTime() - userTimezoneOffset);
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
-            upcomingDates: { $in: [todayLocal] },
+            // upcomingDates: { $in: [todayLocal] },
+            upcomingDates: { $in: [today] },
         })
             .populate({ path: "sharedWith", model: "User" })
             .slice("dates", -10) //last 10 numbers of the dates array

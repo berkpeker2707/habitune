@@ -46,17 +46,21 @@ const FriendBar = memo(
               height: 45,
             }}
           >
-            <Image
-              style={{
-                width: 34,
-                height: 34,
-                borderRadius: 20,
-                marginLeft: 8,
-              }}
-              source={{
-                uri: friendProfilePicture,
-              }}
-            />
+            {friendProfilePicture ? (
+              <Image
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 20,
+                  marginLeft: 8,
+                }}
+                source={{
+                  uri: friendProfilePicture,
+                }}
+              />
+            ) : (
+              ""
+            )}
             {/* marking starts */}
             {friendSelected ? (
               <View style={{ position: "absolute", left: 15 }}>
