@@ -19,6 +19,7 @@ const user_model_1 = __importDefault(require("../user/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 const calculateUpcomingDates_1 = __importDefault(require("../middlewares/calculateUpcomingDates"));
+const convertUTCDateToLocalDate_1 = __importDefault(require("../middlewares/convertUTCDateToLocalDate"));
 dotenv_1.default.config();
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -32,15 +33,19 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             var todayReq = new Date(Date.now());
-            var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate());
-            var upComingDay = new Date(todayReq.getFullYear() + 1, todayReq.getMonth(), todayReq.getDate());
+            var today = yield (0, convertUTCDateToLocalDate_1.default)(new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate()));
+            var upComingDay = yield (0, convertUTCDateToLocalDate_1.default)(new Date(todayReq.getFullYear() + 1, todayReq.getMonth(), todayReq.getDate()));
             const newHabit = yield habit_model_1.default.create({
                 owner: req.user[0]._id,
                 name: req.body.name,
                 color: (_a = req.body.color) !== null && _a !== void 0 ? _a : "#968EB0",
                 sharedWith: req.body.friendList,
-                firstDate: req.body.firstDate ? req.body.firstDate : today,
-                lastDate: req.body.lastDate ? req.body.lastDate : upComingDay,
+                firstDate: req.body.firstDate
+                    ? yield (0, convertUTCDateToLocalDate_1.default)(new Date(new Date(req.body.firstDate).getFullYear(), new Date(req.body.firstDate).getMonth(), new Date(req.body.firstDate).getDate()))
+                    : today,
+                lastDate: req.body.lastDate
+                    ? yield (0, convertUTCDateToLocalDate_1.default)(new Date(new Date(req.body.lastDate).getFullYear(), new Date(req.body.lastDate).getMonth(), new Date(req.body.lastDate).getDate()))
+                    : upComingDay,
                 dates: [],
                 upcomingDates: [],
             });
@@ -107,7 +112,7 @@ exports.getAllHabitsOfSelectedUser = getAllHabitsOfSelectedUser;
 const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const todayTemp = new Date();
-        const today = new Date(todayTemp.getFullYear(), todayTemp.getMonth(), todayTemp.getDate());
+        const today = yield (0, convertUTCDateToLocalDate_1.default)(new Date(todayTemp.getFullYear(), todayTemp.getMonth(), todayTemp.getDate()));
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
             // upcomingDates: { $in: [todayLocal] },
@@ -276,7 +281,7 @@ exports.updateHabitDates = updateHabitDates;
 const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var todayReq = new Date(req.body.date);
-        var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate());
+        var today = yield (0, convertUTCDateToLocalDate_1.default)(new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate()));
         function isInCompletedDates(array, value) {
             return !!(array === null || array === void 0 ? void 0 : array.find((item) => {
                 return item.getTime() == value.getTime();
