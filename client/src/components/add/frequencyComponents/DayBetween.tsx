@@ -11,12 +11,6 @@ const DayBetween = (props: any) => {
   const [taskFirstDate, setTaskFirstDate] = useState<Date>();
   const [taskLastDate, setTaskLastDate] = useState<Date>();
 
-  function convertUTCDateToLocalDate(date: any) {
-    var newDate = new Date(date);
-    newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    return newDate;
-  }
-
   useEffect(() => {
     props.sendDayBetweenState(taskFirstDate, taskLastDate);
   }, [taskFirstDate, taskLastDate]);
@@ -30,12 +24,8 @@ const DayBetween = (props: any) => {
   const onConfirm = useCallback(
     ({ startDate, endDate }: { startDate: any; endDate: any }) => {
       setOpen(false);
-      setTaskFirstDate(() =>
-        convertUTCDateToLocalDate(new Date(startDate?.getTime()))
-      );
-      setTaskLastDate(() =>
-        convertUTCDateToLocalDate(new Date(endDate?.getTime()))
-      );
+      setTaskFirstDate(() => new Date(startDate?.getTime()));
+      setTaskLastDate(() => new Date(endDate?.getTime()));
     },
     [setOpen, taskFirstDate, taskLastDate]
   );

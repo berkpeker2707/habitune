@@ -700,9 +700,32 @@ const App = () => {
       todayTemp.getDate()
     );
 
-    const isInArray = (array: any[], value: Date) => {
+    function convertUTCDateToLocalDate(date: any) {
+      var newDate = new Date(date);
+      newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      return newDate;
+    }
+
+    //${date from api} compares to ${date of today}
+    const isInArray = (array: any[], value: any) => {
       return array.some((item) => {
-        return new Date(item).getTime() == value.getTime();
+        var elemHave = new Date(convertUTCDateToLocalDate(new Date(item)));
+        var elemToday = new Date(convertUTCDateToLocalDate(value));
+
+        const msBetweenDates = Math.abs(
+          elemHave.getTime() - elemToday.getTime()
+        );
+
+        //convert ms to hours(min sec ms)
+        const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
+
+        if (hoursBetweenDates < 24) {
+          // console.log("date is within 24 hours");
+          return true;
+        } else {
+          // console.log("date is NOT within 24 hours");
+          return false;
+        }
       });
     };
     // date stuff ends
