@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const convertUTCDateToLocalDate = (date) => __awaiter(void 0, void 0, void 0, function* () {
-    var newDate = new Date(date);
-    newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    var newDate = new Date(new Date(date).toISOString());
+    // newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     return newDate;
 });
 exports.default = convertUTCDateToLocalDate;
