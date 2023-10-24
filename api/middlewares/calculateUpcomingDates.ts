@@ -1,3 +1,5 @@
+import convertUTCDateToLocalDate from "./convertUTCDateToLocalDate";
+
 const calculateUpcomingDates = async (
   startTime: Date,
   endstartTime: Date,
@@ -26,15 +28,19 @@ const calculateUpcomingDates = async (
 
   //re-creating without specific time to avoid unnecessary iterations
   //format: yyyy,mm,dd
-  var startDate = new Date(
-    startTimeStamp.getFullYear(),
-    startTimeStamp.getMonth(),
-    startTimeStamp.getDate()
+  var startDate = await convertUTCDateToLocalDate(
+    new Date(
+      startTimeStamp.getFullYear(),
+      startTimeStamp.getMonth(),
+      startTimeStamp.getDate()
+    )
   );
-  var endDate = new Date(
-    endstartTimeStamp.getFullYear(),
-    endstartTimeStamp.getMonth(),
-    endstartTimeStamp.getDate()
+  var endDate = await convertUTCDateToLocalDate(
+    new Date(
+      endstartTimeStamp.getFullYear(),
+      endstartTimeStamp.getMonth(),
+      endstartTimeStamp.getDate()
+    )
   );
   var tempDate = startDate;
   var result = [];
