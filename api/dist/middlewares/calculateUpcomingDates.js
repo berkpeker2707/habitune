@@ -8,11 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const convertUTCDateToLocalDate_1 = __importDefault(require("./convertUTCDateToLocalDate"));
 const calculateUpcomingDates = (startTime, endstartTime, reqBodyDays) => __awaiter(void 0, void 0, void 0, function* () {
     var startTimeStamp = new Date(startTime);
     var endstartTimeStamp = new Date(endstartTime);
@@ -33,8 +29,8 @@ const calculateUpcomingDates = (startTime, endstartTime, reqBodyDays) => __await
     // calculating specific day time ends
     //re-creating without specific time to avoid unnecessary iterations
     //format: yyyy,mm,dd
-    var startDate = yield (0, convertUTCDateToLocalDate_1.default)(new Date(startTimeStamp.getFullYear(), startTimeStamp.getMonth(), startTimeStamp.getDate()));
-    var endDate = yield (0, convertUTCDateToLocalDate_1.default)(new Date(endstartTimeStamp.getFullYear(), endstartTimeStamp.getMonth(), endstartTimeStamp.getDate()));
+    var startDate = new Date(startTimeStamp.getFullYear(), startTimeStamp.getMonth(), startTimeStamp.getDate());
+    var endDate = new Date(endstartTimeStamp.getFullYear(), endstartTimeStamp.getMonth(), endstartTimeStamp.getDate());
     var tempDate = startDate;
     var result = [];
     //take all days between startDate and endDate

@@ -8,7 +8,6 @@ import { IReq } from "../middlewares/interfaces";
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
 import calculateUpcomingDates from "../middlewares/calculateUpcomingDates";
-import convertUTCDateToLocalDate from "../middlewares/convertUTCDateToLocalDate";
 
 dotenv.config();
 
@@ -23,20 +22,16 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .send(getErrorMessage("User already has 20 habits."));
     } else {
       var todayReq = new Date(Date.now());
-      var today = await convertUTCDateToLocalDate(
-        new Date(
-          todayReq.getFullYear(),
-          todayReq.getMonth(),
-          todayReq.getDate()
-        )
+      var today = new Date(
+        todayReq.getFullYear(),
+        todayReq.getMonth(),
+        todayReq.getDate()
       );
 
-      var upComingDay = await convertUTCDateToLocalDate(
-        new Date(
-          todayReq.getFullYear() + 1,
-          todayReq.getMonth(),
-          todayReq.getDate()
-        )
+      var upComingDay = new Date(
+        todayReq.getFullYear() + 1,
+        todayReq.getMonth(),
+        todayReq.getDate()
       );
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
@@ -44,21 +39,17 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         color: req.body.color ?? "#968EB0",
         sharedWith: req.body.friendList,
         firstDate: req.body.firstDate
-          ? await convertUTCDateToLocalDate(
-              new Date(
-                new Date(req.body.firstDate).getFullYear(),
-                new Date(req.body.firstDate).getMonth(),
-                new Date(req.body.firstDate).getDate()
-              )
+          ? new Date(
+              new Date(req.body.firstDate).getFullYear(),
+              new Date(req.body.firstDate).getMonth(),
+              new Date(req.body.firstDate).getDate()
             )
           : today,
         lastDate: req.body.lastDate
-          ? await convertUTCDateToLocalDate(
-              new Date(
-                new Date(req.body.lastDate).getFullYear(),
-                new Date(req.body.lastDate).getMonth(),
-                new Date(req.body.lastDate).getDate()
-              )
+          ? new Date(
+              new Date(req.body.lastDate).getFullYear(),
+              new Date(req.body.lastDate).getMonth(),
+              new Date(req.body.lastDate).getDate()
             )
           : upComingDay,
         dates: [],
@@ -139,12 +130,10 @@ export const getAllHabitsOfSelectedUser = async (
 export const getTodaysHabits = async (req: IReq | any, res: Response) => {
   try {
     const todayTemp = new Date();
-    const today = await convertUTCDateToLocalDate(
-      new Date(
-        todayTemp.getFullYear(),
-        todayTemp.getMonth(),
-        todayTemp.getDate()
-      )
+    const today = new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate()
     );
 
     const loggedinUsersTodayHabits = await Habit.find({
@@ -348,10 +337,11 @@ export const updateHabitCompletedDate = async (
 ) => {
   try {
     var todayReq = new Date(req.body.date);
-    var today = await convertUTCDateToLocalDate(
-      new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate())
+    var today = new Date(
+      todayReq.getFullYear(),
+      todayReq.getMonth(),
+      todayReq.getDate()
     );
-
     function isInCompletedDates(array: any[] | undefined, value: Date) {
       return !!array?.find((item) => {
         return item.getTime() == value.getTime();
