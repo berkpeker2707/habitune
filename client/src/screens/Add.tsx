@@ -7,8 +7,11 @@ import Share from "../components/add/shareComponents/Share";
 // import Reminder from "../components/add/reminderComponents/Reminder";
 import Color from "../components/add/Color";
 
-const Add = (props: any) => {
-  const { currentUser, navigation } = props;
+const Add = (props: {
+  navigation: any;
+  currentUser: { friends: Array<object>; pending: boolean };
+}) => {
+  const { navigation, currentUser } = props;
 
   const [taskName, setTaskName] = useState<string>("");
   const [openFrequency, setOpenFrequency] = useState<boolean>(false);
