@@ -1,8 +1,6 @@
 import * as React from "react";
 import { memo, useCallback, useState } from "react";
 
-import { useFocusEffect } from "@react-navigation/native";
-
 import {
   View,
   ScrollView,
@@ -18,27 +16,11 @@ import {
   fetchCurrentUserProfileAction,
   sendFriendshipAction,
 } from "../state/userSlice";
-import { useAppDispatch } from "../state/store";
 
 import uuid from "react-native-uuid";
 
 const Profile = memo((props: any) => {
-  const {
-    navigation,
-    homeEditState,
-    dispatch,
-    currentUser,
-    userLoading,
-    allHabits,
-    allHabitsNumber,
-    habitUpdated,
-    habitLoading,
-    currentHabitDatesIncluded,
-    modalVisible,
-    setModalVisible,
-  } = props;
-
-  const controller = new AbortController();
+  const { navigation, dispatch, currentUser } = props;
 
   const [showInfoText, setShowInfoText] = useState(false);
   const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
