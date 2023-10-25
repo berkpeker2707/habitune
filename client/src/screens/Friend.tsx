@@ -11,17 +11,7 @@ import { useSelector } from "../state/store";
 import { useEffect } from "react";
 
 const Friend = (props: any) => {
-  const {
-    navigation,
-    homeEditState,
-    allHabits,
-    allHabitsNumber,
-    habitUpdated,
-    habitLoading,
-    currentHabitDatesIncluded,
-    route,
-    dispatch,
-  } = props;
+  const { navigation, dispatch, habitUpdated, habitLoading } = props;
 
   useEffect(() => {
     dispatch(
