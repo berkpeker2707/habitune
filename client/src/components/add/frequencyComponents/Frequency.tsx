@@ -1,27 +1,61 @@
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
-import { useState } from "react";
 import FrequencyWithPurpleIcon from "./FrequencyWithPurpleIcon";
 import FrequencyOpened from "./FrequencyOpened";
 
-const Frequency = (props: any) => {
-  const [openFrequency, setOpenFrequency] = useState<boolean>(false);
+const Frequency = (props: {
+  openFrequency: boolean;
+  setOpenFrequency: Function;
+  taskUpcomingDates: string[];
+  setTaskUpcomingDates: Function;
+  taskFirstDate: Date;
+  setTaskFirstDate: Function;
+  taskLastDate: Date;
+  setTaskLastDate: Function;
+  dateBetweenModalOpen: boolean;
+  setDateBetweenModalOpen: Function;
+}) => {
+  const {
+    openFrequency,
+    setOpenFrequency,
+    taskUpcomingDates,
+    setTaskUpcomingDates,
+    taskFirstDate,
+    setTaskFirstDate,
+    taskLastDate,
+    setTaskLastDate,
+    dateBetweenModalOpen,
+    setDateBetweenModalOpen,
+  } = props;
 
   return (
     <>
       {!openFrequency ? (
         <TouchableOpacity
           style={{ width: 345 }}
-          onPress={() => setOpenFrequency((openFrequency) => !openFrequency)}
-          onBlur={() => setOpenFrequency((openFrequency) => !openFrequency)}
+          onPress={() =>
+            setOpenFrequency((openFrequency: boolean) => !openFrequency)
+          }
+          onBlur={() =>
+            setOpenFrequency((openFrequency: boolean) => !openFrequency)
+          }
           onLongPress={() =>
-            setOpenFrequency((openFrequency) => !openFrequency)
+            setOpenFrequency((openFrequency: boolean) => !openFrequency)
           }
         >
           <FrequencyWithPurpleIcon textInputTitle={"Frequency"} />
         </TouchableOpacity>
       ) : (
-        <FrequencyOpened navigation={props.navigation} />
+        <FrequencyOpened
+          taskUpcomingDates={taskUpcomingDates}
+          setTaskUpcomingDates={setTaskUpcomingDates}
+          taskFirstDate={taskFirstDate}
+          setTaskFirstDate={setTaskFirstDate}
+          taskLastDate={taskLastDate}
+          setTaskLastDate={setTaskLastDate}
+          dateBetweenModalOpen={dateBetweenModalOpen}
+          setDateBetweenModalOpen={setDateBetweenModalOpen}
+        />
       )}
     </>
   );

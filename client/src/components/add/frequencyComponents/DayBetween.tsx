@@ -1,51 +1,40 @@
 import * as React from "react";
 import { TouchableOpacity, TextInput } from "react-native";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 
 import { DatePickerModal } from "react-native-paper-dates";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 registerTranslation("en-GB", enGB);
 
-const DayBetween = (props: any) => {
-  const [taskFirstDate, setTaskFirstDate] = useState<Date>(
-    new Date(
-      new Date(Date.now()).getFullYear(),
-      new Date(Date.now()).getMonth(),
-      new Date(Date.now()).getDate(),
-      new Date(Date.now()).getHours(),
-      new Date(Date.now()).getMinutes(),
-      new Date(Date.now()).getSeconds()
-    )
-  );
-  const [taskLastDate, setTaskLastDate] = useState<Date>(
-    new Date(
-      new Date(Date.now()).getFullYear() + 1,
-      new Date(Date.now()).getMonth(),
-      new Date(Date.now()).getDate(),
-      new Date(Date.now()).getHours(),
-      new Date(Date.now()).getMinutes(),
-      new Date(Date.now()).getSeconds()
-    )
-  );
-
-  useEffect(() => {
-    props.sendDayBetweenState(taskFirstDate, taskLastDate);
-  }, [taskFirstDate, taskLastDate]);
-
-  const [open, setOpen] = useState(false);
+const DayBetween = (props: {
+  taskFirstDate: Date;
+  setTaskFirstDate: Function;
+  taskLastDate: Date;
+  setTaskLastDate: Function;
+  dateBetweenModalOpen: boolean;
+  setDateBetweenModalOpen: Function;
+}) => {
+  const {
+    taskFirstDate,
+    setTaskFirstDate,
+    taskLastDate,
+    setTaskLastDate,
+    dateBetweenModalOpen,
+    setDateBetweenModalOpen,
+  } = props;
 
   const onDismiss = useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
+    setDateBetweenModalOpen(false);
+  }, [setDateBetweenModalOpen]);
 
   const onConfirm = useCallback(
     ({ startDate, endDate }: { startDate: any; endDate: any }) => {
-      setOpen(false);
+      setDateBetweenModalOpen(false);
       setTaskFirstDate(() => new Date(startDate?.getTime()));
       setTaskLastDate(() => new Date(endDate?.getTime()));
     },
-    [setOpen, taskFirstDate, taskLastDate]
+    [setDateBetweenModalOpen, taskFirstDate, taskLastDate]
   );
 
   const monthNames = [
@@ -64,7 +53,10 @@ const DayBetween = (props: any) => {
   ];
 
   return (
-    <TouchableOpacity style={{ top: 40 }} onPress={() => setOpen(true)}>
+    <TouchableOpacity
+      style={{ top: 40 }}
+      onPress={() => setDateBetweenModalOpen(true)}
+    >
       {taskFirstDate && taskLastDate ? (
         <TextInput
           style={{
@@ -106,10 +98,11 @@ const DayBetween = (props: any) => {
           Select Date
         </TextInput>
       )}
+
       <DatePickerModal
         locale="en-GB"
         mode="range"
-        visible={open}
+        visible={dateBetweenModalOpen}
         onDismiss={onDismiss}
         startDate={taskFirstDate}
         endDate={

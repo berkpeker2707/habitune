@@ -3,8 +3,12 @@ import { View } from "react-native";
 import ShareWithNumber from "./ShareWithNumber";
 import FriendList from "./FriendList";
 
-const ShareOpened = (props: any) => {
-  const { currentUser } = props;
+const ShareOpened = (props: {
+  currentUser: { friends: Array<object>; pending: boolean };
+  shareWithFriendList: string[];
+  setShareWithFriendList: Function;
+}) => {
+  const { currentUser, shareWithFriendList, setShareWithFriendList } = props;
 
   return (
     <>
@@ -20,9 +24,13 @@ const ShareOpened = (props: any) => {
         }}
       >
         <ShareWithNumber
-          shareWithNum={currentUser.friends ? currentUser.friends.length : ""}
+          shareWithNum={currentUser.friends ? currentUser.friends.length : 0}
         />
-        <FriendList navigation={props.navigation} currentUser={currentUser} />
+        <FriendList
+          currentUser={currentUser}
+          shareWithFriendList={shareWithFriendList}
+          setShareWithFriendList={setShareWithFriendList}
+        />
       </View>
     </>
   );

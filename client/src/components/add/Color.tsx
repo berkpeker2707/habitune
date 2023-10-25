@@ -1,18 +1,10 @@
 import * as React from "react";
-import { memo, useEffect, useState } from "react";
+import { memo } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
-const Color = memo((props: any) => {
-  const [color, setColor] = useState<String>();
-
-  //updating params if color changes starts
-  useEffect(() => {
-    props.navigation.setParams({
-      color: color,
-    });
-  }, [color]);
-  //updating params if color changes ends
+const Color = memo((props: { color: string; setColor: Function }) => {
+  const { color, setColor } = props;
 
   return (
     <>
@@ -103,6 +95,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -135,6 +128,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -167,6 +161,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -199,6 +194,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -231,6 +227,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -263,6 +260,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -295,6 +293,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -327,6 +326,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -359,6 +359,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
@@ -391,6 +392,7 @@ const Color = memo((props: any) => {
           )}
           {/* marking ends */}
         </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: "absolute",
