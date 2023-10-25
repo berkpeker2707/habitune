@@ -9,7 +9,14 @@ registerTranslation("en-GB", enGB);
 
 const DayBetween = (props: any) => {
   const [taskFirstDate, setTaskFirstDate] = useState<Date>(
-    new Date(Date.now())
+    new Date(
+      new Date(Date.now()).getFullYear(),
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
   );
   const [taskLastDate, setTaskLastDate] = useState<Date>(
     new Date(
