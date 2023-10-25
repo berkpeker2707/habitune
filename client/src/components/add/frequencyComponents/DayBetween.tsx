@@ -8,8 +8,19 @@ import { enGB, registerTranslation } from "react-native-paper-dates";
 registerTranslation("en-GB", enGB);
 
 const DayBetween = (props: any) => {
-  const [taskFirstDate, setTaskFirstDate] = useState<Date>();
-  const [taskLastDate, setTaskLastDate] = useState<Date>();
+  const [taskFirstDate, setTaskFirstDate] = useState<Date>(
+    new Date(Date.now())
+  );
+  const [taskLastDate, setTaskLastDate] = useState<Date>(
+    new Date(
+      new Date(Date.now()).getFullYear() + 1,
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
+  );
 
   useEffect(() => {
     props.sendDayBetweenState(taskFirstDate, taskLastDate);
@@ -94,7 +105,18 @@ const DayBetween = (props: any) => {
         visible={open}
         onDismiss={onDismiss}
         startDate={taskFirstDate}
-        endDate={taskLastDate}
+        endDate={
+          taskLastDate instanceof Date
+            ? new Date(
+                new Date(Date.now()).getFullYear() + 1,
+                new Date(Date.now()).getMonth(),
+                new Date(Date.now()).getDate(),
+                new Date(Date.now()).getHours(),
+                new Date(Date.now()).getMinutes(),
+                new Date(Date.now()).getSeconds()
+              )
+            : taskLastDate
+        }
         onConfirm={onConfirm}
       />
     </TouchableOpacity>

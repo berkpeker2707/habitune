@@ -81,6 +81,7 @@ const FrequencyOpened = memo((props: any) => {
           dayCircleMarked={taskUpcomingDates.includes("Tue") ? true : false}
         />
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() =>
           taskUpcomingDates.includes("Wed")
@@ -96,6 +97,7 @@ const FrequencyOpened = memo((props: any) => {
           dayCircleMarked={taskUpcomingDates.includes("Wed") ? true : false}
         />
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() =>
           taskUpcomingDates.includes("Thu")
@@ -111,6 +113,7 @@ const FrequencyOpened = memo((props: any) => {
           dayCircleMarked={taskUpcomingDates.includes("Thu") ? true : false}
         />
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() =>
           taskUpcomingDates.includes("Fri")
@@ -126,6 +129,7 @@ const FrequencyOpened = memo((props: any) => {
           dayCircleMarked={taskUpcomingDates.includes("Fri") ? true : false}
         />
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() =>
           taskUpcomingDates.includes("Sat")
@@ -141,6 +145,7 @@ const FrequencyOpened = memo((props: any) => {
           dayCircleMarked={taskUpcomingDates.includes("Sat") ? true : false}
         />
       </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() =>
           taskUpcomingDates.includes("Sun")
