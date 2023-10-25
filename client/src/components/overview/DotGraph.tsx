@@ -1,19 +1,30 @@
 import * as React from "react";
+import { useCallback } from "react";
 import { RefreshControl, ScrollView, TextInput, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
-import { fetchAllHabitsAction } from "../../state/habitSlice";
-import { useCallback } from "react";
-
 import uuid from "react-native-uuid";
 
-const DotGraph = (props: any) => {
+const DotGraph = (props: {
+  dispatch: Function;
+  fetchAllHabitsAction: Function;
+  allHabits: Array<any>;
+  allHabitsNumber: number;
+  habitLoading: boolean;
+  refreshing: boolean;
+  setRefreshing: Function;
+  isInArray: Function;
+  isItCurrentUser: boolean;
+}) => {
   const {
     dispatch,
+    fetchAllHabitsAction,
     allHabits,
     allHabitsNumber,
-    habitUpdated,
     habitLoading,
+    refreshing,
+    setRefreshing,
+    isInArray,
     isItCurrentUser,
   } = props;
 
@@ -22,43 +33,18 @@ const DotGraph = (props: any) => {
   const today = new Date(
     todayTemp.getFullYear(),
     todayTemp.getMonth(),
-    todayTemp.getDate()
+    todayTemp.getDate(),
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
   );
 
   const OneDayAgo = new Date(today.getTime() - 86400000 * 1);
   const TwoDayAgo = new Date(today.getTime() - 86400000 * 2);
-
   const ThreeDayAgo = new Date(today.getTime() - 86400000 * 3);
   const FourDayAgo = new Date(today.getTime() - 86400000 * 4);
   const FiveDayAgo = new Date(today.getTime() - 86400000 * 5);
   const SixDayAgo = new Date(today.getTime() - 86400000 * 6);
-
-  function convertUTCDateToLocalDate(date: any) {
-    var newDate = new Date(date);
-    newDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    return newDate;
-  }
-
-  //${date from api} compares to ${date of today}
-  const isInArray = (array: any[], value: any) => {
-    return array.some((item) => {
-      var elemHave = new Date(convertUTCDateToLocalDate(new Date(item)));
-      var elemToday = new Date(convertUTCDateToLocalDate(value));
-
-      const msBetweenDates = Math.abs(elemHave.getTime() - elemToday.getTime());
-
-      //convert ms to hours(min sec ms)
-      const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
-
-      if (hoursBetweenDates < 24) {
-        // console.log("date is within 24 hours");
-        return true;
-      } else {
-        // console.log("date is NOT within 24 hours");
-        return false;
-      }
-    });
-  };
 
   var allHabitDatesDots: Array<boolean> = [];
   for (var i = 0; i < allHabits.length; i++) {
@@ -70,8 +56,6 @@ const DotGraph = (props: any) => {
     allHabitDatesDots.push(isInArray(allHabits[i].dates, FiveDayAgo));
     allHabitDatesDots.push(isInArray(allHabits[i].dates, SixDayAgo));
   }
-
-  const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

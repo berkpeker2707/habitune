@@ -1,7 +1,11 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 
-const DotGraphBar = (props: any) => {
+const DotGraphBar = (props: {
+  name: string;
+  color: string;
+  allHabitDatesDots: Array<Boolean>;
+}) => {
   const { name, color, allHabitDatesDots } = props;
 
   return (
