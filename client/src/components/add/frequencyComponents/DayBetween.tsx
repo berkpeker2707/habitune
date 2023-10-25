@@ -1,8 +1,6 @@
 import * as React from "react";
-import { TouchableOpacity, TextInput } from "react-native";
-
 import { useCallback } from "react";
-
+import { TouchableOpacity, TextInput } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 registerTranslation("en-GB", enGB);
@@ -98,7 +96,6 @@ const DayBetween = (props: {
           Select Date
         </TextInput>
       )}
-
       <DatePickerModal
         locale="en-GB"
         mode="range"

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo, useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { Pressable, View } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";

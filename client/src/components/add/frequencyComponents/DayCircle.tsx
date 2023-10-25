@@ -10,7 +10,6 @@ const DayCircle = memo(
     } else {
       var backgroundColor = "#FFFFFF";
     }
-
     return (
       <View
         style={{

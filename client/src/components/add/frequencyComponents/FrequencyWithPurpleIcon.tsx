@@ -3,7 +3,6 @@ import { View, TextInput } from "react-native";
 
 const FrequencyWithPurpleIcon = (props: { textInputTitle: string }) => {
   const { textInputTitle } = props;
-
   return (
     <View style={{ width: 345 }}>
       <View

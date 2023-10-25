@@ -27,7 +27,6 @@ const Frequency = (props: {
     dateBetweenModalOpen,
     setDateBetweenModalOpen,
   } = props;
-
   return (
     <>
       {!openFrequency ? (
