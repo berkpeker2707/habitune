@@ -20,16 +20,7 @@ import { signInWithGoogleAction } from "../state/userSlice";
 WebBrowser.maybeCompleteAuthSession();
 
 const Signin = (props: any) => {
-  const {
-    navigation,
-    controller,
-    dispatch,
-    token,
-    currentUser,
-    allHabitsToday,
-    habitUpdated,
-    habitLoading,
-  } = props;
+  const { dispatch } = props;
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
