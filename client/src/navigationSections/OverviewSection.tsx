@@ -1,15 +1,9 @@
 import * as React from "react";
 import { Pressable, View } from "react-native";
-
 import { createStackNavigator } from "@react-navigation/stack";
-
-//types
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
-// screens
 import Overview from "../../src/screens/Overview";
 import Settings from "../../src/screens/Settings";
-
-//navbar components
 import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarShareButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
@@ -22,13 +16,15 @@ const OverviewSection = (props: any) => {
     navigation,
     dispatch,
     fetchAllHabitsAction,
+    revertAll,
+    revertAllHabit,
+    deleteUserAction,
     allHabits,
     habitUpdated,
     habitLoading,
     isInArray,
     onShare,
   } = props;
-
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -62,7 +58,6 @@ const OverviewSection = (props: any) => {
               <TopNavbarLogo />
             </View>
           ),
-
           headerRight: () => (
             <View
               style={{
@@ -106,7 +101,15 @@ const OverviewSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Settings"
-        children={(props: any) => <Settings {...props} dispatch={dispatch} />}
+        children={(props: any) => (
+          <Settings
+            {...props}
+            dispatch={dispatch}
+            revertAll={revertAll}
+            revertAllHabit={revertAllHabit}
+            deleteUserAction={deleteUserAction}
+          />
+        )}
         options={{
           headerTitle: "Settings",
           headerLeft: () => (

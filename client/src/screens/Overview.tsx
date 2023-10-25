@@ -1,20 +1,27 @@
 import * as React from "react";
-
+import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 
-const Overview = (props: any) => {
+const Overview = (props: {
+  dispatch: Function;
+  fetchAllHabitsAction: Function;
+  allHabits: Array<object>;
+  habitUpdated: boolean;
+  habitLoading: boolean;
+  isInArray: Function;
+}) => {
   const {
-    navigation,
     dispatch,
-    homeEditState,
+    fetchAllHabitsAction,
     allHabits,
-    allHabitsNumber,
     habitUpdated,
     habitLoading,
-    currentHabitDatesIncluded,
+    isInArray,
   } = props;
+
+  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <View
@@ -37,14 +44,18 @@ const Overview = (props: any) => {
           allHabitsNumber={allHabits.length}
           habitUpdated={habitUpdated}
           habitLoading={habitLoading}
+          isInArray={isInArray}
         />
         <View style={{ margin: 20 }}></View>
         <DotGraph
           dispatch={dispatch}
+          fetchAllHabitsAction={fetchAllHabitsAction}
           allHabits={allHabits}
           allHabitsNumber={allHabits.length}
-          habitUpdated={habitUpdated}
           habitLoading={habitLoading}
+          refreshing={refreshing}
+          setRefreshing={setRefreshing}
+          isInArray={isInArray}
           isItCurrentUser={true}
         />
       </ScrollView>

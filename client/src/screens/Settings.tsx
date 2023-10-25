@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   Modal,
   ScrollView,
@@ -9,18 +10,21 @@ import {
   TextInput,
 } from "react-native";
 import SettingsButton from "../components/settings/SettingsButton";
-import { useState } from "react";
 import LinkButton from "../components/settings/LinkButton";
-import { useAppDispatch } from "../state/store";
-import { deleteUserAction, revertAll } from "../state/userSlice";
-import { revertAllHabit } from "../state/habitSlice";
 
-const Settings = () => {
-  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
-  const [aboutUsModalVisible, setAboutUsModalVisible] = useState(false);
-  const [feedback, setFeedback] = useState<String>("");
+const Settings = (props: {
+  dispatch: Function;
+  revertAll: Function;
+  revertAllHabit: Function;
+  deleteUserAction: Function;
+}) => {
+  const { dispatch, revertAll, revertAllHabit, deleteUserAction } = props;
 
-  const dispatch = useAppDispatch();
+  const [feedbackModalVisible, setFeedbackModalVisible] =
+    useState<boolean>(false);
+  const [aboutUsModalVisible, setAboutUsModalVisible] =
+    useState<boolean>(false);
+  const [feedback, setFeedback] = useState<string>("");
 
   return (
     <View
@@ -183,7 +187,6 @@ const Settings = () => {
         </View>
       </Modal>
       {/* about us ends */}
-
       <ScrollView
         style={{
           marginTop: 20,
@@ -200,23 +203,18 @@ const Settings = () => {
             url="https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune"
           />
         </View>
-
         {/* <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Security" />
         </TouchableOpacity> */}
-
         {/* <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Notification Settings" />
         </TouchableOpacity> */}
-
         <TouchableOpacity onPress={() => setAboutUsModalVisible(true)}>
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => dispatch(deleteUserAction())}>
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
-
         <TouchableOpacity
           onPress={() => {
             dispatch(revertAll());

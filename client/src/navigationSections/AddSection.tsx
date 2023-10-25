@@ -1,11 +1,13 @@
 import * as React from "react";
 import { memo } from "react";
+
 import { Pressable, View } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
 //types
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
+
 // screens
 import Add from "../../src/screens/Add";
 
@@ -13,12 +15,10 @@ import Add from "../../src/screens/Add";
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
 
-import { createHabitAction } from "../../src/state/habitSlice";
-
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const AddSection = memo((props: any) => {
-  const { navigation, currentUser, dispatch } = props;
+  const { navigation, currentUser, dispatch, createHabitAction } = props;
 
   return (
     <StackNavigator.Navigator
