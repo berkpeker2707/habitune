@@ -1,17 +1,9 @@
 import * as React from "react";
 import { View, TextInput } from "react-native";
-import { useState, useEffect, memo } from "react";
+import { memo } from "react";
 
-const TaskName = memo((props: any) => {
-  const [taskName, setTaskName] = useState<string>("");
-
-  //updating params if taskName changes starts
-  useEffect(() => {
-    props.navigation.setParams({
-      name: taskName,
-    });
-  }, [taskName]);
-  //updating params if taskName changes ends
+const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
+  const { taskName, setTaskName } = props;
 
   return (
     <View style={{ width: 345 }}>
