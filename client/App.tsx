@@ -37,12 +37,15 @@ import {
   useSelector,
 } from "./src/state/store";
 import {
+  deleteUserAction,
   fetchCurrentUserProfileAction,
+  revertAll,
   selectFetchCurrentUserProfile,
   selectSignIn,
   selectSignInWithGoogle,
   selectUserLoading,
   selectUserUpdated,
+  sendFriendshipAction,
 } from "./src/state/userSlice";
 import {
   createHabitAction,
@@ -51,11 +54,20 @@ import {
   selectHabitUpdated,
   selectHabits,
   selectHabitsToday,
+  selectHabitsOfSelectedUser,
   selectHabitLoading,
   updateHabitNameAction,
   deleteHabitAction,
   fetchAllHabitsOfSelectedUserAction,
+  revertAllHabit,
+  updateHabitCompletedDateAction,
+  updateHabitSharedWithAction,
 } from "./src/state/habitSlice";
+import {
+  notificationSendAction,
+  notificationUpdateTokenAction,
+} from "./src/state/notificationSlice";
+
 import FlashMessage from "react-native-flash-message";
 
 const bottomTabNavigationOptions: BottomTabNavigationOptions = {
@@ -75,10 +87,9 @@ const bottomTabNavigationOptions: BottomTabNavigationOptions = {
 };
 
 const BottomTabNav = createBottomTabNavigator<BottomTabNavParamList>();
-const StackNavigator = createStackNavigator<StackNavParamList>();
 
 import { showMessage, hideMessage } from "react-native-flash-message";
-import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
+
 import HomeSection from "./src/navigationSections/HomeSection";
 import AddSection from "./src/navigationSections/AddSection";
 import OverviewSection from "./src/navigationSections/OverviewSection";
@@ -107,7 +118,7 @@ const AppWrapper = () => {
 const App = () => {
   const navigation = useNavigation<generalScreenProp>();
 
-  const controller = new AbortController();
+  // const controller = new AbortController();
 
   const dispatch = useAppDispatch();
 
@@ -125,9 +136,15 @@ const App = () => {
 
   const allHabitsToday = useSelector(selectHabitsToday);
 
+  const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
+
   const habitUpdated = useSelector(selectHabitUpdated);
 
   const habitLoading = useSelector(selectHabitLoading);
+
+  const [homeEditBool, setHomeEditBool] = useState<boolean>(false);
+
+  const [friendIDState, setFriendIDState] = useState<number>();
 
   try {
     //date stuff starts
@@ -299,6 +316,12 @@ const App = () => {
     }
   }, [token, tokenSecondOption]);
 
+  useEffect(() => {
+    if (friendIDState) {
+      dispatch(fetchAllHabitsOfSelectedUserAction(friendIDState));
+    }
+  }, [friendIDState]);
+
   // check whether an initial notification is available
   useEffect(() => {
     messaging()
@@ -373,19 +396,44 @@ const App = () => {
           <>
             <BottomTabNav.Screen
               name="HomeSection"
-              initialParams={{ homeEditState: false }}
               children={(props: any) => (
                 <HomeSection
                   {...props}
-                  controller={controller}
                   dispatch={dispatch}
-                  token={token}
+                  fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
+                  fetchAllHabitsAction={fetchAllHabitsAction}
+                  fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
+                  fetchAllHabitsOfSelectedUserAction={
+                    fetchAllHabitsOfSelectedUserAction
+                  }
+                  updateHabitCompletedDateAction={
+                    updateHabitCompletedDateAction
+                  }
+                  updateHabitSharedWithAction={updateHabitSharedWithAction}
+                  updateHabitNameAction={updateHabitNameAction}
+                  sendFriendshipAction={sendFriendshipAction}
+                  deleteUserAction={deleteUserAction}
+                  deleteHabitAction={deleteHabitAction}
+                  notificationSendAction={notificationSendAction}
+                  revertAll={revertAll}
+                  revertAllHabit={revertAllHabit}
                   currentUser={currentUser}
+                  allHabits={allHabits}
                   allHabitsToday={allHabitsToday}
+                  allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+                  allHabitsOfSelectedUser={allHabitsOfSelectedUser}
+                  allHabitsOfSelectedUserNumber={
+                    allHabitsOfSelectedUser ? allHabitsOfSelectedUser.length : 0
+                  }
                   currentHabitDatesIncluded={currentHabitDatesIncluded}
+                  homeEditBool={homeEditBool}
+                  setHomeEditBool={setHomeEditBool}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
+                  isInArray={isInArray}
                   onShare={onShare}
+                  friendIDState={friendIDState}
+                  setFriendIDState={setFriendIDState}
                 />
               )}
               options={{
@@ -399,9 +447,9 @@ const App = () => {
               children={(props: any) => (
                 <AddSection
                   {...props}
-                  controller={controller}
-                  dispatch={dispatch}
                   currentUser={currentUser}
+                  dispatch={dispatch}
+                  createHabitAction={createHabitAction}
                 />
               )}
               options={{
@@ -413,12 +461,15 @@ const App = () => {
               children={(props: any) => (
                 <OverviewSection
                   {...props}
-                  // navigation={navigation}
                   dispatch={dispatch}
                   fetchAllHabitsAction={fetchAllHabitsAction}
-                  currentUser={currentUser}
+                  fetchAllHabitsOfSelectedUserAction={
+                    fetchAllHabitsOfSelectedUserAction
+                  }
+                  revertAll={revertAll}
+                  revertAllHabit={revertAllHabit}
+                  deleteUserAction={deleteUserAction}
                   allHabits={allHabits}
-                  currentHabitDatesIncluded={currentHabitDatesIncluded}
                   habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
                   isInArray={isInArray}
