@@ -3,25 +3,21 @@ import * as React from "react";
 import { ScrollView, View } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
-import {
-  fetchAllHabitsOfSelectedUserAction,
-  selectHabitsOfSelectedUser,
-} from "../state/habitSlice";
-import { useSelector } from "../state/store";
-import { useEffect } from "react";
 
 const Friend = (props: any) => {
-  const { navigation, dispatch, habitUpdated, habitLoading } = props;
-
-  useEffect(() => {
-    dispatch(
-      fetchAllHabitsOfSelectedUserAction(
-        navigation.getState().routes[0].state.routes[2].params.friendID
-      )
-    );
-  }, [navigation.getState().routes[0].state.routes[2].params.friendID]);
-
-  const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
+  const {
+    dispatch,
+    fetchAllHabitsAction,
+    fetchAllHabitsOfSelectedUserAction,
+    allHabitsOfSelectedUser,
+    allHabitsOfSelectedUserNumber,
+    habitLoading,
+    habitUpdated,
+    refreshing,
+    setRefreshing,
+    isInArray,
+    isItCurrentUser,
+  } = props;
 
   return (
     <View
@@ -41,17 +37,25 @@ const Friend = (props: any) => {
       >
         <StreakGraph
           allHabits={allHabitsOfSelectedUser}
-          allHabitsNumber={allHabitsOfSelectedUser.length}
+          allHabitsNumber={allHabitsOfSelectedUserNumber}
           habitUpdated={habitUpdated}
           habitLoading={habitLoading}
+          isInArray={isInArray}
         />
         <View style={{ margin: 20 }}></View>
         <DotGraph
+          dispatch={dispatch}
+          fetchAllHabitsAction={fetchAllHabitsAction}
+          fetchAllHabitsOfSelectedUserAction={
+            fetchAllHabitsOfSelectedUserAction
+          }
           allHabits={allHabitsOfSelectedUser}
-          allHabitsNumber={allHabitsOfSelectedUser.length}
-          habitUpdated={habitUpdated}
+          allHabitsNumber={allHabitsOfSelectedUserNumber}
           habitLoading={habitLoading}
-          isItCurrentUser={false}
+          refreshing={refreshing}
+          setRefreshing={setRefreshing}
+          isInArray={isInArray}
+          isItCurrentUser={isItCurrentUser}
         />
       </ScrollView>
     </View>
