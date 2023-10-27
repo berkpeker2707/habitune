@@ -1,53 +1,50 @@
 import * as React from "react";
-import { memo, useCallback, useEffect, useState } from "react";
-
+import { memo, useCallback, useEffect } from "react";
 import {
   Text,
   View,
-  TouchableOpacity,
   ScrollView,
   RefreshControl,
   Pressable,
   Modal,
 } from "react-native";
-import HabitBar from "../components/home/HabitBar";
-
-import {
-  fetchAllTodayHabitsAction,
-  updateHabitCompletedDateAction,
-  updateHabitSharedWithAction,
-} from "../state/habitSlice";
-
 import SkeletonPlaceholder from "../components/home/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
-import { notificationSendAction } from "../state/notificationSlice";
 import HabitBarParent from "../components/home/HabitBarParent";
 
 const Home = memo((props: any) => {
   const {
     navigation,
-    homeEditState,
     dispatch,
+    fetchAllTodayHabitsAction,
+    updateHabitCompletedDateAction,
+    updateHabitSharedWithAction,
+    notificationSendAction,
     currentUser,
     allHabits,
     allHabitsNumber,
     currentHabitDatesIncluded,
+    homeEditBool,
+    setHomeEditBool,
     habitLoading,
+    tempBarFilled,
+    setTempBarFilled,
+    refreshing,
+    setRefreshing,
+    shareWithFriendList,
+    setShareWithFriendList,
+    selectedItem,
+    setSelectedItem,
+    nameChangable,
+    setNameChangable,
+    text,
+    onChangeText,
     modalVisible,
     setModalVisible,
   } = props;
 
-  const [tempBarFilled, setTempBarFilled] = useState<Array<Boolean>>();
-  () => [];
-
-  useEffect(() => {
-    if (currentHabitDatesIncluded) {
-      setTempBarFilled(() => [...currentHabitDatesIncluded]);
-    }
-  }, [currentHabitDatesIncluded]);
-
   function handleHabitClicked(index: number) {
-    const newHabitArray = tempBarFilled?.map((nH, i) => {
+    const newHabitArray = tempBarFilled?.map((nH: any, i: number) => {
       if (i === index) {
         return !nH;
       } else {
@@ -57,30 +54,56 @@ const Home = memo((props: any) => {
     setTempBarFilled(newHabitArray);
   }
 
-  const [selectedItem, setSelectedItem] = useState("");
-  const [nameChangable, setNameChangable] = useState(false);
+  useEffect(() => {
+    if (currentHabitDatesIncluded) {
+      setTempBarFilled(() => [...currentHabitDatesIncluded]);
+    }
+  }, [currentHabitDatesIncluded]);
 
   useEffect(() => {
-    navigation.setParams({ homeEditState: false });
+    setHomeEditBool(false);
   }, []);
 
   useEffect(() => {
-    if (homeEditState === false) {
+    if (homeEditBool === false) {
       setSelectedItem(() => "");
       setNameChangable(() => false);
     }
-  }, [homeEditState]);
+  }, [homeEditBool]);
 
-  const [refreshing, setRefreshing] = React.useState(false);
+  useEffect(() => {
+    navigation.setParams({
+      name: text,
+    });
+  }, [text]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTempBarFilled(() => [...currentHabitDatesIncluded]);
-    dispatch(fetchAllTodayHabitsAction());
+    dispatch(
+      fetchAllTodayHabitsAction(
+        new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate(),
+          new Date().getHours(),
+          new Date().getMinutes(),
+          new Date().getSeconds()
+        ).getTime()
+      )
+    );
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  //updating params if shareWithFriendList changes starts
+  useEffect(() => {
+    navigation.setParams({
+      friendList: shareWithFriendList,
+    });
+  }, [shareWithFriendList]);
+  //updating params if shareWithFriendList changes ends
 
   return (
     <>
@@ -118,8 +141,9 @@ const Home = memo((props: any) => {
             }}
           >
             <ShareOpened
-              navigation={props.navigation}
               currentUser={currentUser}
+              shareWithFriendList={shareWithFriendList}
+              setShareWithFriendList={setShareWithFriendList}
             />
 
             <Pressable
@@ -136,7 +160,7 @@ const Home = memo((props: any) => {
                       navigation.getState().routes[0].params.friendList[0],
                   })
                 );
-                navigation.setParams({ homeEditState: false });
+                setHomeEditBool(false);
               }}
             >
               <Text
@@ -152,7 +176,6 @@ const Home = memo((props: any) => {
           </View>
         </View>
       </Modal>
-
       <View
         style={{
           display: "flex",
@@ -177,24 +200,22 @@ const Home = memo((props: any) => {
             <>
               <Text>Habits</Text>
               <HabitBarParent
-                habitLoading={habitLoading}
-                allHabitsNumber={allHabitsNumber}
-                tempBarFilled={tempBarFilled}
-                dispatch={dispatch}
-                // item={item}
-                allHabits={allHabits}
-                // index={index}
-                // tempBarFilled={tempBarFilled}
-                currentUser={currentUser}
-                homeEditState={homeEditState}
                 navigation={navigation}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
+                dispatch={dispatch}
                 updateHabitCompletedDateAction={updateHabitCompletedDateAction}
                 notificationSendAction={notificationSendAction}
+                currentUser={currentUser}
+                allHabits={allHabits}
+                tempBarFilled={tempBarFilled}
+                homeEditBool={homeEditBool}
+                setHomeEditBool={setHomeEditBool}
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
                 handleHabitClicked={handleHabitClicked}
                 nameChangable={nameChangable}
                 setNameChangable={setNameChangable}
+                text={text}
+                onChangeText={onChangeText}
               />
             </>
           ) : allHabitsNumber && allHabitsNumber > 0 ? (
