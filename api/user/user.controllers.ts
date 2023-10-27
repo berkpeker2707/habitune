@@ -377,16 +377,19 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
         });
       }
 
-      for (let y = 0; y < loggedinUser.friends.length; y++) {
-        await User.findOneAndUpdate(
-          {
-            _id: loggedinUser.friends[y].friend,
-          },
-          {
-            $pull: { friends: loggedinUser._id },
-          },
-          { upsert: true }
-        );
+      if (loggedinUser?.friends) {
+        for (let y = 0; y < loggedinUser.friends.length; y++) {
+          console.log("first");
+          await User.findOneAndUpdate(
+            {
+              _id: loggedinUser.friends[y].friend,
+            },
+            {
+              $pull: { friends: { friend: loggedinUser?._id } },
+            }
+          );
+          console.log(loggedinUser.friends[y].friend);
+        }
       }
 
       await User.findOneAndDelete({
@@ -409,8 +412,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
             },
             {
               $pull: { friends: { friend: loggedinUser?._id } },
-            },
-            { upsert: true }
+            }
           );
         }
       }
