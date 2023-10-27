@@ -1,18 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
-
 import { createStackNavigator } from "@react-navigation/stack";
-
-//types
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
-// screens
 import Home from "../../src/screens/Home";
 import Profile from "../../src/screens/Profile";
 import Settings from "../../src/screens/Settings";
 import Friend from "../../src/screens/Friend";
 
-//navbar components
 import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
 import TopNavbarProfileImage from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarProfileImage";
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
@@ -22,26 +17,63 @@ import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbar
 import TopNavbarDeleteButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
 import TopNavbarAddFriendButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
 
-import {
-  updateHabitNameAction,
-  deleteHabitAction,
-} from "../../src/state/habitSlice";
-
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const HomeSection = (props: any) => {
   const {
     navigation,
     dispatch,
+    fetchCurrentUserProfileAction,
+    fetchAllTodayHabitsAction,
+    fetchAllHabitsAction,
+    fetchAllHabitsOfSelectedUserAction,
+    updateHabitCompletedDateAction,
+    updateHabitSharedWithAction,
+    updateHabitNameAction,
+    sendFriendshipAction,
+    deleteUserAction,
+    deleteHabitAction,
+    notificationSendAction,
+    revertAll,
+    revertAllHabit,
     currentUser,
+    allHabits,
     allHabitsToday,
+    allHabitsNumber,
+    allHabitsOfSelectedUser,
+    allHabitsOfSelectedUserNumber,
     currentHabitDatesIncluded,
-    habitUpdated,
+    homeEditBool,
+    setHomeEditBool,
     habitLoading,
+    habitUpdated,
+    isInArray,
     onShare,
+    friendIDState,
+    setFriendIDState,
   } = props;
 
+  const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
+  () => [];
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
+  const [selectedItem, setSelectedItem] = useState<string>("");
+  const [nameChangable, setNameChangable] = useState<boolean>(false);
+  const [text, onChangeText] = useState<string>("");
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [showInfoText, setShowInfoText] = useState<boolean>(false);
+  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
+    useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<{
+    email: string;
+    name: string;
+    pending: boolean;
+  }>({
+    email: "",
+    name: "",
+    pending: false,
+  });
 
   return (
     <StackNavigator.Navigator
@@ -55,23 +87,38 @@ const HomeSection = (props: any) => {
           <Home
             {...props}
             navigation={navigation}
-            homeEditState={navigation.getState().routes[0].params.homeEditState}
             dispatch={dispatch}
+            fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
+            updateHabitCompletedDateAction={updateHabitCompletedDateAction}
+            updateHabitSharedWithAction={updateHabitSharedWithAction}
+            notificationSendAction={notificationSendAction}
             currentUser={currentUser}
             allHabits={allHabitsToday ? allHabitsToday : []}
-            allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
+            allHabitsNumber={allHabitsNumber}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
+            homeEditBool={homeEditBool}
+            setHomeEditBool={setHomeEditBool}
             habitLoading={habitLoading}
+            tempBarFilled={tempBarFilled}
+            setTempBarFilled={setTempBarFilled}
+            refreshing={refreshing}
+            setRefreshing={setRefreshing}
+            shareWithFriendList={shareWithFriendList}
+            setShareWithFriendList={setShareWithFriendList}
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+            nameChangable={nameChangable}
+            setNameChangable={setNameChangable}
+            text={text}
+            onChangeText={onChangeText}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
           />
         )}
         options={{
-          headerTitle: !navigation.getState().routes[0].params.homeEditState
-            ? "Today"
-            : "",
+          headerTitle: !homeEditBool ? "Today" : "",
           headerLeft: () =>
-            !navigation.getState().routes[0].params.homeEditState ? (
+            !homeEditBool ? (
               <View
                 style={{
                   display: "flex",
@@ -94,9 +141,7 @@ const HomeSection = (props: any) => {
                 <Pressable
                   onPress={() => {
                     try {
-                      navigation.setParams({
-                        homeEditState: false,
-                      });
+                      setHomeEditBool(false);
                     } catch (error) {
                       console.log(error);
                     }
@@ -106,9 +151,8 @@ const HomeSection = (props: any) => {
                 </Pressable>
               </View>
             ),
-
           headerRight: () =>
-            !navigation.getState().routes[0].params.homeEditState ? (
+            !homeEditBool ? (
               <Pressable
                 onPress={() => {
                   try {
@@ -145,9 +189,7 @@ const HomeSection = (props: any) => {
                           name: navigation.getState().routes[0].params?.name,
                         })
                       );
-                      navigation.setParams({
-                        homeEditState: false,
-                      });
+                      setHomeEditBool(false);
                     } catch (error) {
                       console.log(error);
                     }
@@ -195,9 +237,7 @@ const HomeSection = (props: any) => {
                           _id: navigation.getState().routes[0].params?._id,
                         })
                       );
-                      navigation.setParams({
-                        homeEditState: false,
-                      });
+                      setHomeEditBool(false);
                     } catch (error) {
                       console.log(error);
                     }
@@ -224,9 +264,21 @@ const HomeSection = (props: any) => {
         children={(props: any) => (
           <Profile
             {...props}
-            navigation={props.navigation}
+            navigation={navigation}
             dispatch={dispatch}
+            fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
+            sendFriendshipAction={sendFriendshipAction}
             currentUser={currentUser}
+            refreshing={refreshing}
+            setRefreshing={setRefreshing}
+            showInfoText={showInfoText}
+            setShowInfoText={setShowInfoText}
+            acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
+            setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            friendIDState={friendIDState}
+            setFriendIDState={setFriendIDState}
           />
         )}
         options={{
@@ -286,7 +338,15 @@ const HomeSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Settings"
-        children={(props: any) => <Settings {...props} dispatch={dispatch} />}
+        children={(props: any) => (
+          <Settings
+            {...props}
+            dispatch={dispatch}
+            revertAll={revertAll}
+            revertAllHabit={revertAllHabit}
+            deleteUserAction={deleteUserAction}
+          />
+        )}
         options={{
           headerTitle: "Settings",
           headerLeft: () => (
@@ -320,8 +380,22 @@ const HomeSection = (props: any) => {
             {...props}
             navigation={navigation}
             dispatch={dispatch}
-            habitUpdated={habitUpdated}
+            fetchAllHabitsAction={fetchAllHabitsAction}
+            fetchAllHabitsOfSelectedUserAction={
+              fetchAllHabitsOfSelectedUserAction
+            }
+            allHabits={allHabits}
+            allHabitsNumber={allHabitsNumber}
+            allHabitsOfSelectedUser={allHabitsOfSelectedUser}
+            allHabitsOfSelectedUserNumber={allHabitsOfSelectedUserNumber}
             habitLoading={habitLoading}
+            habitUpdated={habitUpdated}
+            refreshing={refreshing}
+            setRefreshing={setRefreshing}
+            isInArray={isInArray}
+            friendIDState={friendIDState}
+            setFriendIDState={setFriendIDState}
+            isItCurrentUser={false}
           />
         )}
       />
