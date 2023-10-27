@@ -1,6 +1,5 @@
 import * as React from "react";
 import { memo } from "react";
-
 import { View, ScrollView, TouchableOpacity } from "react-native";
 import FriendBar from "../add/shareComponents/FriendBar";
 
@@ -19,6 +18,8 @@ const FriendsCard = memo(
     setAcceptOrRemoveModalVisible: any;
     selectedUser: any;
     setSelectedUser: any;
+    friendIDState: number;
+    setFriendIDState: Function;
   }) => {
     const {
       navigation,
@@ -34,6 +35,8 @@ const FriendsCard = memo(
       setAcceptOrRemoveModalVisible,
       selectedUser,
       setSelectedUser,
+      friendIDState,
+      setFriendIDState,
     } = props;
 
     return (
@@ -50,6 +53,7 @@ const FriendsCard = memo(
               setTimeout(() => {
                 setShowInfoText(false);
               }, 5000);
+              setFriendIDState(() => friendID);
               // console.log(selectedUser);
               navigation.navigate("Friend", {
                 // currentUser: currentUser,

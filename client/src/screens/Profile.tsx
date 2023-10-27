@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback } from "react";
 
 import {
   View,
@@ -12,26 +12,27 @@ import {
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
-import {
-  fetchCurrentUserProfileAction,
-  sendFriendshipAction,
-} from "../state/userSlice";
 
 import uuid from "react-native-uuid";
 
 const Profile = memo((props: any) => {
-  const { navigation, dispatch, currentUser } = props;
-
-  const [showInfoText, setShowInfoText] = useState(false);
-  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
-    useState(false);
-  const [selectedUser, setSelectedUser] = useState({
-    email: "",
-    name: "",
-    pending: false,
-  });
-
-  const [refreshing, setRefreshing] = React.useState(false);
+  const {
+    navigation,
+    dispatch,
+    fetchCurrentUserProfileAction,
+    sendFriendshipAction,
+    currentUser,
+    refreshing,
+    setRefreshing,
+    showInfoText,
+    setShowInfoText,
+    acceptOrRemoveModalVisible,
+    setAcceptOrRemoveModalVisible,
+    selectedUser,
+    setSelectedUser,
+    friendIDState,
+    setFriendIDState,
+  } = props;
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -189,6 +190,8 @@ const Profile = memo((props: any) => {
                 setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
                 selectedUser={selectedUser}
                 setSelectedUser={setSelectedUser}
+                friendIDState={friendIDState}
+                setFriendIDState={setFriendIDState}
               />
             ))}
         </View>
