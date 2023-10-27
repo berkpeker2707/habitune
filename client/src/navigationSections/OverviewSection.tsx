@@ -16,6 +16,7 @@ const OverviewSection = (props: any) => {
     navigation,
     dispatch,
     fetchAllHabitsAction,
+    fetchAllHabitsOfSelectedUserAction,
     revertAll,
     revertAllHabit,
     deleteUserAction,
@@ -38,6 +39,9 @@ const OverviewSection = (props: any) => {
             {...props}
             dispatch={dispatch}
             fetchAllHabitsAction={fetchAllHabitsAction}
+            fetchAllHabitsOfSelectedUserAction={
+              fetchAllHabitsOfSelectedUserAction
+            }
             allHabits={allHabits ? allHabits : []}
             habitUpdated={habitUpdated}
             habitLoading={habitLoading}

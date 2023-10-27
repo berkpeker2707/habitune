@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 const DotGraphBar = (props: {
   name: string;
   color: string;
-  allHabitDatesDots: Array<Boolean>;
+  allHabitDatesDots: Array<boolean>;
 }) => {
   const { name, color, allHabitDatesDots } = props;
 

@@ -8,6 +8,7 @@ import uuid from "react-native-uuid";
 const DotGraph = (props: {
   dispatch: Function;
   fetchAllHabitsAction: Function;
+  fetchAllHabitsOfSelectedUserAction: Function;
   allHabits: Array<any>;
   allHabitsNumber: number;
   habitLoading: boolean;
@@ -19,6 +20,7 @@ const DotGraph = (props: {
   const {
     dispatch,
     fetchAllHabitsAction,
+    fetchAllHabitsOfSelectedUserAction,
     allHabits,
     allHabitsNumber,
     habitLoading,
@@ -60,7 +62,9 @@ const DotGraph = (props: {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
 
-    isItCurrentUser ? dispatch(fetchAllHabitsAction()) : "";
+    isItCurrentUser
+      ? dispatch(fetchAllHabitsAction())
+      : dispatch(fetchAllHabitsOfSelectedUserAction());
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);

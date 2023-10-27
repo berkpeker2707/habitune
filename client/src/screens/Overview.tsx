@@ -7,6 +7,7 @@ import StreakGraph from "../components/overview/StreakGraph";
 const Overview = (props: {
   dispatch: Function;
   fetchAllHabitsAction: Function;
+  fetchAllHabitsOfSelectedUserAction: Function;
   allHabits: Array<object>;
   habitUpdated: boolean;
   habitLoading: boolean;
@@ -15,6 +16,7 @@ const Overview = (props: {
   const {
     dispatch,
     fetchAllHabitsAction,
+    fetchAllHabitsOfSelectedUserAction,
     allHabits,
     habitUpdated,
     habitLoading,
@@ -50,6 +52,9 @@ const Overview = (props: {
         <DotGraph
           dispatch={dispatch}
           fetchAllHabitsAction={fetchAllHabitsAction}
+          fetchAllHabitsOfSelectedUserAction={
+            fetchAllHabitsOfSelectedUserAction
+          }
           allHabits={allHabits}
           allHabitsNumber={allHabits.length}
           habitLoading={habitLoading}
