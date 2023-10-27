@@ -1,24 +1,26 @@
 import * as React from "react";
+import { memo } from "react";
 import HabitDone from "./HabitDone";
 import HabitUndone from "./HabitUndone";
-import { memo } from "react";
 
 const HabitBar = memo((props: any) => {
-  const { item, itemStroke, filled, nameChangable, navigation } = props;
+  const { filled, item, itemStroke, nameChangable, text, onChangeText } = props;
 
   return !filled ? (
     <HabitUndone
       item={item}
       itemStroke={itemStroke}
       nameChangable={nameChangable}
-      navigation={navigation}
+      text={text}
+      onChangeText={onChangeText}
     />
   ) : (
     <HabitDone
       item={item}
       itemStroke={itemStroke}
       nameChangable={nameChangable}
-      navigation={navigation}
+      text={text}
+      onChangeText={onChangeText}
     />
   );
 });
