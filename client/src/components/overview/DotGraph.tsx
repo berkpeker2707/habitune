@@ -41,12 +41,66 @@ const DotGraph = (props: {
     todayTemp.getSeconds()
   );
 
-  const OneDayAgo = new Date(today.getTime() - 86400000 * 1);
-  const TwoDayAgo = new Date(today.getTime() - 86400000 * 2);
-  const ThreeDayAgo = new Date(today.getTime() - 86400000 * 3);
-  const FourDayAgo = new Date(today.getTime() - 86400000 * 4);
-  const FiveDayAgo = new Date(today.getTime() - 86400000 * 5);
-  const SixDayAgo = new Date(today.getTime() - 86400000 * 6);
+  const OneDayAgo = new Date(
+    new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate() - 1,
+      todayTemp.getHours(),
+      todayTemp.getMinutes(),
+      todayTemp.getSeconds()
+    ).getTime()
+  );
+  const TwoDayAgo = new Date(
+    new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate() - 2,
+      todayTemp.getHours(),
+      todayTemp.getMinutes(),
+      todayTemp.getSeconds()
+    ).getTime()
+  );
+  const ThreeDayAgo = new Date(
+    new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate() - 3,
+      todayTemp.getHours(),
+      todayTemp.getMinutes(),
+      todayTemp.getSeconds()
+    ).getTime()
+  );
+  const FourDayAgo = new Date(
+    new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate() - 4,
+      todayTemp.getHours(),
+      todayTemp.getMinutes(),
+      todayTemp.getSeconds()
+    ).getTime()
+  );
+  const FiveDayAgo = new Date(
+    new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate() - 5,
+      todayTemp.getHours(),
+      todayTemp.getMinutes(),
+      todayTemp.getSeconds()
+    ).getTime()
+  );
+  const SixDayAgo = new Date(
+    new Date(
+      todayTemp.getFullYear(),
+      todayTemp.getMonth(),
+      todayTemp.getDate() - 6,
+      todayTemp.getHours(),
+      todayTemp.getMinutes(),
+      todayTemp.getSeconds()
+    ).getTime()
+  );
 
   var allHabitDatesDots: Array<boolean> = [];
   for (var i = 0; i < allHabits.length; i++) {
