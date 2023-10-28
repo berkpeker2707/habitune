@@ -1,9 +1,12 @@
 const isInCompletedDates = (array: any[], value: Date) => {
   return array.some((item) => {
-    var elemHave = new Date(new Date(item));
-    var elemToday = new Date(value);
+    var alreadyStoredDate = new Date(new Date(item));
 
-    const msBetweenDates = Math.abs(elemHave.getTime() - elemToday.getTime());
+    var dateTobeChecked = new Date(value);
+
+    const msBetweenDates = Math.abs(
+      alreadyStoredDate.getTime() - dateTobeChecked.getTime()
+    );
 
     //convert ms to hours(min sec ms)
     const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
