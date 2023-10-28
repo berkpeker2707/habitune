@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
+import isInArray from "../helpers/isInArray";
 
 const Overview = (props: {
   dispatch: Function;
@@ -11,7 +12,6 @@ const Overview = (props: {
   allHabits: Array<object>;
   habitUpdated: boolean;
   habitLoading: boolean;
-  isInArray: Function;
 }) => {
   const {
     dispatch,
@@ -20,7 +20,6 @@ const Overview = (props: {
     allHabits,
     habitUpdated,
     habitLoading,
-    isInArray,
   } = props;
 
   const [refreshing, setRefreshing] = useState(false);
