@@ -102,15 +102,17 @@ const DotGraph = (props: {
     ).getTime()
   );
 
+  const memoizedIsInArray = useCallback(isInArray, [today]);
+
   var allHabitDatesDots: Array<boolean> = [];
   for (var i = 0; i < allHabits.length; i++) {
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, today));
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, OneDayAgo));
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, TwoDayAgo));
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, ThreeDayAgo));
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, FourDayAgo));
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, FiveDayAgo));
-    allHabitDatesDots.push(isInArray(allHabits[i].dates, SixDayAgo));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, today));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, OneDayAgo));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, TwoDayAgo));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, ThreeDayAgo));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, FourDayAgo));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, FiveDayAgo));
+    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, SixDayAgo));
   }
 
   const onRefresh = useCallback(() => {

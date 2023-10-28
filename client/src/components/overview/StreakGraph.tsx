@@ -88,54 +88,56 @@ const StreakGraph = (props: {
     ).getTime()
   );
 
+  const memoizedIsInArray = useCallback(isInArray, [today]);
+
   var currentHabitWeekStreak = useCallback(
     allHabits.map((allHabitsItem: any) => {
       if (
-        isInArray(allHabitsItem.dates, SixDayAgo) &&
-        isInArray(allHabitsItem.dates, FiveDayAgo) &&
-        isInArray(allHabitsItem.dates, FourDayAgo) &&
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
+        memoizedIsInArray(allHabitsItem.dates, SixDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, FiveDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, FourDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, ThreeDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, TwoDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, OneDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, today)
       ) {
         return 7;
       } else if (
-        isInArray(allHabitsItem.dates, FiveDayAgo) &&
-        isInArray(allHabitsItem.dates, FourDayAgo) &&
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
+        memoizedIsInArray(allHabitsItem.dates, FiveDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, FourDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, ThreeDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, TwoDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, OneDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, today)
       ) {
         return 6;
       } else if (
-        isInArray(allHabitsItem.dates, FourDayAgo) &&
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
+        memoizedIsInArray(allHabitsItem.dates, FourDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, ThreeDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, TwoDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, OneDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, today)
       ) {
         return 5;
       } else if (
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
+        memoizedIsInArray(allHabitsItem.dates, ThreeDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, TwoDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, OneDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, today)
       ) {
         return 4;
       } else if (
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
+        memoizedIsInArray(allHabitsItem.dates, TwoDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, OneDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, today)
       ) {
         return 3;
       } else if (
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
+        memoizedIsInArray(allHabitsItem.dates, OneDayAgo) &&
+        memoizedIsInArray(allHabitsItem.dates, today)
       ) {
         return 2;
-      } else if (isInArray(allHabitsItem.dates, today)) {
+      } else if (memoizedIsInArray(allHabitsItem.dates, today)) {
         return 1;
       } else {
         return 0;
