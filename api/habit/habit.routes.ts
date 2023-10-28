@@ -28,7 +28,7 @@ habitRoutes.get(
   getAllHabitsOfSelectedUser
 );
 
-habitRoutes.get("/all/today", verifyToken, getTodaysHabits);
+habitRoutes.get("/all/today/:today", verifyToken, getTodaysHabits);
 
 habitRoutes.get("/single", verifyToken, getSingleHabit);
 

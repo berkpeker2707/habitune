@@ -8,6 +8,7 @@ import { IReq } from "../middlewares/interfaces";
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
 import calculateUpcomingDates from "../middlewares/calculateUpcomingDates";
+import isInCompletedDates from "../middlewares/isInCompletedDates";
 
 dotenv.config();
 
@@ -21,37 +22,13 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .status(500)
         .send(getErrorMessage("User already has 20 habits."));
     } else {
-      var todayReq = new Date(Date.now());
-      var today = new Date(
-        todayReq.getFullYear(),
-        todayReq.getMonth(),
-        todayReq.getDate()
-      );
-
-      var upComingDay = new Date(
-        todayReq.getFullYear() + 1,
-        todayReq.getMonth(),
-        todayReq.getDate()
-      );
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
         name: req.body.name,
-        color: req.body.color ?? "#968EB0",
+        color: req.body.color ? req.body.color : "#968EB0",
         sharedWith: req.body.friendList,
-        firstDate: req.body.firstDate
-          ? new Date(
-              new Date(req.body.firstDate).getFullYear(),
-              new Date(req.body.firstDate).getMonth(),
-              new Date(req.body.firstDate).getDate()
-            )
-          : today,
-        lastDate: req.body.lastDate
-          ? new Date(
-              new Date(req.body.lastDate).getFullYear(),
-              new Date(req.body.lastDate).getMonth(),
-              new Date(req.body.lastDate).getDate()
-            )
-          : upComingDay,
+        firstDate: req.body.firstDate,
+        lastDate: req.body.lastDate,
         dates: [],
         upcomingDates: [],
       });
@@ -64,18 +41,14 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         { upsert: true }
       );
 
-      await newHabit
+      var temp = await newHabit
         .updateOne({
           $push: {
             upcomingDates: [
               ...(await calculateUpcomingDates(
-                req && req.body && req.body.firstDate
-                  ? req.body.firstDate
-                  : today,
-                req && req.body && req.body.lastDate
-                  ? req.body.lastDate
-                  : upComingDay,
-                req && req.body && req.body.upcomingDates
+                req.body.firstDate,
+                req.body.lastDate,
+                req.body.upcomingDates
                   ? req.body.upcomingDates
                   : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
               )),
@@ -86,6 +59,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
+
+      console.log("temp: ", temp);
       res.status(200).json(newHabit);
     }
   } catch (error) {
@@ -129,17 +104,16 @@ export const getAllHabitsOfSelectedUser = async (
 
 export const getTodaysHabits = async (req: IReq | any, res: Response) => {
   try {
-    const todayTemp = new Date();
-    const today = new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate()
-    );
+    var clientTime = parseInt(req.params.today);
+
+    //find if any date in upcomingDates is less than 24 hours from given date
+    const twentyFourHoursFromNow = new Date(clientTime + 24 * 60 * 60 * 1000);
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
-      // upcomingDates: { $in: [todayLocal] },
-      upcomingDates: { $in: [today] },
+      // $or: [{ upcomingDates: elemToday }],
+      // upcomingDates: { $in: [today] },
+      upcomingDates: { $lt: twentyFourHoursFromNow },
     })
       .populate({ path: "sharedWith", model: "User" })
       .slice("dates", -10) //last 10 numbers of the dates array
@@ -340,16 +314,28 @@ export const updateHabitCompletedDate = async (
     var today = new Date(
       todayReq.getFullYear(),
       todayReq.getMonth(),
-      todayReq.getDate()
+      todayReq.getDate(),
+      todayReq.getHours(),
+      todayReq.getMinutes(),
+      todayReq.getSeconds()
     );
-    function isInCompletedDates(array: any[] | undefined, value: Date) {
-      return !!array?.find((item) => {
-        return item.getTime() == value.getTime();
-      });
+
+    const habit = await Habit.findOne({ _id: req.body._id }, "dates").exec();
+
+    if (!habit) {
+      console.log("Habit not found.");
+      return [];
     }
+
+    //if todays date is in checked dates which is stored in dates field
+    var isHabitIsInDates = await isInCompletedDates(
+      habit.dates,
+      new Date(todayReq)
+    );
+
     const selectedHabit = await Habit.findById(req.body._id);
     //if it is already in dates, pull the date back, else push the date in
-    if (!isInCompletedDates(selectedHabit?.dates, today)) {
+    if (!isHabitIsInDates) {
       await selectedHabit
         ?.updateOne({ $push: { dates: today } })
         .populate({ path: "sharedWith", model: "User" })
@@ -359,7 +345,9 @@ export const updateHabitCompletedDate = async (
       res.status(200).json(selectedHabit);
     } else {
       await selectedHabit
-        ?.updateOne({ $pull: { dates: today } })
+        ?.updateOne({
+          $pop: { dates: 1 }, // Remove the last element from the 'dates' array
+        })
         .populate({ path: "sharedWith", model: "User" })
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
