@@ -159,10 +159,34 @@ const App = () => {
     todayTemp.getSeconds()
   );
 
+  function isInHomeArray(array: any[], value: any) {
+    const dateToBeChecked = new Date(value);
+
+    for (const item of array) {
+      const alreadyStoredDate = new Date(item);
+
+      const msBetweenDates = Math.abs(
+        alreadyStoredDate.getTime() - dateToBeChecked.getTime()
+      );
+
+      const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
+
+      if (
+        hoursBetweenDates < 24 &&
+        alreadyStoredDate.getDate() === dateToBeChecked.getDate() &&
+        alreadyStoredDate.getMonth() === dateToBeChecked.getMonth()
+      ) {
+        return true; // Found a match, return immediately.
+      }
+    }
+
+    return false; // No match found in the array.
+  }
+
   var currentHabitDatesIncluded = useCallback(
     allHabitsToday &&
       allHabitsToday.map((allHabitsItem: any) => {
-        return isInArray(allHabitsItem.dates, today);
+        return isInHomeArray(allHabitsItem.dates, today);
       }),
     [allHabitsToday, habitUpdated]
   );
