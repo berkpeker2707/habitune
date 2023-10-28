@@ -1,10 +1,12 @@
-import convertUTCDateToLocalDate from "./convertUTCDateToLocalDate";
+// import convertUTCDateToLocalDate from "./convertUTCDateToLocalDate";
 
 const isInArray = (array: any[], value: any) => {
   return array.some((item) => {
-    var alreadyStoredDate = new Date(convertUTCDateToLocalDate(new Date(item)));
+    // var alreadyStoredDate = new Date(convertUTCDateToLocalDate(new Date(item)));
+    var alreadyStoredDate = new Date(new Date(item));
 
-    var dateTobeChecked = new Date(convertUTCDateToLocalDate(value));
+    // var dateTobeChecked = new Date(convertUTCDateToLocalDate(value));
+    var dateTobeChecked = new Date(value);
 
     const msBetweenDates = Math.abs(
       alreadyStoredDate.getTime() - dateTobeChecked.getTime()
