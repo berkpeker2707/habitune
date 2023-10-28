@@ -19,9 +19,9 @@ const user_model_1 = __importDefault(require("../user/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 const calculateUpcomingDates_1 = __importDefault(require("../middlewares/calculateUpcomingDates"));
+const isInCompletedDates_1 = __importDefault(require("../middlewares/isInCompletedDates"));
 dotenv_1.default.config();
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
         if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
@@ -31,35 +31,24 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .send((0, errors_util_1.getErrorMessage)("User already has 20 habits."));
         }
         else {
-            var todayReq = new Date(Date.now());
-            var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate());
-            var upComingDay = new Date(todayReq.getFullYear() + 1, todayReq.getMonth(), todayReq.getDate());
             const newHabit = yield habit_model_1.default.create({
                 owner: req.user[0]._id,
                 name: req.body.name,
-                color: (_a = req.body.color) !== null && _a !== void 0 ? _a : "#968EB0",
+                color: req.body.color ? req.body.color : "#968EB0",
                 sharedWith: req.body.friendList,
-                firstDate: req.body.firstDate
-                    ? new Date(new Date(req.body.firstDate).getFullYear(), new Date(req.body.firstDate).getMonth(), new Date(req.body.firstDate).getDate())
-                    : today,
-                lastDate: req.body.lastDate
-                    ? new Date(new Date(req.body.lastDate).getFullYear(), new Date(req.body.lastDate).getMonth(), new Date(req.body.lastDate).getDate())
-                    : upComingDay,
+                firstDate: req.body.firstDate,
+                lastDate: req.body.lastDate,
                 dates: [],
                 upcomingDates: [],
             });
             yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
                 $push: { habits: [newHabit._id] },
             }, { upsert: true });
-            yield newHabit
+            var temp = yield newHabit
                 .updateOne({
                 $push: {
                     upcomingDates: [
-                        ...(yield (0, calculateUpcomingDates_1.default)(req && req.body && req.body.firstDate
-                            ? req.body.firstDate
-                            : today, req && req.body && req.body.lastDate
-                            ? req.body.lastDate
-                            : upComingDay, req && req.body && req.body.upcomingDates
+                        ...(yield (0, calculateUpcomingDates_1.default)(req.body.firstDate, req.body.lastDate, req.body.upcomingDates
                             ? req.body.upcomingDates
                             : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])),
                     ],
@@ -69,6 +58,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
+            console.log("temp: ", temp);
             res.status(200).json(newHabit);
         }
     }
@@ -110,12 +100,14 @@ const getAllHabitsOfSelectedUser = (req, res) => __awaiter(void 0, void 0, void 
 exports.getAllHabitsOfSelectedUser = getAllHabitsOfSelectedUser;
 const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const todayTemp = new Date();
-        const today = new Date(todayTemp.getFullYear(), todayTemp.getMonth(), todayTemp.getDate());
+        var clientTime = parseInt(req.params.today);
+        //find if any date in upcomingDates is less than 24 hours from given date
+        const twentyFourHoursFromNow = new Date(clientTime + 24 * 60 * 60 * 1000);
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
-            // upcomingDates: { $in: [todayLocal] },
-            upcomingDates: { $in: [today] },
+            // $or: [{ upcomingDates: elemToday }],
+            // upcomingDates: { $in: [today] },
+            upcomingDates: { $lt: twentyFourHoursFromNow },
         })
             .populate({ path: "sharedWith", model: "User" })
             .slice("dates", -10) //last 10 numbers of the dates array
@@ -280,20 +272,24 @@ exports.updateHabitDates = updateHabitDates;
 const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var todayReq = new Date(req.body.date);
-        var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate());
-        function isInCompletedDates(array, value) {
-            return !!(array === null || array === void 0 ? void 0 : array.find((item) => {
-                return item.getTime() == value.getTime();
-            }));
+        var today = new Date(todayReq.getFullYear(), todayReq.getMonth(), todayReq.getDate(), todayReq.getHours(), todayReq.getMinutes(), todayReq.getSeconds());
+        const habit = yield habit_model_1.default.findOne({ _id: req.body._id }, "dates").exec();
+        if (!habit) {
+            console.log("Habit not found.");
+            return [];
         }
+        //if todays date is in checked dates which is stored in dates field
+        var isHabitIsInDates = yield (0, isInCompletedDates_1.default)(habit.dates, new Date(todayReq));
         const selectedHabit = yield habit_model_1.default.findById(req.body._id);
         //if it is already in dates, pull the date back, else push the date in
-        if (!isInCompletedDates(selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.dates, today)) {
+        if (!isHabitIsInDates) {
             yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $push: { dates: today } }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
             res.status(200).json(selectedHabit);
         }
         else {
-            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $pull: { dates: today } }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
+            yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({
+                $pop: { dates: 1 }, // Remove the last element from the 'dates' array
+            }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
             res.status(200).json(selectedHabit);
         }
     }

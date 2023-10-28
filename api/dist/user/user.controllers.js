@@ -302,12 +302,16 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     _id: loggedinUser.habits[i],
                 });
             }
-            for (let y = 0; y < loggedinUser.friends.length; y++) {
-                yield user_model_1.default.findOneAndUpdate({
-                    _id: loggedinUser.friends[y].friend,
-                }, {
-                    $pull: { friends: loggedinUser._id },
-                }, { upsert: true });
+            if (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.friends) {
+                for (let y = 0; y < loggedinUser.friends.length; y++) {
+                    console.log("first");
+                    yield user_model_1.default.findOneAndUpdate({
+                        _id: loggedinUser.friends[y].friend,
+                    }, {
+                        $pull: { friends: { friend: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id } },
+                    });
+                    console.log(loggedinUser.friends[y].friend);
+                }
             }
             yield user_model_1.default.findOneAndDelete({
                 _id: req.user[0]._id,
@@ -325,7 +329,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                         _id: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.friends[y].friend,
                     }, {
                         $pull: { friends: { friend: loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser._id } },
-                    }, { upsert: true });
+                    });
                 }
             }
             yield user_model_1.default.findOneAndDelete({
