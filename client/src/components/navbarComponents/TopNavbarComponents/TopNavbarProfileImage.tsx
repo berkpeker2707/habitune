@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Image, Platform, View } from "react-native";
-import SkeletonProfilePlaceholder from "../../skeleton/SkeletonProfilePlaceholder";
+import SkeletonPlaceholder from "../../skeleton/SkeletonPlaceholder";
 
 const TopNavbarProfileImage = (props: any) => {
   const { imageSource } = props;
@@ -33,7 +33,7 @@ const TopNavbarProfileImage = (props: any) => {
       />
     </View>
   ) : (
-    <SkeletonProfilePlaceholder
+    <SkeletonPlaceholder
       colorMode={"light"}
       width={35}
       height={35}
