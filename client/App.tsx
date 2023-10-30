@@ -217,7 +217,18 @@ const App = () => {
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
     ) {
-      dispatch(fetchCurrentUserProfileAction());
+      dispatch(
+        fetchCurrentUserProfileAction(
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+            new Date().getHours(),
+            new Date().getMinutes(),
+            new Date().getSeconds()
+          ).getTime()
+        )
+      );
       dispatch(fetchAllHabitsAction());
       dispatch(
         fetchAllTodayHabitsAction(

@@ -162,6 +162,8 @@ export const fetchCurrentUserProfile = async (
   res: Response
 ) => {
   try {
+    var clientTime = parseInt(req.params.today);
+
     const loggedinUser = await User.findById(req.user[0]._id)
       .populate({ path: "friends.friend", model: "User" })
       .populate({
@@ -170,9 +172,16 @@ export const fetchCurrentUserProfile = async (
       })
       .exec();
 
+    if (req.params.today) {
+      await loggedinUser?.updateOne({
+        $set: { lastLogin: clientTime },
+      });
+    }
+
     var foundNotification = await Notification.findOne({
       userID: req.user[0]._id,
     });
+
     if (!foundNotification) {
       await Notification.create({
         userID: req.user[0]._id,
