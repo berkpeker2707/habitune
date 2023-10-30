@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { MotiView } from "moti";
 import { Skeleton } from "moti/skeleton";
 
-const SkeletonProfilePlaceholder = (props: {
+const SkeletonPlaceholder = (props: {
   colorMode: "dark" | "light" | undefined;
   width: number;
   height: number;
@@ -28,4 +28,4 @@ const SkeletonProfilePlaceholder = (props: {
   );
 };
 
-export default SkeletonProfilePlaceholder;
+export default SkeletonPlaceholder;
