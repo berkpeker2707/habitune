@@ -60,7 +60,7 @@ export const signInAction = createAsyncThunk(
 
 export const fetchCurrentUserProfileAction = createAsyncThunk(
   "user/fetchCurrentUserProfile",
-  async (_, { rejectWithValue, getState, dispatch }) => {
+  async (today: number, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
 
@@ -71,7 +71,10 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
     };
 
     try {
-      const { data } = await axiosInstance.get(`/user/profile`, config);
+      const { data } = await axiosInstance.get(
+        `/user/profile/${today}`,
+        config
+      );
 
       return data;
     } catch (error) {
