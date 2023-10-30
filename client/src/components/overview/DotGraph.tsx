@@ -2,7 +2,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { RefreshControl, ScrollView, TextInput, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
-import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
+import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
 
 const DotGraph = (props: {

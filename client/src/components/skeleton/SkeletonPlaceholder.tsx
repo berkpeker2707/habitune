@@ -3,7 +3,13 @@ import { View } from "react-native";
 import { MotiView } from "moti";
 import { Skeleton } from "moti/skeleton";
 
-const SkeletonProfilePlaceholder = () => {
+const SkeletonProfilePlaceholder = (props: {
+  colorMode: "dark" | "light" | undefined;
+  width: number;
+  height: number;
+  radius: number;
+}) => {
+  const { colorMode, width, height, radius } = props;
   return (
     <MotiView
       transition={{
@@ -11,7 +17,12 @@ const SkeletonProfilePlaceholder = () => {
       }}
       animate={{ backgroundColor: "#ffffff" }}
     >
-      <Skeleton colorMode={"light"} radius={75} height={35} width={35} />
+      <Skeleton
+        colorMode={colorMode}
+        width={width}
+        height={height}
+        radius={radius}
+      />
       <View style={{ height: 2 }} />
     </MotiView>
   );

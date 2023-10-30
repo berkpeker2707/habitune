@@ -5,7 +5,7 @@ import StreakBar from "./StreakGraphBar";
 
 import uuid from "react-native-uuid";
 import { View } from "moti";
-import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
+import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 
 const StreakGraph = (props: {
   allHabits: any;

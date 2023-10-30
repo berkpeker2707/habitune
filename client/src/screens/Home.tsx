@@ -8,7 +8,7 @@ import {
   Pressable,
   Modal,
 } from "react-native";
-import SkeletonPlaceholder from "../components/home/SkeletonPlaceholder";
+import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
 import HabitBarParent from "../components/home/HabitBarParent";
 
