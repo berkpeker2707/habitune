@@ -1,11 +1,12 @@
 import * as React from "react";
+import { memo } from "react";
 
 import { ScrollView, TextInput, View, Text } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 
-const Overview = (props: any) => {
+const Overview = memo((props: any) => {
   const {
     dispatch,
     fetchAllHabitsAction,
@@ -148,6 +149,6 @@ const Overview = (props: any) => {
       </View>
     );
   }
-};
+});
 
 export default Overview;
