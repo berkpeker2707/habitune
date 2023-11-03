@@ -21,10 +21,13 @@ const OverviewSection = (props: any) => {
     revertAllHabit,
     deleteUserAction,
     allHabits,
-    habitUpdated,
+    allHabitsNumber,
     habitLoading,
-    isInArray,
+    refreshing,
+    setRefreshing,
     onShare,
+    currentHabitWeekStreakState,
+    allHabitDatesDots,
   } = props;
   return (
     <StackNavigator.Navigator
@@ -42,10 +45,14 @@ const OverviewSection = (props: any) => {
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
             }
-            allHabits={allHabits ? allHabits : []}
-            habitUpdated={habitUpdated}
+            allHabits={allHabits}
+            allHabitsNumber={allHabitsNumber}
             habitLoading={habitLoading}
-            isInArray={isInArray}
+            refreshing={refreshing}
+            setRefreshing={setRefreshing}
+            isItCurrentUser={true}
+            currentHabitWeekStreakState={currentHabitWeekStreakState}
+            allHabitDatesDots={allHabitDatesDots}
           />
         )}
         options={{
