@@ -1,32 +1,31 @@
 import * as React from "react";
-import { memo } from "react";
 
 import { ScrollView, TextInput, View, Text } from "react-native";
-import DotGraph from "../components/overview/DotGraph";
-import StreakGraph from "../components/overview/StreakGraph";
-import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
+import DotGraph from "../overview/DotGraph";
+import StreakGraph from "../overview/StreakGraph";
+import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 
-const Overview = memo((props: any) => {
+const FriendInner = (props: any) => {
   const {
     dispatch,
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
-    allHabits,
-    allHabitsNumber,
+    allHabitsOfSelectedUser,
+    allHabitsOfSelectedUserNumber,
     habitLoading,
     refreshing,
     setRefreshing,
     isItCurrentUser,
-    currentHabitWeekStreakState,
-    allHabitDatesDots,
+    friendCurrentHabitWeekStreakState,
+    friendAllHabitDatesDotsState,
   } = props;
 
   if (
-    (habitLoading && allHabitsNumber === 0) ||
-    (habitLoading && allHabitsNumber === undefined) ||
-    currentHabitWeekStreakState === undefined ||
-    allHabitDatesDots === undefined ||
-    allHabits === undefined
+    (habitLoading && allHabitsOfSelectedUserNumber === 0) ||
+    (habitLoading && allHabitsOfSelectedUserNumber === undefined) ||
+    friendCurrentHabitWeekStreakState === undefined ||
+    friendAllHabitDatesDotsState === undefined ||
+    allHabitsOfSelectedUser === undefined
   ) {
     return (
       <View
@@ -60,8 +59,8 @@ const Overview = memo((props: any) => {
     );
   } else if (
     habitLoading &&
-    allHabitsNumber > 0 &&
-    currentHabitWeekStreakState.length > 0
+    allHabitsOfSelectedUserNumber > 0 &&
+    friendCurrentHabitWeekStreakState.length > 0
   ) {
     return (
       <View
@@ -78,7 +77,7 @@ const Overview = memo((props: any) => {
             marginBottom: 0,
           }}
         >
-          {Array(allHabitsNumber)
+          {Array(allHabitsOfSelectedUserNumber)
             .fill(0)
             .map((_, i) => (
               <SkeletonPlaceholder
@@ -94,8 +93,8 @@ const Overview = memo((props: any) => {
     );
   } else if (
     !habitLoading &&
-    allHabitsNumber > 0 &&
-    currentHabitWeekStreakState.length > 0
+    allHabitsOfSelectedUserNumber > 0 &&
+    friendCurrentHabitWeekStreakState.length > 0
   ) {
     return (
       <View
@@ -113,8 +112,8 @@ const Overview = memo((props: any) => {
           }}
         >
           <StreakGraph
-            allHabits={allHabits}
-            currentHabitWeekStreak={currentHabitWeekStreakState}
+            allHabits={allHabitsOfSelectedUser}
+            currentHabitWeekStreak={friendCurrentHabitWeekStreakState}
           />
           <View style={{ margin: 20 }}></View>
           <DotGraph
@@ -123,13 +122,13 @@ const Overview = memo((props: any) => {
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
             }
-            allHabits={allHabits}
-            allHabitsNumber={allHabitsNumber}
+            allHabits={allHabitsOfSelectedUser}
+            allHabitsNumber={allHabitsOfSelectedUserNumber}
             habitLoading={habitLoading}
             refreshing={refreshing}
             setRefreshing={setRefreshing}
             isItCurrentUser={isItCurrentUser}
-            allHabitDatesDots={allHabitDatesDots}
+            allHabitDatesDots={friendAllHabitDatesDotsState}
           />
         </ScrollView>
       </View>
@@ -149,6 +148,6 @@ const Overview = memo((props: any) => {
       </View>
     );
   }
-});
+};
 
-export default Overview;
+export default FriendInner;

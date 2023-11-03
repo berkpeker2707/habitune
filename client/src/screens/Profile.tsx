@@ -36,7 +36,18 @@ const Profile = memo((props: any) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchCurrentUserProfileAction());
+    dispatch(
+      fetchCurrentUserProfileAction(
+        new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate(),
+          new Date().getHours(),
+          new Date().getMinutes(),
+          new Date().getSeconds()
+        ).getTime()
+      )
+    );
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);

@@ -11,6 +11,7 @@ const userSchema = new Schema<IUser>({
   friends: [{ friend: mongoose.Schema.Types.ObjectId, pending: Boolean }],
   password: { type: String },
   fcmToken: { type: String },
+  lastLogin: { type: Date, default: Date.now },
 });
 
 export = mongoose.model<IUser>("User", userSchema);

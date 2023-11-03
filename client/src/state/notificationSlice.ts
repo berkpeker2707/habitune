@@ -1,5 +1,5 @@
+import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -18,11 +18,6 @@ const initialState: notificationTypes = {
   isNotificationUpdated: false,
   notificationData: {},
 };
-
-const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.66:1111/api",
-  baseURL: "https://www.habitune.net/api",
-});
 
 const updatedNotification = createAction("notification/update");
 
@@ -74,7 +69,7 @@ export const notificationSendAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("notification error1: ", error);
+      console.log("notification error2: ", error);
       return rejectWithValue(error);
     }
   }

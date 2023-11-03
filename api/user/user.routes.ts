@@ -16,7 +16,7 @@ userRoutes.post("/google", signInWithGoogleController);
 
 userRoutes.post("/signin", signInController);
 
-userRoutes.get("/profile", verifyToken, fetchCurrentUserProfile);
+userRoutes.get("/profile/:today", verifyToken, fetchCurrentUserProfile);
 
 userRoutes.get("/selectedUser/profile/:userID", verifyToken, fetchUserProfile);
 

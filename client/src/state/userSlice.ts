@@ -1,5 +1,5 @@
+import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,11 +22,6 @@ const initialState: userTypes = {
   selectedUserData: {},
   deleteUserData: {},
 };
-
-const axiosInstance = axios.create({
-  // baseURL: "http://192.168.1.66:1111/api",
-  baseURL: "https://www.habitune.net/api",
-});
 
 const updatedUser = createAction("user/update");
 
@@ -60,7 +55,7 @@ export const signInAction = createAsyncThunk(
 
 export const fetchCurrentUserProfileAction = createAsyncThunk(
   "user/fetchCurrentUserProfile",
-  async (_, { rejectWithValue, getState, dispatch }) => {
+  async (today: number, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
 
@@ -71,7 +66,10 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
     };
 
     try {
-      const { data } = await axiosInstance.get(`/user/profile`, config);
+      const { data } = await axiosInstance.get(
+        `/user/profile/${today}`,
+        config
+      );
 
       return data;
     } catch (error) {

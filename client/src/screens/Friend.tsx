@@ -1,8 +1,6 @@
 import * as React from "react";
 
-import { ScrollView, View } from "react-native";
-import DotGraph from "../components/overview/DotGraph";
-import StreakGraph from "../components/overview/StreakGraph";
+import FriendInner from "../components/friend/FriendInner";
 
 const Friend = (props: any) => {
   const {
@@ -12,53 +10,27 @@ const Friend = (props: any) => {
     allHabitsOfSelectedUser,
     allHabitsOfSelectedUserNumber,
     habitLoading,
-    habitUpdated,
     refreshing,
     setRefreshing,
-    isInArray,
     isItCurrentUser,
+    friendCurrentHabitWeekStreakState,
+    friendAllHabitDatesDotsState,
   } = props;
 
   return (
-    <View
-      style={{
-        display: "flex",
-        height: "100%",
-        backgroundColor: "#FFFFFF",
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      {/* changed from ScrollView */}
-      <ScrollView
-        style={{
-          marginBottom: 85,
-        }}
-      >
-        <StreakGraph
-          allHabits={allHabitsOfSelectedUser}
-          allHabitsNumber={allHabitsOfSelectedUserNumber}
-          habitUpdated={habitUpdated}
-          habitLoading={habitLoading}
-          isInArray={isInArray}
-        />
-        <View style={{ margin: 20 }}></View>
-        <DotGraph
-          dispatch={dispatch}
-          fetchAllHabitsAction={fetchAllHabitsAction}
-          fetchAllHabitsOfSelectedUserAction={
-            fetchAllHabitsOfSelectedUserAction
-          }
-          allHabits={allHabitsOfSelectedUser}
-          allHabitsNumber={allHabitsOfSelectedUserNumber}
-          habitLoading={habitLoading}
-          refreshing={refreshing}
-          setRefreshing={setRefreshing}
-          isInArray={isInArray}
-          isItCurrentUser={isItCurrentUser}
-        />
-      </ScrollView>
-    </View>
+    <FriendInner
+      dispatch={dispatch}
+      fetchAllHabitsAction={fetchAllHabitsAction}
+      fetchAllHabitsOfSelectedUserAction={fetchAllHabitsOfSelectedUserAction}
+      allHabitsOfSelectedUser={allHabitsOfSelectedUser}
+      allHabitsOfSelectedUserNumber={allHabitsOfSelectedUserNumber}
+      habitLoading={habitLoading}
+      refreshing={refreshing}
+      setRefreshing={setRefreshing}
+      isItCurrentUser={isItCurrentUser}
+      friendCurrentHabitWeekStreakState={friendCurrentHabitWeekStreakState}
+      friendAllHabitDatesDotsState={friendAllHabitDatesDotsState}
+    />
   );
 };
 
