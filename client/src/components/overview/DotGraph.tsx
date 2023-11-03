@@ -2,7 +2,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { RefreshControl, ScrollView, TextInput, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
-import SkeletonPlaceholder from "../home/SkeletonPlaceholder";
+import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
 
 const DotGraph = (props: {
@@ -14,8 +14,8 @@ const DotGraph = (props: {
   habitLoading: boolean;
   refreshing: boolean;
   setRefreshing: Function;
-  isInArray: Function;
   isItCurrentUser: boolean;
+  allHabitDatesDots: Array<boolean>;
 }) => {
   const {
     dispatch,
@@ -26,101 +26,17 @@ const DotGraph = (props: {
     habitLoading,
     refreshing,
     setRefreshing,
-    isInArray,
     isItCurrentUser,
+    allHabitDatesDots,
   } = props;
-
-  //date stuff starts
-  const todayTemp = new Date();
-  const today = new Date(
-    todayTemp.getFullYear(),
-    todayTemp.getMonth(),
-    todayTemp.getDate(),
-    todayTemp.getHours(),
-    todayTemp.getMinutes(),
-    todayTemp.getSeconds()
-  );
-
-  const OneDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 1,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const TwoDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 2,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const ThreeDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 3,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const FourDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 4,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const FiveDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 5,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const SixDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 6,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-
-  const memoizedIsInArray = useCallback(isInArray, [today]);
-
-  var allHabitDatesDots: Array<boolean> = [];
-  for (var i = 0; i < allHabits.length; i++) {
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, today));
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, OneDayAgo));
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, TwoDayAgo));
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, ThreeDayAgo));
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, FourDayAgo));
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, FiveDayAgo));
-    allHabitDatesDots.push(memoizedIsInArray(allHabits[i].dates, SixDayAgo));
-  }
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
 
     isItCurrentUser
       ? dispatch(fetchAllHabitsAction())
-      : dispatch(fetchAllHabitsOfSelectedUserAction());
+      : // : dispatch(fetchAllHabitsOfSelectedUserAction());
+        "";
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);

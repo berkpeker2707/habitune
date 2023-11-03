@@ -31,28 +31,42 @@
 
 // export default isInArray;
 
-const isInArray = (array: any[], value: any) => {
+// const isInArray = (array: any[], value: any) => {
+//   const dateToBeChecked = new Date(value);
+
+//   for (const item of array) {
+//     const alreadyStoredDate = new Date(item);
+
+//     const msBetweenDates = Math.abs(
+//       alreadyStoredDate.getTime() - dateToBeChecked.getTime()
+//     );
+
+//     const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
+
+//     if (
+//       hoursBetweenDates < 24 &&
+//       alreadyStoredDate.getDate() === dateToBeChecked.getDate() &&
+//       alreadyStoredDate.getMonth() === dateToBeChecked.getMonth()
+//     ) {
+//       return true; // Found a match, return immediately.
+//     }
+//   }
+
+//   return false; // No match found in the array.
+// };
+
+const isInArray = (array: any, value: string | number | Date) => {
   const dateToBeChecked = new Date(value);
+  const dateStringToCheck = `${dateToBeChecked.getDate()}-${dateToBeChecked.getMonth()}-${dateToBeChecked.getFullYear()}`;
 
+  const dateSet = new Set();
   for (const item of array) {
-    const alreadyStoredDate = new Date(item);
-
-    const msBetweenDates = Math.abs(
-      alreadyStoredDate.getTime() - dateToBeChecked.getTime()
-    );
-
-    const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
-
-    if (
-      hoursBetweenDates < 24 &&
-      alreadyStoredDate.getDate() === dateToBeChecked.getDate() &&
-      alreadyStoredDate.getMonth() === dateToBeChecked.getMonth()
-    ) {
-      return true; // Found a match, return immediately.
-    }
+    const date = new Date(item);
+    const dateString = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+    dateSet.add(dateString);
   }
 
-  return false; // No match found in the array.
+  return dateSet.has(dateStringToCheck);
 };
 
 export default isInArray;

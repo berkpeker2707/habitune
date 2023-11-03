@@ -149,6 +149,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.signInController = signInController;
 const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        var clientTime = parseInt(req.params.today);
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id)
             .populate({ path: "friends.friend", model: "User" })
             .populate({
@@ -156,6 +157,11 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
             model: "Habit",
         })
             .exec();
+        if (req.params.today) {
+            yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
+                $set: { lastLogin: clientTime },
+            }));
+        }
         var foundNotification = yield notification_model_1.default.findOne({
             userID: req.user[0]._id,
         });

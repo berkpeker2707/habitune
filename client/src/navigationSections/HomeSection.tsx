@@ -24,8 +24,8 @@ const HomeSection = (props: any) => {
     navigation,
     dispatch,
     fetchCurrentUserProfileAction,
-    fetchAllTodayHabitsAction,
     fetchAllHabitsAction,
+    fetchAllTodayHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
     updateHabitCompletedDateAction,
     updateHabitSharedWithAction,
@@ -46,16 +46,17 @@ const HomeSection = (props: any) => {
     homeEditBool,
     setHomeEditBool,
     habitLoading,
-    habitUpdated,
-    isInArray,
+    refreshing,
+    setRefreshing,
     onShare,
     friendIDState,
     setFriendIDState,
+    friendCurrentHabitWeekStreakState,
+    friendAllHabitDatesDotsState,
   } = props;
 
   const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
   () => [];
-  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [nameChangable, setNameChangable] = useState<boolean>(false);
@@ -93,7 +94,7 @@ const HomeSection = (props: any) => {
             updateHabitSharedWithAction={updateHabitSharedWithAction}
             notificationSendAction={notificationSendAction}
             currentUser={currentUser}
-            allHabits={allHabitsToday ? allHabitsToday : []}
+            allHabits={allHabitsToday}
             allHabitsNumber={allHabitsNumber}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
             homeEditBool={homeEditBool}
@@ -389,13 +390,13 @@ const HomeSection = (props: any) => {
             allHabitsOfSelectedUser={allHabitsOfSelectedUser}
             allHabitsOfSelectedUserNumber={allHabitsOfSelectedUserNumber}
             habitLoading={habitLoading}
-            habitUpdated={habitUpdated}
             refreshing={refreshing}
             setRefreshing={setRefreshing}
-            isInArray={isInArray}
-            friendIDState={friendIDState}
-            setFriendIDState={setFriendIDState}
             isItCurrentUser={false}
+            friendCurrentHabitWeekStreakState={
+              friendCurrentHabitWeekStreakState
+            }
+            friendAllHabitDatesDotsState={friendAllHabitDatesDotsState}
           />
         )}
       />
