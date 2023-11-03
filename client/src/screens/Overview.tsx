@@ -13,7 +13,6 @@ const Overview = (props: any) => {
     allHabits,
     allHabitsNumber,
     habitLoading,
-    habitUpdated,
     refreshing,
     setRefreshing,
     isItCurrentUser,

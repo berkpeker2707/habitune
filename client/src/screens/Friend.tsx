@@ -10,7 +10,6 @@ const Friend = (props: any) => {
     allHabitsOfSelectedUser,
     allHabitsOfSelectedUserNumber,
     habitLoading,
-    habitUpdated,
     refreshing,
     setRefreshing,
     isItCurrentUser,
@@ -26,7 +25,6 @@ const Friend = (props: any) => {
       allHabitsOfSelectedUser={allHabitsOfSelectedUser}
       allHabitsOfSelectedUserNumber={allHabitsOfSelectedUserNumber}
       habitLoading={habitLoading}
-      habitUpdated={habitUpdated}
       refreshing={refreshing}
       setRefreshing={setRefreshing}
       isItCurrentUser={isItCurrentUser}
