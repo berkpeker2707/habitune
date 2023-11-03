@@ -59,7 +59,7 @@ const FriendsCard = memo(
                 // currentUser: currentUser,
                 // userUpdated: userUpdated,
                 name: name,
-                friendID: friendID,
+                friendID: friendIDState,
               });
             }}
             onLongPress={() => {
