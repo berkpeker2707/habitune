@@ -1,5 +1,5 @@
+import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,11 +22,6 @@ const initialState: userTypes = {
   selectedUserData: {},
   deleteUserData: {},
 };
-
-const axiosInstance = axios.create({
-  baseURL: "http://192.168.1.33:1111/api",
-  // baseURL: "https://www.habitune.net/api",
-});
 
 const updatedUser = createAction("user/update");
 

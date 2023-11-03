@@ -1,5 +1,5 @@
+import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from "./store";
 
 interface habitTypes {
@@ -37,11 +37,6 @@ const initialState: habitTypes = {
   updateHabitDatesData: {},
   updateHabitCompletedDateData: {},
 };
-
-const axiosInstance = axios.create({
-  baseURL: "http://192.168.1.33:1111/api",
-  // baseURL: "https://www.habitune.net/api",
-});
 
 const updatedHabit = createAction("habit/update");
 
