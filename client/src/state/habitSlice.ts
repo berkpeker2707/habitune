@@ -122,7 +122,6 @@ export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
 export const fetchAllTodayHabitsAction = createAsyncThunk(
   "habit/fetchAllTodayHabits",
   async (today: number, { rejectWithValue, getState, dispatch }) => {
-    // console.log("🚀 ~ file: habitSlice.ts:130 ~ today:", today);
     //get user token
     const auth = (getState() as RootState).user?.token;
 
