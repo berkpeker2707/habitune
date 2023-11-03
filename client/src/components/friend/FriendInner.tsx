@@ -15,8 +15,6 @@ const FriendInner = (props: any) => {
     habitLoading,
     refreshing,
     setRefreshing,
-    friendIDState,
-    setFriendIDState,
     isItCurrentUser,
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
