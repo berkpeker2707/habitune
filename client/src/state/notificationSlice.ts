@@ -69,7 +69,7 @@ export const notificationSendAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("notification error1: ", error);
+      console.log("notification error2: ", error);
       return rejectWithValue(error);
     }
   }
