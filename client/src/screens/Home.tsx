@@ -106,6 +106,7 @@ const Home = memo((props: any) => {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
+          setHomeEditBool(false);
         }}
       >
         <View
@@ -114,6 +115,7 @@ const Home = memo((props: any) => {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
           }}
         >
           <View
@@ -170,9 +172,10 @@ const Home = memo((props: any) => {
       </Modal>
       <TouchableWithoutFeedback
         onBlur={() => {
-          setHomeEditBool(false);
+          if (!modalVisible) {
+            setHomeEditBool(false);
+          }
         }}
-        style={{ backgroundColor: "yellow" }}
       >
         <View
           style={{
