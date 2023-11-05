@@ -7,6 +7,7 @@ import {
   RefreshControl,
   Pressable,
   Modal,
+  TouchableWithoutFeedback,
 } from "react-native";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
@@ -176,68 +177,77 @@ const Home = memo((props: any) => {
           </View>
         </View>
       </Modal>
-      <View
-        style={{
-          display: "flex",
-          height: "100%",
-          backgroundColor: "#FFFFFF",
-          justifyContent: "flex-start",
-          alignItems: "center",
+      <TouchableWithoutFeedback
+        onBlur={() => {
+          setHomeEditBool(false);
         }}
+        style={{ backgroundColor: "yellow" }}
       >
-        <ScrollView
+        <View
           style={{
-            marginBottom: 85,
+            display: "flex",
+            height: "100%",
+            backgroundColor: "#FFFFFF",
+            justifyContent: "flex-start",
+            alignItems: "center",
           }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
         >
-          {!habitLoading &&
-          allHabits &&
-          allHabitsNumber > 0 &&
-          tempBarFilled ? (
-            <>
-              <Text>Habits</Text>
-              <HabitBarParent
-                navigation={navigation}
-                dispatch={dispatch}
-                updateHabitCompletedDateAction={updateHabitCompletedDateAction}
-                notificationSendAction={notificationSendAction}
-                currentUser={currentUser}
-                allHabits={allHabits}
-                tempBarFilled={tempBarFilled}
-                homeEditBool={homeEditBool}
-                setHomeEditBool={setHomeEditBool}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-                handleHabitClicked={handleHabitClicked}
-                nameChangable={nameChangable}
-                setNameChangable={setNameChangable}
-                text={text}
-                onChangeText={onChangeText}
-              />
-            </>
-          ) : allHabitsNumber && allHabitsNumber > 0 ? (
-            <>
-              <Text>Habits</Text>
-              {Array(allHabitsNumber)
-                .fill(0)
-                .map((_, i) => (
-                  <SkeletonPlaceholder
-                    key={i}
-                    colorMode={"light"}
-                    width={372}
-                    height={48}
-                    radius={20}
-                  />
-                ))}
-            </>
-          ) : (
-            <Text>Habits Empty 😔</Text>
-          )}
-        </ScrollView>
-      </View>
+          <ScrollView
+            style={{
+              marginBottom: 85,
+            }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            {!habitLoading &&
+            allHabits &&
+            allHabitsNumber > 0 &&
+            tempBarFilled ? (
+              <>
+                <Text>Habits</Text>
+                <HabitBarParent
+                  navigation={navigation}
+                  dispatch={dispatch}
+                  updateHabitCompletedDateAction={
+                    updateHabitCompletedDateAction
+                  }
+                  notificationSendAction={notificationSendAction}
+                  currentUser={currentUser}
+                  allHabits={allHabits}
+                  tempBarFilled={tempBarFilled}
+                  homeEditBool={homeEditBool}
+                  setHomeEditBool={setHomeEditBool}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                  handleHabitClicked={handleHabitClicked}
+                  nameChangable={nameChangable}
+                  setNameChangable={setNameChangable}
+                  text={text}
+                  onChangeText={onChangeText}
+                />
+              </>
+            ) : allHabitsNumber && allHabitsNumber > 0 ? (
+              <>
+                <Text>Habits</Text>
+                {Array(allHabitsNumber)
+                  .fill(0)
+                  .map((_, i) => (
+                    <SkeletonPlaceholder
+                      key={i}
+                      colorMode={"light"}
+                      width={372}
+                      height={48}
+                      radius={20}
+                    />
+                  ))}
+              </>
+            ) : (
+              <Text>Habits Empty 😔</Text>
+            )}
+          </ScrollView>
+        </View>
+      </TouchableWithoutFeedback>
     </>
   );
 });
