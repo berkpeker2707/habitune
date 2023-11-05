@@ -98,14 +98,6 @@ const Home = memo((props: any) => {
     }, 2000);
   }, []);
 
-  //updating params if shareWithFriendList changes starts
-  useEffect(() => {
-    navigation.setParams({
-      friendList: shareWithFriendList,
-    });
-  }, [shareWithFriendList]);
-  //updating params if shareWithFriendList changes ends
-
   return (
     <>
       <Modal
@@ -157,8 +149,7 @@ const Home = memo((props: any) => {
                 dispatch(
                   updateHabitSharedWithAction({
                     _id: navigation.getState().routes[0].params._id,
-                    userId:
-                      navigation.getState().routes[0].params.friendList[0],
+                    userId: shareWithFriendList[0],
                   })
                 );
                 setHomeEditBool(false);
