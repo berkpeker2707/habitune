@@ -53,28 +53,25 @@ const HomeSection = (props: any) => {
     setFriendIDState,
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
+    tempBarFilled,
+    setTempBarFilled,
+    shareWithFriendList,
+    setShareWithFriendList,
+    selectedItem,
+    setSelectedItem,
+    nameChangable,
+    setNameChangable,
+    text,
+    onChangeText,
+    modalVisible,
+    setModalVisible,
+    showInfoText,
+    setShowInfoText,
+    acceptOrRemoveModalVisible,
+    setAcceptOrRemoveModalVisible,
+    selectedUser,
+    setSelectedUser,
   } = props;
-
-  const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
-  () => [];
-  const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string>("");
-  const [nameChangable, setNameChangable] = useState<boolean>(false);
-  const [text, onChangeText] = useState<string>("");
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [showInfoText, setShowInfoText] = useState<boolean>(false);
-  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
-    useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<{
-    email: string;
-    name: string;
-    pending: boolean;
-  }>({
-    email: "",
-    name: "",
-    pending: false,
-  });
 
   return (
     <StackNavigator.Navigator

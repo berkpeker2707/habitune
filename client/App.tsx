@@ -169,6 +169,28 @@ const App = () => {
   const [friendAllHabitDatesDotsState, setFriendAllHabitDatesDotsState] =
     useState<Array<Boolean>>([]);
 
+  //home screen states
+  const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
+  () => [];
+  const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
+  const [selectedItem, setSelectedItem] = useState<string>("");
+  const [nameChangable, setNameChangable] = useState<boolean>(false);
+  const [text, onChangeText] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [showInfoText, setShowInfoText] = useState<boolean>(false);
+  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
+    useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<{
+    email: string;
+    name: string;
+    pending: boolean;
+  }>({
+    email: "",
+    name: "",
+    pending: false,
+  });
+
   const todayTemp = new Date();
   const today = new Date(
     todayTemp.getFullYear(),
@@ -617,6 +639,24 @@ const App = () => {
                     friendCurrentHabitWeekStreakState
                   }
                   friendAllHabitDatesDotsState={friendAllHabitDatesDotsState}
+                  tempBarFilled={tempBarFilled}
+                  setTempBarFilled={setTempBarFilled}
+                  shareWithFriendList={shareWithFriendList}
+                  setShareWithFriendList={setShareWithFriendList}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                  nameChangable={nameChangable}
+                  setNameChangable={setNameChangable}
+                  text={text}
+                  onChangeText={onChangeText}
+                  modalVisible={modalVisible}
+                  setModalVisible={setModalVisible}
+                  showInfoText={showInfoText}
+                  setShowInfoText={setShowInfoText}
+                  acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
+                  setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
                 />
               )}
               options={{
