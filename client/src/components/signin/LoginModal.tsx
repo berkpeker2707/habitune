@@ -23,6 +23,7 @@ const LoginModal = (props: any) => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: 22,
+          backgroundColor: "rgba(52, 52, 52, 0.8)",
         }}
       >
         <View

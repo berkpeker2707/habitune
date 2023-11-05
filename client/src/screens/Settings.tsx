@@ -51,6 +51,7 @@ const Settings = (props: {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
           }}
         >
           <View
@@ -133,6 +134,7 @@ const Settings = (props: {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
           }}
         >
           <View
