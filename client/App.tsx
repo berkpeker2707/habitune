@@ -191,6 +191,44 @@ const App = () => {
     pending: false,
   });
 
+  //add screen states
+  const [taskName, setTaskName] = useState<string>("");
+  const [openFrequency, setOpenFrequency] = useState<boolean>(false);
+  const [taskUpcomingDates, setTaskUpcomingDates] = useState<string[]>([
+    // "Sun",
+    // "Mon",
+    // "Tue",
+    // "Wed",
+    // "Thu",
+    // "Fri",
+    // "Sat",
+  ]);
+  const [taskFirstDate, setTaskFirstDate] = useState<Date | any>(
+    new Date(
+      new Date(Date.now()).getFullYear(),
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
+  );
+  const [taskLastDate, setTaskLastDate] = useState<Date | any>(
+    new Date(
+      new Date(Date.now()).getFullYear() + 1,
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
+  );
+  const [dateBetweenModalOpen, setDateBetweenModalOpen] =
+    useState<boolean>(false);
+  // const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
+  const [openShare, setOpenShare] = useState<boolean>(false);
+  const [color, setColor] = useState<string>("#968EB0");
+
   const todayTemp = new Date();
   const today = new Date(
     todayTemp.getFullYear(),
@@ -673,6 +711,24 @@ const App = () => {
                   currentUser={currentUser}
                   dispatch={dispatch}
                   createHabitAction={createHabitAction}
+                  taskName={taskName}
+                  setTaskName={setTaskName}
+                  openFrequency={openFrequency}
+                  setOpenFrequency={setOpenFrequency}
+                  taskUpcomingDates={taskUpcomingDates}
+                  setTaskUpcomingDates={setTaskUpcomingDates}
+                  taskFirstDate={taskFirstDate}
+                  setTaskFirstDate={setTaskFirstDate}
+                  taskLastDate={taskLastDate}
+                  setTaskLastDate={setTaskLastDate}
+                  dateBetweenModalOpen={dateBetweenModalOpen}
+                  setDateBetweenModalOpen={setDateBetweenModalOpen}
+                  shareWithFriendList={shareWithFriendList}
+                  setShareWithFriendList={setShareWithFriendList}
+                  openShare={openShare}
+                  setOpenShare={setOpenShare}
+                  color={color}
+                  setColor={setColor}
                 />
               )}
               options={{
