@@ -53,12 +53,25 @@ export const notificationSend = async (req: any, res: Response) => {
       },
     });
 
+    const randomBodies = [
+      `${req.body.firstName} achieved a new milestone in ${req.body.habitName}! __🐌`,
+      `${req.body.firstName} just made progress in their ${req.body.habitName} journey! 🚀`,
+      `Celebrate with ${req.body.firstName} as they completed another task in ${req.body.habitName}! 🥳`,
+      `${req.body.firstName} completed their ${req.body.habitName} task! 🌟`,
+      `New achievement unlocked: ${req.body.firstName} mastered ${req.body.habitName}! 🏆`,
+      `${req.body.firstName} is on fire with their ${req.body.habitName} progress! 🔥`,
+      `Cheers to ${req.body.firstName} for reaching a milestone in ${req.body.habitName}! 🥂`,
+    ];
+
+    const randomBody =
+      randomBodies[Math.floor(Math.random() * randomBodies.length)];
+
     notification
       .updateOne({
         $push: {
           notifications: {
             title: `${req.body.firstName} is busy!`,
-            body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
+            body: randomBody,
             imageUrl: req.body.imageUrl,
             friend: req.body.friend,
             firstName: req.body.firstName,
