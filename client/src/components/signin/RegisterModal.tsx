@@ -1,6 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { View, Text, TextInput, Modal, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Modal,
+  Pressable,
+  Vibration,
+} from "react-native";
 import { signInAction } from "../../state/userSlice";
 
 const RegisterModal = (props: any) => {
@@ -101,6 +108,7 @@ const RegisterModal = (props: any) => {
               { borderRadius: 20, padding: 10, elevation: 2 },
               { backgroundColor: "#968EB0" },
             ]}
+            onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
               setRegisterModalVisible(!registerModalVisible);
               dispatch(

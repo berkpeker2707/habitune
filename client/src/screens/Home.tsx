@@ -8,6 +8,7 @@ import {
   Pressable,
   Modal,
   TouchableWithoutFeedback,
+  Vibration,
 } from "react-native";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
@@ -146,6 +147,7 @@ const Home = memo((props: any) => {
                 { borderRadius: 20, padding: 10, elevation: 2 },
                 { backgroundColor: "#968EB0" },
               ]}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setModalVisible(!modalVisible);
                 dispatch(

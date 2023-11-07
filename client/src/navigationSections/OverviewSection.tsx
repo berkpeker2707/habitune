@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Vibration, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Overview from "../../src/screens/Overview";
@@ -81,6 +81,7 @@ const OverviewSection = (props: any) => {
             >
               <View>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       onShare();
@@ -95,6 +96,7 @@ const OverviewSection = (props: any) => {
               <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       navigation.navigate("Settings");
@@ -133,6 +135,7 @@ const OverviewSection = (props: any) => {
               }}
             >
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.goBack();

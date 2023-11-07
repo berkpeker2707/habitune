@@ -8,6 +8,7 @@ import {
   Pressable,
   Text,
   TextInput,
+  Vibration,
 } from "react-native";
 import SettingsButton from "../components/settings/SettingsButton";
 import LinkButton from "../components/settings/LinkButton";
@@ -100,6 +101,7 @@ const Settings = (props: {
                 elevation: 2,
                 backgroundColor: "#968EB0",
               }}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setFeedbackModalVisible(!feedbackModalVisible),
                   console.log(feedback);
@@ -171,6 +173,7 @@ const Settings = (props: {
                 elevation: 2,
                 backgroundColor: "#968EB0",
               }}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setAboutUsModalVisible(!aboutUsModalVisible);
               }}

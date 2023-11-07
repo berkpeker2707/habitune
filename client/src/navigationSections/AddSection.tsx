@@ -88,6 +88,7 @@ const AddSection = memo((props: any) => {
               }}
             >
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.goBack();

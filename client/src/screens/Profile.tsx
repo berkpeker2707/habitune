@@ -8,6 +8,7 @@ import {
   Text,
   Modal,
   Pressable,
+  Vibration,
 } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
@@ -163,6 +164,7 @@ const Profile = memo((props: any) => {
                     { borderRadius: 20, padding: 10, elevation: 2 },
                     { backgroundColor: "#968EB0" },
                   ]}
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
                     dispatch(

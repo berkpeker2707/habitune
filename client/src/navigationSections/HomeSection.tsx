@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Vibration, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Home from "../../src/screens/Home";
@@ -137,6 +137,7 @@ const HomeSection = (props: any) => {
                 }}
               >
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       setHomeEditBool(false);
@@ -152,6 +153,7 @@ const HomeSection = (props: any) => {
           headerRight: () =>
             !homeEditBool ? (
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.navigate("Profile", {
@@ -179,6 +181,7 @@ const HomeSection = (props: any) => {
                   disabled={
                     navigation.getState().routes[0].params?.name ? false : true
                   }
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       dispatch(
@@ -207,6 +210,7 @@ const HomeSection = (props: any) => {
                   </View>
                 </Pressable>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       setModalVisible(!modalVisible);
@@ -228,6 +232,7 @@ const HomeSection = (props: any) => {
                   </View>
                 </Pressable>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       dispatch(
@@ -305,6 +310,7 @@ const HomeSection = (props: any) => {
             >
               <View>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       onShare();
@@ -319,6 +325,7 @@ const HomeSection = (props: any) => {
               <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       navigation.navigate("Settings");
@@ -357,6 +364,7 @@ const HomeSection = (props: any) => {
               }}
             >
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.goBack();
