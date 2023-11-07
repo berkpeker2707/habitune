@@ -3,13 +3,13 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Svg, { Circle, Defs, G, Path } from "react-native-svg";
 
 const BottomTabAddButton = (props: any) => {
-  const { onPress } = props;
+  const { onPressIn } = props;
 
   return (
     <View style={styles.btnWrapper}>
       <TouchableOpacity
         activeOpacity={1}
-        onPress={onPress}
+        onPressIn={onPressIn}
         style={[styles.addNavButtons]}
       >
         <View style={{ flexDirection: "row" }}>

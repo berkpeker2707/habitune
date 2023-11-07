@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
+import { Vibration } from "react-native";
 
 // import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -700,7 +701,12 @@ const App = () => {
               options={{
                 // resets screen states below
                 // unmountOnBlur: true,
-                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+                tabBarButton: (props) => (
+                  <BottomTabHomeButton
+                    {...props}
+                    onPressIn={() => Vibration.vibrate(10)}
+                  />
+                ),
               }}
             />
             <BottomTabNav.Screen
@@ -732,7 +738,12 @@ const App = () => {
                 />
               )}
               options={{
-                tabBarButton: (props) => <BottomTabAddButton {...props} />,
+                tabBarButton: (props) => (
+                  <BottomTabAddButton
+                    {...props}
+                    onPressIn={() => Vibration.vibrate(10)}
+                  />
+                ),
               }}
             />
             <BottomTabNav.Screen
@@ -759,7 +770,12 @@ const App = () => {
                 />
               )}
               options={{
-                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
+                tabBarButton: (props) => (
+                  <BottomTabOverviewButton
+                    {...props}
+                    onPressIn={() => Vibration.vibrate(10)}
+                  />
+                ),
               }}
             />
           </>
