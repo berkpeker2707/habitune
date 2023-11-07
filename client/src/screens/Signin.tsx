@@ -1,6 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, ImageBackground, Text } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  ImageBackground,
+  Text,
+  Vibration,
+} from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -109,6 +115,7 @@ const Signin = (props: any) => {
                 top: 150,
                 bottom: 0,
               }}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => promptAsync()}
             >
               <View
@@ -141,6 +148,7 @@ const Signin = (props: any) => {
                   alignItems: "center",
                   alignContent: "center",
                 }}
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => setLoginModalVisible(!loginModalVisible)}
               >
                 <Text style={{ textDecorationLine: "underline" }}>Login</Text>
@@ -155,6 +163,7 @@ const Signin = (props: any) => {
                   alignItems: "center",
                   alignContent: "center",
                 }}
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => setRegisterModalVisible(!registerModalVisible)}
               >
                 <Text style={{ textDecorationLine: "underline" }}>

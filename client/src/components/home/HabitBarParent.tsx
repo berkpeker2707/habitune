@@ -1,7 +1,7 @@
 import * as React from "react";
 import { memo } from "react";
 import HabitBar from "./HabitBar";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Vibration } from "react-native";
 import uuid from "react-native-uuid";
 
 const HabitBarParent = memo(
@@ -45,6 +45,7 @@ const HabitBarParent = memo(
     return allHabits.map((item: any, index: any) => {
       return (
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() => {
             dispatch(
               updateHabitCompletedDateAction({

@@ -199,7 +199,10 @@ const Settings = (props: {
           opacity: !feedbackModalVisible ? 1 : 0.3,
         }}
       >
-        <TouchableOpacity onPress={() => setFeedbackModalVisible(true)}>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => setFeedbackModalVisible(true)}
+        >
           <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
         <View>
@@ -214,13 +217,20 @@ const Settings = (props: {
         {/* <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Notification Settings" />
         </TouchableOpacity> */}
-        <TouchableOpacity onPress={() => setAboutUsModalVisible(true)}>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => setAboutUsModalVisible(true)}
+        >
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => dispatch(deleteUserAction())}>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => dispatch(deleteUserAction())}
+        >
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() => {
             dispatch(revertAll());
             dispatch(revertAllHabit());

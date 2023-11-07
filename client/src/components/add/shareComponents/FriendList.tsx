@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, Vibration, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import FriendBar from "./FriendBar";
 
@@ -30,6 +30,7 @@ const FriendList = (props: {
                 }}
               >
                 <TouchableOpacity
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() =>
                     shareWithFriendList?.includes(friendsItem.friend._id)
                       ? setShareWithFriendList(() =>
