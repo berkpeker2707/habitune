@@ -1,15 +1,17 @@
 import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import isInCompletedDates from "../helpers/isInCompletedDates";
 
 interface habitTypes {
   loading: boolean;
   error: string;
   isHabitUpdated: boolean;
-  habitData: object;
-  habitsAllData: Array<Object>;
+  singleHabitData: object;
+  totalHabitsData: Array<Object>;
   allHabitsOfSelectedUserData: Array<Object>;
-  habitsData: Array<Object>;
+  todaysHabitsData: Array<Object>;
+  todaysHabitBooleanData: Array<boolean>;
   createHabitData: object;
   deleteHabitData: object;
   updateHabitNameData: object;
@@ -24,10 +26,11 @@ const initialState: habitTypes = {
   loading: false,
   error: "",
   isHabitUpdated: false,
-  habitData: {},
-  habitsAllData: [],
+  singleHabitData: {},
+  totalHabitsData: [],
   allHabitsOfSelectedUserData: [],
-  habitsData: [],
+  todaysHabitsData: [],
+  todaysHabitBooleanData: [],
   createHabitData: {},
   deleteHabitData: {},
   updateHabitNameData: {},
@@ -137,9 +140,40 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
         config
       );
 
+      dispatch(todaysHabitBooleanAction(data));
+
       return data;
     } catch (error) {
       console.log("habit error3: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const todaysHabitBooleanAction = createAsyncThunk(
+  "habit/updateTodaysHabitBoolean",
+  async (data: [], { rejectWithValue, getState, dispatch }) => {
+    try {
+      var todaysHabitBooleanData;
+
+      todaysHabitBooleanData = data.map((allHabitsItem: any) => {
+        return isInCompletedDates(
+          allHabitsItem.dates,
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+            new Date().getHours(),
+            new Date().getMinutes(),
+            new Date().getSeconds()
+          )
+        );
+      });
+
+      console.log("todaysHabitBooleanData: ", todaysHabitBooleanData);
+      return todaysHabitBooleanData;
+    } catch (error) {
+      console.log("habit error12: ", error);
       return rejectWithValue(error);
     }
   }
@@ -403,7 +437,7 @@ const habitSlice = createSlice({
     builder.addCase(createHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(createHabitAction.rejected, (state, action) => {
@@ -418,7 +452,7 @@ const habitSlice = createSlice({
     builder.addCase(fetchAllHabitsAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitsAllData = action?.payload;
+      state.totalHabitsData = action?.payload;
     });
     builder.addCase(fetchAllHabitsAction.rejected, (state, action) => {
       state.loading = false;
@@ -452,9 +486,22 @@ const habitSlice = createSlice({
     builder.addCase(fetchAllTodayHabitsAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitsData = action?.payload;
+      state.todaysHabitsData = action?.payload;
     });
     builder.addCase(fetchAllTodayHabitsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    builder.addCase(todaysHabitBooleanAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(todaysHabitBooleanAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.todaysHabitBooleanData = action?.payload;
+    });
+    builder.addCase(todaysHabitBooleanAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.toString();
     });
@@ -466,7 +513,7 @@ const habitSlice = createSlice({
     builder.addCase(fetchHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
     });
     builder.addCase(fetchHabitAction.rejected, (state, action) => {
       state.loading = false;
@@ -480,7 +527,7 @@ const habitSlice = createSlice({
     builder.addCase(deleteHabitAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(deleteHabitAction.rejected, (state, action) => {
@@ -495,7 +542,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitNameAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitNameAction.rejected, (state, action) => {
@@ -510,7 +557,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitColorAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitColorAction.rejected, (state, action) => {
@@ -525,7 +572,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitSharedWithAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitSharedWithAction.rejected, (state, action) => {
@@ -542,7 +589,7 @@ const habitSlice = createSlice({
       (state, action) => {
         state.loading = false;
         state.error = "";
-        state.habitData = action?.payload;
+        state.singleHabitData = action?.payload;
         state.isHabitUpdated = false;
       }
     );
@@ -561,7 +608,7 @@ const habitSlice = createSlice({
     builder.addCase(updateHabitDatesAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.habitData = action?.payload;
+      state.singleHabitData = action?.payload;
       state.isHabitUpdated = false;
     });
     builder.addCase(updateHabitDatesAction.rejected, (state, action) => {
@@ -578,7 +625,7 @@ const habitSlice = createSlice({
       (state, action) => {
         state.loading = false;
         state.error = "";
-        state.habitData = action?.payload;
+        state.singleHabitData = action?.payload;
         state.isHabitUpdated = false;
       }
     );
@@ -598,9 +645,9 @@ const habitSlice = createSlice({
       (initialState.loading = false),
         (initialState.error = ""),
         (initialState.isHabitUpdated = false),
-        (initialState.habitData = {});
-      initialState.habitsAllData = [];
-      initialState.habitsData = [];
+        (initialState.singleHabitData = {});
+      initialState.totalHabitsData = [];
+      initialState.todaysHabitsData = [];
     });
     builder.addCase(revertAllHabit.rejected, (state, action) => {
       state.loading = false;
@@ -620,47 +667,50 @@ export const selectHabitUpdated = (state: any) => {
 };
 export const selectCreateHabit = (state: any) => {
   // return state.habit.createHabitData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectHabits = (state: any) => {
-  return state.habit.habitsAllData;
+  return state.habit.totalHabitsData;
 };
 export const selectHabitsOfSelectedUser = (state: any) => {
   return state.habit.allHabitsOfSelectedUserData;
 };
 export const selectHabitsToday = (state: any) => {
-  return state.habit.habitsData;
+  return state.habit.todaysHabitsData;
+};
+export const selectHabitsTodayBoolean = (state: any) => {
+  return state.habit.todaysHabitBooleanData;
 };
 export const selectHabit = (state: any) => {
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectDeleteHabit = (state: any) => {
   // return state.habit.deleteHabitData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectUpdateHabitName = (state: any) => {
   // return state.habit.updateHabitNameData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectUpdateHabitColor = (state: any) => {
   // return state.habit.updateHabitColorData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectUpdateHabitSharedWith = (state: any) => {
   // return state.habit.updateHabitSharedWithData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectUpdateHabitFirstAndLastDate = (state: any) => {
   // return state.habit.updateHabitFirstAndLastDateData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectUpdateHabitDates = (state: any) => {
   // return state.habit.updateHabitDatesData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 export const selectUpdateHabitCompletedDate = (state: any) => {
   // return state.habit.updateHabitCompletedDateData;
-  return state.habit.habitData;
+  return state.habit.singleHabitData;
 };
 
 export default habitSlice.reducer;
