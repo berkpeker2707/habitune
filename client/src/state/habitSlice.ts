@@ -170,7 +170,6 @@ export const todaysHabitBooleanAction = createAsyncThunk(
         );
       });
 
-      console.log("todaysHabitBooleanData: ", todaysHabitBooleanData);
       return todaysHabitBooleanData;
     } catch (error) {
       console.log("habit error12: ", error);
