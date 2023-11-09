@@ -822,7 +822,6 @@ export const selectHabitUpdated = (state: any) => {
   return state.habit.isHabitUpdated;
 };
 export const selectCreateHabit = (state: any) => {
-  // return state.habit.createHabitData;
   return state.habit.singleHabitData;
 };
 export const selectHabits = (state: any) => {
@@ -844,31 +843,24 @@ export const selectHabit = (state: any) => {
   return state.habit.singleHabitData;
 };
 export const selectDeleteHabit = (state: any) => {
-  // return state.habit.deleteHabitData;
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitName = (state: any) => {
-  // return state.habit.updateHabitNameData;
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitColor = (state: any) => {
-  // return state.habit.updateHabitColorData;
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitSharedWith = (state: any) => {
-  // return state.habit.updateHabitSharedWithData;
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitFirstAndLastDate = (state: any) => {
-  // return state.habit.updateHabitFirstAndLastDateData;
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitDates = (state: any) => {
-  // return state.habit.updateHabitDatesData;
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitCompletedDate = (state: any) => {
-  // return state.habit.updateHabitCompletedDateData;
   return state.habit.singleHabitData;
 };
 
