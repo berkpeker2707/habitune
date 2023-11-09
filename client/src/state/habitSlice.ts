@@ -2,7 +2,79 @@ import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import isInCompletedDates from "../helpers/isInCompletedDates";
+import isInArray from "../helpers/isInArray";
 
+//date stuff starts
+const todayTemp = new Date();
+const today = new Date(
+  todayTemp.getFullYear(),
+  todayTemp.getMonth(),
+  todayTemp.getDate(),
+  todayTemp.getHours(),
+  todayTemp.getMinutes(),
+  todayTemp.getSeconds()
+);
+const OneDayAgo = new Date(
+  new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate() - 1,
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ).getTime()
+);
+const TwoDayAgo = new Date(
+  new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate() - 2,
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ).getTime()
+);
+const ThreeDayAgo = new Date(
+  new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate() - 3,
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ).getTime()
+);
+const FourDayAgo = new Date(
+  new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate() - 4,
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ).getTime()
+);
+const FiveDayAgo = new Date(
+  new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate() - 5,
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ).getTime()
+);
+const SixDayAgo = new Date(
+  new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate() - 6,
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ).getTime()
+);
+//date stuff ends
 interface habitTypes {
   loading: boolean;
   error: string;
@@ -12,6 +84,7 @@ interface habitTypes {
   allHabitsOfSelectedUserData: Array<Object>;
   todaysHabitsData: Array<Object>;
   todaysHabitBooleanData: Array<boolean>;
+  currentHabitWeekStreakData: Array<number>;
   createHabitData: object;
   deleteHabitData: object;
   updateHabitNameData: object;
@@ -31,6 +104,7 @@ const initialState: habitTypes = {
   allHabitsOfSelectedUserData: [],
   todaysHabitsData: [],
   todaysHabitBooleanData: [],
+  currentHabitWeekStreakData: [],
   createHabitData: {},
   deleteHabitData: {},
   updateHabitNameData: {},
@@ -60,11 +134,11 @@ export const createHabitAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error1: ", error);
+      console.log("createHabitAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -85,9 +159,11 @@ export const fetchAllHabitsAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.get(`/habit/all`, config);
 
+      dispatch(currentHabitWeekStreakAction(data));
+
       return data;
     } catch (error) {
-      console.log("habit error2: ", error);
+      console.log("fetchAllHabitsAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -116,7 +192,7 @@ export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("habit error2: ", error);
+      console.log("fetchAllHabitsOfSelectedUserAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -144,7 +220,7 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("habit error3: ", error);
+      console.log("fetchAllTodayHabitsAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -155,7 +231,6 @@ export const todaysHabitBooleanAction = createAsyncThunk(
   async (data: [], { rejectWithValue, getState, dispatch }) => {
     try {
       var todaysHabitBooleanData;
-
       todaysHabitBooleanData = data.map((allHabitsItem: any) => {
         return isInCompletedDates(
           allHabitsItem.dates,
@@ -172,7 +247,74 @@ export const todaysHabitBooleanAction = createAsyncThunk(
 
       return todaysHabitBooleanData;
     } catch (error) {
-      console.log("habit error12: ", error);
+      console.log("todaysHabitBooleanAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const currentHabitWeekStreakAction = createAsyncThunk(
+  "habit/currentHabitWeekStreak",
+  async (data: [], { rejectWithValue, getState, dispatch }) => {
+    try {
+      var currentHabitWeekStreakData;
+
+      currentHabitWeekStreakData = data.map((allHabitsItem: any) => {
+        if (
+          isInArray(allHabitsItem.dates, SixDayAgo) &&
+          isInArray(allHabitsItem.dates, FiveDayAgo) &&
+          isInArray(allHabitsItem.dates, FourDayAgo) &&
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 7;
+        } else if (
+          isInArray(allHabitsItem.dates, FiveDayAgo) &&
+          isInArray(allHabitsItem.dates, FourDayAgo) &&
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 6;
+        } else if (
+          isInArray(allHabitsItem.dates, FourDayAgo) &&
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 5;
+        } else if (
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 4;
+        } else if (
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 3;
+        } else if (
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 2;
+        } else if (isInArray(allHabitsItem.dates, today)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      return currentHabitWeekStreakData;
+    } catch (error) {
+      console.log("currentHabitWeekStreakAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -195,7 +337,7 @@ export const fetchHabitAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("habit error4: ", error);
+      console.log("fetchHabitAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -221,11 +363,11 @@ export const deleteHabitAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error5: ", error);
+      console.log("deleteHabitAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -251,11 +393,11 @@ export const updateHabitNameAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error6: ", error);
+      console.log("updateHabitNameAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -278,11 +420,11 @@ export const updateHabitColorAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error7: ", error);
+      console.log("updateHabitColorAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -308,11 +450,11 @@ export const updateHabitSharedWithAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error8: ", error);
+      console.log("updateHabitSharedWithAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -338,11 +480,11 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error9: ", error);
+      console.log("updateHabitFirstAndLastDateAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -365,11 +507,11 @@ export const updateHabitDatesAction = createAsyncThunk(
         config
       );
 
-      dispatch(updatedHabit());
+      // dispatch(updatedHabit());
 
       return data;
     } catch (error) {
-      console.log("habit error10: ", error);
+      console.log("updateHabitDatesAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -399,7 +541,7 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("habit error11: ", error);
+      console.log("updateHabitCompletedDateAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -413,7 +555,7 @@ export const revertAllHabit = createAsyncThunk(
 
       return {};
     } catch (error) {
-      console.log("habit error12: ", error);
+      console.log("revertAllHabit: ", error);
       return rejectWithValue(error);
     }
   }
@@ -491,6 +633,7 @@ const habitSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
+    //todays habit completed boolean reducer
     builder.addCase(todaysHabitBooleanAction.pending, (state) => {
       state.loading = true;
       state.error = "";
@@ -501,6 +644,20 @@ const habitSlice = createSlice({
       state.todaysHabitBooleanData = action?.payload;
     });
     builder.addCase(todaysHabitBooleanAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //current weeks habit streak reducer
+    builder.addCase(currentHabitWeekStreakAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(currentHabitWeekStreakAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.currentHabitWeekStreakData = action?.payload;
+    });
+    builder.addCase(currentHabitWeekStreakAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.toString();
     });
@@ -679,6 +836,9 @@ export const selectHabitsToday = (state: any) => {
 };
 export const selectHabitsTodayBoolean = (state: any) => {
   return state.habit.todaysHabitBooleanData;
+};
+export const selectCurrentHabitWeekStreak = (state: any) => {
+  return state.habit.currentHabitWeekStreakData;
 };
 export const selectHabit = (state: any) => {
   return state.habit.singleHabitData;
