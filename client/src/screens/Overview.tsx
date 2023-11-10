@@ -78,17 +78,17 @@ const Overview = memo((props: any) => {
             marginBottom: 0,
           }}
         >
-          {Array(allHabitsNumber)
+          {/* {Array(allHabitsNumber)
             .fill(0)
-            .map((_, i) => (
-              <SkeletonPlaceholder
-                key={i}
-                colorMode={"light"}
-                width={345}
-                height={39.5}
-                radius={0}
-              />
-            ))}
+            .map((_, i) => ( */}
+          <SkeletonPlaceholder
+            // key={i}
+            colorMode={"light"}
+            width={345}
+            height={39.5}
+            radius={0}
+          />
+          {/* ))} */}
         </ScrollView>
       </View>
     );
