@@ -44,15 +44,6 @@ export const notificationSend = async (req: any, res: Response) => {
       userID: req.user[0]._id,
     });
 
-    const notificationResponse = await admin.messaging().sendMulticast({
-      tokens: req.body.tokens,
-      notification: {
-        title: `${req.body.firstName} is busy!`,
-        body: `${req.body.firstName} completed ${req.body.habitName}__🐌`,
-        // imageUrl: "https://www.habitune.net/image/empty-shell",
-      },
-    });
-
     const randomBodies = [
       `${req.body.firstName} achieved a new milestone in ${req.body.habitName}! __🐌`,
       `${req.body.firstName} just made progress in their ${req.body.habitName} journey! 🚀`,
@@ -66,11 +57,20 @@ export const notificationSend = async (req: any, res: Response) => {
     const randomBody =
       randomBodies[Math.floor(Math.random() * randomBodies.length)];
 
+    const notificationResponse = await admin.messaging().sendMulticast({
+      tokens: req.body.tokens,
+      notification: {
+        title: `${req.body.firstName} completed a habit!`,
+        body: randomBody,
+        // imageUrl: "https://www.habitune.net/image/empty-shell",
+      },
+    });
+
     notification
       .updateOne({
         $push: {
           notifications: {
-            title: `${req.body.firstName} is busy!`,
+            title: `${req.body.firstName} completed a habit!`,
             body: randomBody,
             imageUrl: req.body.imageUrl,
             friend: req.body.friend,
