@@ -1,8 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { TextInput, View, Image, Text as RText } from "react-native";
-// import HabitDone from "./HabitDone";
-// import HabitUndone from "./HabitUndone";
+import { View, Image, Text as RText } from "react-native";
 import Svg, {
   G,
   Rect,
@@ -13,9 +11,17 @@ import Svg, {
   Path,
   Mask,
 } from "react-native-svg";
+import HabitBarInput from "./HabitBarInput";
 
 const HabitBar = memo((props: any) => {
-  const { filled, item, itemStroke, nameChangable, text, onChangeText } = props;
+  const {
+    filled,
+    item,
+    itemStroke,
+    nameChangable,
+    habitNameState,
+    setHabitNameState,
+  } = props;
 
   return !filled ? (
     <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
@@ -24,19 +30,10 @@ const HabitBar = memo((props: any) => {
           {item.name}
         </Text>
       ) : (
-        <TextInput
-          placeholder={item.name}
-          style={{
-            height: 45,
-            width: 370,
-            paddingLeft: 40,
-            borderRadius: 20,
-            fontSize: 19,
-          }}
-          maxLength={30}
-          onChangeText={onChangeText}
-          value={text}
-          autoFocus={true}
+        <HabitBarInput
+          name={item.name}
+          habitNameState={habitNameState}
+          setHabitNameState={setHabitNameState}
         />
       )}
 
@@ -197,19 +194,10 @@ const HabitBar = memo((props: any) => {
           {item.name}
         </Text>
       ) : (
-        <TextInput
-          placeholder={item.name}
-          style={{
-            height: 45,
-            width: 370,
-            paddingLeft: 40,
-            borderRadius: 20,
-            fontSize: 19,
-          }}
-          maxLength={30}
-          onChangeText={onChangeText}
-          value={text}
-          autoFocus={true}
+        <HabitBarInput
+          name={item.name}
+          habitNameState={habitNameState}
+          setHabitNameState={setHabitNameState}
         />
       )}
       {/* right side starts */}
