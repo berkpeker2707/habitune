@@ -16,7 +16,6 @@ import HabitBarParent from "../components/home/HabitBarParent";
 
 const Home = memo((props: any) => {
   const {
-    navigation,
     dispatch,
     fetchAllTodayHabitsAction,
     updateHabitCompletedDateAction,
