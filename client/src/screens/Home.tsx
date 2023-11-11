@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo, useCallback, useEffect } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 import {
   Text,
   View,
@@ -37,48 +37,41 @@ const Home = memo((props: any) => {
     setShareWithFriendList,
     selectedItem,
     setSelectedItem,
-    nameChangable,
-    setNameChangable,
-    text,
-    onChangeText,
     modalVisible,
     setModalVisible,
+    setEditHabitSelected,
+    setHabitNameState,
   } = props;
 
-  function handleHabitClicked(index: number) {
-    const newHabitArray = tempBarFilled?.map((nH: any, i: number) => {
-      if (i === index) {
-        return !nH;
-      } else {
-        return nH;
-      }
-    });
-    setTempBarFilled(newHabitArray);
-  }
+  const handleHabitClicked = useMemo(() => {
+    return (index: number) => {
+      const newHabitArray = tempBarFilled?.map((nH: any, i: number) => {
+        if (i === index) {
+          return !nH;
+        } else {
+          return nH;
+        }
+      });
+      setTempBarFilled(newHabitArray);
+    };
+  }, [tempBarFilled, setTempBarFilled]);
 
   useEffect(() => {
     if (currentHabitDatesIncluded) {
       setTempBarFilled(() => [...currentHabitDatesIncluded]);
     }
-  }, [currentHabitDatesIncluded]);
+  }, [currentHabitDatesIncluded, refreshing]);
 
-  useEffect(() => {
-    setHomeEditBool(false);
-  }, []);
+  // useEffect(() => {
+  //   setHomeEditBool(false);
+  // }, []);
 
   useEffect(() => {
     if (homeEditBool === false) {
       setSelectedItem(() => "");
-      setNameChangable(() => false);
+      setHabitNameState(() => "");
     }
   }, [homeEditBool]);
-
-  useEffect(() => {
-    navigation.setParams({
-      name: text,
-    });
-  }, [text]);
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTempBarFilled(() => [...currentHabitDatesIncluded]);
@@ -152,7 +145,7 @@ const Home = memo((props: any) => {
                 setModalVisible(!modalVisible);
                 dispatch(
                   updateHabitSharedWithAction({
-                    _id: navigation.getState().routes[0].params._id,
+                    _id: selectedItem,
                     userId: shareWithFriendList[0],
                   })
                 );
@@ -196,14 +189,10 @@ const Home = memo((props: any) => {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
           >
-            {!habitLoading &&
-            allHabits &&
-            allHabitsNumber > 0 &&
-            tempBarFilled ? (
+            {!habitLoading && allHabits && tempBarFilled ? (
               <>
                 <Text>Habits</Text>
                 <HabitBarParent
-                  navigation={navigation}
                   dispatch={dispatch}
                   updateHabitCompletedDateAction={
                     updateHabitCompletedDateAction
@@ -212,31 +201,23 @@ const Home = memo((props: any) => {
                   currentUser={currentUser}
                   allHabits={allHabits}
                   tempBarFilled={tempBarFilled}
-                  homeEditBool={homeEditBool}
                   setHomeEditBool={setHomeEditBool}
                   selectedItem={selectedItem}
                   setSelectedItem={setSelectedItem}
                   handleHabitClicked={handleHabitClicked}
-                  nameChangable={nameChangable}
-                  setNameChangable={setNameChangable}
-                  text={text}
-                  onChangeText={onChangeText}
+                  setEditHabitSelected={setEditHabitSelected}
+                  setHabitNameState={setHabitNameState}
                 />
               </>
-            ) : allHabitsNumber && allHabitsNumber > 0 ? (
+            ) : habitLoading && allHabitsNumber > 0 ? (
               <>
-                <Text>Habits</Text>
-                {Array(allHabitsNumber)
-                  .fill(0)
-                  .map((_, i) => (
-                    <SkeletonPlaceholder
-                      key={i}
-                      colorMode={"light"}
-                      width={372}
-                      height={48}
-                      radius={20}
-                    />
-                  ))}
+                <Text>Loading...</Text>
+                <SkeletonPlaceholder
+                  colorMode={"light"}
+                  width={372}
+                  height={48}
+                  radius={20}
+                />
               </>
             ) : (
               <Text>Habits Empty 😔</Text>
