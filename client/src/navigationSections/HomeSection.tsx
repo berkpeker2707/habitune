@@ -37,7 +37,6 @@ const HomeSection = (props: any) => {
     revertAll,
     revertAllHabit,
     currentUser,
-    allHabits,
     allHabitsToday,
     allHabitsNumber,
     allHabitsOfSelectedUser,
@@ -59,10 +58,6 @@ const HomeSection = (props: any) => {
     setShareWithFriendList,
     selectedItem,
     setSelectedItem,
-    nameChangable,
-    setNameChangable,
-    text,
-    onChangeText,
     modalVisible,
     setModalVisible,
     showInfoText,
@@ -71,6 +66,10 @@ const HomeSection = (props: any) => {
     setAcceptOrRemoveModalVisible,
     selectedUser,
     setSelectedUser,
+    editHabitSelected,
+    setEditHabitSelected,
+    habitNameState,
+    setHabitNameState,
   } = props;
 
   return (
@@ -84,7 +83,6 @@ const HomeSection = (props: any) => {
         children={(props: any) => (
           <Home
             {...props}
-            navigation={navigation}
             dispatch={dispatch}
             fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
             updateHabitCompletedDateAction={updateHabitCompletedDateAction}
@@ -105,12 +103,10 @@ const HomeSection = (props: any) => {
             setShareWithFriendList={setShareWithFriendList}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
-            nameChangable={nameChangable}
-            setNameChangable={setNameChangable}
-            text={text}
-            onChangeText={onChangeText}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
+            setEditHabitSelected={setEditHabitSelected}
+            setHabitNameState={setHabitNameState}
           />
         )}
         options={{
@@ -178,16 +174,14 @@ const HomeSection = (props: any) => {
             ) : (
               <View style={{ flexDirection: "row" }}>
                 <Pressable
-                  disabled={
-                    navigation.getState().routes[0].params?.name ? false : true
-                  }
+                  disabled={habitNameState ? false : true}
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       dispatch(
                         updateHabitNameAction({
-                          _id: navigation.getState().routes[0].params?._id,
-                          name: navigation.getState().routes[0].params?.name,
+                          _id: editHabitSelected,
+                          name: habitNameState,
                         })
                       );
                       setHomeEditBool(false);
@@ -237,7 +231,7 @@ const HomeSection = (props: any) => {
                     try {
                       dispatch(
                         deleteHabitAction({
-                          _id: navigation.getState().routes[0].params?._id,
+                          _id: selectedItem,
                         })
                       );
                       setHomeEditBool(false);
@@ -384,14 +378,11 @@ const HomeSection = (props: any) => {
         children={(props: any) => (
           <Friend
             {...props}
-            navigation={navigation}
             dispatch={dispatch}
             fetchAllHabitsAction={fetchAllHabitsAction}
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
             }
-            allHabits={allHabits}
-            allHabitsNumber={allHabitsNumber}
             allHabitsOfSelectedUser={allHabitsOfSelectedUser}
             allHabitsOfSelectedUserNumber={allHabitsOfSelectedUserNumber}
             habitLoading={habitLoading}
