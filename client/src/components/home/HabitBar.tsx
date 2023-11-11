@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { View, Image, Text as RText } from "react-native";
+import { View, Image, Text as RText, TextInput } from "react-native";
 import Svg, {
   G,
   Rect,
@@ -11,17 +11,9 @@ import Svg, {
   Path,
   Mask,
 } from "react-native-svg";
-import HabitBarInput from "./HabitBarInput";
 
 const HabitBar = memo((props: any) => {
-  const {
-    filled,
-    item,
-    itemStroke,
-    nameChangable,
-    habitNameState,
-    setHabitNameState,
-  } = props;
+  const { filled, item, itemStroke, nameChangable, setHabitNameState } = props;
 
   return !filled ? (
     <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
@@ -30,10 +22,18 @@ const HabitBar = memo((props: any) => {
           {item.name}
         </Text>
       ) : (
-        <HabitBarInput
-          name={item.name}
-          habitNameState={habitNameState}
-          setHabitNameState={setHabitNameState}
+        <TextInput
+          placeholder={item.name}
+          style={{
+            height: 45,
+            width: 370,
+            paddingLeft: 40,
+            borderRadius: 20,
+            fontSize: 19,
+          }}
+          maxLength={30}
+          onChangeText={setHabitNameState}
+          autoFocus={true}
         />
       )}
 
@@ -194,10 +194,18 @@ const HabitBar = memo((props: any) => {
           {item.name}
         </Text>
       ) : (
-        <HabitBarInput
-          name={item.name}
-          habitNameState={habitNameState}
-          setHabitNameState={setHabitNameState}
+        <TextInput
+          placeholder={item.name}
+          style={{
+            height: 45,
+            width: 370,
+            paddingLeft: 40,
+            borderRadius: 20,
+            fontSize: 19,
+          }}
+          maxLength={30}
+          onChangeText={setHabitNameState}
+          autoFocus={true}
         />
       )}
       {/* right side starts */}
