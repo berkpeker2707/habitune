@@ -32,9 +32,19 @@ const DotGraph = (props: {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-
     isItCurrentUser
-      ? dispatch(fetchAllHabitsAction())
+      ? dispatch(
+          fetchAllHabitsAction(
+            new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              new Date().getDate(),
+              new Date().getHours(),
+              new Date().getMinutes(),
+              new Date().getSeconds()
+            ).getTime()
+          )
+        )
       : // : dispatch(fetchAllHabitsOfSelectedUserAction());
         "";
     setTimeout(() => {
