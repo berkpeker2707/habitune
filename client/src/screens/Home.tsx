@@ -9,6 +9,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Vibration,
+  TextInput,
 } from "react-native";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
@@ -71,6 +72,7 @@ const Home = memo((props: any) => {
       setHabitNameState(() => "");
     }
   }, [homeEditBool]);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTempBarFilled(() => [...currentHabitDatesIncluded]);
@@ -91,141 +93,190 @@ const Home = memo((props: any) => {
     }, 2000);
   }, []);
 
-  return (
-    <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-          setHomeEditBool(false);
+  if (habitLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: "#FFFFFF",
+          justifyContent: "flex-start",
+          alignItems: "center",
         }}
       >
-        <View
+        <Text>Loading...</Text>
+        <SkeletonPlaceholder
+          colorMode={"light"}
+          width={372}
+          height={48}
+          radius={20}
+        />
+      </View>
+    );
+  } else if (!habitLoading && allHabitsNumber === 0) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: "#FFFFFF",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView
           style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 22,
-            backgroundColor: "rgba(52, 52, 52, 0.8)",
+            marginBottom: 0,
+          }}
+        >
+          <TextInput
+            style={{
+              height: 29.5,
+              paddingLeft: 20,
+              color: "#444",
+              textAlign: "center",
+            }}
+            editable={false}
+            selectTextOnFocus={false}
+          >
+            Habits Empty 😔
+          </TextInput>
+        </ScrollView>
+      </View>
+    );
+  } else if (!habitLoading && allHabitsNumber > 0) {
+    return (
+      <>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+            setHomeEditBool(false);
           }}
         >
           <View
             style={{
-              margin: 20,
-              backgroundColor: "white",
-              borderRadius: 20,
-              padding: 35,
+              flex: 1,
+              justifyContent: "center",
               alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 4,
-              elevation: 5,
+              marginTop: 22,
+              backgroundColor: "rgba(52, 52, 52, 0.8)",
             }}
           >
-            <ShareOpened
-              currentUser={currentUser}
-              shareWithFriendList={shareWithFriendList}
-              setShareWithFriendList={setShareWithFriendList}
-            />
-
-            <Pressable
-              style={[
-                { borderRadius: 20, padding: 10, elevation: 2 },
-                { backgroundColor: "#968EB0" },
-              ]}
-              onPressIn={() => Vibration.vibrate(10)}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                dispatch(
-                  updateHabitSharedWithAction({
-                    _id: selectedItem,
-                    userId: shareWithFriendList[0],
-                  })
-                );
-                setHomeEditBool(false);
+            <View
+              style={{
+                margin: 20,
+                backgroundColor: "white",
+                borderRadius: 20,
+                padding: 35,
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 5,
               }}
             >
-              <Text
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  textAlign: "center",
+              <ShareOpened
+                currentUser={currentUser}
+                shareWithFriendList={shareWithFriendList}
+                setShareWithFriendList={setShareWithFriendList}
+              />
+
+              <Pressable
+                style={[
+                  { borderRadius: 20, padding: 10, elevation: 2 },
+                  { backgroundColor: "#968EB0" },
+                ]}
+                onPressIn={() => Vibration.vibrate(10)}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                  dispatch(
+                    updateHabitSharedWithAction({
+                      _id: selectedItem,
+                      userId: shareWithFriendList[0],
+                    })
+                  );
+                  setHomeEditBool(false);
                 }}
               >
-                Share
-              </Text>
-            </Pressable>
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Share
+                </Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </Modal>
-      <TouchableWithoutFeedback
-        onBlur={() => {
-          if (!modalVisible) {
-            setHomeEditBool(false);
-          }
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            height: "100%",
-            backgroundColor: "#FFFFFF",
-            justifyContent: "flex-start",
-            alignItems: "center",
+        </Modal>
+        <TouchableWithoutFeedback
+          onBlur={() => {
+            if (!modalVisible) {
+              setHomeEditBool(false);
+            }
           }}
         >
-          <ScrollView
+          <View
             style={{
-              marginBottom: 85,
+              display: "flex",
+              height: "100%",
+              backgroundColor: "#FFFFFF",
+              justifyContent: "flex-start",
+              alignItems: "center",
             }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
           >
-            {!habitLoading && allHabits && tempBarFilled ? (
-              <>
-                <Text>Habits</Text>
-                <HabitBarParent
-                  dispatch={dispatch}
-                  updateHabitCompletedDateAction={
-                    updateHabitCompletedDateAction
-                  }
-                  notificationSendAction={notificationSendAction}
-                  currentUser={currentUser}
-                  allHabits={allHabits}
-                  tempBarFilled={tempBarFilled}
-                  setHomeEditBool={setHomeEditBool}
-                  selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
-                  handleHabitClicked={handleHabitClicked}
-                  setEditHabitSelected={setEditHabitSelected}
-                  setHabitNameState={setHabitNameState}
-                />
-              </>
-            ) : habitLoading && allHabitsNumber > 0 ? (
-              <>
-                <Text>Loading...</Text>
-                <SkeletonPlaceholder
-                  colorMode={"light"}
-                  width={372}
-                  height={48}
-                  radius={20}
-                />
-              </>
-            ) : (
-              <Text>Habits Empty 😔</Text>
-            )}
-          </ScrollView>
-        </View>
-      </TouchableWithoutFeedback>
-    </>
-  );
+            <ScrollView
+              style={{
+                marginBottom: 85,
+              }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            >
+              <Text>Habits</Text>
+              <HabitBarParent
+                dispatch={dispatch}
+                updateHabitCompletedDateAction={updateHabitCompletedDateAction}
+                notificationSendAction={notificationSendAction}
+                currentUser={currentUser}
+                allHabits={allHabits}
+                tempBarFilled={tempBarFilled}
+                setHomeEditBool={setHomeEditBool}
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
+                handleHabitClicked={handleHabitClicked}
+                setEditHabitSelected={setEditHabitSelected}
+                setHabitNameState={setHabitNameState}
+              />
+            </ScrollView>
+          </View>
+        </TouchableWithoutFeedback>
+      </>
+    );
+  } else {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: "#FFFFFF",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>"I have no memory of this place..." 🧙🏻</Text>
+      </View>
+    );
+  }
 });
 
 export default Home;
