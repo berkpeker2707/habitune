@@ -57,7 +57,7 @@ const Add = (props: {
         display: "flex",
         height: "100%",
         backgroundColor: "#FFFFFF",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >
