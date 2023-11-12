@@ -21,13 +21,33 @@ const Overview = memo((props: any) => {
     allHabitDatesDots,
   } = props;
 
-  if (
-    (habitLoading && allHabitsNumber === 0) ||
-    (habitLoading && allHabitsNumber === undefined) ||
-    currentHabitWeekStreakState === undefined ||
-    allHabitDatesDots === undefined ||
-    allHabits === undefined
-  ) {
+  if (habitLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: "#FFFFFF",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Text>Loading...</Text>
+          <SkeletonPlaceholder
+            colorMode={"light"}
+            width={345}
+            height={39.5}
+            radius={0}
+          />
+        </ScrollView>
+      </View>
+    );
+  } else if (!habitLoading && allHabitsNumber === 0) {
     return (
       <View
         style={{
@@ -58,40 +78,7 @@ const Overview = memo((props: any) => {
         </ScrollView>
       </View>
     );
-  } else if (
-    habitLoading &&
-    allHabitsNumber > 0 &&
-    currentHabitWeekStreakState.length > 0
-  ) {
-    return (
-      <View
-        style={{
-          display: "flex",
-          height: "100%",
-          backgroundColor: "#FFFFFF",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <ScrollView
-          style={{
-            marginBottom: 0,
-          }}
-        >
-          <SkeletonPlaceholder
-            colorMode={"light"}
-            width={345}
-            height={39.5}
-            radius={0}
-          />
-        </ScrollView>
-      </View>
-    );
-  } else if (
-    !habitLoading &&
-    allHabitsNumber > 0 &&
-    currentHabitWeekStreakState.length > 0
-  ) {
+  } else if (!habitLoading && allHabitsNumber > 0) {
     return (
       <View
         style={{
@@ -107,10 +94,16 @@ const Overview = memo((props: any) => {
             marginBottom: 85,
           }}
         >
-          <StreakGraph
-            allHabits={allHabits}
-            currentHabitWeekStreak={currentHabitWeekStreakState}
-          />
+          {currentHabitWeekStreakState.some((value: number) => value !== 0) ? (
+            <>
+              <StreakGraph
+                allHabits={allHabits}
+                currentHabitWeekStreak={currentHabitWeekStreakState}
+              />
+            </>
+          ) : (
+            <></>
+          )}
           <View style={{ margin: 20 }}></View>
           <DotGraph
             dispatch={dispatch}

@@ -48,6 +48,7 @@ const Friend = (props: {
             marginBottom: 0,
           }}
         >
+          <Text>Loading...</Text>
           <SkeletonPlaceholder
             colorMode={"light"}
             width={345}
