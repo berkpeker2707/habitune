@@ -86,6 +86,8 @@ interface habitTypes {
   todaysHabitBooleanData: Array<boolean>;
   currentHabitWeekStreakData: Array<number>;
   friendCurrentHabitWeekData: Array<number>;
+  allHabitDatesDotsData: Array<boolean>;
+  friendAllHabitDatesDotsData: Array<boolean>;
   createHabitData: object;
   deleteHabitData: object;
   updateHabitNameData: object;
@@ -107,6 +109,8 @@ const initialState: habitTypes = {
   todaysHabitBooleanData: [],
   currentHabitWeekStreakData: [],
   friendCurrentHabitWeekData: [],
+  allHabitDatesDotsData: [],
+  friendAllHabitDatesDotsData: [],
   createHabitData: {},
   deleteHabitData: {},
   updateHabitNameData: {},
@@ -175,6 +179,7 @@ export const fetchAllHabitsAction = createAsyncThunk(
       const { data } = await axiosInstance.get(`/habit/all`, config);
 
       dispatch(currentHabitWeekStreakAction(data));
+      dispatch(allHabitDatesDotsAction(data));
 
       return data;
     } catch (error) {
@@ -206,6 +211,7 @@ export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
       );
 
       dispatch(friendCurrentHabitWeekStreakAction(data));
+      dispatch(friendAllHabitDatesDotsAction(data));
 
       return data;
     } catch (error) {
@@ -397,6 +403,54 @@ export const friendCurrentHabitWeekStreakAction = createAsyncThunk(
       });
 
       return friendCurrentHabitWeekData;
+    } catch (error) {
+      console.log("currentHabitWeekStreakAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const allHabitDatesDotsAction = createAsyncThunk(
+  "habit/allHabitDatesDots",
+  async (data: [dates: any], { rejectWithValue, getState, dispatch }) => {
+    try {
+      var allHabitDatesDotsData: Array<boolean> = [];
+
+      for (var i = 0; i < data.length; i++) {
+        allHabitDatesDotsData.push(isInArray(data[i].dates, today));
+        allHabitDatesDotsData.push(isInArray(data[i].dates, OneDayAgo));
+        allHabitDatesDotsData.push(isInArray(data[i].dates, TwoDayAgo));
+        allHabitDatesDotsData.push(isInArray(data[i].dates, ThreeDayAgo));
+        allHabitDatesDotsData.push(isInArray(data[i].dates, FourDayAgo));
+        allHabitDatesDotsData.push(isInArray(data[i].dates, FiveDayAgo));
+        allHabitDatesDotsData.push(isInArray(data[i].dates, SixDayAgo));
+      }
+
+      return allHabitDatesDotsData;
+    } catch (error) {
+      console.log("currentHabitWeekStreakAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const friendAllHabitDatesDotsAction = createAsyncThunk(
+  "habit/friendAllHabitDatesDots",
+  async (data: [dates: any], { rejectWithValue, getState, dispatch }) => {
+    try {
+      var friendAllHabitDatesDotsData: Array<boolean> = [];
+
+      for (var i = 0; i < data.length; i++) {
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, today));
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, OneDayAgo));
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, TwoDayAgo));
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, ThreeDayAgo));
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, FourDayAgo));
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, FiveDayAgo));
+        friendAllHabitDatesDotsData.push(isInArray(data[i].dates, SixDayAgo));
+      }
+
+      return friendAllHabitDatesDotsData;
     } catch (error) {
       console.log("currentHabitWeekStreakAction: ", error);
       return rejectWithValue(error);
@@ -758,7 +812,7 @@ const habitSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
-    //friend current habit week streakAction reducer
+    //friend current habit week streak reducer
     builder.addCase(friendCurrentHabitWeekStreakAction.pending, (state) => {
       state.loading = true;
       state.error = "";
@@ -778,6 +832,37 @@ const habitSlice = createSlice({
         state.error = action.error.toString();
       }
     );
+    //all habit dates dots reducer
+    builder.addCase(allHabitDatesDotsAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(allHabitDatesDotsAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.allHabitDatesDotsData = action?.payload;
+    });
+    builder.addCase(allHabitDatesDotsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
+    //friend all habit dates dots action reducer
+    builder.addCase(friendAllHabitDatesDotsAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(
+      friendAllHabitDatesDotsAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.friendAllHabitDatesDotsData = action?.payload;
+      }
+    );
+    builder.addCase(friendAllHabitDatesDotsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
     //get single habit reducer
     builder.addCase(fetchHabitAction.pending, (state) => {
       state.loading = true;
@@ -958,6 +1043,12 @@ export const selectCurrentHabitWeekStreak = (state: any) => {
 };
 export const selectFriendCurrentHabitWeekStreak = (state: any) => {
   return state.habit.friendCurrentHabitWeekData;
+};
+export const selectAllHabitDatesDots = (state: any) => {
+  return state.habit.allHabitDatesDotsData;
+};
+export const selectFriendAllHabitDatesDots = (state: any) => {
+  return state.habit.friendAllHabitDatesDotsData;
 };
 export const selectHabit = (state: any) => {
   return state.habit.singleHabitData;

@@ -62,7 +62,7 @@ const DotGraph = (props: {
         alignItems: "center",
       }}
     >
-      {!habitLoading && allHabitsNumber ? (
+      {!habitLoading && allHabitDatesDots && allHabitsNumber > 0 ? (
         <ScrollView
           style={{
             marginBottom: 85,
@@ -95,7 +95,7 @@ const DotGraph = (props: {
             />
           ))}
         </ScrollView>
-      ) : allHabitsNumber && allHabitsNumber > 0 ? (
+      ) : habitLoading ? (
         <ScrollView
           style={{
             marginBottom: 85,
@@ -113,17 +113,12 @@ const DotGraph = (props: {
           >
             All Habits 🐌
           </TextInput>
-          {/* {Array(allHabitsNumber)
-            .fill(0)
-            .map((_, i) => ( */}
           <SkeletonPlaceholder
-            // key={i}
             colorMode={"light"}
             width={345}
             height={39.5}
             radius={0}
           />
-          {/* ))} */}
         </ScrollView>
       ) : (
         <ScrollView

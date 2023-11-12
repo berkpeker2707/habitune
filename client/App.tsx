@@ -65,6 +65,8 @@ import {
   updateHabitCompletedDateAction,
   updateHabitSharedWithAction,
   selectFriendCurrentHabitWeekStreak,
+  selectAllHabitDatesDots,
+  selectFriendAllHabitDatesDots,
 } from "./src/state/habitSlice";
 import {
   notificationSendAction,
@@ -163,6 +165,10 @@ const App = () => {
     selectFriendCurrentHabitWeekStreak
   );
 
+  const allHabitDatesDots = useSelector(selectAllHabitDatesDots);
+
+  const friendAllHabitDatesDots = useSelector(selectFriendAllHabitDatesDots);
+
   const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
 
   const habitUpdated = useSelector(selectHabitUpdated);
@@ -175,9 +181,6 @@ const App = () => {
 
   const [friendIDState, setFriendIDState] = useState<number>();
   const [friendName, setFriendName] = useState<string>();
-
-  const [friendAllHabitDatesDotsState, setFriendAllHabitDatesDotsState] =
-    useState<Array<Boolean>>([]);
 
   //home screen states
   const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
@@ -249,133 +252,6 @@ const App = () => {
     todayTemp.getMinutes(),
     todayTemp.getSeconds()
   );
-  const OneDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 1,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const TwoDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 2,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const ThreeDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 3,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const FourDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 4,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const FiveDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 5,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  const SixDayAgo = new Date(
-    new Date(
-      todayTemp.getFullYear(),
-      todayTemp.getMonth(),
-      todayTemp.getDate() - 6,
-      todayTemp.getHours(),
-      todayTemp.getMinutes(),
-      todayTemp.getSeconds()
-    ).getTime()
-  );
-  //date stuff starts
-
-  //allHabitDatesDots
-  try {
-    //array of booleans for all habits of dot graph
-    var allHabitDatesDots: Array<boolean> = [];
-    for (var i = 0; i < allHabitsOfSelectedUser.length; i++) {
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, today)
-      );
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, OneDayAgo)
-      );
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, TwoDayAgo)
-      );
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, ThreeDayAgo)
-      );
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, FourDayAgo)
-      );
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, FiveDayAgo)
-      );
-      allHabitDatesDots.push(
-        isInArray(allHabitsOfSelectedUser[i].dates, SixDayAgo)
-      );
-    }
-  } catch (error) {
-    console.log("allHabitDatesDots: ", error);
-  }
-
-  //friendAllHabitDatesDots
-  useEffect(() => {
-    try {
-      //array of booleans for all habits of dot graph
-      var friendAllHabitDatesDots: Array<boolean> = [];
-
-      for (var i = 0; i < allHabitsOfSelectedUser.length; i++) {
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, today)
-        );
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, OneDayAgo)
-        );
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, TwoDayAgo)
-        );
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, ThreeDayAgo)
-        );
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, FourDayAgo)
-        );
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, FiveDayAgo)
-        );
-        friendAllHabitDatesDots.push(
-          isInArray(allHabitsOfSelectedUser[i].dates, SixDayAgo)
-        );
-      }
-      setFriendAllHabitDatesDotsState(() => friendAllHabitDatesDots);
-    } catch (error) {
-      console.log("friendAllHabitDatesDots: ", error);
-    }
-  }, [friendIDState]); // You may want to update this dependency array based on your specific needs
 
   //token
   useEffect(() => {
@@ -534,7 +410,7 @@ const App = () => {
                   friendName={friendName}
                   setFriendName={setFriendName}
                   friendCurrentHabitWeekStreakState={friendCurrentHabitWeek}
-                  friendAllHabitDatesDotsState={friendAllHabitDatesDotsState}
+                  friendAllHabitDatesDotsState={friendAllHabitDatesDots}
                   tempBarFilled={tempBarFilled}
                   setTempBarFilled={setTempBarFilled}
                   shareWithFriendList={shareWithFriendList}
@@ -623,7 +499,7 @@ const App = () => {
                   setRefreshing={setRefreshing}
                   onShare={onShare}
                   currentHabitWeekStreakState={currentHabitWeekStreak}
-                  allHabitDatesDots={[]}
+                  allHabitDatesDots={allHabitDatesDots}
                 />
               )}
               options={{
