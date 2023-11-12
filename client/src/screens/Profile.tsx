@@ -33,6 +33,8 @@ const Profile = memo((props: any) => {
     setSelectedUser,
     friendIDState,
     setFriendIDState,
+    friendName,
+    setFriendName,
   } = props;
 
   const onRefresh = useCallback(() => {
@@ -206,6 +208,8 @@ const Profile = memo((props: any) => {
                 setSelectedUser={setSelectedUser}
                 friendIDState={friendIDState}
                 setFriendIDState={setFriendIDState}
+                friendName={friendName}
+                setFriendName={setFriendName}
               />
             ))}
         </View>

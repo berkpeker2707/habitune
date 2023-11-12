@@ -20,6 +20,8 @@ const FriendsCard = memo(
     setSelectedUser: any;
     friendIDState: number;
     setFriendIDState: Function;
+    friendName: number;
+    setFriendName: Function;
   }) => {
     const {
       navigation,
@@ -37,6 +39,8 @@ const FriendsCard = memo(
       setSelectedUser,
       friendIDState,
       setFriendIDState,
+      friendName,
+      setFriendName,
     } = props;
 
     return (
@@ -55,6 +59,7 @@ const FriendsCard = memo(
                 setShowInfoText(false);
               }, 5000);
               setFriendIDState(() => friendID);
+              setFriendName(() => name);
               // console.log(selectedUser);
               navigation.navigate("Friend", {
                 // currentUser: currentUser,

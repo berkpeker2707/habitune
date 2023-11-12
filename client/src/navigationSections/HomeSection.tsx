@@ -50,6 +50,8 @@ const HomeSection = (props: any) => {
     onShare,
     friendIDState,
     setFriendIDState,
+    friendName,
+    setFriendName,
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
     tempBarFilled,
@@ -276,6 +278,8 @@ const HomeSection = (props: any) => {
             setSelectedUser={setSelectedUser}
             friendIDState={friendIDState}
             setFriendIDState={setFriendIDState}
+            friendName={friendName}
+            setFriendName={setFriendName}
           />
         )}
         options={{
@@ -375,6 +379,7 @@ const HomeSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Friend"
+        options={{ title: `${friendName}'s Habits` }}
         children={(props: any) => (
           <Friend
             {...props}
