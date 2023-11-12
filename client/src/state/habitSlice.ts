@@ -134,6 +134,19 @@ export const createHabitAction = createAsyncThunk(
         config
       );
 
+      dispatch(
+        fetchAllTodayHabitsAction(
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+            new Date().getHours(),
+            new Date().getMinutes(),
+            new Date().getSeconds()
+          ).getTime()
+        )
+      );
+
       dispatch(updatedHabit());
 
       return data;
