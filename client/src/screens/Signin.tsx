@@ -6,6 +6,7 @@ import {
   ImageBackground,
   Text,
   Vibration,
+  ActivityIndicator,
 } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
@@ -26,7 +27,7 @@ import { signInWithGoogleAction } from "../state/userSlice";
 WebBrowser.maybeCompleteAuthSession();
 
 const Signin = (props: any) => {
-  const { dispatch } = props;
+  const { dispatch, userLoading } = props;
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
@@ -63,7 +64,7 @@ const Signin = (props: any) => {
     }
   }
 
-  return (
+  return !userLoading ? (
     <>
       <StatusBar style="light" />
       <LoginModal
@@ -81,7 +82,7 @@ const Signin = (props: any) => {
           display: "flex",
           height: "100%",
           backgroundColor: "#FFFFFF",
-          justifyContent: "flex-start",
+          justifyContent: "center",
           opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
           // alignItems: "center",
         }}
@@ -176,6 +177,19 @@ const Signin = (props: any) => {
         </ImageBackground>
       </View>
     </>
+  ) : (
+    <View
+      style={{
+        display: "flex",
+        height: "100%",
+        backgroundColor: "#FFFFFF",
+        justifyContent: "center",
+        opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
+        // alignItems: "center",
+      }}
+    >
+      <ActivityIndicator size="large" color="#968EB0" />
+    </View>
   );
 };
 
