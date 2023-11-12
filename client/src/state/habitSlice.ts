@@ -85,6 +85,7 @@ interface habitTypes {
   todaysHabitsData: Array<Object>;
   todaysHabitBooleanData: Array<boolean>;
   currentHabitWeekStreakData: Array<number>;
+  friendCurrentHabitWeekData: Array<number>;
   createHabitData: object;
   deleteHabitData: object;
   updateHabitNameData: object;
@@ -105,6 +106,7 @@ const initialState: habitTypes = {
   todaysHabitsData: [],
   todaysHabitBooleanData: [],
   currentHabitWeekStreakData: [],
+  friendCurrentHabitWeekData: [],
   createHabitData: {},
   deleteHabitData: {},
   updateHabitNameData: {},
@@ -202,6 +204,8 @@ export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
         `/habit/all/of/selected/user/${fetchAllHabitsOfSelectedUserPayload}`,
         config
       );
+
+      dispatch(friendCurrentHabitWeekStreakAction(data));
 
       return data;
     } catch (error) {
@@ -326,6 +330,73 @@ export const currentHabitWeekStreakAction = createAsyncThunk(
       });
 
       return currentHabitWeekStreakData;
+    } catch (error) {
+      console.log("currentHabitWeekStreakAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const friendCurrentHabitWeekStreakAction = createAsyncThunk(
+  "habit/friendCurrentHabitWeekStreak",
+  async (data: [], { rejectWithValue, getState, dispatch }) => {
+    try {
+      var friendCurrentHabitWeekData;
+
+      friendCurrentHabitWeekData = data.map((allHabitsItem: any) => {
+        if (
+          isInArray(allHabitsItem.dates, SixDayAgo) &&
+          isInArray(allHabitsItem.dates, FiveDayAgo) &&
+          isInArray(allHabitsItem.dates, FourDayAgo) &&
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 7;
+        } else if (
+          isInArray(allHabitsItem.dates, FiveDayAgo) &&
+          isInArray(allHabitsItem.dates, FourDayAgo) &&
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 6;
+        } else if (
+          isInArray(allHabitsItem.dates, FourDayAgo) &&
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 5;
+        } else if (
+          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 4;
+        } else if (
+          isInArray(allHabitsItem.dates, TwoDayAgo) &&
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 3;
+        } else if (
+          isInArray(allHabitsItem.dates, OneDayAgo) &&
+          isInArray(allHabitsItem.dates, today)
+        ) {
+          return 2;
+        } else if (isInArray(allHabitsItem.dates, today)) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      return friendCurrentHabitWeekData;
     } catch (error) {
       console.log("currentHabitWeekStreakAction: ", error);
       return rejectWithValue(error);
@@ -687,6 +758,26 @@ const habitSlice = createSlice({
       state.loading = false;
       state.error = action.error.toString();
     });
+    //friend current habit week streakAction reducer
+    builder.addCase(friendCurrentHabitWeekStreakAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(
+      friendCurrentHabitWeekStreakAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.friendCurrentHabitWeekData = action?.payload;
+      }
+    );
+    builder.addCase(
+      friendCurrentHabitWeekStreakAction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.toString();
+      }
+    );
     //get single habit reducer
     builder.addCase(fetchHabitAction.pending, (state) => {
       state.loading = true;
@@ -864,6 +955,9 @@ export const selectHabitsTodayBoolean = (state: any) => {
 };
 export const selectCurrentHabitWeekStreak = (state: any) => {
   return state.habit.currentHabitWeekStreakData;
+};
+export const selectFriendCurrentHabitWeekStreak = (state: any) => {
+  return state.habit.friendCurrentHabitWeekData;
 };
 export const selectHabit = (state: any) => {
   return state.habit.singleHabitData;
