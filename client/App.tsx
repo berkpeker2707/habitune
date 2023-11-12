@@ -54,6 +54,8 @@ import {
   selectHabitUpdated,
   selectHabits,
   selectHabitsToday,
+  selectHabitsTodayBoolean,
+  selectCurrentHabitWeekStreak,
   selectHabitsOfSelectedUser,
   selectHabitLoading,
   updateHabitNameAction,
@@ -62,6 +64,7 @@ import {
   revertAllHabit,
   updateHabitCompletedDateAction,
   updateHabitSharedWithAction,
+  selectFriendCurrentHabitWeekStreak,
 } from "./src/state/habitSlice";
 import {
   notificationSendAction,
@@ -99,7 +102,6 @@ import isInArray from "./src/helpers/isInArray";
 import registerForPushNotificationsAsync from "./src/helpers/registerForPushNotificationsAsync";
 import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
 import onShare from "./src/helpers/shareApp";
-import isInCompletedDates from "./src/helpers/isInCompletedDates";
 
 import ErrorBoundary from "react-native-error-boundary";
 
@@ -153,6 +155,14 @@ const App = () => {
 
   const allHabitsToday = useSelector(selectHabitsToday);
 
+  const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
+
+  const currentHabitWeekStreak = useSelector(selectCurrentHabitWeekStreak);
+
+  const friendCurrentHabitWeek = useSelector(
+    selectFriendCurrentHabitWeekStreak
+  );
+
   const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
 
   const habitUpdated = useSelector(selectHabitUpdated);
@@ -164,9 +174,8 @@ const App = () => {
   const [homeEditBool, setHomeEditBool] = useState<boolean>(false);
 
   const [friendIDState, setFriendIDState] = useState<number>();
+  const [friendName, setFriendName] = useState<string>();
 
-  const [friendCurrentHabitWeekStreakState, setFriendCurrentHabitWeekStreak] =
-    useState([]);
   const [friendAllHabitDatesDotsState, setFriendAllHabitDatesDotsState] =
     useState<Array<Boolean>>([]);
 
@@ -175,8 +184,6 @@ const App = () => {
   () => [];
   const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>("");
-  const [nameChangable, setNameChangable] = useState<boolean>(false);
-  const [text, onChangeText] = useState<string>("");
   const [modalVisible, setModalVisible] = useState(false);
 
   const [showInfoText, setShowInfoText] = useState<boolean>(false);
@@ -191,6 +198,9 @@ const App = () => {
     name: "",
     pending: false,
   });
+
+  const [habitNameState, setHabitNameState] = useState<string>("");
+  const [editHabitSelected, setEditHabitSelected] = useState<number>(0);
 
   //add screen states
   const [taskName, setTaskName] = useState<string>("");
@@ -301,65 +311,6 @@ const App = () => {
   );
   //date stuff starts
 
-  //currentHabitWeekStreakState
-  try {
-    //returns a one dimensional array, which has streak numbers
-    var currentHabitWeekStreakState = allHabits.map((allHabitsItem: any) => {
-      if (
-        isInArray(allHabitsItem.dates, SixDayAgo) &&
-        isInArray(allHabitsItem.dates, FiveDayAgo) &&
-        isInArray(allHabitsItem.dates, FourDayAgo) &&
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
-      ) {
-        return 7;
-      } else if (
-        isInArray(allHabitsItem.dates, FiveDayAgo) &&
-        isInArray(allHabitsItem.dates, FourDayAgo) &&
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
-      ) {
-        return 6;
-      } else if (
-        isInArray(allHabitsItem.dates, FourDayAgo) &&
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
-      ) {
-        return 5;
-      } else if (
-        isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
-      ) {
-        return 4;
-      } else if (
-        isInArray(allHabitsItem.dates, TwoDayAgo) &&
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
-      ) {
-        return 3;
-      } else if (
-        isInArray(allHabitsItem.dates, OneDayAgo) &&
-        isInArray(allHabitsItem.dates, today)
-      ) {
-        return 2;
-      } else if (isInArray(allHabitsItem.dates, today)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  } catch (error) {
-    console.log("currentHabitWeekStreakState: ", error);
-  }
-
   //allHabitDatesDots
   try {
     //array of booleans for all habits of dot graph
@@ -390,70 +341,6 @@ const App = () => {
   } catch (error) {
     console.log("allHabitDatesDots: ", error);
   }
-
-  //friendCurrentHabitWeekStreak
-  useEffect(() => {
-    try {
-      //returns a one dimensional array, which has streak numbers
-      var friendCurrentHabitWeekStreak = allHabitsOfSelectedUser.map(
-        (allHabitsItem: any) => {
-          if (
-            isInArray(allHabitsItem.dates, SixDayAgo) &&
-            isInArray(allHabitsItem.dates, FiveDayAgo) &&
-            isInArray(allHabitsItem.dates, FourDayAgo) &&
-            isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-            isInArray(allHabitsItem.dates, TwoDayAgo) &&
-            isInArray(allHabitsItem.dates, OneDayAgo) &&
-            isInArray(allHabitsItem.dates, today)
-          ) {
-            return 7;
-          } else if (
-            isInArray(allHabitsItem.dates, FiveDayAgo) &&
-            isInArray(allHabitsItem.dates, FourDayAgo) &&
-            isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-            isInArray(allHabitsItem.dates, TwoDayAgo) &&
-            isInArray(allHabitsItem.dates, OneDayAgo) &&
-            isInArray(allHabitsItem.dates, today)
-          ) {
-            return 6;
-          } else if (
-            isInArray(allHabitsItem.dates, FourDayAgo) &&
-            isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-            isInArray(allHabitsItem.dates, TwoDayAgo) &&
-            isInArray(allHabitsItem.dates, OneDayAgo) &&
-            isInArray(allHabitsItem.dates, today)
-          ) {
-            return 5;
-          } else if (
-            isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-            isInArray(allHabitsItem.dates, TwoDayAgo) &&
-            isInArray(allHabitsItem.dates, OneDayAgo) &&
-            isInArray(allHabitsItem.dates, today)
-          ) {
-            return 4;
-          } else if (
-            isInArray(allHabitsItem.dates, TwoDayAgo) &&
-            isInArray(allHabitsItem.dates, OneDayAgo) &&
-            isInArray(allHabitsItem.dates, today)
-          ) {
-            return 3;
-          } else if (
-            isInArray(allHabitsItem.dates, OneDayAgo) &&
-            isInArray(allHabitsItem.dates, today)
-          ) {
-            return 2;
-          } else if (isInArray(allHabitsItem.dates, today)) {
-            return 1;
-          } else {
-            return 0;
-          }
-        }
-      );
-      setFriendCurrentHabitWeekStreak(() => friendCurrentHabitWeekStreak);
-    } catch (error) {
-      console.log("friendCurrentHabitWeekStreak: ", error);
-    }
-  }, [friendIDState]);
 
   //friendAllHabitDatesDots
   useEffect(() => {
@@ -490,53 +377,24 @@ const App = () => {
     }
   }, [friendIDState]); // You may want to update this dependency array based on your specific needs
 
-  //currentHabitDatesIncluded
-  try {
-    //array of booleans to check if today's habits are in today home screen
-    var currentHabitDatesIncluded = useCallback(
-      allHabitsToday &&
-        allHabitsToday.map((allHabitsItem: any) => {
-          return isInCompletedDates(allHabitsItem.dates, today);
-        }),
-      [allHabitsToday, habitUpdated]
-    );
-  } catch (error) {
-    console.log("currentHabitDatesIncluded: ", error);
-  }
-
   //token
   useEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
     ) {
-      dispatch(
-        fetchCurrentUserProfileAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
+      dispatch(fetchCurrentUserProfileAction(today.getTime()));
       dispatch(fetchAllHabitsAction());
-      dispatch(
-        fetchAllTodayHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
+      dispatch(fetchAllTodayHabitsAction(today.getTime()));
     }
-  }, [token, tokenSecondOption, currentUser._id, userUpdated, habitUpdated]);
+  }, [token, tokenSecondOption]);
+
+  //update overview if home is updated
+  useEffect(() => {
+    if (habitUpdated) {
+      dispatch(fetchAllHabitsAction());
+    }
+  }, [habitUpdated]);
 
   //expo device registeration
   useEffect(() => {
@@ -656,7 +514,6 @@ const App = () => {
                   revertAll={revertAll}
                   revertAllHabit={revertAllHabit}
                   currentUser={currentUser}
-                  allHabits={allHabits}
                   allHabitsToday={allHabitsToday ? allHabitsToday : []}
                   allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
                   allHabitsOfSelectedUser={
@@ -665,7 +522,7 @@ const App = () => {
                   allHabitsOfSelectedUserNumber={
                     allHabitsOfSelectedUser ? allHabitsOfSelectedUser.length : 0
                   }
-                  currentHabitDatesIncluded={currentHabitDatesIncluded}
+                  currentHabitDatesIncluded={habitsTodayBoolean}
                   homeEditBool={homeEditBool}
                   setHomeEditBool={setHomeEditBool}
                   habitLoading={habitLoading}
@@ -674,9 +531,9 @@ const App = () => {
                   onShare={onShare}
                   friendIDState={friendIDState}
                   setFriendIDState={setFriendIDState}
-                  friendCurrentHabitWeekStreakState={
-                    friendCurrentHabitWeekStreakState
-                  }
+                  friendName={friendName}
+                  setFriendName={setFriendName}
+                  friendCurrentHabitWeekStreakState={friendCurrentHabitWeek}
                   friendAllHabitDatesDotsState={friendAllHabitDatesDotsState}
                   tempBarFilled={tempBarFilled}
                   setTempBarFilled={setTempBarFilled}
@@ -684,10 +541,6 @@ const App = () => {
                   setShareWithFriendList={setShareWithFriendList}
                   selectedItem={selectedItem}
                   setSelectedItem={setSelectedItem}
-                  nameChangable={nameChangable}
-                  setNameChangable={setNameChangable}
-                  text={text}
-                  onChangeText={onChangeText}
                   modalVisible={modalVisible}
                   setModalVisible={setModalVisible}
                   showInfoText={showInfoText}
@@ -696,6 +549,10 @@ const App = () => {
                   setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
                   selectedUser={selectedUser}
                   setSelectedUser={setSelectedUser}
+                  editHabitSelected={editHabitSelected}
+                  setEditHabitSelected={setEditHabitSelected}
+                  habitNameState={habitNameState}
+                  setHabitNameState={setHabitNameState}
                 />
               )}
               options={{
@@ -765,8 +622,8 @@ const App = () => {
                   refreshing={refreshing}
                   setRefreshing={setRefreshing}
                   onShare={onShare}
-                  currentHabitWeekStreakState={currentHabitWeekStreakState}
-                  allHabitDatesDots={allHabitDatesDots}
+                  currentHabitWeekStreakState={currentHabitWeekStreak}
+                  allHabitDatesDots={[]}
                 />
               )}
               options={{
