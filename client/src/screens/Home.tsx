@@ -170,7 +170,7 @@ const Home = memo(
           </ScrollView>
         </View>
       );
-    } else if (!habitLoading && allHabitsNumber > 0) {
+    } else if (!habitLoading && allHabitsNumber > 0 && tempBarFilled) {
       return (
         <>
           <Modal
