@@ -118,8 +118,8 @@ android {
         applicationId 'com.thelittleteaclipper.habitune'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "1.1.3"
+        versionCode 10
+        versionName "1.1.4"
     }
 
     splits {
