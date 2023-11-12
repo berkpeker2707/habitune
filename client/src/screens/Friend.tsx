@@ -4,9 +4,20 @@ import { ScrollView, TextInput, View, Text } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
-import { memo } from "react";
 
-const Friend = memo((props: any) => {
+const Friend = (props: {
+  dispatch: Function;
+  fetchAllHabitsAction: Function;
+  fetchAllHabitsOfSelectedUserAction: Function;
+  allHabitsOfSelectedUser: [];
+  allHabitsOfSelectedUserNumber: number;
+  habitLoading: boolean;
+  refreshing: boolean;
+  setRefreshing: Function;
+  isItCurrentUser: boolean;
+  friendCurrentHabitWeekStreakState: [];
+  friendAllHabitDatesDotsState: [];
+}) => {
   const {
     dispatch,
     fetchAllHabitsAction,
@@ -20,14 +31,33 @@ const Friend = memo((props: any) => {
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
   } = props;
-  if (
-    (habitLoading && allHabitsOfSelectedUserNumber === 0) ||
-    (habitLoading && allHabitsOfSelectedUserNumber === undefined) ||
-    friendCurrentHabitWeekStreakState === undefined ||
-    friendAllHabitDatesDotsState === undefined ||
-    allHabitsOfSelectedUser === undefined
-  ) {
-    console.log(friendCurrentHabitWeekStreakState.length);
+
+  if (habitLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: "#FFFFFF",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <SkeletonPlaceholder
+            colorMode={"light"}
+            width={345}
+            height={39.5}
+            radius={0}
+          />
+        </ScrollView>
+      </View>
+    );
+  } else if (!habitLoading && allHabitsOfSelectedUserNumber === 0) {
     return (
       <View
         style={{
@@ -53,45 +83,12 @@ const Friend = memo((props: any) => {
             editable={false}
             selectTextOnFocus={false}
           >
-            Streaks Empty 😔
+            Habits Empty 😔
           </TextInput>
         </ScrollView>
       </View>
     );
-  } else if (
-    habitLoading &&
-    allHabitsOfSelectedUserNumber > 0 &&
-    friendCurrentHabitWeekStreakState.length > 0
-  ) {
-    return (
-      <View
-        style={{
-          display: "flex",
-          height: "100%",
-          backgroundColor: "#FFFFFF",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        <ScrollView
-          style={{
-            marginBottom: 0,
-          }}
-        >
-          <SkeletonPlaceholder
-            colorMode={"light"}
-            width={345}
-            height={39.5}
-            radius={0}
-          />
-        </ScrollView>
-      </View>
-    );
-  } else if (
-    !habitLoading &&
-    allHabitsOfSelectedUserNumber > 0 &&
-    friendCurrentHabitWeekStreakState.length > 0
-  ) {
+  } else if (!habitLoading && allHabitsOfSelectedUserNumber > 0) {
     return (
       <View
         style={{
@@ -107,11 +104,19 @@ const Friend = memo((props: any) => {
             marginBottom: 85,
           }}
         >
-          <StreakGraph
-            allHabits={allHabitsOfSelectedUser}
-            currentHabitWeekStreak={friendCurrentHabitWeekStreakState}
-          />
-          <View style={{ margin: 20 }}></View>
+          {friendCurrentHabitWeekStreakState.some(
+            (value: number) => value !== 0
+          ) ? (
+            <>
+              <StreakGraph
+                allHabits={allHabitsOfSelectedUser}
+                currentHabitWeekStreak={friendCurrentHabitWeekStreakState}
+              />
+              <View style={{ margin: 20 }}></View>
+            </>
+          ) : (
+            <></>
+          )}
           <DotGraph
             dispatch={dispatch}
             fetchAllHabitsAction={fetchAllHabitsAction}
@@ -144,6 +149,6 @@ const Friend = memo((props: any) => {
       </View>
     );
   }
-});
+};
 
 export default Friend;
