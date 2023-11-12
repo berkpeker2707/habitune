@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Vibration } from "react-native";
 import ShareWithPurpleIcon from "./ShareWithPurpleIcon";
 import ShareOpened from "./ShareOpened";
 
@@ -23,6 +23,7 @@ const Share = (props: {
       {!openShare ? (
         <TouchableOpacity
           style={{ width: 345 }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() => setOpenShare((openShare: boolean) => !openShare)}
           onBlur={() => setOpenShare((openShare: boolean) => !openShare)}
           onLongPress={() => setOpenShare((openShare: boolean) => !openShare)}

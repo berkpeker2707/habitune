@@ -3,14 +3,14 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 
 const BottomTabOverviewButton = (props: any) => {
-  const { accessibilityState, onPress } = props;
+  const { accessibilityState, onPressIn } = props;
 
   if (accessibilityState.selected) {
     return (
       <View style={styles.btnWrapper}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={onPress}
+          onPressIn={onPressIn}
           style={[styles.otherNavButtons]}
         >
           <View style={{ flexDirection: "row" }}>
@@ -55,7 +55,7 @@ const BottomTabOverviewButton = (props: any) => {
       <View style={styles.btnWrapper}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={onPress}
+          onPressIn={onPressIn}
           style={[styles.otherNavButtons]}
         >
           <View style={{ flexDirection: "row" }}>

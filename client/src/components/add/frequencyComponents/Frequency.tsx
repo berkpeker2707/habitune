@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Vibration } from "react-native";
 import FrequencyWithPurpleIcon from "./FrequencyWithPurpleIcon";
 import FrequencyOpened from "./FrequencyOpened";
 
@@ -32,6 +32,7 @@ const Frequency = (props: {
       {!openFrequency ? (
         <TouchableOpacity
           style={{ width: 345 }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             setOpenFrequency((openFrequency: boolean) => !openFrequency)
           }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import { TextInput, TouchableOpacity, Vibration, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
 const Color = memo((props: { color: string; setColor: Function }) => {
@@ -40,6 +40,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#9DB2CE",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#9DB2CE")
               ? setColor(() => "")
@@ -73,6 +74,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#A5D2AC",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#A5D2AC")
               ? setColor(() => "")
@@ -106,6 +108,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#C04F43",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#C04F43")
               ? setColor(() => "")
@@ -139,6 +142,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#968EB0",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#968EB0")
               ? setColor(() => "")
@@ -172,6 +176,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#F59732",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#F59732")
               ? setColor(() => "")
@@ -205,6 +210,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#99BB42",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#99BB42")
               ? setColor(() => "")
@@ -238,6 +244,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#F1867E",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#F1867E")
               ? setColor(() => "")
@@ -271,6 +278,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#FCCA1B",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#FCCA1B")
               ? setColor(() => "")
@@ -304,6 +312,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#6EA8D8",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#6EA8D8")
               ? setColor(() => "")
@@ -337,6 +346,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#4D6691",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#4D6691")
               ? setColor(() => "")
@@ -370,6 +380,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#DEB4CF",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#DEB4CF")
               ? setColor(() => "")
@@ -403,6 +414,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             borderRadius: 15,
             backgroundColor: "#F6AF90",
           }}
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             color?.includes("#F6AF90")
               ? setColor(() => "")

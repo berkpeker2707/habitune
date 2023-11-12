@@ -32,9 +32,19 @@ const DotGraph = (props: {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-
     isItCurrentUser
-      ? dispatch(fetchAllHabitsAction())
+      ? dispatch(
+          fetchAllHabitsAction(
+            new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              new Date().getDate(),
+              new Date().getHours(),
+              new Date().getMinutes(),
+              new Date().getSeconds()
+            ).getTime()
+          )
+        )
       : // : dispatch(fetchAllHabitsOfSelectedUserAction());
         "";
     setTimeout(() => {
@@ -48,11 +58,11 @@ const DotGraph = (props: {
         display: "flex",
         height: "100%",
         backgroundColor: "#FFFFFF",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >
-      {!habitLoading && allHabitsNumber ? (
+      {!habitLoading && allHabitDatesDots && allHabitsNumber > 0 ? (
         <ScrollView
           style={{
             marginBottom: 85,
@@ -85,7 +95,7 @@ const DotGraph = (props: {
             />
           ))}
         </ScrollView>
-      ) : allHabitsNumber && allHabitsNumber > 0 ? (
+      ) : habitLoading ? (
         <ScrollView
           style={{
             marginBottom: 85,
@@ -103,17 +113,12 @@ const DotGraph = (props: {
           >
             All Habits 🐌
           </TextInput>
-          {Array(allHabitsNumber)
-            .fill(0)
-            .map((_, i) => (
-              <SkeletonPlaceholder
-                key={i}
-                colorMode={"light"}
-                width={345}
-                height={39.5}
-                radius={0}
-              />
-            ))}
+          <SkeletonPlaceholder
+            colorMode={"light"}
+            width={345}
+            height={39.5}
+            radius={0}
+          />
         </ScrollView>
       ) : (
         <ScrollView
