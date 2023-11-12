@@ -8,6 +8,7 @@ import {
   Pressable,
   Text,
   TextInput,
+  Vibration,
 } from "react-native";
 import SettingsButton from "../components/settings/SettingsButton";
 import LinkButton from "../components/settings/LinkButton";
@@ -32,7 +33,7 @@ const Settings = (props: {
         display: "flex",
         height: "100%",
         backgroundColor: "#FFFFFF",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >
@@ -51,6 +52,7 @@ const Settings = (props: {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
           }}
         >
           <View
@@ -99,6 +101,7 @@ const Settings = (props: {
                 elevation: 2,
                 backgroundColor: "#968EB0",
               }}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setFeedbackModalVisible(!feedbackModalVisible),
                   console.log(feedback);
@@ -133,6 +136,7 @@ const Settings = (props: {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
           }}
         >
           <View
@@ -169,6 +173,7 @@ const Settings = (props: {
                 elevation: 2,
                 backgroundColor: "#968EB0",
               }}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setAboutUsModalVisible(!aboutUsModalVisible);
               }}
@@ -194,7 +199,10 @@ const Settings = (props: {
           opacity: !feedbackModalVisible ? 1 : 0.3,
         }}
       >
-        <TouchableOpacity onPress={() => setFeedbackModalVisible(true)}>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => setFeedbackModalVisible(true)}
+        >
           <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
         <View>
@@ -209,13 +217,20 @@ const Settings = (props: {
         {/* <TouchableOpacity onPress={() => console.log("TEST")}>
           <SettingsButton buttonName="Notification Settings" />
         </TouchableOpacity> */}
-        <TouchableOpacity onPress={() => setAboutUsModalVisible(true)}>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => setAboutUsModalVisible(true)}
+        >
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => dispatch(deleteUserAction())}>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => dispatch(deleteUserAction())}
+        >
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() => {
             dispatch(revertAll());
             dispatch(revertAllHabit());

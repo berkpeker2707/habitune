@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, TouchableOpacity, Vibration } from "react-native";
 import FriendBar from "../add/shareComponents/FriendBar";
 
 const FriendsCard = memo(
@@ -20,6 +20,8 @@ const FriendsCard = memo(
     setSelectedUser: any;
     friendIDState: number;
     setFriendIDState: Function;
+    friendName: number;
+    setFriendName: Function;
   }) => {
     const {
       navigation,
@@ -37,6 +39,8 @@ const FriendsCard = memo(
       setSelectedUser,
       friendIDState,
       setFriendIDState,
+      friendName,
+      setFriendName,
     } = props;
 
     return (
@@ -48,12 +52,14 @@ const FriendsCard = memo(
           }}
         >
           <TouchableOpacity
+            onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
               // setShowInfoText(!showInfoText);
               setTimeout(() => {
                 setShowInfoText(false);
               }, 5000);
               setFriendIDState(() => friendID);
+              setFriendName(() => name);
               // console.log(selectedUser);
               navigation.navigate("Friend", {
                 // currentUser: currentUser,

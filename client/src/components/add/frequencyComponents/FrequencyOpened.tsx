@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Vibration } from "react-native";
 import DayCircle from "./DayCircle";
 import DayBetween from "./DayBetween";
 import Daily from "./Daily";
@@ -39,6 +39,7 @@ const FrequencyOpened = memo(
       >
         <Daily />
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Mon")
               ? setTaskUpcomingDates(() =>
@@ -57,6 +58,7 @@ const FrequencyOpened = memo(
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Tue")
               ? setTaskUpcomingDates(() =>
@@ -75,6 +77,7 @@ const FrequencyOpened = memo(
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Wed")
               ? setTaskUpcomingDates(() =>
@@ -93,6 +96,7 @@ const FrequencyOpened = memo(
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Thu")
               ? setTaskUpcomingDates(() =>
@@ -111,6 +115,7 @@ const FrequencyOpened = memo(
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Fri")
               ? setTaskUpcomingDates(() =>
@@ -129,6 +134,7 @@ const FrequencyOpened = memo(
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Sat")
               ? setTaskUpcomingDates(() =>
@@ -147,6 +153,7 @@ const FrequencyOpened = memo(
           />
         </TouchableOpacity>
         <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             taskUpcomingDates.includes("Sun")
               ? setTaskUpcomingDates(() =>

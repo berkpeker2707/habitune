@@ -8,6 +8,7 @@ import {
   Text,
   Modal,
   Pressable,
+  Vibration,
 } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
@@ -32,6 +33,8 @@ const Profile = memo((props: any) => {
     setSelectedUser,
     friendIDState,
     setFriendIDState,
+    friendName,
+    setFriendName,
   } = props;
 
   const onRefresh = useCallback(() => {
@@ -115,6 +118,7 @@ const Profile = memo((props: any) => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
+                backgroundColor: "rgba(52, 52, 52, 0.8)",
               }}
             >
               <View
@@ -162,6 +166,7 @@ const Profile = memo((props: any) => {
                     { borderRadius: 20, padding: 10, elevation: 2 },
                     { backgroundColor: "#968EB0" },
                   ]}
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
                     dispatch(
@@ -203,6 +208,8 @@ const Profile = memo((props: any) => {
                 setSelectedUser={setSelectedUser}
                 friendIDState={friendIDState}
                 setFriendIDState={setFriendIDState}
+                friendName={friendName}
+                setFriendName={setFriendName}
               />
             ))}
         </View>

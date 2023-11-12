@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useCallback } from "react";
-import { TouchableOpacity, TextInput } from "react-native";
+import { TouchableOpacity, TextInput, Vibration } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 registerTranslation("en-GB", enGB);
@@ -53,6 +53,7 @@ const DayBetween = (props: {
   return (
     <TouchableOpacity
       style={{ top: 40 }}
+      onPressIn={() => Vibration.vibrate(10)}
       onPress={() => setDateBetweenModalOpen(true)}
     >
       {taskFirstDate && taskLastDate ? (

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Vibration, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Home from "../../src/screens/Home";
@@ -37,7 +37,6 @@ const HomeSection = (props: any) => {
     revertAll,
     revertAllHabit,
     currentUser,
-    allHabits,
     allHabitsToday,
     allHabitsNumber,
     allHabitsOfSelectedUser,
@@ -51,30 +50,29 @@ const HomeSection = (props: any) => {
     onShare,
     friendIDState,
     setFriendIDState,
+    friendName,
+    setFriendName,
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
+    tempBarFilled,
+    setTempBarFilled,
+    shareWithFriendList,
+    setShareWithFriendList,
+    selectedItem,
+    setSelectedItem,
+    modalVisible,
+    setModalVisible,
+    showInfoText,
+    setShowInfoText,
+    acceptOrRemoveModalVisible,
+    setAcceptOrRemoveModalVisible,
+    selectedUser,
+    setSelectedUser,
+    editHabitSelected,
+    setEditHabitSelected,
+    habitNameState,
+    setHabitNameState,
   } = props;
-
-  const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
-  () => [];
-  const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string>("");
-  const [nameChangable, setNameChangable] = useState<boolean>(false);
-  const [text, onChangeText] = useState<string>("");
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const [showInfoText, setShowInfoText] = useState<boolean>(false);
-  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
-    useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<{
-    email: string;
-    name: string;
-    pending: boolean;
-  }>({
-    email: "",
-    name: "",
-    pending: false,
-  });
 
   return (
     <StackNavigator.Navigator
@@ -87,7 +85,6 @@ const HomeSection = (props: any) => {
         children={(props: any) => (
           <Home
             {...props}
-            navigation={navigation}
             dispatch={dispatch}
             fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
             updateHabitCompletedDateAction={updateHabitCompletedDateAction}
@@ -108,12 +105,10 @@ const HomeSection = (props: any) => {
             setShareWithFriendList={setShareWithFriendList}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
-            nameChangable={nameChangable}
-            setNameChangable={setNameChangable}
-            text={text}
-            onChangeText={onChangeText}
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
+            setEditHabitSelected={setEditHabitSelected}
+            setHabitNameState={setHabitNameState}
           />
         )}
         options={{
@@ -140,6 +135,7 @@ const HomeSection = (props: any) => {
                 }}
               >
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       setHomeEditBool(false);
@@ -155,6 +151,7 @@ const HomeSection = (props: any) => {
           headerRight: () =>
             !homeEditBool ? (
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.navigate("Profile", {
@@ -179,15 +176,14 @@ const HomeSection = (props: any) => {
             ) : (
               <View style={{ flexDirection: "row" }}>
                 <Pressable
-                  disabled={
-                    navigation.getState().routes[0].params?.name ? false : true
-                  }
+                  disabled={habitNameState ? false : true}
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       dispatch(
                         updateHabitNameAction({
-                          _id: navigation.getState().routes[0].params?._id,
-                          name: navigation.getState().routes[0].params?.name,
+                          _id: editHabitSelected,
+                          name: habitNameState,
                         })
                       );
                       setHomeEditBool(false);
@@ -210,6 +206,7 @@ const HomeSection = (props: any) => {
                   </View>
                 </Pressable>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       setModalVisible(!modalVisible);
@@ -231,11 +228,12 @@ const HomeSection = (props: any) => {
                   </View>
                 </Pressable>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       dispatch(
                         deleteHabitAction({
-                          _id: navigation.getState().routes[0].params?._id,
+                          _id: selectedItem,
                         })
                       );
                       setHomeEditBool(false);
@@ -280,6 +278,8 @@ const HomeSection = (props: any) => {
             setSelectedUser={setSelectedUser}
             friendIDState={friendIDState}
             setFriendIDState={setFriendIDState}
+            friendName={friendName}
+            setFriendName={setFriendName}
           />
         )}
         options={{
@@ -308,6 +308,7 @@ const HomeSection = (props: any) => {
             >
               <View>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       onShare();
@@ -322,6 +323,7 @@ const HomeSection = (props: any) => {
               <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       navigation.navigate("Settings");
@@ -360,6 +362,7 @@ const HomeSection = (props: any) => {
               }}
             >
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.goBack();
@@ -376,17 +379,15 @@ const HomeSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Friend"
+        options={{ title: `${friendName}'s Habits` }}
         children={(props: any) => (
           <Friend
             {...props}
-            navigation={navigation}
             dispatch={dispatch}
             fetchAllHabitsAction={fetchAllHabitsAction}
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
             }
-            allHabits={allHabits}
-            allHabitsNumber={allHabitsNumber}
             allHabitsOfSelectedUser={allHabitsOfSelectedUser}
             allHabitsOfSelectedUserNumber={allHabitsOfSelectedUserNumber}
             habitLoading={habitLoading}

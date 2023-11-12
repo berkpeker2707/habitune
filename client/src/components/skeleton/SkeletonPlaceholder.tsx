@@ -24,6 +24,34 @@ const SkeletonPlaceholder = (props: {
         radius={radius}
       />
       <View style={{ height: 2 }} />
+      <Skeleton
+        colorMode={colorMode}
+        width={width}
+        height={height}
+        radius={radius}
+      />
+      <View style={{ height: 2 }} />
+      <Skeleton
+        colorMode={colorMode}
+        width={width}
+        height={height}
+        radius={radius}
+      />
+      <View style={{ height: 2 }} />
+      <Skeleton
+        colorMode={colorMode}
+        width={width}
+        height={height}
+        radius={radius}
+      />
+      <View style={{ height: 2 }} />
+      <Skeleton
+        colorMode={colorMode}
+        width={width}
+        height={height}
+        radius={radius}
+      />
+      <View style={{ height: 2 }} />
     </MotiView>
   );
 };
