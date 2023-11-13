@@ -3,7 +3,6 @@ import db from "./config/db";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
-const rateLimit = require("express-rate-limit");
 
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
@@ -14,6 +13,7 @@ import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
 import path from "path";
+import lowLimitter from "./middlewares/lowLimitter";
 
 dotenv.config();
 
@@ -35,14 +35,21 @@ app.use(
 
 app.use(helmet());
 
-//rate limitter
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+// app.use(lowLimitter);
+app.use((req, res, next) => {
+  //defined speific rate limitters for routes below
+  //also defined lowLimitter as default for all except below
+  if (
+    req.path.startsWith("/api/user") ||
+    req.path.startsWith("/api/habit") ||
+    req.path.startsWith("/api/notification")
+  ) {
+    // Skip limiter for /api/user, /api/habit, /api/notification and their sub-routes
+    next();
+  } else {
+    lowLimitter(req, res, next);
+  }
 });
-app.use(limiter);
 
 app.use(
   require("express-session")({
@@ -96,11 +103,11 @@ admin.initializeApp({
 app.get("/privacy", function (req, res) {
   res.sendFile(path.join(__dirname, "/view/privacy.html"));
 });
-app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/view/index.html"));
-});
 app.get("/image/empty-shell", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/images/empty-shell.png"));
+});
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "/view/index.html"));
 });
 
 //routing
