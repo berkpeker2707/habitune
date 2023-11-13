@@ -126,7 +126,7 @@ const Home = memo(
             display: "flex",
             height: "100%",
             backgroundColor: "#FFFFFF",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
           }}
         >
@@ -256,7 +256,7 @@ const Home = memo(
                 display: "flex",
                 height: "100%",
                 backgroundColor: "#FFFFFF",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >

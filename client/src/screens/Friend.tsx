@@ -89,14 +89,18 @@ const Friend = (props: {
         </ScrollView>
       </View>
     );
-  } else if (!habitLoading && allHabitsOfSelectedUserNumber > 0) {
+  } else if (
+    !habitLoading &&
+    allHabitsOfSelectedUserNumber > 0 &&
+    friendCurrentHabitWeekStreakState
+  ) {
     return (
       <View
         style={{
           display: "flex",
           height: "100%",
           backgroundColor: "#FFFFFF",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "center",
         }}
       >

@@ -91,14 +91,18 @@ const Overview = memo(
           </ScrollView>
         </View>
       );
-    } else if (!habitLoading && allHabitsNumber > 0) {
+    } else if (
+      !habitLoading &&
+      allHabitsNumber > 0 &&
+      currentHabitWeekStreakState
+    ) {
       return (
         <View
           style={{
             display: "flex",
             height: "100%",
             backgroundColor: "#FFFFFF",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
           }}
         >
