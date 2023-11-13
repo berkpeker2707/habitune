@@ -12,8 +12,7 @@
     "add-build": "git add dist",
     "api": "nodemon server.ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
-    "start:dev": "tsc-watch --onSuccess 'node --inspect=0.0.0.0:5858 dist/src/server.js'",
-    "json-server": "json-server --watch db.json"
+    "start:dev": "tsc-watch --onSuccess 'node --inspect=0.0.0.0:5858 dist/src/server.js'"
   },
   "pre-commit": [
     "ts.check",
