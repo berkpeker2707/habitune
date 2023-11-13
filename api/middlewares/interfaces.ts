@@ -13,6 +13,7 @@ export interface IUser {
   password: any;
   fcmToken: string;
   lastLogin: Date;
+  userType: string;
 }
 
 export interface IHabit {

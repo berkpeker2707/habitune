@@ -48,6 +48,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 email: req.body.email,
                 image: req.body.picture,
                 fcmToken: "empty",
+                userType: "standart",
             });
             yield user.save();
             var foundNotification = yield notification_model_1.default.findOne({
@@ -122,6 +123,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         image: "https://www.habitune.net/image/empty-shell",
                         password: yield bcrypt.hash(req.body.password, 10),
                         fcmToken: "empty",
+                        userType: "standart",
                     });
                     yield user.save();
                     var foundNotification = yield notification_model_1.default.findOne({

@@ -44,6 +44,7 @@ export const signInWithGoogleController = async (
         email: req.body.email,
         image: req.body.picture,
         fcmToken: "empty",
+        userType: "standart",
       });
       await user.save();
 
@@ -131,6 +132,7 @@ export const signInController = async (req: IReq | any, res: Response) => {
             image: "https://www.habitune.net/image/empty-shell",
             password: await bcrypt.hash(req.body.password, 10),
             fcmToken: "empty",
+            userType: "standart",
           });
           await user.save();
 
