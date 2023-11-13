@@ -239,6 +239,13 @@ const Settings = (props: {
           <SettingsButton buttonName="Sign Out" />
         </TouchableOpacity>
       </ScrollView>
+      <View
+        style={{
+          marginBottom: 105,
+        }}
+      >
+        <Text style={{ color: "#BCBCBC" }}>v1.1.4</Text>
+      </View>
     </View>
   );
 };
