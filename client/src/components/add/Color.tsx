@@ -52,7 +52,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#9DB2CE"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -86,7 +86,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#A5D2AC"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -120,7 +120,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#C04F43"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -154,7 +154,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#968EB0"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -188,7 +188,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#F59732"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -222,7 +222,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#99BB42"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -256,7 +256,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#F1867E"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -290,7 +290,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#FCCA1B"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -324,7 +324,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#6EA8D8"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -358,7 +358,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#4D6691"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -392,7 +392,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#DEB4CF"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
@@ -426,7 +426,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill="#fff"
+                  fill="#FFFFFF"
                   stroke="#F6AF90"
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />

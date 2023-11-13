@@ -69,6 +69,21 @@ http://localhost:1111/api/user/google/callback
 
 ## CLIENT SIDE NOTES
 
+primaryColor:#968EB0
+backgroundColor:#FFFFFF
+shadowPrimaryColor:#000
+fadedColor:
+borderColor:#D9D9D9
+warningColor:"red"
+primaryText:#000
+other1:#444
+other1:#BCBCBC
+other2:#7C7C7C
+other3:#BBBBBB
+other4:#444
+other5:#D3D3D3
+other6:#E5E5E5
+
 // color1: #968EB0
 // color2: #9DB2CE
 // color3: #C04F43

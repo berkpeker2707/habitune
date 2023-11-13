@@ -15,7 +15,7 @@ const SkeletonPlaceholder = (props: {
       transition={{
         type: "timing",
       }}
-      animate={{ backgroundColor: "#ffffff" }}
+      animate={{ backgroundColor: "#FFFFFF" }}
     >
       <Skeleton
         colorMode={colorMode}

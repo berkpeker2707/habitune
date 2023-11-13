@@ -59,7 +59,7 @@ const HabitBar = memo(
             fill="#000"
             maskUnits="userSpaceOnUse"
           >
-            <Path fill="#fff" d="M12 13H32V33H12z" />
+            <Path fill="#FFFFFF" d="M12 13H32V33H12z" />
             <Path d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z" />
           </Mask>
           <Path
@@ -67,7 +67,7 @@ const HabitBar = memo(
             d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z"
           />
           <Path
-            stroke="#fff"
+            stroke="#FFFFFF"
             d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z"
             mask="url(#path-2-outside-1_392_5163)"
           />
@@ -191,12 +191,12 @@ const HabitBar = memo(
             cx={22}
             cy={23}
             r={9.25}
-            stroke="#fff"
+            stroke="#FFFFFF"
             strokeWidth={itemStroke}
           />
         </G>
         <Path
-          fill="#fff"
+          fill="#FFFFFF"
           d="M20.26 26.172l-2.432-2.433-.828.823 3.26 3.26 7-7-.822-.822-6.177 6.172z"
         />
         {/* mark ends */}
@@ -230,7 +230,7 @@ const HabitBar = memo(
             y2={23}
             gradientUnits="userSpaceOnUse"
           >
-            <Stop stopColor="#fff" />
+            <Stop stopColor="#FFFFFF" />
             <Stop offset={1} stopColor={item.color} />
           </LinearGradient>
           {item && item.sharedWith && item.sharedWith.length > 2 ? (

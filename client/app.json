@@ -10,7 +10,7 @@
     "splash": {
       "image": "src/assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFFFFF"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -21,7 +21,7 @@
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.thelittleteaclipper.habitune"
     },
