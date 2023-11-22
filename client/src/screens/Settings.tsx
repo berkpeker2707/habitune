@@ -204,12 +204,6 @@ const Settings = (props: {
       >
         <TouchableOpacity
           onPressIn={() => Vibration.vibrate(10)}
-          onPress={() => setFeedbackModalVisible(true)}
-        >
-          <SettingsButton buttonName="Send Us Feedback" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
             setTheme(theme.themeType === "default" ? "dark" : "default")
           }
@@ -219,6 +213,12 @@ const Settings = (props: {
           ) : (
             <SettingsButton buttonName="Change Theme to Default" />
           )}
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() => setFeedbackModalVisible(true)}
+        >
+          <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
         <View>
           <LinkButton
