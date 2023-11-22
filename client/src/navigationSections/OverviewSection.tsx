@@ -8,6 +8,7 @@ import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarCompon
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarShareButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
 import TopNavbarSettingsButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
+import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -29,10 +30,12 @@ const OverviewSection = (props: any) => {
     currentHabitWeekStreakState,
     allHabitDatesDots,
   } = props;
+  const { theme } = useTheme();
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
-        headerStyle: { height: 70 },
+        headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
       }}
     >
       <StackNavigator.Screen

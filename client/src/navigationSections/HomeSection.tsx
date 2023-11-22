@@ -16,6 +16,7 @@ import TopNavbarSettingsButton from "../../src/components/navbarComponents/TopNa
 import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
 import TopNavbarDeleteButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
 import TopNavbarAddFriendButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
+import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -73,11 +74,12 @@ const HomeSection = (props: any) => {
     habitNameState,
     setHabitNameState,
   } = props;
+  const { theme } = useTheme();
 
   return (
     <StackNavigator.Navigator
       screenOptions={{
-        headerStyle: { height: 70 },
+        headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
       }}
     >
       <StackNavigator.Screen
