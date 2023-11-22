@@ -42,7 +42,7 @@ const BottomTabAddButton = (props: any) => {
                   stroke={theme.primaryColor}
                   strokeWidth="0.3"
                   d="M2 3h115.279a55.429 55.429 0 0144.495 22.375l2.401 3.23a32.186 32.186 0 007.84 7.475c10.637 7.158 24.675 7.28 35.344.172a31.638 31.638 0 008.272-8.037l2.22-3.133A52.353 52.353 0 01260.565 3H377v64H2V3z"
-                  fill={theme.color0}
+                  fill={theme.backgroundColor}
                 />
               </G>
               <Defs></Defs>
@@ -71,7 +71,7 @@ const BottomTabAddButton = (props: any) => {
                   cx={31}
                   cy={31}
                   r={27}
-                  fill={theme.color0}
+                  fill={theme.backgroundColor}
                   stroke={theme.color1}
                   strokeWidth="0.3"
                 />
