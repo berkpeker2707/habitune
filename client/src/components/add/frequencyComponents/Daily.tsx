@@ -38,7 +38,7 @@ const Daily = () => {
           marginRight: 7,
           marginBottom: 10,
           borderColor: "#968EB0",
-          color: "#7C7C7C",
+          color: "#A9A9A9",
         }}
         editable={false}
         selectTextOnFocus={false}

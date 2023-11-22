@@ -22,7 +22,7 @@ const DayCircle = memo(
           backgroundColor: backgroundColor,
           borderWidth: 1,
           borderRadius: 20,
-          borderColor: "#D9D9D9",
+          borderColor: "#968EB0",
         }}
       >
         <View

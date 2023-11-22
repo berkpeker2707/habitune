@@ -68,7 +68,7 @@ const AddFriendsButton = () => {
       >
         <Text
           style={{
-            color: !buttonBoolean ? "#444" : "#D3D3D3",
+            color: !buttonBoolean ? "#444" : "#A9A9A9",
             textAlign: "center",
           }}
         >

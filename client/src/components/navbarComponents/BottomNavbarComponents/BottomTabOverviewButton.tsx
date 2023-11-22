@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderTopWidth: 0.2,
-    borderColor: "#BBBBBB",
+    borderColor: "#968EB0",
     marginTop: 1,
   },
   svgGapFiller: {

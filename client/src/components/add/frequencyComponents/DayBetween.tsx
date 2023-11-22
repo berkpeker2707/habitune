@@ -66,7 +66,7 @@ const DayBetween = (props: {
             marginRight: 7,
             marginBottom: 10,
             borderColor: "#968EB0",
-            color: "#7C7C7C",
+            color: "#A9A9A9",
             textAlign: "left",
           }}
           editable={false}
@@ -88,7 +88,7 @@ const DayBetween = (props: {
             marginRight: 7,
             marginBottom: 10,
             borderColor: "#968EB0",
-            color: "#7C7C7C",
+            color: "#A9A9A9",
             textAlign: "left",
           }}
           editable={false}
