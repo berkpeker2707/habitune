@@ -4,6 +4,7 @@ import { RefreshControl, ScrollView, TextInput, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
+import { useTheme } from "../../context/ThemeContext";
 
 const DotGraph = (props: {
   dispatch: Function;
@@ -29,6 +30,7 @@ const DotGraph = (props: {
     isItCurrentUser,
     allHabitDatesDots,
   } = props;
+  const { theme } = useTheme();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -57,7 +59,7 @@ const DotGraph = (props: {
       style={{
         display: "flex",
         height: "100%",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -75,7 +77,7 @@ const DotGraph = (props: {
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}
@@ -105,7 +107,7 @@ const DotGraph = (props: {
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}
@@ -130,7 +132,7 @@ const DotGraph = (props: {
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}

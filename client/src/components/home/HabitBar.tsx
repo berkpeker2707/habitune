@@ -11,6 +11,7 @@ import Svg, {
   Path,
   Mask,
 } from "react-native-svg";
+import { useTheme } from "../../context/ThemeContext";
 
 const HabitBar = memo(
   (props: {
@@ -26,11 +27,12 @@ const HabitBar = memo(
   }) => {
     const { filled, item, itemStroke, nameChangable, setHabitNameState } =
       props;
+    const { theme } = useTheme();
 
     return !filled ? (
       <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
         {!nameChangable ? (
-          <Text fill="#000" fontSize="19" x={40} y={30}>
+          <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
             {item.name}
           </Text>
         ) : (
@@ -56,10 +58,10 @@ const HabitBar = memo(
             height={20}
             x={12}
             y={13}
-            fill="#000"
+            fill={theme.primaryText}
             maskUnits="userSpaceOnUse"
           >
-            <Path fill="#FFFFFF" d="M12 13H32V33H12z" />
+            <Path fill={theme.color0} d="M12 13H32V33H12z" />
             <Path d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z" />
           </Mask>
           <Path
@@ -67,7 +69,7 @@ const HabitBar = memo(
             d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z"
           />
           <Path
-            stroke="#FFFFFF"
+            stroke={theme.color0}
             d="M31 23a9 9 0 11-18 0 9 9 0 0118 0zm-16.014 0a7.013 7.013 0 1014.027 0 7.013 7.013 0 00-14.027 0z"
             mask="url(#path-2-outside-1_392_5163)"
           />
@@ -94,7 +96,7 @@ const HabitBar = memo(
                   height: 34,
                   marginLeft: 326,
                   marginTop: 6,
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.borderColor,
                   backgroundColor: item.color,
                   borderWidth: 1,
                   borderRadius: 25,
@@ -108,7 +110,7 @@ const HabitBar = memo(
                     marginTop: item.sharedWith.length > 11 ? 10 : 8,
                     fontSize: item.sharedWith.length > 11 ? 8 : 12,
                     fontWeight: "600",
-                    color: "#FFFFFF",
+                    color: theme.backgroundColor,
                   }}
                 >
                   +{item.sharedWith.length - 2}
@@ -133,7 +135,7 @@ const HabitBar = memo(
                   height: 34,
                   marginLeft: item.sharedWith.length <= 2 ? 326 : 306,
                   marginTop: 6,
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.borderColor,
                   borderWidth: 1,
                   borderRadius: 25,
                 }}
@@ -155,7 +157,7 @@ const HabitBar = memo(
                   height: 34,
                   marginLeft: item.sharedWith.length < 3 ? 306 : 286,
                   marginTop: 6,
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.borderColor,
                   borderWidth: 1,
                   borderRadius: 25,
                 }}
@@ -191,18 +193,18 @@ const HabitBar = memo(
             cx={22}
             cy={23}
             r={9.25}
-            stroke="#FFFFFF"
+            stroke={theme.backgroundColor}
             strokeWidth={itemStroke}
           />
         </G>
         <Path
-          fill="#FFFFFF"
+          fill={theme.color0}
           d="M20.26 26.172l-2.432-2.433-.828.823 3.26 3.26 7-7-.822-.822-6.177 6.172z"
         />
         {/* mark ends */}
 
         {!nameChangable ? (
-          <Text fill="#000" fontSize="19" x={40} y={30}>
+          <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
             {item.name}
           </Text>
         ) : (
@@ -230,7 +232,7 @@ const HabitBar = memo(
             y2={23}
             gradientUnits="userSpaceOnUse"
           >
-            <Stop stopColor="#FFFFFF" />
+            <Stop stopColor={theme.color0} />
             <Stop offset={1} stopColor={item.color} />
           </LinearGradient>
           {item && item.sharedWith && item.sharedWith.length > 2 ? (
@@ -241,7 +243,7 @@ const HabitBar = memo(
                   height: 34,
                   marginLeft: 326,
                   marginTop: 6,
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.borderColor,
                   backgroundColor: item.color,
                   borderWidth: 1,
                   borderRadius: 25,
@@ -255,7 +257,7 @@ const HabitBar = memo(
                     marginTop: item.sharedWith.length > 11 ? 10 : 8,
                     fontSize: item.sharedWith.length > 11 ? 8 : 12,
                     fontWeight: "600",
-                    color: "#FFFFFF",
+                    color: theme.backgroundColor,
                   }}
                 >
                   +{item.sharedWith.length - 2}
@@ -280,7 +282,7 @@ const HabitBar = memo(
                   height: 34,
                   marginLeft: item.sharedWith.length <= 2 ? 326 : 306,
                   marginTop: 6,
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.borderColor,
                   borderWidth: 1,
                   borderRadius: 25,
                 }}
@@ -302,7 +304,7 @@ const HabitBar = memo(
                   height: 34,
                   marginLeft: item.sharedWith.length < 3 ? 306 : 286,
                   marginTop: 6,
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.borderColor,
                   borderWidth: 1,
                   borderRadius: 25,
                 }}

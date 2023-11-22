@@ -191,13 +191,13 @@ const Home = memo(
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
-                backgroundColor: "rgba(52, 52, 52, 0.8)",
+                backgroundColor: theme.fadedBackgroundColor,
               }}
             >
               <View
                 style={{
                   margin: 20,
-                  backgroundColor: "white",
+                  backgroundColor: theme.backgroundColor,
                   borderRadius: 20,
                   padding: 35,
                   alignItems: "center",
@@ -239,7 +239,7 @@ const Home = memo(
                 >
                   <Text
                     style={{
-                      color: "white",
+                      color: theme.backgroundColor,
                       fontWeight: "bold",
                       textAlign: "center",
                     }}

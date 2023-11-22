@@ -4,6 +4,7 @@ import { ScrollView, TextInput, View, Text } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
+import { useTheme } from "../context/ThemeContext";
 
 const Friend = (props: {
   dispatch: Function;
@@ -31,6 +32,7 @@ const Friend = (props: {
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
   } = props;
+  const { theme } = useTheme();
 
   if (habitLoading) {
     return (
@@ -38,7 +40,7 @@ const Friend = (props: {
         style={{
           display: "flex",
           height: "100%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -64,7 +66,7 @@ const Friend = (props: {
         style={{
           display: "flex",
           height: "100%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -78,7 +80,7 @@ const Friend = (props: {
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}
@@ -99,7 +101,7 @@ const Friend = (props: {
         style={{
           display: "flex",
           height: "100%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -145,7 +147,7 @@ const Friend = (props: {
         style={{
           display: "flex",
           height: "100%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           justifyContent: "center",
           alignItems: "center",
         }}

@@ -1,8 +1,11 @@
 import * as React from "react";
 import { View, TextInput } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const FrequencyWithPurpleIcon = (props: { textInputTitle: string }) => {
   const { textInputTitle } = props;
+  const { theme } = useTheme();
+
   return (
     <View style={{ width: 345 }}>
       <View
@@ -13,7 +16,7 @@ const FrequencyWithPurpleIcon = (props: { textInputTitle: string }) => {
           left: 315,
           top: 14,
           borderRadius: 6,
-          backgroundColor: "#968EB0",
+          backgroundColor: theme.primaryColor,
         }}
       ></View>
       <TextInput
@@ -23,7 +26,7 @@ const FrequencyWithPurpleIcon = (props: { textInputTitle: string }) => {
           borderRadius: 20,
           paddingLeft: 20,
           marginBottom: 10,
-          color: "#444",
+          color: theme.fadedShadowColor,
         }}
         editable={false}
         selectTextOnFocus={false}

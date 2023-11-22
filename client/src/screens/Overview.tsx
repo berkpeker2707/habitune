@@ -5,6 +5,7 @@ import { ScrollView, TextInput, View, Text } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
+import { useTheme } from "../context/ThemeContext";
 
 const Overview = memo(
   (props: {
@@ -33,6 +34,7 @@ const Overview = memo(
       currentHabitWeekStreakState,
       allHabitDatesDots,
     } = props;
+    const { theme } = useTheme();
 
     if (habitLoading) {
       return (
@@ -40,7 +42,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -66,7 +68,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -80,7 +82,7 @@ const Overview = memo(
               style={{
                 height: 29.5,
                 paddingLeft: 20,
-                color: "#444",
+                color: theme.fadedShadowColor,
                 textAlign: "center",
               }}
               editable={false}
@@ -101,7 +103,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "flex-start",
             alignItems: "center",
           }}
@@ -147,7 +149,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}

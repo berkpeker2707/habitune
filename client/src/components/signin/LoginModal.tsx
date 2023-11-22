@@ -9,8 +9,11 @@ import {
   Vibration,
 } from "react-native";
 import { signInAction } from "../../state/userSlice";
+import { useTheme } from "../../context/ThemeContext";
 
 const LoginModal = (props: any) => {
+  const { theme } = useTheme();
+
   const { dispatch, loginModalVisible, setLoginModalVisible } = props;
   const [emailState, setEmailState] = useState<string>("");
   const [passwordState, setPasswordState] = useState<string>("");
@@ -30,17 +33,17 @@ const LoginModal = (props: any) => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: 22,
-          backgroundColor: "rgba(52, 52, 52, 0.8)",
+          backgroundColor: theme.fadedBackgroundColor,
         }}
       >
         <View
           style={{
             margin: 20,
-            backgroundColor: "white",
+            backgroundColor: theme.backgroundColor,
             borderRadius: 20,
             padding: 35,
             alignItems: "center",
-            shadowColor: "#000",
+            shadowColor: theme.backgroundColorShadow,
             shadowOffset: {
               width: 0,
               height: 2,
@@ -52,7 +55,7 @@ const LoginModal = (props: any) => {
         >
           <Text
             style={{
-              color: "#968EB0",
+              color: theme.primaryColor,
               fontWeight: "bold",
               textAlign: "center",
               paddingBottom: 10,
@@ -68,7 +71,8 @@ const LoginModal = (props: any) => {
               borderRadius: 20,
               paddingLeft: 20,
               marginBottom: 10,
-              borderColor: emailState.length > 0 ? "#968EB0" : "red",
+              borderColor:
+                emailState.length > 0 ? theme.primaryColor : theme.warningColor,
             }}
             placeholder="email"
             onChangeText={(text) => setEmailState(text)}
@@ -82,17 +86,22 @@ const LoginModal = (props: any) => {
               borderRadius: 20,
               paddingLeft: 20,
               marginBottom: 10,
-              borderColor: passwordState.length > 0 ? "#968EB0" : "red",
+              borderColor:
+                passwordState.length > 0
+                  ? theme.primaryColor
+                  : theme.warningColor,
             }}
             placeholder="password"
             onChangeText={(text) => setPasswordState(text)}
             maxLength={30}
           />
           <Pressable
-            style={[
-              { borderRadius: 20, padding: 10, elevation: 2 },
-              { backgroundColor: "#968EB0" },
-            ]}
+            style={{
+              backgroundColor: theme.primaryColor,
+              borderRadius: 20,
+              padding: 10,
+              elevation: 2,
+            }}
             onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
               setLoginModalVisible(!loginModalVisible);
@@ -106,7 +115,7 @@ const LoginModal = (props: any) => {
           >
             <Text
               style={{
-                color: "white",
+                color: theme.backgroundColor,
                 fontWeight: "bold",
                 textAlign: "center",
               }}

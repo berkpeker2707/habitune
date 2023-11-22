@@ -5,6 +5,7 @@ import Frequency from "../components/add/frequencyComponents/Frequency";
 import Share from "../components/add/shareComponents/Share";
 // import Reminder from "../components/add/reminderComponents/Reminder";
 import Color from "../components/add/Color";
+import { useTheme } from "../context/ThemeContext";
 
 const Add = (props: {
   navigation: any;
@@ -51,12 +52,14 @@ const Add = (props: {
     setColor,
   } = props;
 
+  const { theme } = useTheme();
+
   return (
     <View
       style={{
         display: "flex",
         height: "100%",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
       }}

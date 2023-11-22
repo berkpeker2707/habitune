@@ -1,9 +1,11 @@
 import * as React from "react";
 import { View, TextInput } from "react-native";
 import { memo } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
   const { taskName, setTaskName } = props;
+  const { theme } = useTheme();
 
   return (
     <View style={{ width: 345 }}>
@@ -14,7 +16,8 @@ const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
           borderRadius: 20,
           paddingLeft: 20,
           marginBottom: 10,
-          borderColor: taskName.length > 0 ? "#968EB0" : "red",
+          borderColor:
+            taskName.length > 0 ? theme.borderColor : theme.warningColor,
         }}
         placeholder="Task Name"
         onChangeText={(text) => setTaskName(text)}

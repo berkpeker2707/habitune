@@ -23,11 +23,13 @@ import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 
 import { signInWithGoogleAction } from "../state/userSlice";
+import { useTheme } from "../context/ThemeContext";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const Signin = (props: any) => {
   const { dispatch, userLoading } = props;
+  const { theme } = useTheme();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
@@ -81,7 +83,7 @@ const Signin = (props: any) => {
         style={{
           display: "flex",
           height: "100%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           justifyContent: "center",
           opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
           // alignItems: "center",
@@ -124,7 +126,7 @@ const Signin = (props: any) => {
                   position: "relative",
                   paddingBottom: 0.1,
                   borderRadius: 50,
-                  backgroundColor: "#E5E5E5",
+                  backgroundColor: theme.backgroundColorShadow,
                 }}
               >
                 <GoogleSigninButton />
@@ -182,13 +184,13 @@ const Signin = (props: any) => {
       style={{
         display: "flex",
         height: "100%",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
         // alignItems: "center",
       }}
     >
-      <ActivityIndicator size="large" color="#968EB0" />
+      <ActivityIndicator size="large" color={theme.primaryColor} />
     </View>
   );
 };

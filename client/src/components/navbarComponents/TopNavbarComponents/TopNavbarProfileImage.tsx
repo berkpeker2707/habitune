@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Image, Platform, View } from "react-native";
 import SkeletonPlaceholder from "../../skeleton/SkeletonPlaceholder";
+import { useTheme } from "../../../context/ThemeContext";
 
 const TopNavbarProfileImage = (props: any) => {
   const { imageSource } = props;
+  const { theme } = useTheme();
 
   return imageSource ? (
     <View
@@ -11,10 +13,10 @@ const TopNavbarProfileImage = (props: any) => {
         Platform.OS === "android"
           ? {
               elevation: 6,
-              shadowColor: "black",
+              shadowColor: theme.backgroundColorShadow,
             }
           : {
-              shadowColor: "black",
+              shadowColor: theme.backgroundColorShadow,
               shadowOffset: { width: 1, height: 2 },
               shadowOpacity: 0.3,
             }
@@ -28,7 +30,7 @@ const TopNavbarProfileImage = (props: any) => {
           borderRadius: 150 / 2,
           overflow: "hidden",
           // borderWidth: 0.5,
-          // borderColor: "red",
+          // borderColor: theme.warningColor,
         }}
       />
     </View>

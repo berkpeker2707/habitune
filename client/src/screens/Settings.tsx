@@ -112,7 +112,7 @@ const Settings = (props: {
             >
               <Text
                 style={{
-                  color: "white",
+                  color: theme.backgroundColor,
                   fontWeight: "bold",
                   textAlign: "center",
                 }}
@@ -139,7 +139,7 @@ const Settings = (props: {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
-            backgroundColor: "rgba(52, 52, 52, 0.8)",
+            backgroundColor: theme.fadedBackgroundColor,
           }}
         >
           <View
@@ -183,7 +183,7 @@ const Settings = (props: {
             >
               <Text
                 style={{
-                  color: "white",
+                  color: theme.backgroundColor,
                   fontWeight: "bold",
                   textAlign: "center",
                 }}

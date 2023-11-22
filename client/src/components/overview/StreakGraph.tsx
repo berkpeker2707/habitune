@@ -4,12 +4,14 @@ import StreakBar from "./StreakGraphBar";
 
 import uuid from "react-native-uuid";
 import { View } from "moti";
+import { useTheme } from "../../context/ThemeContext";
 
 const StreakGraph = (props: {
   allHabits: any;
   currentHabitWeekStreak: Array<number>;
 }) => {
   const { allHabits, currentHabitWeekStreak } = props;
+  const { theme } = useTheme();
 
   return (
     <View>
@@ -17,7 +19,7 @@ const StreakGraph = (props: {
         style={{
           display: "flex",
           // height: "100%",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -26,7 +28,7 @@ const StreakGraph = (props: {
           style={{
             height: 29.5,
             paddingLeft: 20,
-            color: "#444",
+            color: theme.fadedShadowColor,
             textAlign: "center",
           }}
           editable={false}

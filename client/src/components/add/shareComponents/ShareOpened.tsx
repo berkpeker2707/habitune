@@ -2,6 +2,7 @@ import * as React from "react";
 import { View } from "react-native";
 import ShareWithNumber from "./ShareWithNumber";
 import FriendList from "./FriendList";
+import { useTheme } from "../../../context/ThemeContext";
 
 const ShareOpened = (props: {
   currentUser: { friends: Array<object>; pending: boolean };
@@ -9,16 +10,17 @@ const ShareOpened = (props: {
   setShareWithFriendList: Function;
 }) => {
   const { currentUser, shareWithFriendList, setShareWithFriendList } = props;
+  const { theme } = useTheme();
 
   return (
     <>
       <View
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           width: 345,
           height: 190,
           borderRadius: 20,
-          borderColor: "#968EB0",
+          borderColor: theme.primaryColor,
           borderWidth: 0.5,
           marginBottom: 10,
         }}
