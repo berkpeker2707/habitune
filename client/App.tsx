@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Vibration } from "react-native";
 
 // import * as Device from "expo-device";
@@ -106,6 +106,7 @@ import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging
 import onShare from "./src/helpers/shareApp";
 
 import ErrorBoundary from "react-native-error-boundary";
+import { ThemeProvider } from "./src/context/ThemeContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -126,11 +127,13 @@ const AppWrapper = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          <ErrorBoundary onError={errorHandler}>
-            <App />
-          </ErrorBoundary>
-        </NavigationContainer>
+        <ThemeProvider>
+          <NavigationContainer>
+            <ErrorBoundary onError={errorHandler}>
+              <App />
+            </ErrorBoundary>
+          </NavigationContainer>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );
