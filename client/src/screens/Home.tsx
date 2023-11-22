@@ -14,6 +14,7 @@ import {
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
 import HabitBarParent from "../components/home/HabitBarParent";
+import { useTheme } from "../context/ThemeContext";
 
 const Home = memo(
   (props: {
@@ -68,6 +69,8 @@ const Home = memo(
       setEditHabitSelected,
       setHabitNameState,
     } = props;
+
+    const { theme, setTheme } = useTheme();
 
     const handleHabitClicked = useMemo(() => {
       return (index: number) => {
@@ -125,7 +128,7 @@ const Home = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "flex-start",
             alignItems: "center",
           }}
@@ -145,7 +148,7 @@ const Home = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -159,7 +162,7 @@ const Home = memo(
               style={{
                 height: 29.5,
                 paddingLeft: 20,
-                color: "#444",
+                color: theme.fadedShadowColor,
                 textAlign: "center",
               }}
               editable={false}
@@ -198,7 +201,7 @@ const Home = memo(
                   borderRadius: 20,
                   padding: 35,
                   alignItems: "center",
-                  shadowColor: "#000",
+                  shadowColor: theme.primaryColor,
                   shadowOffset: {
                     width: 0,
                     height: 2,
@@ -213,11 +216,14 @@ const Home = memo(
                   shareWithFriendList={shareWithFriendList}
                   setShareWithFriendList={setShareWithFriendList}
                 />
-
                 <Pressable
                   style={[
-                    { borderRadius: 20, padding: 10, elevation: 2 },
-                    { backgroundColor: "#968EB0" },
+                    {
+                      backgroundColor: theme.primaryColor,
+                      borderRadius: 20,
+                      padding: 10,
+                      elevation: 2,
+                    },
                   ]}
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
@@ -255,7 +261,7 @@ const Home = memo(
               style={{
                 display: "flex",
                 height: "100%",
-                backgroundColor: "#FFFFFF",
+                backgroundColor: theme.backgroundColor,
                 justifyContent: "flex-start",
                 alignItems: "center",
               }}
@@ -299,7 +305,7 @@ const Home = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}

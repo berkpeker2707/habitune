@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import SettingsButton from "../components/settings/SettingsButton";
 import LinkButton from "../components/settings/LinkButton";
+import { useTheme } from "../context/ThemeContext";
 
 const Settings = (props: {
   dispatch: Function;
@@ -20,6 +21,8 @@ const Settings = (props: {
   deleteUserAction: Function;
 }) => {
   const { dispatch, revertAll, revertAllHabit, deleteUserAction } = props;
+
+  const { theme, setTheme } = useTheme();
 
   const [feedbackModalVisible, setFeedbackModalVisible] =
     useState<boolean>(false);
@@ -32,7 +35,7 @@ const Settings = (props: {
       style={{
         display: "flex",
         height: "100%",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -52,18 +55,18 @@ const Settings = (props: {
             justifyContent: "center",
             alignItems: "center",
             marginTop: 22,
-            backgroundColor: "rgba(52, 52, 52, 0.8)",
+            backgroundColor: theme.fadedBackgroundColor,
           }}
         >
           <View
             style={{
               height: 400,
               width: 400,
-              backgroundColor: "#FFFFFF",
+              backgroundColor: theme.backgroundColor,
               borderRadius: 20,
               padding: 35,
               alignItems: "center",
-              shadowColor: "#000",
+              shadowColor: theme.primaryText,
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -82,9 +85,9 @@ const Settings = (props: {
                 width: 250,
                 height: 200,
                 marginLeft: 20,
-                color: "#444",
+                color: theme.fadedShadowColor,
                 fontSize: 14,
-                backgroundColor: "#FFFFFF",
+                backgroundColor: theme.backgroundColor,
                 marginBottom: 20,
               }}
               editable={true}
@@ -99,7 +102,7 @@ const Settings = (props: {
                 borderRadius: 20,
                 padding: 10,
                 elevation: 2,
-                backgroundColor: "#968EB0",
+                backgroundColor: theme.primaryColor,
               }}
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
@@ -143,11 +146,11 @@ const Settings = (props: {
             style={{
               height: 400,
               width: 400,
-              backgroundColor: "#FFFFFF",
+              backgroundColor: theme.backgroundColor,
               borderRadius: 20,
               padding: 35,
               alignItems: "center",
-              shadowColor: "#000",
+              shadowColor: theme.fadedShadowColor,
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -171,7 +174,7 @@ const Settings = (props: {
                 borderRadius: 20,
                 padding: 10,
                 elevation: 2,
-                backgroundColor: "#968EB0",
+                backgroundColor: theme.primaryColor,
               }}
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
@@ -204,6 +207,18 @@ const Settings = (props: {
           onPress={() => setFeedbackModalVisible(true)}
         >
           <SettingsButton buttonName="Send Us Feedback" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPressIn={() => Vibration.vibrate(10)}
+          onPress={() =>
+            setTheme(theme.themeType === "default" ? "dark" : "default")
+          }
+        >
+          {theme.themeType === "default" ? (
+            <SettingsButton buttonName="Change Theme to Dark" />
+          ) : (
+            <SettingsButton buttonName="Change Theme to Default" />
+          )}
         </TouchableOpacity>
         <View>
           <LinkButton
@@ -244,7 +259,7 @@ const Settings = (props: {
           marginBottom: 105,
         }}
       >
-        <Text style={{ color: "#BCBCBC" }}>v1.1.4</Text>
+        <Text style={{ color: theme.fadedPrimaryText }}>v1.1.4</Text>
       </View>
     </View>
   );
