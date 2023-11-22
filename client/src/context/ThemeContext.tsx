@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 
 interface Theme {
+  themeType: string;
   backgroundColor: string;
+  fadedBackgroundColor: string;
   backgroundColorShadow: string;
   primaryColor: string;
   borderColor: string;
@@ -25,7 +27,9 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const themes = {
     default: {
+      themeType: "default",
       backgroundColor: "#FFFFFF",
+      fadedBackgroundColor: "rgba(52, 52, 52, 0.8)",
       backgroundColorShadow: "#E5E5E5",
       primaryColor: "#968EB0",
       borderColor: "#968EB0",
@@ -35,7 +39,9 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       warningColor: "#FF0000",
     },
     dark: {
+      themeType: "dark",
       backgroundColor: "#121212",
+      fadedBackgroundColor: "rgba(52, 52, 52, 0.8)",
       backgroundColorShadow: "#333333",
       primaryColor: "#968EB0",
       borderColor: "#968EB0",
