@@ -24,7 +24,7 @@ const Daily = () => {
           borderBottomWidth: 1,
           paddingLeft: 20,
           marginBottom: 5,
-          borderColor: theme.primaryColor,
+          borderColor: theme.borderColor,
           color: theme.fadedShadowColor,
         }}
         editable={false}
@@ -40,7 +40,7 @@ const Daily = () => {
           marginLeft: 7,
           marginRight: 7,
           marginBottom: 10,
-          borderColor: theme.primaryColor,
+          borderColor: theme.borderColor,
           color: theme.fadedPrimaryText,
         }}
         editable={false}

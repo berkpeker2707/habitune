@@ -20,7 +20,7 @@ const ShareOpened = (props: {
           width: 345,
           height: 190,
           borderRadius: 20,
-          borderColor: theme.primaryColor,
+          borderColor: theme.borderColor,
           borderWidth: 0.5,
           marginBottom: 10,
         }}
