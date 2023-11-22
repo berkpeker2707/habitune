@@ -70,7 +70,7 @@ const Home = memo(
       setHabitNameState,
     } = props;
 
-    const { theme, setTheme } = useTheme();
+    const { theme } = useTheme();
 
     const handleHabitClicked = useMemo(() => {
       return (index: number) => {

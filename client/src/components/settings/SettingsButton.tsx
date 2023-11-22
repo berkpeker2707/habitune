@@ -5,7 +5,7 @@ import { useTheme } from "../../context/ThemeContext";
 const SettingsButton = (props: { buttonName: string }) => {
   const { buttonName } = props;
 
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <View style={{ width: 345 }}>

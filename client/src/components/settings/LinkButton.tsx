@@ -6,7 +6,7 @@ import { useTheme } from "../../context/ThemeContext";
 const LinkButton = (props: { buttonName: string; url: string }) => {
   const { buttonName, url } = props;
 
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   const handlePress = useCallback(async () => {
     // Checking if the link is supported for links with custom URL scheme.
