@@ -277,7 +277,7 @@ const Settings = (props: {
           marginBottom: 105,
         }}
       >
-        <Text style={{ color: theme.fadedPrimaryText }}>v1.1.4</Text>
+        <Text style={{ color: theme.fadedPrimaryText }}>v1.2.0</Text>
       </View>
     </View>
   );
