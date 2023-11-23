@@ -22,7 +22,7 @@ const Settings = (props: {
 }) => {
   const { dispatch, revertAll, revertAllHabit, deleteUserAction } = props;
 
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, changeThemeAction } = useTheme();
 
   const [feedbackModalVisible, setFeedbackModalVisible] =
     useState<boolean>(false);
@@ -217,9 +217,14 @@ const Settings = (props: {
       >
         <TouchableOpacity
           onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            setTheme(theme.themeType === "default" ? "dark" : "default")
-          }
+          onPress={() => {
+            setTheme(theme.themeType === "default" ? "dark" : "default");
+            dispatch(
+              changeThemeAction({
+                theme: theme.themeType === "default" ? "dark" : "default",
+              })
+            );
+          }}
         >
           {theme.themeType === "default" ? (
             <SettingsButton buttonName="Change Theme to Dark" />
