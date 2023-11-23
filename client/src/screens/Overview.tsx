@@ -1,7 +1,13 @@
 import * as React from "react";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
-import { ScrollView, TextInput, View, Text } from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  View,
+  Text,
+  RefreshControl,
+} from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
@@ -35,6 +41,28 @@ const Overview = memo(
       allHabitDatesDots,
     } = props;
     const { theme } = useTheme();
+
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+      isItCurrentUser
+        ? dispatch(
+            fetchAllHabitsAction(
+              new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                new Date().getDate(),
+                new Date().getHours(),
+                new Date().getMinutes(),
+                new Date().getSeconds()
+              ).getTime()
+            )
+          )
+        : // : dispatch(fetchAllHabitsOfSelectedUserAction());
+          "";
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);
 
     if (habitLoading) {
       return (
@@ -72,6 +100,9 @@ const Overview = memo(
             style={{
               marginBottom: 0,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <TextInput
               style={{
@@ -107,6 +138,9 @@ const Overview = memo(
             style={{
               marginBottom: 85,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             {currentHabitWeekStreakState.some(
               (value: number) => value !== 0

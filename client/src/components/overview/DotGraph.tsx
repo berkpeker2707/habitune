@@ -32,27 +32,27 @@ const DotGraph = (props: {
   } = props;
   const { theme } = useTheme();
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    isItCurrentUser
-      ? dispatch(
-          fetchAllHabitsAction(
-            new Date(
-              new Date().getFullYear(),
-              new Date().getMonth(),
-              new Date().getDate(),
-              new Date().getHours(),
-              new Date().getMinutes(),
-              new Date().getSeconds()
-            ).getTime()
-          )
-        )
-      : // : dispatch(fetchAllHabitsOfSelectedUserAction());
-        "";
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  // const onRefresh = useCallback(() => {
+  //   setRefreshing(true);
+  //   isItCurrentUser
+  //     ? dispatch(
+  //         fetchAllHabitsAction(
+  //           new Date(
+  //             new Date().getFullYear(),
+  //             new Date().getMonth(),
+  //             new Date().getDate(),
+  //             new Date().getHours(),
+  //             new Date().getMinutes(),
+  //             new Date().getSeconds()
+  //           ).getTime()
+  //         )
+  //       )
+  //     : // : dispatch(fetchAllHabitsOfSelectedUserAction());
+  //       "";
+  //   setTimeout(() => {
+  //     setRefreshing(false);
+  //   }, 2000);
+  // }, []);
 
   return (
     <View
@@ -69,9 +69,9 @@ const DotGraph = (props: {
           style={{
             marginBottom: 85,
           }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          // refreshControl={
+          //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          // }
         >
           <TextInput
             style={{
