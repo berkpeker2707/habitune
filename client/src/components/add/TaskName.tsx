@@ -22,6 +22,7 @@ const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
         placeholder="Task Name"
         onChangeText={(text) => setTaskName(text)}
         maxLength={30}
+        placeholderTextColor={theme.fadedPrimaryText}
       />
     </View>
   );

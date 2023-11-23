@@ -110,6 +110,7 @@ const AddFriendsButton = () => {
         onChangeText={(text) => validate(text)}
         value={text}
         maxLength={50}
+        placeholderTextColor={theme.fadedPrimaryText}
       />
     </View>
   );

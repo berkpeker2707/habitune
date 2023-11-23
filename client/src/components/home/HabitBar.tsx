@@ -48,6 +48,7 @@ const HabitBar = memo(
             maxLength={30}
             onChangeText={(text) => setHabitNameState(text)}
             autoFocus={true}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
         )}
 
@@ -220,6 +221,7 @@ const HabitBar = memo(
             maxLength={30}
             onChangeText={(text) => setHabitNameState(text)}
             autoFocus={true}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
         )}
         {/* right side starts */}

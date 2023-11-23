@@ -77,6 +77,7 @@ const LoginModal = (props: any) => {
             placeholder="email"
             onChangeText={(text) => setEmailState(text)}
             maxLength={30}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
           <TextInput
             style={{
@@ -94,6 +95,7 @@ const LoginModal = (props: any) => {
             placeholder="password"
             onChangeText={(text) => setPasswordState(text)}
             maxLength={30}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
           <Pressable
             style={{

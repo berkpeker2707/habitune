@@ -96,6 +96,7 @@ const Settings = (props: {
               placeholder="My feedback is..."
               onChangeText={(feedback) => setFeedback(feedback)}
               multiline
+              placeholderTextColor={theme.fadedPrimaryText}
             />
             <Pressable
               style={{
