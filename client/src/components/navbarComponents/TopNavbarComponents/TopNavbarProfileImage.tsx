@@ -29,7 +29,7 @@ const TopNavbarProfileImage = (props: any) => {
           height: 35,
           borderRadius: 150 / 2,
           overflow: "hidden",
-          borderWidth: 0.2,
+          borderWidth: 0.5,
           borderColor: theme.borderColor,
         }}
       />

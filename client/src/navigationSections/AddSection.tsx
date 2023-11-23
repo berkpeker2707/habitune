@@ -49,6 +49,7 @@ const AddSection = memo((props: any) => {
     <StackNavigator.Navigator
       screenOptions={{
         headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
+        headerTitleStyle: { color: theme.borderColor },
       }}
     >
       <StackNavigator.Screen
