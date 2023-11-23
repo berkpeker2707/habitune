@@ -50,7 +50,7 @@ const Friend = (props: {
             marginBottom: 0,
           }}
         >
-          <Text>Loading...</Text>
+          <Text style={{ color: theme.primaryText }}>Loading...</Text>
           <SkeletonPlaceholder width={345} height={39.5} radius={0} />
         </ScrollView>
       </View>

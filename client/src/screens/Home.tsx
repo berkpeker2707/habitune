@@ -133,7 +133,7 @@ const Home = memo(
             alignItems: "center",
           }}
         >
-          <Text>Loading...</Text>
+          <Text style={{ color: theme.primaryText }}>Loading...</Text>
           <SkeletonPlaceholder width={372} height={48} radius={20} />
         </View>
       );
