@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
+import { changeThemeAction, selectChangeTheme } from "../state/userSlice";
+import { useSelector } from "../state/store";
 
 interface Theme {
   themeType: string;
@@ -28,7 +30,9 @@ interface Theme {
 
 interface ThemeContextProps {
   theme: Theme;
-  setTheme: React.Dispatch<React.SetStateAction<"default" | "dark">>;
+  setTheme: React.Dispatch<React.SetStateAction<string>>;
+  changeTheme: string;
+  changeThemeAction: Function;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
@@ -36,7 +40,9 @@ const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [theme, setTheme] = useState<"default" | "dark">("default");
+  const changeTheme = useSelector(selectChangeTheme);
+
+  const [theme, setTheme] = useState<string>("default");
 
   const themes = {
     default: {
@@ -91,10 +97,12 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   };
 
-  const currentTheme = themes[theme];
+  const currentTheme = themes[theme as keyof typeof themes];
 
   return (
-    <ThemeContext.Provider value={{ theme: currentTheme, setTheme }}>
+    <ThemeContext.Provider
+      value={{ theme: currentTheme, setTheme, changeTheme, changeThemeAction }}
+    >
       {children}
     </ThemeContext.Provider>
   );
