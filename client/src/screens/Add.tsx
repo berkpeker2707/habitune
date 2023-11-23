@@ -69,7 +69,8 @@ const Add = (props: {
           marginBottom: 85,
         }}
       >
-        <Text>Add</Text>
+        <View style={{ paddingTop: 20 }}></View>
+        {/* <Text>Add</Text> */}
         <TaskName taskName={taskName} setTaskName={setTaskName} />
         <Frequency
           openFrequency={openFrequency}

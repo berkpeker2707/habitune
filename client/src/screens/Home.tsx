@@ -272,7 +272,8 @@ const Home = memo(
                   />
                 }
               >
-                <Text>Habits</Text>
+                <View style={{ paddingTop: 20 }}></View>
+                {/* <Text>Habits</Text> */}
                 <HabitBarParent
                   dispatch={dispatch}
                   updateHabitCompletedDateAction={
