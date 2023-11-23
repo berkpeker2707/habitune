@@ -71,9 +71,7 @@ const AddFriendsButton = () => {
       >
         <Text
           style={{
-            color: !buttonBoolean
-              ? theme.fadedShadowColor
-              : theme.fadedPrimaryText,
+            color: !buttonBoolean ? theme.primaryText : theme.fadedPrimaryText,
             textAlign: "center",
           }}
         >
