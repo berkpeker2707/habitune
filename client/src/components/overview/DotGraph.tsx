@@ -115,12 +115,7 @@ const DotGraph = (props: {
           >
             All Habits 🐌
           </TextInput>
-          <SkeletonPlaceholder
-            colorMode={"light"}
-            width={345}
-            height={39.5}
-            radius={0}
-          />
+          <SkeletonPlaceholder width={345} height={39.5} radius={0} />
         </ScrollView>
       ) : (
         <ScrollView

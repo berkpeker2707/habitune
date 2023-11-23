@@ -134,12 +134,7 @@ const Home = memo(
           }}
         >
           <Text>Loading...</Text>
-          <SkeletonPlaceholder
-            colorMode={"light"}
-            width={372}
-            height={48}
-            radius={20}
-          />
+          <SkeletonPlaceholder width={372} height={48} radius={20} />
         </View>
       );
     } else if (!habitLoading && allHabitsNumber === 0) {

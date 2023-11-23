@@ -29,18 +29,13 @@ const TopNavbarProfileImage = (props: any) => {
           height: 35,
           borderRadius: 150 / 2,
           overflow: "hidden",
-          // borderWidth: 0.5,
-          // borderColor: theme.warningColor,
+          borderWidth: 0.2,
+          borderColor: theme.borderColor,
         }}
       />
     </View>
   ) : (
-    <SkeletonPlaceholder
-      colorMode={"light"}
-      width={35}
-      height={35}
-      radius={75}
-    />
+    <SkeletonPlaceholder width={35} height={35} radius={75} />
   );
 };
 
