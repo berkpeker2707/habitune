@@ -14,6 +14,7 @@ import Add from "../../src/screens/Add";
 //navbar components
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
+import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -42,11 +43,13 @@ const AddSection = memo((props: any) => {
     color,
     setColor,
   } = props;
+  const { theme } = useTheme();
 
   return (
     <StackNavigator.Navigator
       screenOptions={{
-        headerStyle: { height: 70 },
+        headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
+        headerTitleStyle: { color: theme.borderColor },
       }}
     >
       <StackNavigator.Screen

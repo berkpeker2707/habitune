@@ -1,10 +1,17 @@
 import * as React from "react";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
-import { ScrollView, TextInput, View, Text } from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  View,
+  Text,
+  RefreshControl,
+} from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
+import { useTheme } from "../context/ThemeContext";
 
 const Overview = memo(
   (props: {
@@ -33,6 +40,29 @@ const Overview = memo(
       currentHabitWeekStreakState,
       allHabitDatesDots,
     } = props;
+    const { theme } = useTheme();
+
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+      isItCurrentUser
+        ? dispatch(
+            fetchAllHabitsAction(
+              new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                new Date().getDate(),
+                new Date().getHours(),
+                new Date().getMinutes(),
+                new Date().getSeconds()
+              ).getTime()
+            )
+          )
+        : // : dispatch(fetchAllHabitsOfSelectedUserAction());
+          "";
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);
 
     if (habitLoading) {
       return (
@@ -40,7 +70,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -50,13 +80,8 @@ const Overview = memo(
               marginBottom: 0,
             }}
           >
-            <Text>Loading...</Text>
-            <SkeletonPlaceholder
-              colorMode={"light"}
-              width={345}
-              height={39.5}
-              radius={0}
-            />
+            <Text style={{ color: theme.primaryText }}>Loading...</Text>
+            <SkeletonPlaceholder width={345} height={39.5} radius={0} />
           </ScrollView>
         </View>
       );
@@ -66,7 +91,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -75,12 +100,15 @@ const Overview = memo(
             style={{
               marginBottom: 0,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <TextInput
               style={{
                 height: 29.5,
                 paddingLeft: 20,
-                color: "#444",
+                color: theme.fadedShadowColor,
                 textAlign: "center",
               }}
               editable={false}
@@ -91,14 +119,18 @@ const Overview = memo(
           </ScrollView>
         </View>
       );
-    } else if (!habitLoading && allHabitsNumber > 0) {
+    } else if (
+      !habitLoading &&
+      allHabitsNumber > 0 &&
+      currentHabitWeekStreakState
+    ) {
       return (
         <View
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
-            justifyContent: "center",
+            backgroundColor: theme.backgroundColor,
+            justifyContent: "flex-start",
             alignItems: "center",
           }}
         >
@@ -106,6 +138,9 @@ const Overview = memo(
             style={{
               marginBottom: 85,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             {currentHabitWeekStreakState.some(
               (value: number) => value !== 0
@@ -143,7 +178,7 @@ const Overview = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}

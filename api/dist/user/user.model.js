@@ -34,5 +34,7 @@ const userSchema = new mongoose_1.Schema({
     password: { type: String },
     fcmToken: { type: String },
     lastLogin: { type: Date, default: Date.now },
+    userType: { type: String, default: "standart" },
+    theme: { type: String, default: "default" },
 });
 module.exports = mongoose_1.default.model("User", userSchema);

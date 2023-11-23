@@ -1,9 +1,12 @@
 import * as React from "react";
 import { useCallback } from "react";
 import { Linking, TextInput, TouchableOpacity, Vibration } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 const LinkButton = (props: { buttonName: string; url: string }) => {
   const { buttonName, url } = props;
+
+  const { theme } = useTheme();
 
   const handlePress = useCallback(async () => {
     // Checking if the link is supported for links with custom URL scheme.
@@ -31,7 +34,7 @@ const LinkButton = (props: { buttonName: string; url: string }) => {
           borderRadius: 20,
           paddingLeft: 20,
           marginBottom: 10,
-          color: "#444",
+          color: theme.fadedShadowColor,
         }}
         editable={false}
         selectTextOnFocus={false}

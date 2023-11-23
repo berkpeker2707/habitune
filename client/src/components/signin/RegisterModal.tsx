@@ -9,8 +9,11 @@ import {
   Vibration,
 } from "react-native";
 import { signInAction } from "../../state/userSlice";
+import { useTheme } from "../../context/ThemeContext";
 
 const RegisterModal = (props: any) => {
+  const { theme } = useTheme();
+
   const { dispatch, registerModalVisible, setRegisterModalVisible } = props;
   const [nameState, setNameState] = useState<string>("");
   const [emailState, setEmailState] = useState<string>("");
@@ -31,17 +34,17 @@ const RegisterModal = (props: any) => {
           justifyContent: "center",
           alignItems: "center",
           marginTop: 22,
-          backgroundColor: "rgba(52, 52, 52, 0.8)",
+          backgroundColor: theme.fadedBackgroundColor,
         }}
       >
         <View
           style={{
             margin: 20,
-            backgroundColor: "white",
+            backgroundColor: theme.backgroundColor,
             borderRadius: 20,
             padding: 35,
             alignItems: "center",
-            shadowColor: "#000",
+            shadowColor: theme.fadedShadowColor,
             shadowOffset: {
               width: 0,
               height: 2,
@@ -53,7 +56,7 @@ const RegisterModal = (props: any) => {
         >
           <Text
             style={{
-              color: "#968EB0",
+              color: theme.primaryColor,
               fontWeight: "bold",
               textAlign: "center",
               paddingBottom: 10,
@@ -69,11 +72,14 @@ const RegisterModal = (props: any) => {
               borderRadius: 20,
               paddingLeft: 20,
               marginBottom: 10,
-              borderColor: nameState.length > 0 ? "#968EB0" : "red",
+              borderColor:
+                nameState.length > 0 ? theme.primaryColor : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="name"
             onChangeText={(text) => setNameState(text)}
             maxLength={30}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
           <TextInput
             style={{
@@ -83,11 +89,14 @@ const RegisterModal = (props: any) => {
               borderRadius: 20,
               paddingLeft: 20,
               marginBottom: 10,
-              borderColor: emailState.length > 0 ? "#968EB0" : "red",
+              borderColor:
+                emailState.length > 0 ? theme.primaryColor : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="email"
             onChangeText={(text) => setEmailState(text)}
             maxLength={30}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
           <TextInput
             style={{
@@ -97,17 +106,24 @@ const RegisterModal = (props: any) => {
               borderRadius: 20,
               paddingLeft: 20,
               marginBottom: 10,
-              borderColor: passwordState.length > 0 ? "#968EB0" : "red",
+              borderColor:
+                passwordState.length > 0
+                  ? theme.primaryColor
+                  : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="password"
             onChangeText={(text) => setPasswordState(text)}
             maxLength={30}
+            placeholderTextColor={theme.fadedPrimaryText}
           />
           <Pressable
-            style={[
-              { borderRadius: 20, padding: 10, elevation: 2 },
-              { backgroundColor: "#968EB0" },
-            ]}
+            style={{
+              backgroundColor: theme.primaryColor,
+              borderRadius: 20,
+              padding: 10,
+              elevation: 2,
+            }}
             onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
               setRegisterModalVisible(!registerModalVisible);
@@ -123,7 +139,7 @@ const RegisterModal = (props: any) => {
           >
             <Text
               style={{
-                color: "white",
+                color: theme.backgroundColor,
                 fontWeight: "bold",
                 textAlign: "center",
               }}

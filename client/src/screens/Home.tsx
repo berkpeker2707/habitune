@@ -14,6 +14,7 @@ import {
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import ShareOpened from "../components/add/shareComponents/ShareOpened";
 import HabitBarParent from "../components/home/HabitBarParent";
+import { useTheme } from "../context/ThemeContext";
 
 const Home = memo(
   (props: {
@@ -68,6 +69,8 @@ const Home = memo(
       setEditHabitSelected,
       setHabitNameState,
     } = props;
+
+    const { theme } = useTheme();
 
     const handleHabitClicked = useMemo(() => {
       return (index: number) => {
@@ -125,18 +128,13 @@ const Home = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
-            justifyContent: "center",
+            backgroundColor: theme.backgroundColor,
+            justifyContent: "flex-start",
             alignItems: "center",
           }}
         >
-          <Text>Loading...</Text>
-          <SkeletonPlaceholder
-            colorMode={"light"}
-            width={372}
-            height={48}
-            radius={20}
-          />
+          <Text style={{ color: theme.primaryText }}>Loading...</Text>
+          <SkeletonPlaceholder width={372} height={48} radius={20} />
         </View>
       );
     } else if (!habitLoading && allHabitsNumber === 0) {
@@ -145,7 +143,7 @@ const Home = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -154,12 +152,15 @@ const Home = memo(
             style={{
               marginBottom: 0,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <TextInput
               style={{
                 height: 29.5,
                 paddingLeft: 20,
-                color: "#444",
+                color: theme.fadedShadowColor,
                 textAlign: "center",
               }}
               editable={false}
@@ -188,17 +189,17 @@ const Home = memo(
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
-                backgroundColor: "rgba(52, 52, 52, 0.8)",
+                backgroundColor: theme.fadedBackgroundColor,
               }}
             >
               <View
                 style={{
                   margin: 20,
-                  backgroundColor: "white",
+                  backgroundColor: theme.backgroundColor,
                   borderRadius: 20,
                   padding: 35,
                   alignItems: "center",
-                  shadowColor: "#000",
+                  shadowColor: theme.fadedShadowColor,
                   shadowOffset: {
                     width: 0,
                     height: 2,
@@ -213,11 +214,14 @@ const Home = memo(
                   shareWithFriendList={shareWithFriendList}
                   setShareWithFriendList={setShareWithFriendList}
                 />
-
                 <Pressable
                   style={[
-                    { borderRadius: 20, padding: 10, elevation: 2 },
-                    { backgroundColor: "#968EB0" },
+                    {
+                      backgroundColor: theme.primaryColor,
+                      borderRadius: 20,
+                      padding: 10,
+                      elevation: 2,
+                    },
                   ]}
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
@@ -233,7 +237,7 @@ const Home = memo(
                 >
                   <Text
                     style={{
-                      color: "white",
+                      color: theme.backgroundColor,
                       fontWeight: "bold",
                       textAlign: "center",
                     }}
@@ -255,8 +259,8 @@ const Home = memo(
               style={{
                 display: "flex",
                 height: "100%",
-                backgroundColor: "#FFFFFF",
-                justifyContent: "center",
+                backgroundColor: theme.backgroundColor,
+                justifyContent: "flex-start",
                 alignItems: "center",
               }}
             >
@@ -271,7 +275,8 @@ const Home = memo(
                   />
                 }
               >
-                <Text>Habits</Text>
+                <View style={{ paddingTop: 20 }}></View>
+                {/* <Text>Habits</Text> */}
                 <HabitBarParent
                   dispatch={dispatch}
                   updateHabitCompletedDateAction={
@@ -299,7 +304,7 @@ const Home = memo(
           style={{
             display: "flex",
             height: "100%",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
             justifyContent: "center",
             alignItems: "center",
           }}

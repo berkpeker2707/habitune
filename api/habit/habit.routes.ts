@@ -15,42 +15,63 @@ import {
 } from "./habit.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
+import defaultLimitter from "../middlewares/defaultLimitter";
 
 const habitRoutes = Router();
 
-habitRoutes.post("/new", verifyToken, createHabit);
+habitRoutes.post("/new", [verifyToken, defaultLimitter], createHabit);
 
-habitRoutes.get("/all", verifyToken, getAllHabits);
+habitRoutes.get("/all", [verifyToken, defaultLimitter], getAllHabits);
 
 habitRoutes.get(
   "/all/of/selected/user/:id",
-  verifyToken,
+  [verifyToken, defaultLimitter],
   getAllHabitsOfSelectedUser
 );
 
-habitRoutes.get("/all/today/:today", verifyToken, getTodaysHabits);
+habitRoutes.get(
+  "/all/today/:today",
+  [verifyToken, defaultLimitter],
+  getTodaysHabits
+);
 
-habitRoutes.get("/single", verifyToken, getSingleHabit);
+habitRoutes.get("/single", [verifyToken, defaultLimitter], getSingleHabit);
 
-habitRoutes.delete("/delete/:id", verifyToken, deleteHabit);
+habitRoutes.delete("/delete/:id", [verifyToken, defaultLimitter], deleteHabit);
 
-habitRoutes.put("/update/name", verifyToken, updateHabitName);
+habitRoutes.put(
+  "/update/name",
+  [verifyToken, defaultLimitter],
+  updateHabitName
+);
 
-habitRoutes.put("/update/color", verifyToken, updateHabitColor);
+habitRoutes.put(
+  "/update/color",
+  [verifyToken, defaultLimitter],
+  updateHabitColor
+);
 
-habitRoutes.put("/update/share", verifyToken, updateHabitSharedWith);
+habitRoutes.put(
+  "/update/share",
+  [verifyToken, defaultLimitter],
+  updateHabitSharedWith
+);
 
 habitRoutes.put(
   "/update/firstAndLastDate",
-  verifyToken,
+  [verifyToken, defaultLimitter],
   updateHabitFirstAndLastDate
 );
 
-habitRoutes.put("/update/date", verifyToken, updateHabitDates);
+habitRoutes.put(
+  "/update/date",
+  [verifyToken, defaultLimitter],
+  updateHabitDates
+);
 
 habitRoutes.put(
   "/update/completed/date",
-  verifyToken,
+  [verifyToken, defaultLimitter],
   updateHabitCompletedDate
 );
 

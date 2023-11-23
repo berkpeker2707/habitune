@@ -1,5 +1,6 @@
 import * as React from "react";
 import { View, Text } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 const DotGraphBar = (props: {
   name: string;
@@ -7,6 +8,7 @@ const DotGraphBar = (props: {
   allHabitDatesDots: Array<boolean>;
 }) => {
   const { name, color, allHabitDatesDots } = props;
+  const { theme } = useTheme();
 
   return (
     <View
@@ -19,7 +21,7 @@ const DotGraphBar = (props: {
         // borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
         // borderTopColor: color,
-        borderBottomColor: "#968EB0",
+        borderBottomColor: theme.primaryColor,
       }}
     >
       <View
@@ -36,7 +38,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "left",
             fontSize: name.length > 23 ? 12 : 15,
-            color: "#444",
+            color: theme.fadedShadowColor,
           }}
         >
           {name}
@@ -56,7 +58,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -71,7 +73,7 @@ const DotGraphBar = (props: {
           left: 167,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[0] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[0] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -90,7 +92,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -105,7 +107,7 @@ const DotGraphBar = (props: {
           left: 193,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[1] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[1] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -124,7 +126,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -139,7 +141,7 @@ const DotGraphBar = (props: {
           left: 219,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[2] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[2] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -158,7 +160,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -173,7 +175,7 @@ const DotGraphBar = (props: {
           left: 245,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[3] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[3] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -192,7 +194,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -207,7 +209,7 @@ const DotGraphBar = (props: {
           left: 271,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[4] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[4] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -226,7 +228,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -241,7 +243,7 @@ const DotGraphBar = (props: {
           left: 297,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[5] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[5] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -260,7 +262,7 @@ const DotGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "normal",
           }}
         >
@@ -275,7 +277,7 @@ const DotGraphBar = (props: {
           left: 323,
           top: 29,
           borderRadius: 15,
-          backgroundColor: allHabitDatesDots[6] ? color : "#FFF",
+          backgroundColor: allHabitDatesDots[6] ? color : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}

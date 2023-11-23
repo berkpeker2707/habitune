@@ -1,8 +1,10 @@
 import * as React from "react";
 import { View, TextInput } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const ShareWithNumber = (props: { shareWithNum: number }) => {
   const { shareWithNum } = props;
+  const { theme } = useTheme();
 
   return (
     <>
@@ -14,7 +16,7 @@ const ShareWithNumber = (props: { shareWithNum: number }) => {
           left: 315,
           top: 14,
           borderRadius: 6,
-          backgroundColor: "#968EB0",
+          backgroundColor: theme.primaryColor,
         }}
       ></View>
       <TextInput
@@ -23,8 +25,8 @@ const ShareWithNumber = (props: { shareWithNum: number }) => {
           borderBottomWidth: 1,
           paddingLeft: 20,
           marginBottom: 5,
-          borderColor: "#968EB0",
-          color: "#444",
+          borderColor: theme.borderColor,
+          color: theme.fadedShadowColor,
         }}
         editable={false}
         selectTextOnFocus={false}

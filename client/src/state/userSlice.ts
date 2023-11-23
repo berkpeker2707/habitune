@@ -11,6 +11,7 @@ interface userTypes {
   currentUserData: object;
   selectedUserData: object;
   deleteUserData: object;
+  changeThemeData: string;
 }
 
 const initialState: userTypes = {
@@ -21,6 +22,7 @@ const initialState: userTypes = {
   currentUserData: {},
   selectedUserData: {},
   deleteUserData: {},
+  changeThemeData: "default",
 };
 
 const updatedUser = createAction("user/update");
@@ -120,6 +122,33 @@ export const sendFriendshipAction = createAsyncThunk(
       const { data } = await axiosInstance.post(
         `/user/sendFriendshipRequest`,
         sendFriendshipData,
+        config
+      );
+
+      dispatch(updatedUser());
+
+      return data;
+    } catch (error) {
+      console.log("user error4: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const changeThemeAction = createAsyncThunk(
+  "user/changeTheme",
+  async (changeThemeData: "", { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+    try {
+      const { data } = await axiosInstance.post(
+        `/user/changeTheme`,
+        changeThemeData,
         config
       );
 
@@ -251,6 +280,21 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action?.error.toString();
     });
+    //change theme reducer
+    builder.addCase(changeThemeAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(changeThemeAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.isUserUpdated = false;
+      state.changeThemeData = action?.payload;
+    });
+    builder.addCase(changeThemeAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
+    });
     //delete user reducer
     builder.addCase(deleteUserAction.pending, (state) => {
       state.loading = true;
@@ -278,8 +322,9 @@ const userSlice = createSlice({
         (initialState.loading = false),
         (initialState.error = ""),
         (initialState.isUserUpdated = false),
-        (initialState.currentUserData = {});
-      initialState.selectedUserData = {};
+        (initialState.currentUserData = {}),
+        (initialState.selectedUserData = {});
+      initialState.changeThemeData = "default";
     });
     builder.addCase(revertAll.rejected, (state, action) => {
       state.loading = false;
@@ -308,6 +353,9 @@ export const selectFetchCurrentUserProfile = (state: any) => {
 };
 export const selectFetchUserProfile = (state: any) => {
   return state.user.selectedUserData;
+};
+export const selectChangeTheme = (state: any) => {
+  return state.user.currentUserData.theme;
 };
 
 export default userSlice.reducer;

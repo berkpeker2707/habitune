@@ -4,6 +4,7 @@ import { RefreshControl, ScrollView, TextInput, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
+import { useTheme } from "../../context/ThemeContext";
 
 const DotGraph = (props: {
   dispatch: Function;
@@ -29,35 +30,36 @@ const DotGraph = (props: {
     isItCurrentUser,
     allHabitDatesDots,
   } = props;
+  const { theme } = useTheme();
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    isItCurrentUser
-      ? dispatch(
-          fetchAllHabitsAction(
-            new Date(
-              new Date().getFullYear(),
-              new Date().getMonth(),
-              new Date().getDate(),
-              new Date().getHours(),
-              new Date().getMinutes(),
-              new Date().getSeconds()
-            ).getTime()
-          )
-        )
-      : // : dispatch(fetchAllHabitsOfSelectedUserAction());
-        "";
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  // const onRefresh = useCallback(() => {
+  //   setRefreshing(true);
+  //   isItCurrentUser
+  //     ? dispatch(
+  //         fetchAllHabitsAction(
+  //           new Date(
+  //             new Date().getFullYear(),
+  //             new Date().getMonth(),
+  //             new Date().getDate(),
+  //             new Date().getHours(),
+  //             new Date().getMinutes(),
+  //             new Date().getSeconds()
+  //           ).getTime()
+  //         )
+  //       )
+  //     : // : dispatch(fetchAllHabitsOfSelectedUserAction());
+  //       "";
+  //   setTimeout(() => {
+  //     setRefreshing(false);
+  //   }, 2000);
+  // }, []);
 
   return (
     <View
       style={{
         display: "flex",
         height: "100%",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -67,15 +69,15 @@ const DotGraph = (props: {
           style={{
             marginBottom: 85,
           }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          // refreshControl={
+          //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          // }
         >
           <TextInput
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}
@@ -105,7 +107,7 @@ const DotGraph = (props: {
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}
@@ -113,12 +115,7 @@ const DotGraph = (props: {
           >
             All Habits 🐌
           </TextInput>
-          <SkeletonPlaceholder
-            colorMode={"light"}
-            width={345}
-            height={39.5}
-            radius={0}
-          />
+          <SkeletonPlaceholder width={345} height={39.5} radius={0} />
         </ScrollView>
       ) : (
         <ScrollView
@@ -130,7 +127,7 @@ const DotGraph = (props: {
             style={{
               height: 29.5,
               paddingLeft: 20,
-              color: "#444",
+              color: theme.fadedShadowColor,
               textAlign: "center",
             }}
             editable={false}

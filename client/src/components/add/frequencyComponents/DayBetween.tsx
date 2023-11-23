@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { TouchableOpacity, TextInput, Vibration } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
 import { enGB, registerTranslation } from "react-native-paper-dates";
+import { useTheme } from "../../../context/ThemeContext";
 registerTranslation("en-GB", enGB);
 
 const DayBetween = (props: {
@@ -21,6 +22,7 @@ const DayBetween = (props: {
     dateBetweenModalOpen,
     setDateBetweenModalOpen,
   } = props;
+  const { theme } = useTheme();
 
   const onDismiss = useCallback(() => {
     setDateBetweenModalOpen(false);
@@ -65,8 +67,8 @@ const DayBetween = (props: {
             marginLeft: 7,
             marginRight: 7,
             marginBottom: 10,
-            borderColor: "#968EB0",
-            color: "#7c7c7c",
+            borderColor: theme.borderColor,
+            color: theme.fadedPrimaryText,
             textAlign: "left",
           }}
           editable={false}
@@ -87,8 +89,8 @@ const DayBetween = (props: {
             marginLeft: 7,
             marginRight: 7,
             marginBottom: 10,
-            borderColor: "#968EB0",
-            color: "#7c7c7c",
+            borderColor: theme.borderColor,
+            color: theme.fadedPrimaryText,
             textAlign: "left",
           }}
           editable={false}

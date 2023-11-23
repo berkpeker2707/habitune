@@ -1,8 +1,10 @@
 import * as React from "react";
 import { View, TextInput } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const ShareWithPurpleIcon = (props: { textInputTitle: string }) => {
   const { textInputTitle } = props;
+  const { theme } = useTheme();
 
   return (
     <View style={{ width: 345 }}>
@@ -14,7 +16,7 @@ const ShareWithPurpleIcon = (props: { textInputTitle: string }) => {
           left: 315,
           top: 14,
           borderRadius: 6,
-          backgroundColor: "#968EB0",
+          backgroundColor: theme.primaryColor,
         }}
       ></View>
       <TextInput
@@ -24,7 +26,7 @@ const ShareWithPurpleIcon = (props: { textInputTitle: string }) => {
           borderRadius: 20,
           paddingLeft: 20,
           marginBottom: 10,
-          color: "#444",
+          color: theme.fadedShadowColor,
         }}
         editable={false}
         selectTextOnFocus={false}

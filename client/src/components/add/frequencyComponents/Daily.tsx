@@ -1,7 +1,10 @@
 import * as React from "react";
 import { View, TextInput } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const Daily = () => {
+  const { theme } = useTheme();
+
   return (
     <>
       <View
@@ -12,7 +15,7 @@ const Daily = () => {
           left: 315,
           top: 14,
           borderRadius: 6,
-          backgroundColor: "#968EB0",
+          backgroundColor: theme.primaryColor,
         }}
       ></View>
       <TextInput
@@ -21,8 +24,8 @@ const Daily = () => {
           borderBottomWidth: 1,
           paddingLeft: 20,
           marginBottom: 5,
-          borderColor: "#968EB0",
-          color: "#444",
+          borderColor: theme.borderColor,
+          color: theme.fadedShadowColor,
         }}
         editable={false}
         selectTextOnFocus={false}
@@ -37,8 +40,8 @@ const Daily = () => {
           marginLeft: 7,
           marginRight: 7,
           marginBottom: 10,
-          borderColor: "#968EB0",
-          color: "#7c7c7c",
+          borderColor: theme.borderColor,
+          color: theme.fadedPrimaryText,
         }}
         editable={false}
         selectTextOnFocus={false}

@@ -4,6 +4,7 @@ import { View, TouchableOpacity, Vibration } from "react-native";
 import DayCircle from "./DayCircle";
 import DayBetween from "./DayBetween";
 import Daily from "./Daily";
+import { useTheme } from "../../../context/ThemeContext";
 const FrequencyOpened = memo(
   (props: {
     taskUpcomingDates: string[];
@@ -25,14 +26,19 @@ const FrequencyOpened = memo(
       dateBetweenModalOpen,
       setDateBetweenModalOpen,
     } = props;
+    const { theme } = useTheme();
+
     return (
       <View
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: theme.backgroundColor,
           width: 345,
           height: 189,
           borderRadius: 20,
-          borderColor: taskUpcomingDates.length > 0 ? "#968EB0" : "red",
+          borderColor:
+            taskUpcomingDates.length > 0
+              ? theme.primaryColor
+              : theme.warningColor,
           borderWidth: 0.5,
           marginBottom: 10,
         }}
