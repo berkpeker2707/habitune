@@ -78,7 +78,13 @@ const FriendBar = memo(
               <></>
             )}
             {/* marking ends */}
-            <Text style={{ position: "absolute", left: 50 }}>
+            <Text
+              style={{
+                color: theme.primaryText,
+                position: "absolute",
+                left: 50,
+              }}
+            >
               {friendName}
               {pending ? " (pending)" : ""}
             </Text>
