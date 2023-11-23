@@ -9,8 +9,10 @@ const DayCircle = memo(
     const { theme } = useTheme();
 
     if (dayCircleMarked) {
+      var color = theme.backgroundColor;
       var backgroundColor = theme.primaryColor;
     } else {
+      var color = theme.primaryColor;
       var backgroundColor = theme.backgroundColor;
     }
     return (
@@ -43,6 +45,7 @@ const DayCircle = memo(
               fontWeight: "400",
               fontSize: 12,
               lineHeight: 15,
+              color: color,
             }}
           >
             {day}
