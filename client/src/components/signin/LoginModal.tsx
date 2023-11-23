@@ -73,6 +73,7 @@ const LoginModal = (props: any) => {
               marginBottom: 10,
               borderColor:
                 emailState.length > 0 ? theme.primaryColor : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="email"
             onChangeText={(text) => setEmailState(text)}
@@ -91,6 +92,7 @@ const LoginModal = (props: any) => {
                 passwordState.length > 0
                   ? theme.primaryColor
                   : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="password"
             onChangeText={(text) => setPasswordState(text)}

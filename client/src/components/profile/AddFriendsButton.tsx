@@ -88,7 +88,7 @@ const AddFriendsButton = () => {
           marginLeft: 20,
           zIndex: -10,
           marginBottom: 5,
-          color: theme.fadedShadowColor,
+          color: theme.primaryText,
           fontSize: 14,
 
           backgroundColor: theme.backgroundColor,

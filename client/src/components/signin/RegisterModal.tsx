@@ -74,6 +74,7 @@ const RegisterModal = (props: any) => {
               marginBottom: 10,
               borderColor:
                 nameState.length > 0 ? theme.primaryColor : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="name"
             onChangeText={(text) => setNameState(text)}
@@ -90,6 +91,7 @@ const RegisterModal = (props: any) => {
               marginBottom: 10,
               borderColor:
                 emailState.length > 0 ? theme.primaryColor : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="email"
             onChangeText={(text) => setEmailState(text)}
@@ -108,6 +110,7 @@ const RegisterModal = (props: any) => {
                 passwordState.length > 0
                   ? theme.primaryColor
                   : theme.warningColor,
+              color: theme.primaryText,
             }}
             placeholder="password"
             onChangeText={(text) => setPasswordState(text)}

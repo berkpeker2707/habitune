@@ -18,6 +18,7 @@ const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
           marginBottom: 10,
           borderColor:
             taskName.length > 0 ? theme.borderColor : theme.warningColor,
+          color: theme.primaryText,
         }}
         placeholder="Task Name"
         onChangeText={(text) => setTaskName(text)}

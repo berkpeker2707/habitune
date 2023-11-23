@@ -44,6 +44,7 @@ const HabitBar = memo(
               paddingLeft: 40,
               borderRadius: 20,
               fontSize: 19,
+              color: theme.primaryText,
             }}
             maxLength={30}
             onChangeText={(text) => setHabitNameState(text)}
@@ -217,6 +218,7 @@ const HabitBar = memo(
               paddingLeft: 40,
               borderRadius: 20,
               fontSize: 19,
+              color: theme.primaryText,
             }}
             maxLength={30}
             onChangeText={(text) => setHabitNameState(text)}
