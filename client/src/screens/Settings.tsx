@@ -76,7 +76,13 @@ const Settings = (props: {
               elevation: 5,
             }}
           >
-            <Text style={{ marginBottom: 10, textAlign: "center" }}>
+            <Text
+              style={{
+                color: theme.primaryText,
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
               Your feedback is precious to us! Please let us know we can improve
               your Habitune experience!
             </Text>
@@ -161,7 +167,13 @@ const Settings = (props: {
               elevation: 5,
             }}
           >
-            <Text style={{ marginBottom: 10, textAlign: "center" }}>
+            <Text
+              style={{
+                color: theme.primaryText,
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
               Habitune is habit building application, that allows you to track
               habits, improve behaviours, schedule habits and customize them
               according to desired week day; in short period and color. Habitune
