@@ -5,6 +5,7 @@ import {
   fetchCurrentUserProfile,
   fetchUserProfile,
   sendFriendship,
+  changeTheme,
   deleteUser,
 } from "./user.controllers";
 
@@ -35,6 +36,8 @@ userRoutes.post(
   [verifyToken, defaultLimitter],
   sendFriendship
 );
+
+userRoutes.post("/changeTheme", [verifyToken, defaultLimitter], changeTheme);
 
 userRoutes.delete("/delete/me", [verifyToken, defaultLimitter], deleteUser);
 

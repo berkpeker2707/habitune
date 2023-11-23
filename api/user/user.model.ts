@@ -13,6 +13,7 @@ const userSchema = new Schema<IUser>({
   fcmToken: { type: String },
   lastLogin: { type: Date, default: Date.now },
   userType: { type: String, default: "standart" },
+  theme: { type: String, default: "default" },
 });
 
 export = mongoose.model<IUser>("User", userSchema);

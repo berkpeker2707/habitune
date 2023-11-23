@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
+exports.deleteUser = exports.changeTheme = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const notification_model_1 = __importDefault(require("../notifications/notification.model"));
@@ -49,6 +49,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 image: req.body.picture,
                 fcmToken: "empty",
                 userType: "standart",
+                theme: "default",
             });
             yield user.save();
             var foundNotification = yield notification_model_1.default.findOne({
@@ -124,6 +125,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         password: yield bcrypt.hash(req.body.password, 10),
                         fcmToken: "empty",
                         userType: "standart",
+                        theme: "default",
                     });
                     yield user.save();
                     var foundNotification = yield notification_model_1.default.findOne({
@@ -301,6 +303,19 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.sendFriendship = sendFriendship;
+const changeTheme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    try {
+        var newThemeValue = req.body.theme;
+        const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_d = req.user[0]) === null || _d === void 0 ? void 0 : _d._id, { $set: { theme: newThemeValue } }, { new: true });
+        res.status(200).json(loggedinUser);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.changeTheme = changeTheme;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);

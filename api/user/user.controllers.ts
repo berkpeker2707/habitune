@@ -45,6 +45,7 @@ export const signInWithGoogleController = async (
         image: req.body.picture,
         fcmToken: "empty",
         userType: "standart",
+        theme: "default",
       });
       await user.save();
 
@@ -133,6 +134,7 @@ export const signInController = async (req: IReq | any, res: Response) => {
             password: await bcrypt.hash(req.body.password, 10),
             fcmToken: "empty",
             userType: "standart",
+            theme: "default",
           });
           await user.save();
 
@@ -372,6 +374,23 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       // console.log("target user know");
       res.status(200).json(loggedinUser);
     }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const changeTheme = async (req: IReq | any, res: Response) => {
+  try {
+    var newThemeValue = req.body.theme;
+
+    const loggedinUser = await User.findByIdAndUpdate(
+      req.user[0]?._id,
+      { $set: { theme: newThemeValue } },
+      { new: true }
+    );
+
+    res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));

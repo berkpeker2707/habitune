@@ -14,6 +14,7 @@ export interface IUser {
   fcmToken: string;
   lastLogin: Date;
   userType: string;
+  theme: string;
 }
 
 export interface IHabit {
