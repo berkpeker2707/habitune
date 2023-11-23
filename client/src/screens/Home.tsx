@@ -152,6 +152,9 @@ const Home = memo(
             style={{
               marginBottom: 0,
             }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
             <TextInput
               style={{
