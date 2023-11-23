@@ -17,7 +17,7 @@ const ProfileCard = (props: { name: string; email: string; image: string }) => {
 
           borderRadius: 100,
 
-          shadowColor: theme.primaryColor,
+          shadowColor: theme.fadedShadowColor,
           shadowOffset: {
             width: 0,
             height: 2,

@@ -28,7 +28,7 @@ const FriendBar = memo(
             borderRadius: 50,
             //   shadow starts
             overflow: "hidden",
-            shadowColor: theme.fadedBackgroundColor,
+            shadowColor: theme.fadedShadowColor,
             shadowOffset: {
               width: 0,
               height: 1,

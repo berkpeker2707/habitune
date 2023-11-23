@@ -201,7 +201,7 @@ const Home = memo(
                   borderRadius: 20,
                   padding: 35,
                   alignItems: "center",
-                  shadowColor: theme.primaryColor,
+                  shadowColor: theme.fadedShadowColor,
                   shadowOffset: {
                     width: 0,
                     height: 2,

@@ -66,7 +66,7 @@ const Settings = (props: {
               borderRadius: 20,
               padding: 35,
               alignItems: "center",
-              shadowColor: theme.primaryText,
+              shadowColor: theme.fadedShadowColor,
               shadowOffset: {
                 width: 0,
                 height: 2,

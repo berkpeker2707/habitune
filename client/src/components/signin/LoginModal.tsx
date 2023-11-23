@@ -43,7 +43,7 @@ const LoginModal = (props: any) => {
             borderRadius: 20,
             padding: 35,
             alignItems: "center",
-            shadowColor: theme.backgroundColorShadow,
+            shadowColor: theme.fadedShadowColor,
             shadowOffset: {
               width: 0,
               height: 2,
