@@ -106,7 +106,7 @@ import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging
 import onShare from "./src/helpers/shareApp";
 
 import ErrorBoundary from "react-native-error-boundary";
-import { ThemeProvider } from "./src/context/ThemeContext";
+import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -140,6 +140,8 @@ const AppWrapper = () => {
 };
 
 const App = () => {
+  const { setTheme, changeTheme } = useTheme();
+
   const navigation = useNavigation<generalScreenProp>();
 
   // const controller = new AbortController();
@@ -267,6 +269,12 @@ const App = () => {
       dispatch(fetchAllTodayHabitsAction(today.getTime()));
     }
   }, [token, tokenSecondOption]);
+
+  useEffect(() => {
+    if (changeTheme) {
+      setTheme(changeTheme);
+    }
+  }, [changeTheme]);
 
   //update overview if home is updated
   useEffect(() => {
