@@ -73,7 +73,7 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       borderColor: "#FFFFFF",
       primaryText: "#FFFFFF",
       fadedPrimaryText: "#B0B0B0",
-      fadedShadowColor: "#111111",
+      fadedShadowColor: "#999999",
       warningColor: "#FF0000",
       color0: "#FFFFFF",
       color1: "#7D7A8D",
