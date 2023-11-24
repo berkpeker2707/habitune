@@ -39,7 +39,7 @@ const BottomTabAddButton = (props: any) => {
             >
               <G filter="url(#filter0_d_388_5995)">
                 <Path
-                  stroke={theme.borderColor}
+                  stroke={theme.primaryColor}
                   strokeWidth="0.3"
                   d="M2 3h115.279a55.429 55.429 0 0144.495 22.375l2.401 3.23a32.186 32.186 0 007.84 7.475c10.637 7.158 24.675 7.28 35.344.172a31.638 31.638 0 008.272-8.037l2.22-3.133A52.353 52.353 0 01260.565 3H377v64H2V3z"
                   fill={theme.backgroundColor}
@@ -72,11 +72,11 @@ const BottomTabAddButton = (props: any) => {
                   cy={31}
                   r={27}
                   fill={theme.backgroundColor}
-                  stroke={theme.color1}
+                  stroke={theme.primaryColor}
                   strokeWidth="0.3"
                 />
               </G>
-              <G filter="url(#filter1_d_194_424)" fill={theme.color1}>
+              <G filter="url(#filter1_d_194_424)" fill={theme.primaryColor}>
                 <Path d="M29 42V20a2 2 0 114 0v22a2 2 0 11-4 0z" />
                 <Path d="M42 33H20a2 2 0 110-4h22a2 2 0 110 4z" />
               </G>

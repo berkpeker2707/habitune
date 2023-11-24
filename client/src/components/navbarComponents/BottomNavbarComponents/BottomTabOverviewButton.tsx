@@ -48,26 +48,26 @@ const BottomTabOverviewButton = (props: any) => {
                 cx={5.5}
                 cy={23.5}
                 r={4.5}
-                fill={theme.color1}
-                stroke={theme.color1}
+                fill={theme.primaryColor}
+                stroke={theme.primaryColor}
               />
               <Circle
                 cx={24.5}
                 cy={6.5}
                 r={4.5}
-                fill={theme.color1}
-                stroke={theme.color1}
+                fill={theme.primaryColor}
+                stroke={theme.primaryColor}
               />
               <Path
-                stroke={theme.color1}
+                stroke={theme.primaryColor}
                 d="M20.967 7.743L7.669 19.712M44 6H29"
               />
               <Circle
                 cx={48.5}
                 cy={5.5}
                 r={4.5}
-                fill={theme.color1}
-                stroke={theme.color1}
+                fill={theme.primaryColor}
+                stroke={theme.primaryColor}
               />
             </Svg>
             <View
@@ -117,11 +117,11 @@ const BottomTabOverviewButton = (props: any) => {
               viewBox="0 0 54 29"
               {...props}
             >
-              <Circle cx={5.5} cy={23.5} r={4.5} stroke={theme.color1} />
-              <Circle cx={48.5} cy={5.5} r={4.5} stroke={theme.color1} />
-              <Circle cx={24.5} cy={6.5} r={4.5} stroke={theme.color1} />
+              <Circle cx={5.5} cy={23.5} r={4.5} stroke={theme.primaryColor} />
+              <Circle cx={48.5} cy={5.5} r={4.5} stroke={theme.primaryColor} />
+              <Circle cx={24.5} cy={6.5} r={4.5} stroke={theme.primaryColor} />
               <Path
-                stroke={theme.color1}
+                stroke={theme.primaryColor}
                 d="M20.967 7.743L7.669 19.712M44 6H29"
               />
             </Svg>
