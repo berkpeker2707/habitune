@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, Vibration, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Overview from "../../src/screens/Overview";
@@ -8,6 +8,7 @@ import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarCompon
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarShareButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
 import TopNavbarSettingsButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
+import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -21,15 +22,21 @@ const OverviewSection = (props: any) => {
     revertAllHabit,
     deleteUserAction,
     allHabits,
-    habitUpdated,
+    allHabitsNumber,
     habitLoading,
-    isInArray,
+    refreshing,
+    setRefreshing,
     onShare,
+    currentHabitWeekStreakState,
+    allHabitDatesDots,
   } = props;
+  const { theme } = useTheme();
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
-        headerStyle: { height: 70 },
+        headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
+        headerTitleStyle: { color: theme.borderColor },
       }}
     >
       <StackNavigator.Screen
@@ -42,10 +49,14 @@ const OverviewSection = (props: any) => {
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
             }
-            allHabits={allHabits ? allHabits : []}
-            habitUpdated={habitUpdated}
+            allHabits={allHabits}
+            allHabitsNumber={allHabitsNumber}
             habitLoading={habitLoading}
-            isInArray={isInArray}
+            refreshing={refreshing}
+            setRefreshing={setRefreshing}
+            isItCurrentUser={true}
+            currentHabitWeekStreakState={currentHabitWeekStreakState}
+            allHabitDatesDots={allHabitDatesDots}
           />
         )}
         options={{
@@ -74,6 +85,7 @@ const OverviewSection = (props: any) => {
             >
               <View>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       onShare();
@@ -88,6 +100,7 @@ const OverviewSection = (props: any) => {
               <View style={{ flexBasis: "100%", height: 0 }}></View>
               <View style={{ paddingRight: 10, paddingLeft: 20 }}>
                 <Pressable
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
                       navigation.navigate("Settings");
@@ -126,6 +139,7 @@ const OverviewSection = (props: any) => {
               }}
             >
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.goBack();

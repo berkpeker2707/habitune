@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Vibration } from "react-native";
 import { useCallback, useState } from "react";
 import ReminderWithPurpleIcon from "./ReminderWithPurpleIcon";
 import { TimePickerModal } from "react-native-paper-dates";
@@ -19,7 +19,11 @@ const Reminder = () => {
   );
   return (
     <>
-      <TouchableOpacity style={{ width: 345 }} onPress={() => setVisible(true)}>
+      <TouchableOpacity
+        style={{ width: 345 }}
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => setVisible(true)}
+      >
         <ReminderWithPurpleIcon textInputTitle={"Reminder"} />
         <TimePickerModal
           visible={visible}

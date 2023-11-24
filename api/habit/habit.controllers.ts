@@ -106,14 +106,18 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
   try {
     var clientTime = parseInt(req.params.today);
 
-    //find if any date in upcomingDates is less than 24 hours from given date
-    const twentyFourHoursFromNow = new Date(clientTime + 24 * 60 * 60 * 1000);
+    //calculate the start and end timestamps for the current day
+    const startOfToday = new Date(clientTime);
+    startOfToday.setHours(0, 0, 0, 0); //set the time to 00:00:00.000
+    const endOfToday = new Date(clientTime);
+    endOfToday.setHours(23, 59, 59, 999); //set the time to 23:59:59.999
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
-      // $or: [{ upcomingDates: elemToday }],
-      // upcomingDates: { $in: [today] },
-      upcomingDates: { $lt: twentyFourHoursFromNow },
+      upcomingDates: {
+        $gte: startOfToday, //greater than or equal to the start of the day
+        $lte: endOfToday, //less than or equal to the end of the day
+      },
     })
       .populate({ path: "sharedWith", model: "User" })
       .slice("dates", -10) //last 10 numbers of the dates array

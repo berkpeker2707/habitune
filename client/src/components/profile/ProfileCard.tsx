@@ -1,9 +1,11 @@
 import * as React from "react";
 
 import { Image, View, Text } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 const ProfileCard = (props: { name: string; email: string; image: string }) => {
   const { name, email, image } = props;
+  const { theme } = useTheme();
 
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -15,7 +17,7 @@ const ProfileCard = (props: { name: string; email: string; image: string }) => {
 
           borderRadius: 100,
 
-          shadowColor: "#968EB0",
+          shadowColor: theme.fadedShadowColor,
           shadowOffset: {
             width: 0,
             height: 2,
@@ -40,7 +42,7 @@ const ProfileCard = (props: { name: string; email: string; image: string }) => {
       <View>
         <Text
           style={{
-            color: "#000000",
+            color: theme.primaryText,
             textAlign: "center",
             fontSize: 20,
             fontStyle: "normal",
@@ -53,7 +55,7 @@ const ProfileCard = (props: { name: string; email: string; image: string }) => {
       <View>
         <Text
           style={{
-            color: "#444",
+            color: theme.fadedShadowColor,
             textAlign: "center",
             fontSize: 12,
             fontStyle: "normal",

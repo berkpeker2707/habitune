@@ -12,6 +12,9 @@ export interface IUser {
   friends: [{ friend: Types.ObjectId; pending: boolean }];
   password: any;
   fcmToken: string;
+  lastLogin: Date;
+  userType: string;
+  theme: string;
 }
 
 export interface IHabit {

@@ -5,11 +5,20 @@ import {
 } from "./notification.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
+import defaultLimitter from "../middlewares/defaultLimitter";
 
 const notificationRoutes = Router();
 
-notificationRoutes.post("/update/token", verifyToken, notificationUpdateToken);
+notificationRoutes.post(
+  "/update/token",
+  [verifyToken, defaultLimitter],
+  notificationUpdateToken
+);
 
-notificationRoutes.put("/update/push", verifyToken, notificationSend);
+notificationRoutes.put(
+  "/update/push",
+  [verifyToken, defaultLimitter],
+  notificationSend
+);
 
 export default notificationRoutes;

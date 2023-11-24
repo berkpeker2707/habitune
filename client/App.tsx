@@ -1,8 +1,8 @@
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
-import { Share } from "react-native";
+import { useEffect, useState } from "react";
+import { Vibration } from "react-native";
 
-import * as Device from "expo-device";
+// import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
 
@@ -11,12 +11,12 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+// import { createStackNavigator } from "@react-navigation/stack";
 
 //types
 import {
   BottomTabNavParamList,
-  StackNavParamList,
+  // StackNavParamList,
   generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
 // screens
@@ -54,6 +54,8 @@ import {
   selectHabitUpdated,
   selectHabits,
   selectHabitsToday,
+  selectHabitsTodayBoolean,
+  selectCurrentHabitWeekStreak,
   selectHabitsOfSelectedUser,
   selectHabitLoading,
   updateHabitNameAction,
@@ -62,6 +64,9 @@ import {
   revertAllHabit,
   updateHabitCompletedDateAction,
   updateHabitSharedWithAction,
+  selectFriendCurrentHabitWeekStreak,
+  selectAllHabitDatesDots,
+  selectFriendAllHabitDatesDots,
 } from "./src/state/habitSlice";
 import {
   notificationSendAction,
@@ -93,7 +98,15 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import HomeSection from "./src/navigationSections/HomeSection";
 import AddSection from "./src/navigationSections/AddSection";
 import OverviewSection from "./src/navigationSections/OverviewSection";
+
+//helpers
 import isInArray from "./src/helpers/isInArray";
+import registerForPushNotificationsAsync from "./src/helpers/registerForPushNotificationsAsync";
+import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
+import onShare from "./src/helpers/shareApp";
+
+import ErrorBoundary from "react-native-error-boundary";
+import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -103,20 +116,32 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const errorHandler = (error: Error, stackTrace: string) => {
+  /* Log the error to an error reporting service */
+  console.log("error: ", error);
+  console.log("stackTrace: ", stackTrace);
+};
+
 //wrapper for state
 const AppWrapper = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          <App />
-        </NavigationContainer>
+        <ThemeProvider>
+          <NavigationContainer>
+            <ErrorBoundary onError={errorHandler}>
+              <App />
+            </ErrorBoundary>
+          </NavigationContainer>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );
 };
 
 const App = () => {
+  const { setTheme, changeTheme } = useTheme();
+
   const navigation = useNavigation<generalScreenProp>();
 
   // const controller = new AbortController();
@@ -137,18 +162,92 @@ const App = () => {
 
   const allHabitsToday = useSelector(selectHabitsToday);
 
+  const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
+
+  const currentHabitWeekStreak = useSelector(selectCurrentHabitWeekStreak);
+
+  const friendCurrentHabitWeek = useSelector(
+    selectFriendCurrentHabitWeekStreak
+  );
+
+  const allHabitDatesDots = useSelector(selectAllHabitDatesDots);
+
+  const friendAllHabitDatesDots = useSelector(selectFriendAllHabitDatesDots);
+
   const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
 
   const habitUpdated = useSelector(selectHabitUpdated);
 
   const habitLoading = useSelector(selectHabitLoading);
 
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
   const [homeEditBool, setHomeEditBool] = useState<boolean>(false);
 
   const [friendIDState, setFriendIDState] = useState<number>();
+  const [friendName, setFriendName] = useState<string>();
 
-  // try {
-  //date stuff starts
+  //home screen states
+  const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
+  () => [];
+  const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
+  const [selectedItem, setSelectedItem] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [showInfoText, setShowInfoText] = useState<boolean>(false);
+  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
+    useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<{
+    email: string;
+    name: string;
+    pending: boolean;
+  }>({
+    email: "",
+    name: "",
+    pending: false,
+  });
+
+  const [habitNameState, setHabitNameState] = useState<string>("");
+  const [editHabitSelected, setEditHabitSelected] = useState<number>(0);
+
+  //add screen states
+  const [taskName, setTaskName] = useState<string>("");
+  const [openFrequency, setOpenFrequency] = useState<boolean>(false);
+  const [taskUpcomingDates, setTaskUpcomingDates] = useState<string[]>([
+    // "Sun",
+    // "Mon",
+    // "Tue",
+    // "Wed",
+    // "Thu",
+    // "Fri",
+    // "Sat",
+  ]);
+  const [taskFirstDate, setTaskFirstDate] = useState<Date | any>(
+    new Date(
+      new Date(Date.now()).getFullYear(),
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
+  );
+  const [taskLastDate, setTaskLastDate] = useState<Date | any>(
+    new Date(
+      new Date(Date.now()).getFullYear() + 1,
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
+  );
+  const [dateBetweenModalOpen, setDateBetweenModalOpen] =
+    useState<boolean>(false);
+  // const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
+  const [openShare, setOpenShare] = useState<boolean>(false);
+  const [color, setColor] = useState<string>("#968EB0");
+
   const todayTemp = new Date();
   const today = new Date(
     todayTemp.getFullYear(),
@@ -159,132 +258,54 @@ const App = () => {
     todayTemp.getSeconds()
   );
 
-  function isInHomeArray(array: any[], value: any) {
-    const dateToBeChecked = new Date(value);
-
-    for (const item of array) {
-      const alreadyStoredDate = new Date(item);
-
-      const msBetweenDates = Math.abs(
-        alreadyStoredDate.getTime() - dateToBeChecked.getTime()
-      );
-
-      const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
-
-      if (
-        hoursBetweenDates < 24 &&
-        alreadyStoredDate.getDate() === dateToBeChecked.getDate() &&
-        alreadyStoredDate.getMonth() === dateToBeChecked.getMonth()
-      ) {
-        return true; // Found a match, return immediately.
-      }
-    }
-
-    return false; // No match found in the array.
-  }
-
-  var currentHabitDatesIncluded = useCallback(
-    allHabitsToday &&
-      allHabitsToday.map((allHabitsItem: any) => {
-        return isInHomeArray(allHabitsItem.dates, today);
-      }),
-    [allHabitsToday, habitUpdated]
-  );
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        title: "App link",
-        message: `Join me in Habitune!\n https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune`,
-        url: "https://play.google.com/store/apps/details?id=com.thelittleteaclipper.habitune",
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  //token
   useEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
     ) {
-      dispatch(fetchCurrentUserProfileAction());
+      dispatch(fetchCurrentUserProfileAction(today.getTime()));
       dispatch(fetchAllHabitsAction());
-      dispatch(
-        fetchAllTodayHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
-    }
-  }, [token, tokenSecondOption, currentUser._id, userUpdated, habitUpdated]);
-
-  // expo notifications
-  async function registerForPushNotificationsAsync() {
-    let deviceToken;
-
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== "granted") {
-      alert("Failed to get push token for push notification!");
-      return;
-    }
-    deviceToken = (await Notifications.getExpoPushTokenAsync()).data;
-    // console.log("deviceToken:", deviceToken);
-
-    return deviceToken;
-  }
-
-  // fcm notifications
-  const registerDeviceForMessaging = async () => {
-    await messaging().registerDeviceForRemoteMessages();
-    const token = await messaging().getToken();
-
-    dispatch(notificationUpdateTokenAction(token));
-    // console.log("FCM Token: ", token);
-  };
-
-  useEffect(() => {
-    registerForPushNotificationsAsync();
-  }, []);
-
-  useEffect(() => {
-    if (
-      (token && token.length > 0) ||
-      (tokenSecondOption && tokenSecondOption.length > 0)
-    ) {
-      registerDeviceForMessaging();
+      dispatch(fetchAllTodayHabitsAction(today.getTime()));
     }
   }, [token, tokenSecondOption]);
 
+  useEffect(() => {
+    if (changeTheme) {
+      setTheme(changeTheme);
+    }
+  }, [changeTheme]);
+
+  //update overview if home is updated
+  useEffect(() => {
+    if (habitUpdated) {
+      dispatch(fetchAllHabitsAction());
+    }
+  }, [habitUpdated]);
+
+  //expo device registeration
+  useEffect(() => {
+    registerForPushNotificationsAsync(Notifications);
+  }, []);
+
+  //register fcm
+  useEffect(() => {
+    if (
+      (token && token.length > 0) ||
+      (tokenSecondOption && tokenSecondOption.length > 0)
+    ) {
+      registerDeviceForMessaging(dispatch, notificationUpdateTokenAction);
+    }
+  }, [token, tokenSecondOption]);
+
+  //fetch selected friend
   useEffect(() => {
     if (friendIDState) {
       dispatch(fetchAllHabitsOfSelectedUserAction(friendIDState));
     }
   }, [friendIDState]);
 
-  // check whether an initial notification is available
+  //check whether an initial notification is available
   useEffect(() => {
     messaging()
       .getInitialNotification()
@@ -314,7 +335,7 @@ const App = () => {
     );
   }, []);
 
-  // Assume a message-notification contains a "type" property in the data payload of the screen to open
+  //assume a message-notification contains a "type" property in the data payload of the screen to open
   useEffect(() => {
     const unsubscribe = messaging().onNotificationOpenedApp(
       async (remoteMessage) => {
@@ -327,7 +348,7 @@ const App = () => {
     );
   }, []);
 
-  // do stuff if app foreground notification is pressed
+  //do stuff if app foreground notification is pressed
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       showMessage({
@@ -349,7 +370,13 @@ const App = () => {
         {!token || !tokenSecondOption ? (
           <BottomTabNav.Screen
             name="Signin"
-            children={(props: any) => <Signin {...props} dispatch={dispatch} />}
+            children={(props: any) => (
+              <Signin
+                {...props}
+                dispatch={dispatch}
+                userLoading={userLoading}
+              />
+            )}
             options={{
               tabBarButton: () => null,
             }}
@@ -380,28 +407,56 @@ const App = () => {
                   revertAll={revertAll}
                   revertAllHabit={revertAllHabit}
                   currentUser={currentUser}
-                  allHabits={allHabits}
-                  allHabitsToday={allHabitsToday}
+                  allHabitsToday={allHabitsToday ? allHabitsToday : []}
                   allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
-                  allHabitsOfSelectedUser={allHabitsOfSelectedUser}
+                  allHabitsOfSelectedUser={
+                    allHabitsOfSelectedUser ? allHabitsOfSelectedUser : []
+                  }
                   allHabitsOfSelectedUserNumber={
                     allHabitsOfSelectedUser ? allHabitsOfSelectedUser.length : 0
                   }
-                  currentHabitDatesIncluded={currentHabitDatesIncluded}
+                  currentHabitDatesIncluded={habitsTodayBoolean}
                   homeEditBool={homeEditBool}
                   setHomeEditBool={setHomeEditBool}
-                  habitUpdated={habitUpdated}
                   habitLoading={habitLoading}
-                  isInArray={isInArray}
+                  refreshing={refreshing}
+                  setRefreshing={setRefreshing}
                   onShare={onShare}
                   friendIDState={friendIDState}
                   setFriendIDState={setFriendIDState}
+                  friendName={friendName}
+                  setFriendName={setFriendName}
+                  friendCurrentHabitWeekStreakState={friendCurrentHabitWeek}
+                  friendAllHabitDatesDotsState={friendAllHabitDatesDots}
+                  tempBarFilled={tempBarFilled}
+                  setTempBarFilled={setTempBarFilled}
+                  shareWithFriendList={shareWithFriendList}
+                  setShareWithFriendList={setShareWithFriendList}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                  modalVisible={modalVisible}
+                  setModalVisible={setModalVisible}
+                  showInfoText={showInfoText}
+                  setShowInfoText={setShowInfoText}
+                  acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
+                  setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
+                  editHabitSelected={editHabitSelected}
+                  setEditHabitSelected={setEditHabitSelected}
+                  habitNameState={habitNameState}
+                  setHabitNameState={setHabitNameState}
                 />
               )}
               options={{
                 // resets screen states below
                 // unmountOnBlur: true,
-                tabBarButton: (props) => <BottomTabHomeButton {...props} />,
+                tabBarButton: (props) => (
+                  <BottomTabHomeButton
+                    {...props}
+                    onPressIn={() => Vibration.vibrate(10)}
+                  />
+                ),
               }}
             />
             <BottomTabNav.Screen
@@ -412,10 +467,33 @@ const App = () => {
                   currentUser={currentUser}
                   dispatch={dispatch}
                   createHabitAction={createHabitAction}
+                  taskName={taskName}
+                  setTaskName={setTaskName}
+                  openFrequency={openFrequency}
+                  setOpenFrequency={setOpenFrequency}
+                  taskUpcomingDates={taskUpcomingDates}
+                  setTaskUpcomingDates={setTaskUpcomingDates}
+                  taskFirstDate={taskFirstDate}
+                  setTaskFirstDate={setTaskFirstDate}
+                  taskLastDate={taskLastDate}
+                  setTaskLastDate={setTaskLastDate}
+                  dateBetweenModalOpen={dateBetweenModalOpen}
+                  setDateBetweenModalOpen={setDateBetweenModalOpen}
+                  shareWithFriendList={shareWithFriendList}
+                  setShareWithFriendList={setShareWithFriendList}
+                  openShare={openShare}
+                  setOpenShare={setOpenShare}
+                  color={color}
+                  setColor={setColor}
                 />
               )}
               options={{
-                tabBarButton: (props) => <BottomTabAddButton {...props} />,
+                tabBarButton: (props) => (
+                  <BottomTabAddButton
+                    {...props}
+                    onPressIn={() => Vibration.vibrate(10)}
+                  />
+                ),
               }}
             />
             <BottomTabNav.Screen
@@ -431,15 +509,23 @@ const App = () => {
                   revertAll={revertAll}
                   revertAllHabit={revertAllHabit}
                   deleteUserAction={deleteUserAction}
-                  allHabits={allHabits}
-                  habitUpdated={habitUpdated}
+                  allHabits={allHabits ? allHabits : []}
+                  allHabitsNumber={allHabits ? allHabits.length : 0}
                   habitLoading={habitLoading}
-                  isInArray={isInArray}
+                  refreshing={refreshing}
+                  setRefreshing={setRefreshing}
                   onShare={onShare}
+                  currentHabitWeekStreakState={currentHabitWeekStreak}
+                  allHabitDatesDots={allHabitDatesDots}
                 />
               )}
               options={{
-                tabBarButton: (props) => <BottomTabOverviewButton {...props} />,
+                tabBarButton: (props) => (
+                  <BottomTabOverviewButton
+                    {...props}
+                    onPressIn={() => Vibration.vibrate(10)}
+                  />
+                ),
               }}
             />
           </>

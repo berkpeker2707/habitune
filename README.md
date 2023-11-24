@@ -69,23 +69,10 @@ http://localhost:1111/api/user/google/callback
 
 ## CLIENT SIDE NOTES
 
-// color1: #968EB0
-// color2: #9DB2CE
-// color3: #C04F43
-// color4: #A5D2AC
-// color5: #99BB42
-// color6: #F59732
-// color7: #F1867E
-// color8: #FCCA1B
-// color9: #4D6691
-// color10: #6EA8D8
-// color11: #DEB4CF
-// color12: #F6AF90
-
 ### Client Side Development Notes:
 
 "ipconfig" to check netowork
-setx /M REACT_NATIVE_PACKAGER_HOSTNAME 192.168.1.66
+setx /M REACT_NATIVE_PACKAGER_HOSTNAME 192.168.1.33
 
 Extra libraries to "create-expo-app ." fresh start:
 npm install @react-native-async-storage/async-storage @react-navigation/bottom-tabs @react-navigation/native @react-navigation/stack @reduxjs/toolkit axios expo-application expo-auth-session expo-web-browser react-native-gesture-handler react-native-paper react-native-paper-dates react-native-render-html react-native-safe-area-context react-native-screens react-native-svg react-native-webview react-redux redux-persist expo-linear-gradient

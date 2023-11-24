@@ -8,12 +8,14 @@ import {
   Text,
   Modal,
   Pressable,
+  Vibration,
 } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
 
 import uuid from "react-native-uuid";
+import { useTheme } from "../context/ThemeContext";
 
 const Profile = memo((props: any) => {
   const {
@@ -32,11 +34,25 @@ const Profile = memo((props: any) => {
     setSelectedUser,
     friendIDState,
     setFriendIDState,
+    friendName,
+    setFriendName,
   } = props;
+  const { theme } = useTheme();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    dispatch(fetchCurrentUserProfileAction());
+    dispatch(
+      fetchCurrentUserProfileAction(
+        new Date(
+          new Date().getFullYear(),
+          new Date().getMonth(),
+          new Date().getDate(),
+          new Date().getHours(),
+          new Date().getMinutes(),
+          new Date().getSeconds()
+        ).getTime()
+      )
+    );
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -47,7 +63,7 @@ const Profile = memo((props: any) => {
       style={{
         // display: "flex",
         height: "100%",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -73,7 +89,7 @@ const Profile = memo((props: any) => {
         <View
           style={{
             width: 345,
-            backgroundColor: "#FFFFFF",
+            backgroundColor: theme.backgroundColor,
           }}
         >
           <AddFriendsButton />
@@ -104,16 +120,17 @@ const Profile = memo((props: any) => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
+                backgroundColor: theme.fadedBackgroundColor,
               }}
             >
               <View
                 style={{
                   margin: 20,
-                  backgroundColor: "white",
+                  backgroundColor: theme.backgroundColor,
                   borderRadius: 20,
                   padding: 35,
                   alignItems: "center",
-                  shadowColor: "#000",
+                  shadowColor: theme.fadedShadowColor,
                   shadowOffset: {
                     width: 0,
                     height: 2,
@@ -126,7 +143,7 @@ const Profile = memo((props: any) => {
                 {selectedUser?.pending ? (
                   <Text
                     style={{
-                      color: "#968EB0",
+                      color: theme.primaryColor,
                       fontWeight: "bold",
                       textAlign: "center",
                       paddingBottom: 10,
@@ -137,7 +154,7 @@ const Profile = memo((props: any) => {
                 ) : (
                   <Text
                     style={{
-                      color: "#968EB0",
+                      color: theme.primaryColor,
                       fontWeight: "bold",
                       textAlign: "center",
                       paddingBottom: 10,
@@ -147,10 +164,13 @@ const Profile = memo((props: any) => {
                   </Text>
                 )}
                 <Pressable
-                  style={[
-                    { borderRadius: 20, padding: 10, elevation: 2 },
-                    { backgroundColor: "#968EB0" },
-                  ]}
+                  style={{
+                    backgroundColor: theme.primaryColor,
+                    borderRadius: 20,
+                    padding: 10,
+                    elevation: 2,
+                  }}
+                  onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
                     dispatch(
@@ -160,7 +180,7 @@ const Profile = memo((props: any) => {
                 >
                   <Text
                     style={{
-                      color: "white",
+                      color: theme.backgroundColor,
                       fontWeight: "bold",
                       textAlign: "center",
                     }}
@@ -192,6 +212,8 @@ const Profile = memo((props: any) => {
                 setSelectedUser={setSelectedUser}
                 friendIDState={friendIDState}
                 setFriendIDState={setFriendIDState}
+                friendName={friendName}
+                setFriendName={setFriendName}
               />
             ))}
         </View>

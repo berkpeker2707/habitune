@@ -9,7 +9,6 @@ const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
-const rateLimit = require("express-rate-limit");
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
 //morgan is for checking requests
@@ -18,6 +17,7 @@ const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
 const path_1 = __importDefault(require("path"));
+const lowLimitter_1 = __importDefault(require("./middlewares/lowLimitter"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
@@ -30,14 +30,20 @@ app.use((0, cors_1.default)({
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 app.use((0, helmet_1.default)());
-//rate limitter
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+// app.use(lowLimitter);
+app.use((req, res, next) => {
+    //defined speific rate limitters for routes below
+    //also defined lowLimitter as default for all except below
+    if (req.path.startsWith("/api/user") ||
+        req.path.startsWith("/api/habit") ||
+        req.path.startsWith("/api/notification")) {
+        // Skip limiter for /api/user, /api/habit, /api/notification and their sub-routes
+        next();
+    }
+    else {
+        (0, lowLimitter_1.default)(req, res, next);
+    }
 });
-app.use(limiter);
 app.use(require("express-session")({
     secret: "Enter your secret key",
     resave: true,
@@ -76,11 +82,11 @@ admin.initializeApp({
 app.get("/privacy", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });
-app.get("/", function (req, res) {
-    res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
-});
 app.get("/image/empty-shell", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/public/images/empty-shell.png"));
+});
+app.get("/", function (req, res) {
+    res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
 });
 //routing
 app.use("/api/user", user_routes_1.default);

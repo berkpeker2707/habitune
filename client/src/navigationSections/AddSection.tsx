@@ -1,7 +1,7 @@
 import * as React from "react";
 import { memo } from "react";
 
-import { Pressable, View } from "react-native";
+import { Pressable, View, Vibration } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -14,22 +14,70 @@ import Add from "../../src/screens/Add";
 //navbar components
 import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
 import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
+import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const AddSection = memo((props: any) => {
-  const { navigation, currentUser, dispatch, createHabitAction } = props;
+  const {
+    navigation,
+    currentUser,
+    dispatch,
+    createHabitAction,
+    taskName,
+    setTaskName,
+    openFrequency,
+    setOpenFrequency,
+    taskUpcomingDates,
+    setTaskUpcomingDates,
+    taskFirstDate,
+    setTaskFirstDate,
+    taskLastDate,
+    setTaskLastDate,
+    dateBetweenModalOpen,
+    setDateBetweenModalOpen,
+    shareWithFriendList,
+    setShareWithFriendList,
+    openShare,
+    setOpenShare,
+    color,
+    setColor,
+  } = props;
+  const { theme } = useTheme();
 
   return (
     <StackNavigator.Navigator
       screenOptions={{
-        headerStyle: { height: 70 },
+        headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
+        headerTitleStyle: { color: theme.borderColor },
       }}
     >
       <StackNavigator.Screen
         name="Add"
         children={(props: any) => (
-          <Add {...props} navigation={navigation} currentUser={currentUser} />
+          <Add
+            {...props}
+            navigation={navigation}
+            currentUser={currentUser}
+            taskName={taskName}
+            setTaskName={setTaskName}
+            openFrequency={openFrequency}
+            setOpenFrequency={setOpenFrequency}
+            taskUpcomingDates={taskUpcomingDates}
+            setTaskUpcomingDates={setTaskUpcomingDates}
+            taskFirstDate={taskFirstDate}
+            setTaskFirstDate={setTaskFirstDate}
+            taskLastDate={taskLastDate}
+            setTaskLastDate={setTaskLastDate}
+            dateBetweenModalOpen={dateBetweenModalOpen}
+            setDateBetweenModalOpen={setDateBetweenModalOpen}
+            shareWithFriendList={shareWithFriendList}
+            setShareWithFriendList={setShareWithFriendList}
+            openShare={openShare}
+            setOpenShare={setOpenShare}
+            color={color}
+            setColor={setColor}
+          />
         )}
         options={{
           headerTitle: "New Habit",
@@ -43,6 +91,7 @@ const AddSection = memo((props: any) => {
               }}
             >
               <Pressable
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     navigation.goBack();
@@ -66,19 +115,22 @@ const AddSection = memo((props: any) => {
             >
               <Pressable
                 disabled={
-                  navigation.getState().routes[1].params?.firstDate &&
-                  navigation.getState().routes[1].params?.lastDate &&
-                  navigation.getState().routes[1].params?.name
-                    ? false
-                    : true
+                  taskFirstDate && taskLastDate && taskName ? false : true
                 }
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
-                    // console.log(navigation.getState().routes[1].params);
                     dispatch(
-                      createHabitAction(navigation.getState().routes[1].params)
+                      createHabitAction({
+                        firstDate: Date.parse(taskFirstDate),
+                        lastDate: Date.parse(taskLastDate),
+                        name: taskName,
+                        upcomingDates: taskUpcomingDates,
+                        color: color,
+                        friendList: shareWithFriendList,
+                      })
                     );
-                    navigation.goBack();
+                    navigation.navigate("Home");
                   } catch (error) {
                     console.log(error);
                   }

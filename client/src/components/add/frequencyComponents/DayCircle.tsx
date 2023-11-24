@@ -1,14 +1,19 @@
 import * as React from "react";
 import { memo } from "react";
 import { View, Text } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const DayCircle = memo(
   (props: { day: string; left: number; dayCircleMarked: boolean }) => {
     const { day, left, dayCircleMarked } = props;
+    const { theme } = useTheme();
+
     if (dayCircleMarked) {
-      var backgroundColor = "#968EB0";
+      var color = theme.backgroundColor;
+      var backgroundColor = theme.primaryColor;
     } else {
-      var backgroundColor = "#FFFFFF";
+      var color = theme.primaryColor;
+      var backgroundColor = theme.backgroundColor;
     }
     return (
       <View
@@ -22,7 +27,7 @@ const DayCircle = memo(
           backgroundColor: backgroundColor,
           borderWidth: 1,
           borderRadius: 20,
-          borderColor: "#D9D9D9",
+          borderColor: theme.borderColor,
         }}
       >
         <View
@@ -40,6 +45,7 @@ const DayCircle = memo(
               fontWeight: "400",
               fontSize: 12,
               lineHeight: 15,
+              color: color,
             }}
           >
             {day}

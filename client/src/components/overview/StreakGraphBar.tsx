@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import { useTheme } from "../../context/ThemeContext";
 
 const StreakGraphBar = (props: {
   name: string;
@@ -8,6 +9,7 @@ const StreakGraphBar = (props: {
   currentHabitWeekStreak: number;
 }) => {
   const { name, color, currentHabitWeekStreak } = props;
+  const { theme } = useTheme();
 
   return currentHabitWeekStreak !== 0 ? (
     <View
@@ -18,7 +20,7 @@ const StreakGraphBar = (props: {
         marginBottom: 20,
         borderTopWidth: 0.5,
         // borderBottomWidth: 0.5,
-        borderTopColor: "#968EB0",
+        borderTopColor: theme.primaryColor,
         // borderBottomColor: color,
       }}
     >
@@ -36,7 +38,7 @@ const StreakGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 16,
-            color: "#444",
+            color: theme.fadedShadowColor,
             fontStyle: "italic",
           }}
         >
@@ -55,7 +57,7 @@ const StreakGraphBar = (props: {
         <Svg width={25} height={34} fill="none" viewBox="0 0 25 34">
           <Path
             fill={color}
-            stroke="#444"
+            stroke={theme.fadedShadowColor}
             d="M20.764 12.569a1.93 1.93 0 00-1.534-1.01 1.966 1.966 0 00-1.707.7c-1.033 1.267-1.873 2.023-2.518 2.44-.64.413-.96.412-1.038.405-.052-.006-.2-.03-.45-.31-.27-.304-.566-.812-.837-1.555-.541-1.483-.84-3.491-.916-5.475-.075-1.994.084-3.75.337-4.712.242-.926-.287-1.864-1.205-2.188-.914-.322-1.945.06-2.388.905L7.876 2.97l-.014.027C4.344 9.677.75 16.502.75 24.2c0 3.444 1.394 5.89 3.867 7.349 2.292 1.353 5.257 1.701 8.131 1.701 5.083 0 9.269-1.643 10.86-5.698 1.48-3.77.35-8.893-2.844-14.983zM9.568 6.974c.01 1.513.145 3.148.436 4.654.29 1.502.74 2.896 1.393 3.912.654 1.02 1.539 1.697 2.69 1.664 1.13-.031 2.438-.746 3.95-2.296.31-.316.628-.668.957-1.058.22.428.428.848.624 1.26 2.59 5.45 3.03 9.458 1.786 12.084-1.232 2.602-4.178 3.956-8.656 3.956-2.77 0-5.23-.352-6.993-1.392-1.738-1.026-2.827-2.739-2.827-5.558 0-6.146 2.47-11.73 5.434-17.489.44-.855.89-1.713 1.345-2.577a23.824 23.824 0 00-.14 2.84z"
           />
         </Svg>
@@ -74,7 +76,7 @@ const StreakGraphBar = (props: {
           style={{
             textAlign: "center",
             fontSize: 18,
-            color: "#444",
+            color: theme.fadedShadowColor,
           }}
         >
           {currentHabitWeekStreak}
@@ -91,7 +93,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 1 || currentHabitWeekStreak > 1
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -107,7 +109,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 2 || currentHabitWeekStreak > 2
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -123,7 +125,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 3 || currentHabitWeekStreak > 3
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -139,7 +141,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 4 || currentHabitWeekStreak > 4
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -155,7 +157,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 5 || currentHabitWeekStreak > 5
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -171,7 +173,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 6 || currentHabitWeekStreak > 6
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}
@@ -187,7 +189,7 @@ const StreakGraphBar = (props: {
           backgroundColor:
             currentHabitWeekStreak === 7 || currentHabitWeekStreak > 7
               ? color
-              : "#FFF",
+              : theme.backgroundColor,
           borderColor: color,
           borderWidth: 1,
         }}

@@ -1,6 +1,13 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, ImageBackground, Text } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  ImageBackground,
+  Text,
+  Vibration,
+  ActivityIndicator,
+} from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -16,11 +23,13 @@ import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 
 import { signInWithGoogleAction } from "../state/userSlice";
+import { useTheme } from "../context/ThemeContext";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const Signin = (props: any) => {
-  const { dispatch } = props;
+  const { dispatch, userLoading } = props;
+  const { theme } = useTheme();
 
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [registerModalVisible, setRegisterModalVisible] = useState(false);
@@ -57,7 +66,7 @@ const Signin = (props: any) => {
     }
   }
 
-  return (
+  return !userLoading ? (
     <>
       <StatusBar style="light" />
       <LoginModal
@@ -74,8 +83,8 @@ const Signin = (props: any) => {
         style={{
           display: "flex",
           height: "100%",
-          backgroundColor: "#FFFFFF",
-          justifyContent: "flex-start",
+          backgroundColor: theme.backgroundColor,
+          justifyContent: "center",
           opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
           // alignItems: "center",
         }}
@@ -109,6 +118,7 @@ const Signin = (props: any) => {
                 top: 150,
                 bottom: 0,
               }}
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => promptAsync()}
             >
               <View
@@ -116,7 +126,7 @@ const Signin = (props: any) => {
                   position: "relative",
                   paddingBottom: 0.1,
                   borderRadius: 50,
-                  backgroundColor: "#E5E5E5",
+                  backgroundColor: theme.backgroundColorShadow,
                 }}
               >
                 <GoogleSigninButton />
@@ -141,6 +151,7 @@ const Signin = (props: any) => {
                   alignItems: "center",
                   alignContent: "center",
                 }}
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => setLoginModalVisible(!loginModalVisible)}
               >
                 <Text style={{ textDecorationLine: "underline" }}>Login</Text>
@@ -155,6 +166,7 @@ const Signin = (props: any) => {
                   alignItems: "center",
                   alignContent: "center",
                 }}
+                onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => setRegisterModalVisible(!registerModalVisible)}
               >
                 <Text style={{ textDecorationLine: "underline" }}>
@@ -167,6 +179,19 @@ const Signin = (props: any) => {
         </ImageBackground>
       </View>
     </>
+  ) : (
+    <View
+      style={{
+        display: "flex",
+        height: "100%",
+        backgroundColor: theme.backgroundColor,
+        justifyContent: "center",
+        opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
+        // alignItems: "center",
+      }}
+    >
+      <ActivityIndicator size="large" color={theme.primaryColor} />
+    </View>
   );
 };
 

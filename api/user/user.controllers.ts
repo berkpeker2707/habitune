@@ -44,6 +44,8 @@ export const signInWithGoogleController = async (
         email: req.body.email,
         image: req.body.picture,
         fcmToken: "empty",
+        userType: "standart",
+        theme: "default",
       });
       await user.save();
 
@@ -131,6 +133,8 @@ export const signInController = async (req: IReq | any, res: Response) => {
             image: "https://www.habitune.net/image/empty-shell",
             password: await bcrypt.hash(req.body.password, 10),
             fcmToken: "empty",
+            userType: "standart",
+            theme: "default",
           });
           await user.save();
 
@@ -162,6 +166,8 @@ export const fetchCurrentUserProfile = async (
   res: Response
 ) => {
   try {
+    var clientTime = parseInt(req.params.today);
+
     const loggedinUser = await User.findById(req.user[0]._id)
       .populate({ path: "friends.friend", model: "User" })
       .populate({
@@ -170,9 +176,16 @@ export const fetchCurrentUserProfile = async (
       })
       .exec();
 
+    if (req.params.today) {
+      await loggedinUser?.updateOne({
+        $set: { lastLogin: clientTime },
+      });
+    }
+
     var foundNotification = await Notification.findOne({
       userID: req.user[0]._id,
     });
+
     if (!foundNotification) {
       await Notification.create({
         userID: req.user[0]._id,
@@ -361,6 +374,23 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       // console.log("target user know");
       res.status(200).json(loggedinUser);
     }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const changeTheme = async (req: IReq | any, res: Response) => {
+  try {
+    var newThemeValue = req.body.theme;
+
+    const loggedinUser = await User.findByIdAndUpdate(
+      req.user[0]?._id,
+      { $set: { theme: newThemeValue } },
+      { new: true }
+    );
+
+    res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));

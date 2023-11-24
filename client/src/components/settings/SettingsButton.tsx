@@ -1,8 +1,12 @@
 import * as React from "react";
 import { TextInput, View } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 const SettingsButton = (props: { buttonName: string }) => {
   const { buttonName } = props;
+
+  const { theme } = useTheme();
+
   return (
     <View style={{ width: 345 }}>
       <TextInput
@@ -12,7 +16,7 @@ const SettingsButton = (props: { buttonName: string }) => {
           borderRadius: 20,
           paddingLeft: 20,
           marginBottom: 10,
-          color: "#444",
+          color: theme.fadedShadowColor,
         }}
         editable={false}
         selectTextOnFocus={false}
