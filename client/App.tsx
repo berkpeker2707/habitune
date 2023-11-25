@@ -363,7 +363,17 @@ const App = () => {
 
   return (
     <>
-      <StatusBar hidden={false} backgroundColor={theme.backgroundColor} />
+      <StatusBar
+        hidden={false}
+        barStyle={
+          theme.themeType === "default"
+            ? "dark-content"
+            : theme.themeType === "dark"
+            ? "light-content"
+            : "default"
+        }
+        backgroundColor={theme.backgroundColor}
+      />
       <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
         {!token || !tokenSecondOption ? (
           <BottomTabNav.Screen

@@ -25,6 +25,9 @@
       },
       "package": "com.thelittleteaclipper.habitune"
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#00000000"
+    },
     "web": {
       "favicon": "src/assets/images/favicon.png"
     },
