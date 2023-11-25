@@ -34,7 +34,7 @@ const LinkButton = (props: { buttonName: string; url: string }) => {
           borderRadius: 20,
           paddingLeft: 20,
           marginBottom: 10,
-          color: theme.fadedShadowColor,
+          color: theme.primaryText,
         }}
         editable={false}
         selectTextOnFocus={false}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Vibration } from "react-native";
+import { StatusBar, Vibration } from "react-native";
 
 // import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -11,7 +11,6 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
-// import { createStackNavigator } from "@react-navigation/stack";
 
 //types
 import {
@@ -26,7 +25,6 @@ import Signin from "./src/screens/Signin";
 import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
 import BottomTabAddButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabAddButton";
 import BottomTabOverviewButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabOverviewButton";
-// import TopNavbarEditButton from "./src/components/navbarComponents/TopNavbarComponents/TopNavbarEditButton";
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -100,7 +98,6 @@ import AddSection from "./src/navigationSections/AddSection";
 import OverviewSection from "./src/navigationSections/OverviewSection";
 
 //helpers
-import isInArray from "./src/helpers/isInArray";
 import registerForPushNotificationsAsync from "./src/helpers/registerForPushNotificationsAsync";
 import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
 import onShare from "./src/helpers/shareApp";
@@ -140,7 +137,7 @@ const AppWrapper = () => {
 };
 
 const App = () => {
-  const { setTheme, changeTheme } = useTheme();
+  const { theme, setTheme, changeTheme } = useTheme();
 
   const navigation = useNavigation<generalScreenProp>();
 
@@ -366,6 +363,17 @@ const App = () => {
 
   return (
     <>
+      <StatusBar
+        hidden={false}
+        barStyle={
+          theme.themeType === "default"
+            ? "dark-content"
+            : theme.themeType === "dark"
+            ? "light-content"
+            : "default"
+        }
+        backgroundColor={theme.backgroundColor}
+      />
       <BottomTabNav.Navigator screenOptions={bottomTabNavigationOptions}>
         {!token || !tokenSecondOption ? (
           <BottomTabNav.Screen
