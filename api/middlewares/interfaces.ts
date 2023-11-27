@@ -18,6 +18,7 @@ export interface IUser {
   dayThreeNotificationSent: boolean;
   daySevenNotificationSent: boolean;
   dayThirtyNotificationSent: boolean;
+  dayNinetyNotificationSent: boolean;
   userType: string;
   theme: string;
   createdAt: Date;

@@ -17,6 +17,7 @@ const userSchema = new Schema<IUser>({
   dayThreeNotificationSent: { type: Boolean, default: false },
   daySevenNotificationSent: { type: Boolean, default: false },
   dayThirtyNotificationSent: { type: Boolean, default: false },
+  dayNinetyNotificationSent: { type: Boolean, default: false },
   userType: { type: String, default: "standart" },
   theme: { type: String, default: "default" },
   createdAt: { type: Date, default: Date.now },
