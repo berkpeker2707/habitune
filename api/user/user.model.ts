@@ -12,8 +12,14 @@ const userSchema = new Schema<IUser>({
   password: { type: String },
   fcmToken: { type: String },
   lastLogin: { type: Date, default: Date.now },
+  lastHabitUpdated: { type: Date, default: Date.now },
+  dayOneNotificationSent: { type: Boolean, default: false },
+  dayThreeNotificationSent: { type: Boolean, default: false },
+  daySevenNotificationSent: { type: Boolean, default: false },
+  dayThirtyNotificationSent: { type: Boolean, default: false },
   userType: { type: String, default: "standart" },
   theme: { type: String, default: "default" },
+  createdAt: { type: Date, default: Date.now },
 });
 
 export = mongoose.model<IUser>("User", userSchema);
