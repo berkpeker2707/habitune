@@ -11,11 +11,13 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
+const logger_1 = __importDefault(require("./middlewares/logger"));
 //morgan is for checking requests
 const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
+const notification_reminders_1 = require("./notifications/notification.reminders");
 const path_1 = __importDefault(require("path"));
 const lowLimitter_1 = __importDefault(require("./middlewares/lowLimitter"));
 dotenv_1.default.config();
@@ -92,4 +94,20 @@ app.get("/", function (req, res) {
 app.use("/api/user", user_routes_1.default);
 app.use("/api/habit", habit_routes_1.default);
 app.use("/api/notification", notification_routes_1.default);
+//reminders
+try {
+    // yesterday reminder
+    (0, notification_reminders_1.notifyUsersDaily)();
+    //three days later reminder
+    (0, notification_reminders_1.notifyUsersThreeDaysLater)();
+    //seven days later reminder
+    (0, notification_reminders_1.notifyUsersSevenDaysLater)();
+    //thirty days later reminder
+    (0, notification_reminders_1.notifyUsersThirtyDaysLater)();
+    //ninety days later reminder
+    (0, notification_reminders_1.notifyUsersNinetyDaysLater)();
+}
+catch (error) {
+    logger_1.default.error(error);
+}
 exports.default = app;
