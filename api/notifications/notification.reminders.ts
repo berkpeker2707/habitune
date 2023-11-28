@@ -21,7 +21,7 @@ export const notifyUsersDaily = async () => {
   //every 6 hours
   schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-      // console.log("timer yesterday run");
+      console.log("timer yesterday run");
 
       // This function will run every hour
       // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -137,7 +137,7 @@ export const notifyUsersThreeDaysLater = async () => {
   //every day at 12:00 AM
   schedule.scheduleJob("0 0 * * *", async () => {
     try {
-      // console.log("timer three days ago run");
+      console.log("timer three days ago run");
 
       // This function will run every hour
       // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -223,7 +223,7 @@ export const notifyUsersSevenDaysLater = async () => {
   //at 12:00 AM, every 5 days
   schedule.scheduleJob("0 0 */5 * *", async () => {
     try {
-      // console.log("timer three days ago run");
+      console.log("seven three days ago run");
 
       // This function will run every hour
       // var selectUsers = await User.find({}).select("lastHabitUpdated");
