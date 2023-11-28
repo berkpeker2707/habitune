@@ -13,8 +13,15 @@ export interface IUser {
   password: any;
   fcmToken: string;
   lastLogin: Date;
+  lastHabitUpdated: Date;
+  dayOneNotificationSent: boolean;
+  dayThreeNotificationSent: boolean;
+  daySevenNotificationSent: boolean;
+  dayThirtyNotificationSent: boolean;
+  dayNinetyNotificationSent: boolean;
   userType: string;
   theme: string;
+  createdAt: Date;
 }
 
 export interface IHabit {
