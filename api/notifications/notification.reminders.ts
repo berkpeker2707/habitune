@@ -7,6 +7,7 @@ import isInYesterday from "../middlewares/isInYesterday";
 import isInThreeToFiveDays from "../middlewares/isInThreeToFiveDays";
 import isInSevenToFifteenDays from "../middlewares/isInSevenToFifteenDays";
 import isInThirtyToSixtyDays from "../middlewares/isInThirtyToSixtyDays";
+import isInNinetyToThreeHundredDays from "../middlewares/isInNinetyToThreeHundredDays";
 
 dotenv.config();
 
@@ -302,7 +303,7 @@ export const notifyUsersSevenDaysLater = async () => {
   });
 };
 
-export const notifyUsersthirtyDaysLater = async () => {
+export const notifyUsersThirtyDaysLater = async () => {
   // dayThirtyNotificationSent
 
   // every 10 seconds */10 * * * * *
@@ -378,6 +379,92 @@ export const notifyUsersthirtyDaysLater = async () => {
           notification: {
             title: `We Miss You! 🌈`,
             body: "It's been a while since we've seen you. Your journey is unique, and we'd love to continue supporting you. Whenever you're ready, your habits are here waiting. 💙",
+            // imageUrl: "https://www.habitune.net/image/empty-shell",
+          },
+        });
+      }
+    } catch (error) {
+      Logger.error(error);
+    }
+  });
+};
+
+export const notifyUsersNinetyDaysLater = async () => {
+  // dayNinetyNotificationSent
+
+  // every 10 seconds */10 * * * * *
+  // schedule.scheduleJob("*/10 * * * * *", async () => {
+  //at 12:00 AM, every 90 days
+  schedule.scheduleJob("0 0 */90 * *", async () => {
+    try {
+      console.log("timer 90 days run");
+
+      // This function will run every hour
+      // var selectUsers = await User.find({}).select("lastHabitUpdated");
+      var selectUsers = await User.find({
+        dayOneNotificationSent: true,
+        dayThreeNotificationSent: true,
+        daySevenNotificationSent: true,
+        dayThirtyNotificationSent: true,
+        dayNinetyNotificationSent: false,
+      }).select("lastHabitUpdated fcmToken");
+
+      // console.log(
+      //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
+      //   selectUsers
+      // );
+
+      const result: boolean[] = await Promise.all(
+        selectUsers.map(async (selectUser) => {
+          return await isInNinetyToThreeHundredDays(
+            [selectUser.lastHabitUpdated],
+            new Date(
+              new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                new Date().getDate(),
+                new Date().getHours(),
+                new Date().getMinutes(),
+                new Date().getSeconds()
+              )
+            )
+          );
+        })
+      );
+
+      // console.log(
+      //   "🚀 ~ file: notification.reminders.ts:53 ~ schedule.scheduleJob ~ result:",
+      //   result
+      // );
+
+      //users who did not loggedin within last 3 to 5 days
+      const filteredUsersFCM = selectUsers
+        .filter((user, index) => result[index])
+        .map((user) => user.fcmToken);
+
+      // console.log(
+      //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
+      //   filteredUsersFCM
+      // );
+
+      var fcmTokensBelongedToUpdated = await User.updateMany(
+        {
+          fcmToken: filteredUsersFCM,
+        },
+        { $set: { dayNinetyNotificationSent: true } }
+      );
+
+      // console.log(
+      //   "🚀 ~ file: notification.reminders.ts:71 ~ //schedule.scheduleJob ~ fcmTokensBelongedToUpdated:",
+      //   fcmTokensBelongedToUpdated
+      // );
+
+      if (filteredUsersFCM.length > 0) {
+        const notificationResponse = await admin.messaging().sendMulticast({
+          tokens: filteredUsersFCM,
+          notification: {
+            title: "A Welcome Back Beacon 🚀",
+            body: "It's been an extended period, and we've missed your presence. Your habits, like old friends, eagerly await your return. Whenever you're ready, let's pick up where we left off on this journey together! 🌈",
             // imageUrl: "https://www.habitune.net/image/empty-shell",
           },
         });

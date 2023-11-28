@@ -18,7 +18,8 @@ import {
   notifyUsersDaily,
   notifyUsersSevenDaysLater,
   notifyUsersThreeDaysLater,
-  notifyUsersthirtyDaysLater,
+  notifyUsersThirtyDaysLater,
+  notifyUsersNinetyDaysLater,
 } from "./notifications/notification.reminders";
 
 import path from "path";
@@ -136,7 +137,10 @@ try {
   notifyUsersSevenDaysLater();
 
   //thirty days later reminder
-  notifyUsersthirtyDaysLater();
+  notifyUsersThirtyDaysLater();
+
+  //ninety days later reminder
+  notifyUsersNinetyDaysLater();
 } catch (error) {
   Logger.error(error);
 }
