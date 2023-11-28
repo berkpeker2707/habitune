@@ -16,6 +16,7 @@ import notificationRoutes from "./notifications/notification.routes";
 
 import {
   notifyUsersDaily,
+  notifyUsersSevenDaysLater,
   notifyUsersThreeDaysLater,
 } from "./notifications/notification.reminders";
 
@@ -129,6 +130,9 @@ try {
 
   //three days later reminder
   notifyUsersThreeDaysLater();
+
+  //seven days later reminder
+  notifyUsersSevenDaysLater();
 } catch (error) {
   Logger.error(error);
 }
