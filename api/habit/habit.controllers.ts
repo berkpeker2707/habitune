@@ -41,7 +41,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         { upsert: true }
       );
 
-      var temp = await newHabit
+      var newHabitItem = await newHabit
         .updateOne({
           $push: {
             upcomingDates: [
@@ -60,7 +60,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
-      console.log("temp: ", temp);
+      // console.log("newHabitItem: ", newHabitItem);
+
       res.status(200).json(newHabit);
     }
   } catch (error) {
@@ -346,6 +347,36 @@ export const updateHabitCompletedDate = async (
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
+
+      //update last habit updated date
+
+      // await loggedinUser?.updateOne({
+      //   $set: { lastHabitUpdated: todayReq },
+      // });
+
+      await User.findOneAndUpdate(
+        { _id: req.user[0]._id },
+        {
+          $set: { lastHabitUpdated: todayReq },
+        },
+        { upsert: true }
+      );
+
+      //modify notification bools
+      await User.findOneAndUpdate(
+        { _id: req.user[0]._id },
+        {
+          $set: {
+            dayOneNotificationSent: false,
+            dayThreeNotificationSent: false,
+            daySevenNotificationSent: false,
+            dayThirtyNotificationSent: false,
+            dayNinetyNotificationSent: false,
+          },
+        },
+        { upsert: true }
+      );
+
       res.status(200).json(selectedHabit);
     } else {
       await selectedHabit

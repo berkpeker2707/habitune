@@ -34,7 +34,14 @@ const userSchema = new mongoose_1.Schema({
     password: { type: String },
     fcmToken: { type: String },
     lastLogin: { type: Date, default: Date.now },
+    lastHabitUpdated: { type: Date, default: Date.now },
+    dayOneNotificationSent: { type: Boolean, default: false },
+    dayThreeNotificationSent: { type: Boolean, default: false },
+    daySevenNotificationSent: { type: Boolean, default: false },
+    dayThirtyNotificationSent: { type: Boolean, default: false },
+    dayNinetyNotificationSent: { type: Boolean, default: false },
     userType: { type: String, default: "standart" },
     theme: { type: String, default: "default" },
+    createdAt: { type: Date, default: Date.now },
 });
 module.exports = mongoose_1.default.model("User", userSchema);

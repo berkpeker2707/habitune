@@ -44,7 +44,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
                 $push: { habits: [newHabit._id] },
             }, { upsert: true });
-            var temp = yield newHabit
+            var newHabitItem = yield newHabit
                 .updateOne({
                 $push: {
                     upcomingDates: [
@@ -58,7 +58,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
-            console.log("temp: ", temp);
+            // console.log("newHabitItem: ", newHabitItem);
             res.status(200).json(newHabit);
         }
     }
@@ -288,6 +288,23 @@ const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0,
         //if it is already in dates, pull the date back, else push the date in
         if (!isHabitIsInDates) {
             yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({ $push: { dates: today } }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
+            //update last habit updated date
+            // await loggedinUser?.updateOne({
+            //   $set: { lastHabitUpdated: todayReq },
+            // });
+            yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
+                $set: { lastHabitUpdated: todayReq },
+            }, { upsert: true });
+            //modify notification bools
+            yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
+                $set: {
+                    dayOneNotificationSent: false,
+                    dayThreeNotificationSent: false,
+                    daySevenNotificationSent: false,
+                    dayThirtyNotificationSent: false,
+                    dayNinetyNotificationSent: false,
+                },
+            }, { upsert: true });
             res.status(200).json(selectedHabit);
         }
         else {
