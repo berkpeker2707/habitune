@@ -6,16 +6,21 @@ import helmet from "helmet";
 
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
+import Logger from "./middlewares/logger";
 //morgan is for checking requests
 import morganMiddleware from "./middlewares/morganMiddleware";
 
 import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
+
+import {
+  notifyUsersDaily,
+  notifyUsersThreeDaysLater,
+} from "./notifications/notification.reminders";
+
 import path from "path";
 import lowLimitter from "./middlewares/lowLimitter";
-import { notifyUsersDaily } from "./notifications/notification.reminders";
-import Logger from "./middlewares/logger";
 
 dotenv.config();
 
@@ -121,6 +126,9 @@ app.use("/api/notification", notificationRoutes);
 try {
   // yesterday reminder
   notifyUsersDaily();
+
+  //three days later reminder
+  notifyUsersThreeDaysLater();
 } catch (error) {
   Logger.error(error);
 }
