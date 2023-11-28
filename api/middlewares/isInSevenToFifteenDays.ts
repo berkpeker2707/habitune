@@ -10,7 +10,6 @@ const isInSevenToFifteenDays = (array: any[], value: Date) => {
     // Convert ms to days
     const daysBetweenDates = msBetweenDates / (24 * 60 * 60 * 1000);
 
-    // Check if the date is between 7 and 15 days ago
     if (daysBetweenDates >= 7 && daysBetweenDates < 15) {
       return true;
     } else {
