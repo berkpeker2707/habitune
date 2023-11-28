@@ -12,7 +12,6 @@ const isInYesterday = (array: any[], value: Date) => {
 
     //check if the date is between 24 and 48 hours
     if (hoursBetweenDates >= 24 && hoursBetweenDates < 48) {
-      //date is between 24 and 48 24 hours
       return true;
     } else {
       return false;
