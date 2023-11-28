@@ -14,6 +14,8 @@ import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
 import path from "path";
 import lowLimitter from "./middlewares/lowLimitter";
+import { notifyUsersDaily } from "./notifications/notification.reminders";
+import Logger from "./middlewares/logger";
 
 dotenv.config();
 
@@ -114,5 +116,13 @@ app.get("/", function (req, res) {
 app.use("/api/user", userRoutes);
 app.use("/api/habit", habitRoutes);
 app.use("/api/notification", notificationRoutes);
+
+//reminders
+try {
+  // yesterday reminder
+  notifyUsersDaily();
+} catch (error) {
+  Logger.error(error);
+}
 
 export default app;

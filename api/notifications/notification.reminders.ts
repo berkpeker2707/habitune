@@ -18,7 +18,7 @@ export const notifyUsersDaily = async () => {
   //every 6 hours
   schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-      console.log("timer yesterday run");
+      // console.log("timer yesterday run");
 
       // This function will run every hour
       // var selectUsers = await User.find({}).select("lastHabitUpdated");
