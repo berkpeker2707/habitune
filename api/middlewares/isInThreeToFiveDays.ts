@@ -1,4 +1,4 @@
-const threeToFiveDays = (array: any[], value: Date) => {
+const isInThreeToFiveDays = (array: any[], value: Date) => {
   return array.some((item) => {
     var alreadyStoredDate = new Date(item);
     var dateToBeChecked = new Date(value);
@@ -19,4 +19,4 @@ const threeToFiveDays = (array: any[], value: Date) => {
   });
 };
 
-export default threeToFiveDays;
+export default isInThreeToFiveDays;
