@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 
 import {
   ScrollView,
@@ -7,17 +7,21 @@ import {
   View,
   Text,
   RefreshControl,
+  TouchableWithoutFeedback,
 } from "react-native";
 import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import { useTheme } from "../context/ThemeContext";
+import { useIsFocused } from "@react-navigation/native";
 
 const Overview = memo(
   (props: {
     dispatch: Function;
     fetchAllHabitsAction: Function;
     fetchAllHabitsOfSelectedUserAction: Function;
+    deleteHabitAction: Function;
+    updateHabitHiddenAction: Function;
     allHabits: [];
     allHabitsNumber: number;
     habitLoading: boolean;
@@ -26,11 +30,20 @@ const Overview = memo(
     isItCurrentUser: boolean;
     currentHabitWeekStreakState: [];
     allHabitDatesDots: [];
+    selectedOverviewHabit: number;
+    setSelectedOverviewHabit: Function;
+    updateHabitColorAction: Function;
+    overviewColorModal: boolean;
+    setOverviewColorModal: Function;
+    overviewColor: string;
+    setOverviewColor: Function;
   }) => {
     const {
       dispatch,
       fetchAllHabitsAction,
       fetchAllHabitsOfSelectedUserAction,
+      deleteHabitAction,
+      updateHabitHiddenAction,
       allHabits,
       allHabitsNumber,
       habitLoading,
@@ -39,8 +52,25 @@ const Overview = memo(
       isItCurrentUser,
       currentHabitWeekStreakState,
       allHabitDatesDots,
+      selectedOverviewHabit,
+      setSelectedOverviewHabit,
+      updateHabitColorAction,
+      overviewColorModal,
+      setOverviewColorModal,
+      overviewColor,
+      setOverviewColor,
     } = props;
     const { theme } = useTheme();
+
+    const isFocused = useIsFocused();
+
+    const handleBlur = () => {
+      setSelectedOverviewHabit();
+    };
+
+    useEffect(() => {
+      setSelectedOverviewHabit(null);
+    }, [isFocused]);
 
     const onRefresh = useCallback(() => {
       setRefreshing(true);
@@ -125,52 +155,63 @@ const Overview = memo(
       currentHabitWeekStreakState
     ) {
       return (
-        <View
-          style={{
-            display: "flex",
-            height: "100%",
-            backgroundColor: theme.backgroundColor,
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <ScrollView
+        <TouchableWithoutFeedback onPress={handleBlur}>
+          <View
             style={{
-              marginBottom: 85,
+              display: "flex",
+              height: "100%",
+              backgroundColor: theme.backgroundColor,
+              justifyContent: "flex-start",
+              alignItems: "center",
             }}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
           >
-            {currentHabitWeekStreakState.some(
-              (value: number) => value !== 0
-            ) ? (
-              <>
-                <StreakGraph
-                  allHabits={allHabits}
-                  currentHabitWeekStreak={currentHabitWeekStreakState}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-            <View style={{ margin: 20 }}></View>
-            <DotGraph
-              dispatch={dispatch}
-              fetchAllHabitsAction={fetchAllHabitsAction}
-              fetchAllHabitsOfSelectedUserAction={
-                fetchAllHabitsOfSelectedUserAction
+            <ScrollView
+              style={{
+                marginBottom: 85,
+              }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
               }
-              allHabits={allHabits}
-              allHabitsNumber={allHabitsNumber}
-              habitLoading={habitLoading}
-              refreshing={refreshing}
-              setRefreshing={setRefreshing}
-              isItCurrentUser={isItCurrentUser}
-              allHabitDatesDots={allHabitDatesDots}
-            />
-          </ScrollView>
-        </View>
+            >
+              {currentHabitWeekStreakState.some(
+                (value: number) => value !== 0
+              ) ? (
+                <>
+                  <StreakGraph
+                    allHabits={allHabits}
+                    currentHabitWeekStreak={currentHabitWeekStreakState}
+                  />
+                </>
+              ) : (
+                <></>
+              )}
+              <View style={{ margin: 20 }}></View>
+              <DotGraph
+                dispatch={dispatch}
+                fetchAllHabitsAction={fetchAllHabitsAction}
+                fetchAllHabitsOfSelectedUserAction={
+                  fetchAllHabitsOfSelectedUserAction
+                }
+                deleteHabitAction={deleteHabitAction}
+                updateHabitHiddenAction={updateHabitHiddenAction}
+                allHabits={allHabits}
+                allHabitsNumber={allHabitsNumber}
+                habitLoading={habitLoading}
+                refreshing={refreshing}
+                setRefreshing={setRefreshing}
+                isItCurrentUser={isItCurrentUser}
+                allHabitDatesDots={allHabitDatesDots}
+                selectedOverviewHabit={selectedOverviewHabit}
+                setSelectedOverviewHabit={setSelectedOverviewHabit}
+                updateHabitColorAction={updateHabitColorAction}
+                overviewColorModal={overviewColorModal}
+                setOverviewColorModal={setOverviewColorModal}
+                overviewColor={overviewColor}
+                setOverviewColor={setOverviewColor}
+              />
+            </ScrollView>
+          </View>
+        </TouchableWithoutFeedback>
       );
     } else {
       return (

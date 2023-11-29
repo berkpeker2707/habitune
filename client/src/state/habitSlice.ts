@@ -458,6 +458,7 @@ export const friendAllHabitDatesDotsAction = createAsyncThunk(
   }
 );
 
+//unused
 export const fetchHabitAction = createAsyncThunk(
   "habit/fetchSingleHabit",
   async (_, { rejectWithValue, getState, dispatch }) => {
@@ -611,6 +612,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
   }
 );
 
+//unused
 export const updateHabitFirstAndLastDateAction = createAsyncThunk(
   "habit/updateHabitFirstAndLastDate",
   async (
@@ -641,6 +643,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
   }
 );
 
+//unused
 export const updateHabitDatesAction = createAsyncThunk(
   "habit/updateHabitDates",
   async (updateHabitDatesPayload, { rejectWithValue, getState, dispatch }) => {
@@ -693,6 +696,36 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log("updateHabitCompletedDateAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateHabitHiddenAction = createAsyncThunk(
+  "habit/updateHabitHidden",
+  async (
+    updateHabitHiddenPayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+    try {
+      const { data } = await axiosInstance.put(
+        `/habit/update/hidden`,
+        updateHabitHiddenPayload,
+        config
+      );
+
+      dispatch(updatedHabit());
+
+      return data;
+    } catch (error) {
+      console.log("updateHabitHiddenAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -994,6 +1027,21 @@ const habitSlice = createSlice({
         state.error = action.error.toString();
       }
     );
+    //update habit hidden reducer
+    builder.addCase(updateHabitHiddenAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(updateHabitHiddenAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.singleHabitData = action?.payload;
+      state.isHabitUpdated = false;
+    });
+    builder.addCase(updateHabitHiddenAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
     //logout
     builder.addCase(revertAllHabit.pending, (state, action) => {
       state.loading = true;
@@ -1072,6 +1120,9 @@ export const selectUpdateHabitDates = (state: any) => {
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitCompletedDate = (state: any) => {
+  return state.habit.singleHabitData;
+};
+export const selectUpdateHabitHidden = (state: any) => {
   return state.habit.singleHabitData;
 };
 

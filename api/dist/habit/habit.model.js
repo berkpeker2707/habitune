@@ -32,5 +32,6 @@ const habitSchema = new mongoose_1.Schema({
     lastDate: { type: Date },
     dates: [{ type: Date }],
     upcomingDates: [{ type: Date }],
+    isHidden: { type: Boolean, default: false },
 });
 module.exports = mongoose_1.default.model("Habit", habitSchema);

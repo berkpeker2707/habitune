@@ -31,6 +31,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         lastDate: req.body.lastDate,
         dates: [],
         upcomingDates: [],
+        isHidden: false,
       });
 
       await User.findOneAndUpdate(
@@ -90,7 +91,10 @@ export const getAllHabitsOfSelectedUser = async (
   res: Response
 ) => {
   try {
-    const loggedinUsersHabits = await Habit.find({ owner: req.params.id })
+    const loggedinUsersHabits = await Habit.find({
+      owner: req.params.id,
+      isHidden: false,
+    })
       .populate({ path: "sharedWith", model: "User" })
       .slice("dates", -10) //last 10 numbers of the dates array
       .slice("upcomingDates", -10)
@@ -389,6 +393,27 @@ export const updateHabitCompletedDate = async (
         .exec();
       res.status(200).json(selectedHabit);
     }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const updateHabitHidden = async (req: IReq | any, res: Response) => {
+  try {
+    const selectedHabit = await Habit.findByIdAndUpdate(
+      req.body._id,
+      {
+        $set: { isHidden: req.body.hidden },
+      },
+      { new: true }
+    )
+      .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
+      .exec();
+
+    res.status(200).json(selectedHabit);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
