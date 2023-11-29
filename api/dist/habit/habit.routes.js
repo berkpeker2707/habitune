@@ -20,4 +20,5 @@ habitRoutes.put("/update/share", [verifyToken_1.default, defaultLimitter_1.defau
 habitRoutes.put("/update/firstAndLastDate", [verifyToken_1.default, defaultLimitter_1.default], habit_controllers_1.updateHabitFirstAndLastDate);
 habitRoutes.put("/update/date", [verifyToken_1.default, defaultLimitter_1.default], habit_controllers_1.updateHabitDates);
 habitRoutes.put("/update/completed/date", [verifyToken_1.default, defaultLimitter_1.default], habit_controllers_1.updateHabitCompletedDate);
+habitRoutes.put("/update/hidden", [verifyToken_1.default, defaultLimitter_1.default], habit_controllers_1.updateHabitHidden);
 exports.default = habitRoutes;

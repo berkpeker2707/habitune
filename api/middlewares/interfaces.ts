@@ -33,6 +33,7 @@ export interface IHabit {
   lastDate: Date;
   dates: Date[];
   upcomingDates: Date[];
+  isHidden: boolean;
 }
 
 export interface IReq extends Request {

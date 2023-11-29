@@ -65,6 +65,8 @@ import {
   selectFriendCurrentHabitWeekStreak,
   selectAllHabitDatesDots,
   selectFriendAllHabitDatesDots,
+  updateHabitColorAction,
+  updateHabitHiddenAction,
 } from "./src/state/habitSlice";
 import {
   notificationSendAction,
@@ -255,6 +257,11 @@ const App = () => {
     todayTemp.getSeconds()
   );
 
+  //overview screen states
+  const [selectedOverviewHabit, setSelectedOverviewHabit] = useState<number>();
+  const [overviewColorModal, setOverviewColorModal] = useState<boolean>(false);
+  const [overviewColor, setOverviewColor] = useState<string>("#968EB0");
+
   //token
   useEffect(() => {
     if (
@@ -352,8 +359,8 @@ const App = () => {
         message: remoteMessage.notification?.title as string,
         description: remoteMessage.notification?.body as string,
         type: "default",
-        backgroundColor: "#968EB0",
-        color: "#FFFFFF",
+        backgroundColor: theme.primaryColor,
+        color: theme.primaryText,
         duration: 5000,
       });
       // console.log("A new FCM message arrived!", JSON.stringify(remoteMessage));
@@ -514,6 +521,8 @@ const App = () => {
                   fetchAllHabitsOfSelectedUserAction={
                     fetchAllHabitsOfSelectedUserAction
                   }
+                  deleteHabitAction={deleteHabitAction}
+                  updateHabitHiddenAction={updateHabitHiddenAction}
                   revertAll={revertAll}
                   revertAllHabit={revertAllHabit}
                   deleteUserAction={deleteUserAction}
@@ -525,6 +534,13 @@ const App = () => {
                   onShare={onShare}
                   currentHabitWeekStreakState={currentHabitWeekStreak}
                   allHabitDatesDots={allHabitDatesDots}
+                  selectedOverviewHabit={selectedOverviewHabit}
+                  setSelectedOverviewHabit={setSelectedOverviewHabit}
+                  updateHabitColorAction={updateHabitColorAction}
+                  overviewColorModal={overviewColorModal}
+                  setOverviewColorModal={setOverviewColorModal}
+                  overviewColor={overviewColor}
+                  setOverviewColor={setOverviewColor}
                 />
               )}
               options={{

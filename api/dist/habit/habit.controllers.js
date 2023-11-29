@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.updateHabitName = exports.deleteHabit = exports.getSingleHabit = exports.getTodaysHabits = exports.getAllHabitsOfSelectedUser = exports.getAllHabits = exports.createHabit = void 0;
+exports.updateHabitHidden = exports.updateHabitCompletedDate = exports.updateHabitDates = exports.updateHabitFirstAndLastDate = exports.updateHabitSharedWith = exports.updateHabitColor = exports.updateHabitName = exports.deleteHabit = exports.getSingleHabit = exports.getTodaysHabits = exports.getAllHabitsOfSelectedUser = exports.getAllHabits = exports.createHabit = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const habit_model_1 = __importDefault(require("./habit.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
@@ -40,6 +40,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 lastDate: req.body.lastDate,
                 dates: [],
                 upcomingDates: [],
+                isHidden: false,
             });
             yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
                 $push: { habits: [newHabit._id] },
@@ -85,7 +86,10 @@ const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getAllHabits = getAllHabits;
 const getAllHabitsOfSelectedUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const loggedinUsersHabits = yield habit_model_1.default.find({ owner: req.params.id })
+        const loggedinUsersHabits = yield habit_model_1.default.find({
+            owner: req.params.id,
+            isHidden: false,
+        })
             .populate({ path: "sharedWith", model: "User" })
             .slice("dates", -10) //last 10 numbers of the dates array
             .slice("upcomingDates", -10)
@@ -320,3 +324,20 @@ const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.updateHabitCompletedDate = updateHabitCompletedDate;
+const updateHabitHidden = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
+            $set: { isHidden: req.body.hidden },
+        }, { new: true })
+            .populate({ path: "sharedWith", model: "User" })
+            .slice("dates", -10) //last 10 numbers of the dates array
+            .slice("upcomingDates", -10)
+            .exec();
+        res.status(200).json(selectedHabit);
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.updateHabitHidden = updateHabitHidden;
