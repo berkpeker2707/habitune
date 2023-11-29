@@ -701,6 +701,36 @@ export const updateHabitCompletedDateAction = createAsyncThunk(
   }
 );
 
+export const updateHabitHiddenAction = createAsyncThunk(
+  "habit/updateHabitHidden",
+  async (
+    updateHabitHiddenPayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+    try {
+      const { data } = await axiosInstance.put(
+        `/habit/update/hidden`,
+        updateHabitHiddenPayload,
+        config
+      );
+
+      dispatch(updatedHabit());
+
+      return data;
+    } catch (error) {
+      console.log("updateHabitHiddenAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const revertAllHabit = createAsyncThunk(
   "habit/logout",
   async (_, { rejectWithValue, getState, dispatch }) => {
@@ -997,6 +1027,21 @@ const habitSlice = createSlice({
         state.error = action.error.toString();
       }
     );
+    //update habit hidden reducer
+    builder.addCase(updateHabitHiddenAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(updateHabitHiddenAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.singleHabitData = action?.payload;
+      state.isHabitUpdated = false;
+    });
+    builder.addCase(updateHabitHiddenAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.toString();
+    });
     //logout
     builder.addCase(revertAllHabit.pending, (state, action) => {
       state.loading = true;
@@ -1075,6 +1120,9 @@ export const selectUpdateHabitDates = (state: any) => {
   return state.habit.singleHabitData;
 };
 export const selectUpdateHabitCompletedDate = (state: any) => {
+  return state.habit.singleHabitData;
+};
+export const selectUpdateHabitHidden = (state: any) => {
   return state.habit.singleHabitData;
 };
 
