@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useCallback } from "react";
-import { RefreshControl, ScrollView, TextInput, View } from "react-native";
+import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
@@ -10,6 +9,7 @@ const DotGraph = (props: {
   dispatch: Function;
   fetchAllHabitsAction: Function;
   fetchAllHabitsOfSelectedUserAction: Function;
+  deleteHabitAction: Function;
   allHabits: Array<any>;
   allHabitsNumber: number;
   habitLoading: boolean;
@@ -17,11 +17,19 @@ const DotGraph = (props: {
   setRefreshing: Function;
   isItCurrentUser: boolean;
   allHabitDatesDots: Array<boolean>;
+  selectedOverviewHabit: number;
+  setSelectedOverviewHabit: Function;
+  updateHabitColorAction: Function;
+  overviewColorModal: boolean;
+  setOverviewColorModal: Function;
+  overviewColor: string;
+  setOverviewColor: Function;
 }) => {
   const {
     dispatch,
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
+    deleteHabitAction,
     allHabits,
     allHabitsNumber,
     habitLoading,
@@ -29,6 +37,13 @@ const DotGraph = (props: {
     setRefreshing,
     isItCurrentUser,
     allHabitDatesDots,
+    selectedOverviewHabit,
+    setSelectedOverviewHabit,
+    updateHabitColorAction,
+    overviewColorModal,
+    setOverviewColorModal,
+    overviewColor,
+    setOverviewColor,
   } = props;
   const { theme } = useTheme();
 
@@ -86,15 +101,33 @@ const DotGraph = (props: {
             All Habits 🐌
           </TextInput>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => (
-            <DotGraphBar
+            <TouchableOpacity
+              activeOpacity={1}
               key={uuid.v4() as string}
-              name={allHabitsItem.name}
-              color={allHabitsItem.color}
-              allHabitDatesDots={allHabitDatesDots.slice(
-                allHabitsIndex * 7,
-                (allHabitsIndex + 1) * 7
-              )}
-            />
+              onLongPress={() => {
+                setSelectedOverviewHabit(() => allHabitsIndex);
+              }}
+            >
+              <DotGraphBar
+                name={allHabitsItem.name}
+                color={allHabitsItem.color}
+                allHabitDatesDots={allHabitDatesDots.slice(
+                  allHabitsIndex * 7,
+                  (allHabitsIndex + 1) * 7
+                )}
+                habitID={allHabitsItem._id}
+                selected={
+                  selectedOverviewHabit === allHabitsIndex ? true : false
+                }
+                dispatch={dispatch}
+                deleteHabitAction={deleteHabitAction}
+                updateHabitColorAction={updateHabitColorAction}
+                overviewColorModal={overviewColorModal}
+                setOverviewColorModal={setOverviewColorModal}
+                overviewColor={overviewColor}
+                setOverviewColor={setOverviewColor}
+              />
+            </TouchableOpacity>
           ))}
         </ScrollView>
       ) : habitLoading ? (
