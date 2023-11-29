@@ -1,49 +1,29 @@
 import * as React from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
-import DotGraphBar from "./DotGraphBar";
+import { ScrollView, TextInput, View } from "react-native";
+import DotGraphBarFriend from "./DotGraphBarFriend";
 import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
 import { useTheme } from "../../context/ThemeContext";
 
-const DotGraph = (props: {
-  dispatch: Function;
+const DotGraphFriend = (props: {
   fetchAllHabitsAction: Function;
   fetchAllHabitsOfSelectedUserAction: Function;
-  deleteHabitAction: Function;
-  updateHabitHiddenAction: Function;
   allHabits: Array<any>;
   allHabitsNumber: number;
   habitLoading: boolean;
   refreshing: boolean;
   setRefreshing: Function;
   allHabitDatesDots: Array<boolean>;
-  selectedOverviewHabit: number;
-  setSelectedOverviewHabit: Function;
-  updateHabitColorAction: Function;
-  overviewColorModal: boolean;
-  setOverviewColorModal: Function;
-  overviewColor: string;
-  setOverviewColor: Function;
 }) => {
   const {
-    dispatch,
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
-    deleteHabitAction,
-    updateHabitHiddenAction,
     allHabits,
     allHabitsNumber,
     habitLoading,
     refreshing,
     setRefreshing,
     allHabitDatesDots,
-    selectedOverviewHabit,
-    setSelectedOverviewHabit,
-    updateHabitColorAction,
-    overviewColorModal,
-    setOverviewColorModal,
-    overviewColor,
-    setOverviewColor,
   } = props;
   const { theme } = useTheme();
 
@@ -79,35 +59,15 @@ const DotGraph = (props: {
             All Habits 🐌
           </TextInput>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => (
-            <TouchableOpacity
-              activeOpacity={1}
+            <DotGraphBarFriend
               key={uuid.v4() as string}
-              onLongPress={() => {
-                setSelectedOverviewHabit(() => allHabitsIndex);
-              }}
-            >
-              <DotGraphBar
-                name={allHabitsItem.name}
-                color={allHabitsItem.color}
-                allHabitDatesDots={allHabitDatesDots.slice(
-                  allHabitsIndex * 7,
-                  (allHabitsIndex + 1) * 7
-                )}
-                habitID={allHabitsItem._id}
-                isHidden={allHabitsItem.isHidden}
-                selected={
-                  selectedOverviewHabit === allHabitsIndex ? true : false
-                }
-                dispatch={dispatch}
-                deleteHabitAction={deleteHabitAction}
-                updateHabitColorAction={updateHabitColorAction}
-                updateHabitHiddenAction={updateHabitHiddenAction}
-                overviewColorModal={overviewColorModal}
-                setOverviewColorModal={setOverviewColorModal}
-                overviewColor={overviewColor}
-                setOverviewColor={setOverviewColor}
-              />
-            </TouchableOpacity>
+              name={allHabitsItem.name}
+              color={allHabitsItem.color}
+              allHabitDatesDots={allHabitDatesDots.slice(
+                allHabitsIndex * 7,
+                (allHabitsIndex + 1) * 7
+              )}
+            />
           ))}
         </ScrollView>
       ) : habitLoading ? (
@@ -154,4 +114,4 @@ const DotGraph = (props: {
   );
 };
 
-export default DotGraph;
+export default DotGraphFriend;
