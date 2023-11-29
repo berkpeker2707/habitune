@@ -128,7 +128,7 @@ const DotGraphBar = (props: {
           // borderTopWidth: 0.5,
           borderBottomWidth: 0.5,
           // borderTopColor: color,
-          borderBottomColor: theme.primaryColor,
+          borderBottomColor: selected ? theme.warningColor : theme.primaryColor,
         }}
       >
         <View
