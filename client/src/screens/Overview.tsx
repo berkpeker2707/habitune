@@ -1,5 +1,5 @@
 import * as React from "react";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 
 import {
   ScrollView,
@@ -13,6 +13,7 @@ import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import { useTheme } from "../context/ThemeContext";
+import { useIsFocused } from "@react-navigation/native";
 
 const Overview = memo(
   (props: {
@@ -61,9 +62,15 @@ const Overview = memo(
     } = props;
     const { theme } = useTheme();
 
+    const isFocused = useIsFocused();
+
     const handleBlur = () => {
       setSelectedOverviewHabit();
     };
+
+    useEffect(() => {
+      setSelectedOverviewHabit(null);
+    }, [isFocused]);
 
     const onRefresh = useCallback(() => {
       setRefreshing(true);
