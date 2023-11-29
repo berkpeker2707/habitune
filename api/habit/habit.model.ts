@@ -10,6 +10,7 @@ const habitSchema = new Schema<IHabit>({
   lastDate: { type: Date },
   dates: [{ type: Date }],
   upcomingDates: [{ type: Date }],
+  isHidden: { type: Boolean, default: false },
 });
 
 export = mongoose.model<IHabit>("Habit", habitSchema);

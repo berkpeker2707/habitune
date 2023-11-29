@@ -31,6 +31,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         lastDate: req.body.lastDate,
         dates: [],
         upcomingDates: [],
+        isHidden: false,
       });
 
       await User.findOneAndUpdate(
@@ -90,7 +91,10 @@ export const getAllHabitsOfSelectedUser = async (
   res: Response
 ) => {
   try {
-    const loggedinUsersHabits = await Habit.find({ owner: req.params.id })
+    const loggedinUsersHabits = await Habit.find({
+      owner: req.params.id,
+      isHidden: false,
+    })
       .populate({ path: "sharedWith", model: "User" })
       .slice("dates", -10) //last 10 numbers of the dates array
       .slice("upcomingDates", -10)
