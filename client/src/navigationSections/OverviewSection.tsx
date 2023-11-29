@@ -32,6 +32,11 @@ const OverviewSection = (props: any) => {
     allHabitDatesDots,
     selectedOverviewHabit,
     setSelectedOverviewHabit,
+    updateHabitColorAction,
+    overviewColorModal,
+    setOverviewColorModal,
+    overviewColor,
+    setOverviewColor,
   } = props;
   const { theme } = useTheme();
 
@@ -63,6 +68,11 @@ const OverviewSection = (props: any) => {
             allHabitDatesDots={allHabitDatesDots}
             selectedOverviewHabit={selectedOverviewHabit}
             setSelectedOverviewHabit={setSelectedOverviewHabit}
+            updateHabitColorAction={updateHabitColorAction}
+            overviewColorModal={overviewColorModal}
+            setOverviewColorModal={setOverviewColorModal}
+            overviewColor={overviewColor}
+            setOverviewColor={setOverviewColor}
           />
         )}
         options={{
