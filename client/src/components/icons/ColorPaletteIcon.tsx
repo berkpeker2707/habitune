@@ -2,7 +2,7 @@ import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 import { useTheme } from "../../context/ThemeContext";
 
-const ColorPalette = () => {
+const ColorPaletteIcon = () => {
   const { theme } = useTheme();
 
   return (
@@ -16,4 +16,4 @@ const ColorPalette = () => {
   );
 };
 
-export default ColorPalette;
+export default ColorPaletteIcon;
