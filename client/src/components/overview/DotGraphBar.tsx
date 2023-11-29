@@ -172,7 +172,7 @@ const DotGraphBar = (props: {
                   )
                 }
               >
-                <EyeIcon />
+                <EyeIcon hidden={isHidden} />
               </TouchableOpacity>
             </View>
             <View
