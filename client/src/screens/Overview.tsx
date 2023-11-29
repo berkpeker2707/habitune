@@ -20,6 +20,7 @@ const Overview = memo(
     fetchAllHabitsAction: Function;
     fetchAllHabitsOfSelectedUserAction: Function;
     deleteHabitAction: Function;
+    updateHabitHiddenAction: Function;
     allHabits: [];
     allHabitsNumber: number;
     habitLoading: boolean;
@@ -41,6 +42,7 @@ const Overview = memo(
       fetchAllHabitsAction,
       fetchAllHabitsOfSelectedUserAction,
       deleteHabitAction,
+      updateHabitHiddenAction,
       allHabits,
       allHabitsNumber,
       habitLoading,
@@ -184,6 +186,7 @@ const Overview = memo(
                   fetchAllHabitsOfSelectedUserAction
                 }
                 deleteHabitAction={deleteHabitAction}
+                updateHabitHiddenAction={updateHabitHiddenAction}
                 allHabits={allHabits}
                 allHabitsNumber={allHabitsNumber}
                 habitLoading={habitLoading}

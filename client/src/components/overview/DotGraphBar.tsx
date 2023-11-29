@@ -12,10 +12,12 @@ const DotGraphBar = (props: {
   color: string;
   allHabitDatesDots: Array<boolean>;
   habitID: any;
+  isHidden: boolean;
   selected: boolean;
   dispatch: Function;
   deleteHabitAction: Function;
   updateHabitColorAction: Function;
+  updateHabitHiddenAction: Function;
   overviewColorModal: boolean;
   setOverviewColorModal: Function;
   overviewColor: string;
@@ -26,10 +28,12 @@ const DotGraphBar = (props: {
     color,
     allHabitDatesDots,
     habitID,
+    isHidden,
     selected,
     dispatch,
     deleteHabitAction,
     updateHabitColorAction,
+    updateHabitHiddenAction,
     overviewColorModal,
     setOverviewColorModal,
     overviewColor,
@@ -158,7 +162,16 @@ const DotGraphBar = (props: {
                 backgroundColor: theme.backgroundColor,
               }}
             >
-              <TouchableOpacity onPress={() => console.log("test")}>
+              <TouchableOpacity
+                onPress={() =>
+                  dispatch(
+                    updateHabitHiddenAction({
+                      _id: habitID,
+                      hidden: !isHidden,
+                    })
+                  )
+                }
+              >
                 <EyeIcon />
               </TouchableOpacity>
             </View>

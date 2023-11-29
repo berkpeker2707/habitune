@@ -19,6 +19,7 @@ const OverviewSection = (props: any) => {
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
     deleteHabitAction,
+    updateHabitHiddenAction,
     revertAll,
     revertAllHabit,
     deleteUserAction,
@@ -58,6 +59,7 @@ const OverviewSection = (props: any) => {
               fetchAllHabitsOfSelectedUserAction
             }
             deleteHabitAction={deleteHabitAction}
+            updateHabitHiddenAction={updateHabitHiddenAction}
             allHabits={allHabits}
             allHabitsNumber={allHabitsNumber}
             habitLoading={habitLoading}

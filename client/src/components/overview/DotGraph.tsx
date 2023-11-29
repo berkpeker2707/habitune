@@ -10,6 +10,7 @@ const DotGraph = (props: {
   fetchAllHabitsAction: Function;
   fetchAllHabitsOfSelectedUserAction: Function;
   deleteHabitAction: Function;
+  updateHabitHiddenAction: Function;
   allHabits: Array<any>;
   allHabitsNumber: number;
   habitLoading: boolean;
@@ -30,6 +31,7 @@ const DotGraph = (props: {
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
     deleteHabitAction,
+    updateHabitHiddenAction,
     allHabits,
     allHabitsNumber,
     habitLoading,
@@ -116,12 +118,14 @@ const DotGraph = (props: {
                   (allHabitsIndex + 1) * 7
                 )}
                 habitID={allHabitsItem._id}
+                isHidden={allHabitsItem.isHidden}
                 selected={
                   selectedOverviewHabit === allHabitsIndex ? true : false
                 }
                 dispatch={dispatch}
                 deleteHabitAction={deleteHabitAction}
                 updateHabitColorAction={updateHabitColorAction}
+                updateHabitHiddenAction={updateHabitHiddenAction}
                 overviewColorModal={overviewColorModal}
                 setOverviewColorModal={setOverviewColorModal}
                 overviewColor={overviewColor}

@@ -66,6 +66,7 @@ import {
   selectAllHabitDatesDots,
   selectFriendAllHabitDatesDots,
   updateHabitColorAction,
+  updateHabitHiddenAction,
 } from "./src/state/habitSlice";
 import {
   notificationSendAction,
@@ -521,6 +522,7 @@ const App = () => {
                     fetchAllHabitsOfSelectedUserAction
                   }
                   deleteHabitAction={deleteHabitAction}
+                  updateHabitHiddenAction={updateHabitHiddenAction}
                   revertAll={revertAll}
                   revertAllHabit={revertAllHabit}
                   deleteUserAction={deleteUserAction}
