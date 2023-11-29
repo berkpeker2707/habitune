@@ -458,6 +458,7 @@ export const friendAllHabitDatesDotsAction = createAsyncThunk(
   }
 );
 
+//unused
 export const fetchHabitAction = createAsyncThunk(
   "habit/fetchSingleHabit",
   async (_, { rejectWithValue, getState, dispatch }) => {
@@ -611,6 +612,7 @@ export const updateHabitSharedWithAction = createAsyncThunk(
   }
 );
 
+//unused
 export const updateHabitFirstAndLastDateAction = createAsyncThunk(
   "habit/updateHabitFirstAndLastDate",
   async (
@@ -641,6 +643,7 @@ export const updateHabitFirstAndLastDateAction = createAsyncThunk(
   }
 );
 
+//unused
 export const updateHabitDatesAction = createAsyncThunk(
   "habit/updateHabitDates",
   async (updateHabitDatesPayload, { rejectWithValue, getState, dispatch }) => {
