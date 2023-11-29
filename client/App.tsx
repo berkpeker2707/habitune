@@ -65,6 +65,7 @@ import {
   selectFriendCurrentHabitWeekStreak,
   selectAllHabitDatesDots,
   selectFriendAllHabitDatesDots,
+  updateHabitColorAction,
 } from "./src/state/habitSlice";
 import {
   notificationSendAction,
@@ -256,7 +257,9 @@ const App = () => {
   );
 
   //overview screen states
-  const [selectedOverviewHabit, setSelectedOverviewHabit] = useState<number>(0);
+  const [selectedOverviewHabit, setSelectedOverviewHabit] = useState<number>();
+  const [overviewColorModal, setOverviewColorModal] = useState<boolean>(false);
+  const [overviewColor, setOverviewColor] = useState<string>("#968EB0");
 
   //token
   useEffect(() => {
@@ -531,6 +534,11 @@ const App = () => {
                   allHabitDatesDots={allHabitDatesDots}
                   selectedOverviewHabit={selectedOverviewHabit}
                   setSelectedOverviewHabit={setSelectedOverviewHabit}
+                  updateHabitColorAction={updateHabitColorAction}
+                  overviewColorModal={overviewColorModal}
+                  setOverviewColorModal={setOverviewColorModal}
+                  overviewColor={overviewColor}
+                  setOverviewColor={setOverviewColor}
                 />
               )}
               options={{
