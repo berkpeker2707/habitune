@@ -18,6 +18,7 @@ const OverviewSection = (props: any) => {
     dispatch,
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
+    deleteHabitAction,
     revertAll,
     revertAllHabit,
     deleteUserAction,
@@ -29,6 +30,8 @@ const OverviewSection = (props: any) => {
     onShare,
     currentHabitWeekStreakState,
     allHabitDatesDots,
+    selectedOverviewHabit,
+    setSelectedOverviewHabit,
   } = props;
   const { theme } = useTheme();
 
@@ -49,6 +52,7 @@ const OverviewSection = (props: any) => {
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
             }
+            deleteHabitAction={deleteHabitAction}
             allHabits={allHabits}
             allHabitsNumber={allHabitsNumber}
             habitLoading={habitLoading}
@@ -57,6 +61,8 @@ const OverviewSection = (props: any) => {
             isItCurrentUser={true}
             currentHabitWeekStreakState={currentHabitWeekStreakState}
             allHabitDatesDots={allHabitDatesDots}
+            selectedOverviewHabit={selectedOverviewHabit}
+            setSelectedOverviewHabit={setSelectedOverviewHabit}
           />
         )}
         options={{
