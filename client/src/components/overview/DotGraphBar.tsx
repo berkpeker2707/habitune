@@ -144,15 +144,38 @@ const DotGraphBar = (props: {
           <Text
             style={{
               textAlign: "left",
-              fontSize: name.length > 23 ? 12 : 15,
+              fontSize: 14,
               color: selected ? theme.warningColor : theme.fadedShadowColor,
+              backgroundColor: selected ? theme.backgroundColor : "transparent",
             }}
           >
-            {name}
+            {name.length > 22 ? `${name.substring(0, 19)}...` : name}
           </Text>
         </View>
         {selected ? (
           <View>
+            <View
+              style={{
+                position: "absolute",
+                padding: 5,
+                left: 107,
+                top: 10,
+                backgroundColor: theme.backgroundColor,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() =>
+                  dispatch(
+                    updateHabitHiddenAction({
+                      _id: habitID,
+                      hidden: !isHidden,
+                    })
+                  )
+                }
+              >
+                <EyeIcon hidden={isHidden} />
+              </TouchableOpacity>
+            </View>
             <View
               style={{
                 position: "absolute",
@@ -179,7 +202,7 @@ const DotGraphBar = (props: {
               style={{
                 position: "absolute",
                 padding: 5,
-                left: 217,
+                left: 227,
                 top: 10,
                 backgroundColor: theme.backgroundColor,
               }}
@@ -196,7 +219,7 @@ const DotGraphBar = (props: {
               style={{
                 position: "absolute",
                 padding: 5,
-                left: 267,
+                left: 287,
                 top: 10,
                 backgroundColor: theme.backgroundColor,
               }}
