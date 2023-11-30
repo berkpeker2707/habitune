@@ -12,12 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.changeTheme = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
+exports.deleteUser = exports.changeTheme = exports.updateCurrentUserImage = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const notification_model_1 = __importDefault(require("../notifications/notification.model"));
 const habit_model_1 = __importDefault(require("../habit/habit.model"));
 const jwt = require("jsonwebtoken");
+const { cloudinaryUploadUserImg, cloudinaryDeleteUserImg, } = require("../middlewares/cloudinary");
+const path = require("path");
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 const bcrypt = require("bcrypt");
@@ -26,6 +28,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     try {
         var userExists = yield user_model_1.default.exists({ email: req.body.email });
         if (userExists) {
+            yield user_model_1.default.findOneAndUpdate({ email: req.body.email }, { image: req.body.picture });
             var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
@@ -303,11 +306,36 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.sendFriendship = sendFriendship;
+const updateCurrentUserImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d, _e;
+    try {
+        const localPath = (_e = (_d = req === null || req === void 0 ? void 0 : req.files) === null || _d === void 0 ? void 0 : _d.image) === null || _e === void 0 ? void 0 : _e.path;
+        const imgUploaded = yield cloudinaryUploadUserImg(localPath, req.user[0]._id);
+        const foundUserPicture = yield user_model_1.default.findById(req.user[0]._id);
+        //delete old profile image if exists
+        if ((foundUserPicture && foundUserPicture.image.length > 1) ||
+            (foundUserPicture &&
+                foundUserPicture.image.includes("https://res.cloudinary.com"))) {
+            yield cloudinaryDeleteUserImg(foundUserPicture.image);
+            const user = yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
+                image: imgUploaded.secure_url,
+            }, { new: true });
+            res.status(200).json(user);
+        }
+        else {
+            res.json("Profile photo already deleted.");
+        }
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
+});
+exports.updateCurrentUserImage = updateCurrentUserImage;
 const changeTheme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d;
+    var _f;
     try {
         var newThemeValue = req.body.theme;
-        const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_d = req.user[0]) === null || _d === void 0 ? void 0 : _d._id, { $set: { theme: newThemeValue } }, { new: true });
+        const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_f = req.user[0]) === null || _f === void 0 ? void 0 : _f._id, { $set: { theme: newThemeValue } }, { new: true });
         res.status(200).json(loggedinUser);
     }
     catch (error) {

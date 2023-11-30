@@ -13,6 +13,7 @@ userRoutes.post("/google", lowLimitter_1.default, user_controllers_1.signInWithG
 userRoutes.post("/signin", lowLimitter_1.default, user_controllers_1.signInController);
 userRoutes.get("/profile/:today", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.fetchCurrentUserProfile);
 userRoutes.get("/selectedUser/profile/:userID", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.fetchUserProfile);
+userRoutes.post("/update/profile/image", [verifyToken_1.default], user_controllers_1.updateCurrentUserImage);
 userRoutes.post("/sendFriendshipRequest", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.sendFriendship);
 userRoutes.post("/changeTheme", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.changeTheme);
 userRoutes.delete("/delete/me", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.deleteUser);

@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const db_1 = __importDefault(require("./config/db"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
+const formData = require("express-form-data");
 const helmet_1 = __importDefault(require("helmet"));
 //logger is winston, can log all and categorize all as you wish
 // import Logger from "./middlewares/logger";
@@ -24,6 +25,8 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true })); //Parse URL-encoded bodies
+app.use(formData.parse());
 app.use("/static", express_1.default.static(path_1.default.join(__dirname, "public")));
 app.use((0, cors_1.default)({
     origin: "*",
