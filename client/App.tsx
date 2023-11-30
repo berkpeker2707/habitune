@@ -44,6 +44,7 @@ import {
   selectUserLoading,
   selectUserUpdated,
   sendFriendshipAction,
+  updateCurrentUserImageAction,
 } from "./src/state/userSlice";
 import {
   createHabitAction,
@@ -404,6 +405,7 @@ const App = () => {
                 <HomeSection
                   {...props}
                   dispatch={dispatch}
+                  updateCurrentUserImageAction={updateCurrentUserImageAction}
                   fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
                   fetchAllHabitsAction={fetchAllHabitsAction}
                   fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}

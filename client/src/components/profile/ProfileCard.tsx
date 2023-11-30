@@ -1,11 +1,36 @@
 import * as React from "react";
 
-import { Image, View, Text } from "react-native";
+import { Image, View, Text, TouchableOpacity } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
 
-const ProfileCard = (props: { name: string; email: string; image: string }) => {
-  const { name, email, image } = props;
+import * as ImagePicker from "expo-image-picker";
+
+const ProfileCard = (props: {
+  name: string;
+  email: string;
+  image: string;
+  dispatch: Function;
+  updateCurrentUserImageAction: Function;
+}) => {
+  const { name, email, image, dispatch, updateCurrentUserImageAction } = props;
   const { theme } = useTheme();
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      try {
+        dispatch(updateCurrentUserImageAction(result));
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
 
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -28,16 +53,18 @@ const ProfileCard = (props: { name: string; email: string; image: string }) => {
           elevation: 5,
         }}
       >
-        <Image
-          source={{
-            uri: image,
-          }}
-          style={{
-            width: 115,
-            height: 115,
-            borderRadius: 100,
-          }}
-        />
+        <TouchableOpacity onPress={pickImage}>
+          <Image
+            source={{
+              uri: image,
+            }}
+            style={{
+              width: 115,
+              height: 115,
+              borderRadius: 100,
+            }}
+          />
+        </TouchableOpacity>
       </View>
       <View>
         <Text

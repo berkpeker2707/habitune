@@ -24,6 +24,7 @@ const HomeSection = (props: any) => {
   const {
     navigation,
     dispatch,
+    updateCurrentUserImageAction,
     fetchCurrentUserProfileAction,
     fetchAllHabitsAction,
     fetchAllTodayHabitsAction,
@@ -268,6 +269,7 @@ const HomeSection = (props: any) => {
             {...props}
             navigation={navigation}
             dispatch={dispatch}
+            updateCurrentUserImageAction={updateCurrentUserImageAction}
             fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
             sendFriendshipAction={sendFriendshipAction}
             currentUser={currentUser}
