@@ -28,6 +28,10 @@ export const signInWithGoogleController = async (
     var userExists = await User.exists({ email: req.body.email });
 
     if (userExists) {
+      await User.findOneAndUpdate(
+        { email: req.body.email },
+        { image: req.body.picture }
+      );
       var foundUser = await User.findOne({ email: req.body.email });
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
