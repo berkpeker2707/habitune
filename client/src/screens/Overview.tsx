@@ -192,15 +192,14 @@ const Overview = memo(
                 fetchAllHabitsOfSelectedUserAction={
                   fetchAllHabitsOfSelectedUserAction
                 }
-                deleteHabitAction={deleteHabitAction}
-                updateHabitHiddenAction={updateHabitHiddenAction}
                 allHabits={allHabits}
                 allHabitsNumber={allHabitsNumber}
                 habitLoading={habitLoading}
                 refreshing={refreshing}
                 setRefreshing={setRefreshing}
-                isItCurrentUser={isItCurrentUser}
                 allHabitDatesDots={allHabitDatesDots}
+                deleteHabitAction={deleteHabitAction}
+                updateHabitHiddenAction={updateHabitHiddenAction}
                 selectedOverviewHabit={selectedOverviewHabit}
                 setSelectedOverviewHabit={setSelectedOverviewHabit}
                 updateHabitColorAction={updateHabitColorAction}

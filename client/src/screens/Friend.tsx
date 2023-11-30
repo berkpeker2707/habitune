@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { ScrollView, TextInput, View, Text } from "react-native";
-import DotGraph from "../components/overview/DotGraph";
+import DotGraphFriend from "../components/overview/DotGraphFriend";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import { useTheme } from "../context/ThemeContext";
@@ -15,7 +15,6 @@ const Friend = (props: {
   habitLoading: boolean;
   refreshing: boolean;
   setRefreshing: Function;
-  isItCurrentUser: boolean;
   friendCurrentHabitWeekStreakState: [];
   friendAllHabitDatesDotsState: [];
 }) => {
@@ -28,7 +27,6 @@ const Friend = (props: {
     habitLoading,
     refreshing,
     setRefreshing,
-    isItCurrentUser,
     friendCurrentHabitWeekStreakState,
     friendAllHabitDatesDotsState,
   } = props;
@@ -119,8 +117,7 @@ const Friend = (props: {
           ) : (
             <></>
           )}
-          <DotGraph
-            dispatch={dispatch}
+          <DotGraphFriend
             fetchAllHabitsAction={fetchAllHabitsAction}
             fetchAllHabitsOfSelectedUserAction={
               fetchAllHabitsOfSelectedUserAction
@@ -130,7 +127,6 @@ const Friend = (props: {
             habitLoading={habitLoading}
             refreshing={refreshing}
             setRefreshing={setRefreshing}
-            isItCurrentUser={isItCurrentUser}
             allHabitDatesDots={friendAllHabitDatesDotsState}
           />
         </ScrollView>
