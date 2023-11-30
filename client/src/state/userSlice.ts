@@ -2,7 +2,8 @@ import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Platform } from "react-native";
+import mime from "mime";
 interface userTypes {
   token: string;
   loading: boolean;
@@ -98,6 +99,53 @@ export const fetchUserProfileAction = createAsyncThunk(
       const { data } = await axiosInstance.get(
         `/user/selectedUser/profile/${fetchUserProfilePayload}`,
         config
+      );
+
+      return data;
+    } catch (error) {
+      console.log("user error3: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateCurrentUserImageAction = createAsyncThunk(
+  "user/updateCurrentUserImage",
+  async (
+    updateCurrentUserImagePayload: any,
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    // const uri = updateCurrentUserImagePayload.uri;
+    const uri = updateCurrentUserImagePayload.assets[0].uri;
+    const FormData = global.FormData;
+    const formData = new FormData();
+
+    const trimmedURI =
+      Platform.OS === "android" ? uri : uri.replace("file://", "");
+    const fileName = trimmedURI.split("/").pop();
+
+    formData.append("image", {
+      name: fileName,
+      type: mime.getType(trimmedURI),
+      uri: trimmedURI,
+    } as any);
+
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    try {
+      const { data } = await axiosInstance.post(
+        `/user/update/profile/image`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${auth}`,
+          },
+          transformRequest: (data, headers) => {
+            return formData;
+          },
+        }
       );
 
       return data;
