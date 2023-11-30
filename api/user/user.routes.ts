@@ -4,6 +4,7 @@ import {
   signInController,
   fetchCurrentUserProfile,
   fetchUserProfile,
+  updateCurrentUserImage,
   sendFriendship,
   changeTheme,
   deleteUser,
@@ -30,6 +31,8 @@ userRoutes.get(
   [verifyToken, defaultLimitter],
   fetchUserProfile
 );
+
+userRoutes.post("/update/profile/image", [verifyToken], updateCurrentUserImage);
 
 userRoutes.post(
   "/sendFriendshipRequest",

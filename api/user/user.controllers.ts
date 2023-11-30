@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
+
 import User from "./user.model";
 import Notification from "../notifications/notification.model";
 import Habit from "../habit/habit.model";
 
 import { IReq } from "../middlewares/interfaces";
 const jwt = require("jsonwebtoken");
+
+const {
+  cloudinaryUploadUserImg,
+  cloudinaryDeleteUserImg,
+} = require("../middlewares/cloudinary");
+const path = require("path");
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
@@ -377,6 +384,45 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const updateCurrentUserImage = async (
+  req: IReq | any,
+  res: Response
+) => {
+  try {
+    const localPath = req?.files?.image?.path;
+
+    const imgUploaded = await cloudinaryUploadUserImg(
+      localPath,
+      req.user[0]._id
+    );
+
+    const foundUserPicture = await User.findById(req.user[0]._id);
+
+    //delete old profile image if exists
+    if (
+      (foundUserPicture && foundUserPicture.image.length > 1) ||
+      (foundUserPicture &&
+        foundUserPicture.image.includes("https://res.cloudinary.com"))
+    ) {
+      await cloudinaryDeleteUserImg(foundUserPicture.image);
+
+      const user = await User.findByIdAndUpdate(
+        req.user[0]._id,
+        {
+          image: imgUploaded.secure_url,
+        },
+        { new: true }
+      );
+
+      res.status(200).json(user);
+    } else {
+      res.json("Profile photo already deleted.");
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 
