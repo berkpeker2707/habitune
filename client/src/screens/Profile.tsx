@@ -23,6 +23,7 @@ const Profile = memo((props: any) => {
     dispatch,
     fetchCurrentUserProfileAction,
     sendFriendshipAction,
+    updateCurrentUserImageAction,
     currentUser,
     refreshing,
     setRefreshing,
@@ -84,6 +85,8 @@ const Profile = memo((props: any) => {
               name={currentUser.firstName}
               email={currentUser.email}
               image={currentUser.image}
+              dispatch={dispatch}
+              updateCurrentUserImageAction={updateCurrentUserImageAction}
             />
           )}
         <View

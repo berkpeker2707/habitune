@@ -27,21 +27,21 @@ const Home = memo(
     allHabits: [];
     allHabitsNumber: number;
     currentHabitDatesIncluded: [];
-    homeEditBool: boolean;
+    // homeEditBool: boolean;
     setHomeEditBool: Function;
     habitLoading: boolean;
     tempBarFilled: [boolean];
     setTempBarFilled: Function;
     refreshing: boolean;
     setRefreshing: Function;
-    shareWithFriendList: [any];
+    shareWithFriendList: string[];
     setShareWithFriendList: Function;
     selectedItem: string;
     setSelectedItem: Function;
-    modalVisible: boolean;
-    setModalVisible: Function;
-    setEditHabitSelected: Function;
-    setHabitNameState: Function;
+    shareWithFriendListModal: boolean;
+    setShareWithFriendListModal: Function;
+    // setEditHabitSelected: Function;
+    // setHabitNameState: Function;
   }) => {
     const {
       dispatch,
@@ -53,7 +53,7 @@ const Home = memo(
       allHabits,
       allHabitsNumber,
       currentHabitDatesIncluded,
-      homeEditBool,
+      // homeEditBool,
       setHomeEditBool,
       habitLoading,
       tempBarFilled,
@@ -63,11 +63,11 @@ const Home = memo(
       shareWithFriendList,
       setShareWithFriendList,
       selectedItem,
-      setSelectedItem,
-      modalVisible,
-      setModalVisible,
-      setEditHabitSelected,
-      setHabitNameState,
+      // setSelectedItem,
+      shareWithFriendListModal,
+      setShareWithFriendListModal,
+      // setEditHabitSelected,
+      // setHabitNameState,
     } = props;
 
     const { theme } = useTheme();
@@ -95,12 +95,12 @@ const Home = memo(
     //   setHomeEditBool(false);
     // }, []);
 
-    useEffect(() => {
-      if (homeEditBool === false) {
-        setSelectedItem(() => "");
-        setHabitNameState(() => "");
-      }
-    }, [homeEditBool]);
+    // useEffect(() => {
+    //   if (homeEditBool === false) {
+    //     setSelectedItem(() => "");
+    //     setHabitNameState(() => "");
+    //   }
+    // }, [homeEditBool]);
 
     const onRefresh = useCallback(() => {
       setRefreshing(true);
@@ -177,9 +177,9 @@ const Home = memo(
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={shareWithFriendListModal}
             onRequestClose={() => {
-              setModalVisible(!modalVisible);
+              setShareWithFriendListModal(!shareWithFriendListModal);
               setHomeEditBool(false);
             }}
           >
@@ -225,7 +225,7 @@ const Home = memo(
                   ]}
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
-                    setModalVisible(!modalVisible);
+                    setShareWithFriendListModal(!shareWithFriendListModal);
                     dispatch(
                       updateHabitSharedWithAction({
                         _id: selectedItem,
@@ -250,7 +250,7 @@ const Home = memo(
           </Modal>
           <TouchableWithoutFeedback
             onBlur={() => {
-              if (!modalVisible) {
+              if (!shareWithFriendListModal) {
                 setHomeEditBool(false);
               }
             }}
@@ -286,12 +286,12 @@ const Home = memo(
                   currentUser={currentUser}
                   allHabits={allHabits}
                   tempBarFilled={tempBarFilled}
-                  setHomeEditBool={setHomeEditBool}
+                  // setHomeEditBool={setHomeEditBool}
                   selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
+                  // setSelectedItem={setSelectedItem}
                   handleHabitClicked={handleHabitClicked}
-                  setEditHabitSelected={setEditHabitSelected}
-                  setHabitNameState={setHabitNameState}
+                  // setEditHabitSelected={setEditHabitSelected}
+                  // setHabitNameState={setHabitNameState}
                 />
               </ScrollView>
             </View>

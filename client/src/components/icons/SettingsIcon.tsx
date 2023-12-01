@@ -1,8 +1,8 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
-const TopNavbarSettingsButton = () => {
+const SettingsIcon = () => {
   const { theme } = useTheme();
 
   return (
@@ -15,4 +15,4 @@ const TopNavbarSettingsButton = () => {
   );
 };
 
-export default TopNavbarSettingsButton;
+export default SettingsIcon;

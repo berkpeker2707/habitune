@@ -1,9 +1,9 @@
 import * as React from "react";
 import { View, TouchableOpacity } from "react-native";
-import Svg, { Defs, G, Path } from "react-native-svg";
-import { useTheme } from "../../../context/ThemeContext";
+import Svg, { Circle, Path } from "react-native-svg";
+import { useTheme } from "../../context/ThemeContext";
 
-const BottomTabHomeButton = (props: any) => {
+const OverviewIcon = (props: any) => {
   const { accessibilityState, onPressIn } = props;
   const { theme } = useTheme();
 
@@ -12,7 +12,7 @@ const BottomTabHomeButton = (props: any) => {
       <View
         style={{
           flex: 1,
-          // backgroundColor: theme.backgroundColor,
+          // backgroundColor: theme.backgroundColor
           alignItems: "center",
           zIndex: 1,
         }}
@@ -34,28 +34,46 @@ const BottomTabHomeButton = (props: any) => {
             <View
               style={{
                 flex: 1,
-                // backgroundColor: theme.backgroundColor,
+                // backgroundColor: theme.backgroundColor
               }}
             />
             <Svg
-              width={26}
-              height={32}
+              width={54}
+              height={29}
               fill="none"
-              viewBox="0 0 26 32"
+              viewBox="0 0 54 29"
               {...props}
             >
-              <G filter="url(#filter0_b_195_435)">
-                <Path
-                  fill={theme.primaryColor}
-                  d="M0 24.481V12.908a3 3 0 01.946-2.187l9.523-8.942a3 3 0 013.925-.158l10.477 8.362A3 3 0 0126 12.328V28.2a3 3 0 01-3 3H3a3 3 0 01-3-3v-3.719z"
-                />
-              </G>
-              <Defs></Defs>
+              <Circle
+                cx={5.5}
+                cy={23.5}
+                r={4.5}
+                fill={theme.primaryColor}
+                stroke={theme.primaryColor}
+              />
+              <Circle
+                cx={24.5}
+                cy={6.5}
+                r={4.5}
+                fill={theme.primaryColor}
+                stroke={theme.primaryColor}
+              />
+              <Path
+                stroke={theme.primaryColor}
+                d="M20.967 7.743L7.669 19.712M44 6H29"
+              />
+              <Circle
+                cx={48.5}
+                cy={5.5}
+                r={4.5}
+                fill={theme.primaryColor}
+                stroke={theme.primaryColor}
+              />
             </Svg>
             <View
               style={{
                 flex: 1,
-                // backgroundColor: theme.backgroundColor,
+                // backgroundColor: theme.backgroundColor
               }}
             />
           </View>
@@ -67,7 +85,7 @@ const BottomTabHomeButton = (props: any) => {
       <View
         style={{
           flex: 1,
-          // backgroundColor: theme.backgroundColor,
+          // backgroundColor: theme.backgroundColor
           alignItems: "center",
           zIndex: 1,
         }}
@@ -89,28 +107,28 @@ const BottomTabHomeButton = (props: any) => {
             <View
               style={{
                 flex: 1,
-                // backgroundColor: theme.backgroundColor,
+                // backgroundColor: theme.backgroundColor
               }}
             />
             <Svg
-              width={27}
-              height={32}
+              width={54}
+              height={29}
               fill="none"
-              viewBox="0 0 27 32"
+              viewBox="0 0 54 29"
               {...props}
             >
-              <G filter="url(#filter0_b_195_427)">
-                <Path
-                  stroke={theme.primaryColor}
-                  d="M1 14.912v9.627M6.77 31h13.46M26 24.553v-9.46m0-2.184V28a3 3 0 01-3 3H4a3 3 0 01-3-3V13.461a3 3 0 01.946-2.187l9.048-8.495a3 3 0 013.925-.158l9.952 7.943A3 3 0 0126 12.91z"
-                />
-              </G>
-              <Defs></Defs>
+              <Circle cx={5.5} cy={23.5} r={4.5} stroke={theme.primaryColor} />
+              <Circle cx={48.5} cy={5.5} r={4.5} stroke={theme.primaryColor} />
+              <Circle cx={24.5} cy={6.5} r={4.5} stroke={theme.primaryColor} />
+              <Path
+                stroke={theme.primaryColor}
+                d="M20.967 7.743L7.669 19.712M44 6H29"
+              />
             </Svg>
             <View
               style={{
                 flex: 1,
-                // backgroundColor: theme.backgroundColor,
+                // backgroundColor: theme.backgroundColor
               }}
             />
           </View>
@@ -120,4 +138,4 @@ const BottomTabHomeButton = (props: any) => {
   }
 };
 
-export default BottomTabHomeButton;
+export default OverviewIcon;

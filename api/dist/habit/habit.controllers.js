@@ -24,7 +24,7 @@ dotenv_1.default.config();
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
-        if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
+        if (checkUser && checkUser.habits.length >= 20) {
             logger_1.default.error("User already has 20 habits.");
             return res
                 .status(500)
@@ -163,14 +163,20 @@ const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.deleteHabit = deleteHabit;
 const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
-            $set: { name: req.body.name },
-        }, { new: true })
-            .populate({ path: "sharedWith", model: "User" })
-            .slice("dates", -10) //last 10 numbers of the dates array
-            .slice("upcomingDates", -10)
-            .exec();
-        res.status(200).json(selectedHabit);
+        if (req.body.name.length > 0) {
+            const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
+                $set: { name: req.body.name },
+            }, { new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
+                .exec();
+            res.status(200).json(selectedHabit);
+        }
+        else {
+            logger_1.default.error("Habit name is invalid.");
+            return res.status(400).json({ error: "Habit name is invalid." });
+        }
     }
     catch (error) {
         logger_1.default.error(error);
@@ -180,14 +186,31 @@ const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.updateHabitName = updateHabitName;
 const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
-            $set: { color: req.body.color },
-        }, { new: true })
-            .populate({ path: "sharedWith", model: "User" })
-            .slice("dates", -10) //last 10 numbers of the dates array
-            .slice("upcomingDates", -10)
-            .exec();
-        res.status(200).json(selectedHabit);
+        if ((req.body.color.length > 0 && req.body.color === "#968EB0") ||
+            req.body.color === "#9DB2CE" ||
+            req.body.color === "#C04F43" ||
+            req.body.color === "#A5D2AC" ||
+            req.body.color === "#99BB42" ||
+            req.body.color === "#F59732" ||
+            req.body.color === "#F1867E" ||
+            req.body.color === "#FCCA1B" ||
+            req.body.color === "#4D6691" ||
+            req.body.color === "#6EA8D8" ||
+            req.body.color === "#DEB4CF" ||
+            req.body.color === "#F6AF90") {
+            const selectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, {
+                $set: { color: req.body.color },
+            }, { new: true })
+                .populate({ path: "sharedWith", model: "User" })
+                .slice("dates", -10) //last 10 numbers of the dates array
+                .slice("upcomingDates", -10)
+                .exec();
+            res.status(200).json(selectedHabit);
+        }
+        else {
+            logger_1.default.error("Habit color is invalid.");
+            return res.status(400).json({ error: "Habit color is invalid." });
+        }
     }
     catch (error) {
         logger_1.default.error(error);

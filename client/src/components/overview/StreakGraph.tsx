@@ -14,39 +14,37 @@ const StreakGraph = (props: {
   const { theme } = useTheme();
 
   return (
-    <View>
-      <View
+    <View
+      style={{
+        display: "flex",
+        // height: "100%",
+        backgroundColor: theme.backgroundColor,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <TextInput
         style={{
-          display: "flex",
-          // height: "100%",
-          backgroundColor: theme.backgroundColor,
-          justifyContent: "center",
-          alignItems: "center",
+          height: 29.5,
+          paddingLeft: 20,
+          color: theme.fadedShadowColor,
+          textAlign: "center",
         }}
+        editable={false}
+        selectTextOnFocus={false}
       >
-        <TextInput
-          style={{
-            height: 29.5,
-            paddingLeft: 20,
-            color: theme.fadedShadowColor,
-            textAlign: "center",
-          }}
-          editable={false}
-          selectTextOnFocus={false}
-        >
-          Streaks 🔥
-        </TextInput>
-        {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => {
-          return (
-            <StreakBar
-              key={uuid.v4() as string}
-              name={allHabitsItem.name}
-              color={allHabitsItem.color}
-              currentHabitWeekStreak={currentHabitWeekStreak[allHabitsIndex]}
-            />
-          );
-        })}
-      </View>
+        Streaks 🔥
+      </TextInput>
+      {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => {
+        return (
+          <StreakBar
+            key={uuid.v4() as string}
+            name={allHabitsItem.name}
+            color={allHabitsItem.color}
+            currentHabitWeekStreak={currentHabitWeekStreak[allHabitsIndex]}
+          />
+        );
+      })}
     </View>
   );
 };

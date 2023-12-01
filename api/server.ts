@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import db from "./config/db";
 import dotenv from "dotenv";
 import cors from "cors";
+const formData = require("express-form-data");
 import helmet from "helmet";
 
 //logger is winston, can log all and categorize all as you wish
@@ -31,6 +32,8 @@ const app: Express = express();
 const port = process.env.PORT || 1111;
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
+app.use(formData.parse());
 
 app.use("/static", express.static(path.join(__dirname, "public")));
 
