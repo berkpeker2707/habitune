@@ -23,6 +23,7 @@ const OverviewSection = (props: any) => {
     revertAll,
     revertAllHabit,
     deleteUserAction,
+    sendFeedbackAction,
     allHabits,
     allHabitsNumber,
     habitLoading,
@@ -143,6 +144,7 @@ const OverviewSection = (props: any) => {
             revertAll={revertAll}
             revertAllHabit={revertAllHabit}
             deleteUserAction={deleteUserAction}
+            sendFeedbackAction={sendFeedbackAction}
           />
         )}
         options={{

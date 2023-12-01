@@ -36,6 +36,7 @@ import {
 } from "./src/state/store";
 import {
   deleteUserAction,
+  sendFeedbackAction,
   fetchCurrentUserProfileAction,
   revertAll,
   selectFetchCurrentUserProfile,
@@ -419,6 +420,7 @@ const App = () => {
                   updateHabitNameAction={updateHabitNameAction}
                   sendFriendshipAction={sendFriendshipAction}
                   deleteUserAction={deleteUserAction}
+                  sendFeedbackAction={sendFeedbackAction}
                   deleteHabitAction={deleteHabitAction}
                   notificationSendAction={notificationSendAction}
                   revertAll={revertAll}
@@ -528,6 +530,7 @@ const App = () => {
                   revertAll={revertAll}
                   revertAllHabit={revertAllHabit}
                   deleteUserAction={deleteUserAction}
+                  sendFeedbackAction={sendFeedbackAction}
                   allHabits={allHabits ? allHabits : []}
                   allHabitsNumber={allHabits ? allHabits.length : 0}
                   habitLoading={habitLoading}

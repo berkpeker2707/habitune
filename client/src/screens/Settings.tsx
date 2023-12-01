@@ -19,8 +19,15 @@ const Settings = (props: {
   revertAll: Function;
   revertAllHabit: Function;
   deleteUserAction: Function;
+  sendFeedbackAction: Function;
 }) => {
-  const { dispatch, revertAll, revertAllHabit, deleteUserAction } = props;
+  const {
+    dispatch,
+    revertAll,
+    revertAllHabit,
+    deleteUserAction,
+    sendFeedbackAction,
+  } = props;
 
   const { theme, setTheme, changeThemeAction } = useTheme();
 
@@ -114,7 +121,7 @@ const Settings = (props: {
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setFeedbackModalVisible(!feedbackModalVisible),
-                  console.log(feedback);
+                  dispatch(sendFeedbackAction({ feedback: feedback }));
               }}
             >
               <Text

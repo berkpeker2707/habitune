@@ -34,6 +34,7 @@ const HomeSection = (props: any) => {
     updateHabitNameAction,
     sendFriendshipAction,
     deleteUserAction,
+    sendFeedbackAction,
     deleteHabitAction,
     notificationSendAction,
     revertAll,
@@ -353,6 +354,7 @@ const HomeSection = (props: any) => {
             revertAll={revertAll}
             revertAllHabit={revertAllHabit}
             deleteUserAction={deleteUserAction}
+            sendFeedbackAction={sendFeedbackAction}
           />
         )}
         options={{
