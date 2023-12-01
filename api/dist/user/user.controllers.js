@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.changeTheme = exports.updateCurrentUserImage = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
+exports.deleteUser = exports.changeTheme = exports.sendFeedback = exports.updateCurrentUserImage = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const notification_model_1 = __importDefault(require("../notifications/notification.model"));
@@ -28,7 +28,15 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
     try {
         var userExists = yield user_model_1.default.exists({ email: req.body.email });
         if (userExists) {
+            //update user picture starts
+            var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
+            //delete old profile image if exists
+            if ((foundUser && foundUser.image.length > 1) ||
+                (foundUser && foundUser.image.includes("https://res.cloudinary.com"))) {
+                yield cloudinaryDeleteUserImg(foundUser.image);
+            }
             yield user_model_1.default.findOneAndUpdate({ email: req.body.email }, { image: req.body.picture });
+            //update user picture ends
             var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
@@ -331,11 +339,38 @@ const updateCurrentUserImage = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.updateCurrentUserImage = updateCurrentUserImage;
+const sendFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _f, _g;
+    try {
+        if (req.body.feedback.length < 501) {
+            var feedback = req.body.feedback;
+            const currentUser = yield user_model_1.default.findById((_f = req.user[0]) === null || _f === void 0 ? void 0 : _f._id);
+            if (currentUser && currentUser.feedback.length >= 10) {
+                return res
+                    .status(400)
+                    .json({ error: "Feedback limit reached (10 items)." });
+            }
+            const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_g = req.user[0]) === null || _g === void 0 ? void 0 : _g._id, { $push: { feedback: feedback } }, { new: true });
+            res.status(200).json(loggedinUser);
+        }
+        else {
+            logger_1.default.error("Feedback limit 500 character reached");
+            return res
+                .status(400)
+                .json({ error: "Feedback limit 500 character reached." });
+        }
+    }
+    catch (error) {
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.sendFeedback = sendFeedback;
 const changeTheme = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f;
+    var _h;
     try {
         var newThemeValue = req.body.theme;
-        const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_f = req.user[0]) === null || _f === void 0 ? void 0 : _f._id, { $set: { theme: newThemeValue } }, { new: true });
+        const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_h = req.user[0]) === null || _h === void 0 ? void 0 : _h._id, { $set: { theme: newThemeValue } }, { new: true });
         res.status(200).json(loggedinUser);
     }
     catch (error) {

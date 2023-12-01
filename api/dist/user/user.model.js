@@ -33,6 +33,7 @@ const userSchema = new mongoose_1.Schema({
     friends: [{ friend: mongoose_1.default.Schema.Types.ObjectId, pending: Boolean }],
     password: { type: String },
     fcmToken: { type: String },
+    feedback: { type: [], default: [] },
     lastLogin: { type: Date, default: Date.now },
     lastHabitUpdated: { type: Date, default: Date.now },
     dayOneNotificationSent: { type: Boolean, default: false },
