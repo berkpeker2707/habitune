@@ -174,7 +174,7 @@ const Overview = memo(
     ) {
       return (
         <TouchableWithoutFeedback onPress={handleBlur}>
-          <View
+          {/* <View
             style={{
               display: "flex",
               height: "100%",
@@ -182,61 +182,60 @@ const Overview = memo(
               justifyContent: "flex-start",
               alignItems: "center",
             }}
+          > */}
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            style={{
+              marginBottom: 85,
+            }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
-            <ScrollView
-              style={{
-                marginBottom: 85,
-              }}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-            >
-              {currentHabitWeekStreakState.some(
-                (value: number) => value !== 0
-              ) ? (
-                <>
-                  <StreakGraph
-                    allHabits={allHabits}
-                    currentHabitWeekStreak={currentHabitWeekStreakState}
-                  />
-                </>
-              ) : (
-                <></>
-              )}
-              <View style={{ margin: 20 }}></View>
-              <DotGraph
-                dispatch={dispatch}
-                fetchAllHabitsAction={fetchAllHabitsAction}
-                fetchAllHabitsOfSelectedUserAction={
-                  fetchAllHabitsOfSelectedUserAction
-                }
+            {currentHabitWeekStreakState.some(
+              (value: number) => value !== 0
+            ) ? (
+              <StreakGraph
                 allHabits={allHabits}
-                allHabitsNumber={allHabitsNumber}
-                habitLoading={habitLoading}
-                refreshing={refreshing}
-                setRefreshing={setRefreshing}
-                allHabitDatesDots={allHabitDatesDots}
-                deleteHabitAction={deleteHabitAction}
-                updateHabitHiddenAction={updateHabitHiddenAction}
-                selectedOverviewHabit={selectedOverviewHabit}
-                setSelectedOverviewHabit={setSelectedOverviewHabit}
-                updateHabitColorAction={updateHabitColorAction}
-                editHabitNameModal={editHabitNameModal}
-                setEditHabitNameModal={setEditHabitNameModal}
-                overviewColorModal={overviewColorModal}
-                setOverviewColorModal={setOverviewColorModal}
-                overviewColor={overviewColor}
-                setOverviewColor={setOverviewColor}
-                updateHabitNameAction={updateHabitNameAction}
-                updateHabitSharedWithAction={updateHabitSharedWithAction}
-                shareWithFriendListModal={shareWithFriendListModal}
-                setShareWithFriendListModal={setShareWithFriendListModal}
-                currentUser={currentUser}
-                shareWithFriendList={shareWithFriendList}
-                setShareWithFriendList={setShareWithFriendList}
+                currentHabitWeekStreak={currentHabitWeekStreakState}
               />
-            </ScrollView>
-          </View>
+            ) : (
+              <></>
+            )}
+            <View style={{ margin: 20 }}></View>
+            <DotGraph
+              dispatch={dispatch}
+              fetchAllHabitsAction={fetchAllHabitsAction}
+              fetchAllHabitsOfSelectedUserAction={
+                fetchAllHabitsOfSelectedUserAction
+              }
+              allHabits={allHabits}
+              allHabitsNumber={allHabitsNumber}
+              habitLoading={habitLoading}
+              refreshing={refreshing}
+              setRefreshing={setRefreshing}
+              allHabitDatesDots={allHabitDatesDots}
+              deleteHabitAction={deleteHabitAction}
+              updateHabitHiddenAction={updateHabitHiddenAction}
+              selectedOverviewHabit={selectedOverviewHabit}
+              setSelectedOverviewHabit={setSelectedOverviewHabit}
+              updateHabitColorAction={updateHabitColorAction}
+              editHabitNameModal={editHabitNameModal}
+              setEditHabitNameModal={setEditHabitNameModal}
+              overviewColorModal={overviewColorModal}
+              setOverviewColorModal={setOverviewColorModal}
+              overviewColor={overviewColor}
+              setOverviewColor={setOverviewColor}
+              updateHabitNameAction={updateHabitNameAction}
+              updateHabitSharedWithAction={updateHabitSharedWithAction}
+              shareWithFriendListModal={shareWithFriendListModal}
+              setShareWithFriendListModal={setShareWithFriendListModal}
+              currentUser={currentUser}
+              shareWithFriendList={shareWithFriendList}
+              setShareWithFriendList={setShareWithFriendList}
+            />
+          </ScrollView>
+          {/* </View> */}
         </TouchableWithoutFeedback>
       );
     } else {

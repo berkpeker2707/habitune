@@ -69,7 +69,7 @@ const DotGraph = (props: {
     <View
       style={{
         display: "flex",
-        height: "100%",
+        // height: "100%",
         backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
