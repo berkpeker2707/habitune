@@ -35,6 +35,8 @@ const OverviewSection = (props: any) => {
     selectedOverviewHabit,
     setSelectedOverviewHabit,
     updateHabitColorAction,
+    editHabitNameModal,
+    setEditHabitNameModal,
     overviewColorModal,
     setOverviewColorModal,
     overviewColor,
@@ -72,6 +74,8 @@ const OverviewSection = (props: any) => {
             selectedOverviewHabit={selectedOverviewHabit}
             setSelectedOverviewHabit={setSelectedOverviewHabit}
             updateHabitColorAction={updateHabitColorAction}
+            editHabitNameModal={editHabitNameModal}
+            setEditHabitNameModal={setEditHabitNameModal}
             overviewColorModal={overviewColorModal}
             setOverviewColorModal={setOverviewColorModal}
             overviewColor={overviewColor}

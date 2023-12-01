@@ -6,6 +6,7 @@ import ColorPaletteIcon from "../icons/ColorPaletteIcon";
 import TopNavbarDeleteButton from "../navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
 import Color from "../add/Color";
 import EyeIcon from "../icons/EyeIcon";
+import EditIcon from "../icons/EditIcon";
 
 const DotGraphBar = (props: {
   name: string;
@@ -18,6 +19,8 @@ const DotGraphBar = (props: {
   deleteHabitAction: Function;
   updateHabitColorAction: Function;
   updateHabitHiddenAction: Function;
+  editHabitNameModal: boolean;
+  setEditHabitNameModal: Function;
   overviewColorModal: boolean;
   setOverviewColorModal: Function;
   overviewColor: string;
@@ -34,6 +37,8 @@ const DotGraphBar = (props: {
     deleteHabitAction,
     updateHabitColorAction,
     updateHabitHiddenAction,
+    editHabitNameModal,
+    setEditHabitNameModal,
     overviewColorModal,
     setOverviewColorModal,
     overviewColor,
@@ -42,6 +47,75 @@ const DotGraphBar = (props: {
   const { theme } = useTheme();
   return (
     <>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={editHabitNameModal}
+        onRequestClose={() => {
+          setEditHabitNameModal(!editHabitNameModal);
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
+            backgroundColor: theme.fadedBackgroundColor,
+          }}
+        >
+          <View
+            style={{
+              margin: 20,
+              backgroundColor: theme.backgroundColor,
+              borderRadius: 20,
+              padding: 35,
+              alignItems: "center",
+              shadowColor: theme.fadedShadowColor,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            <Text
+              style={{
+                color: theme.primaryColor,
+                fontWeight: "bold",
+                textAlign: "center",
+                paddingBottom: 10,
+              }}
+            >
+              Change Name?
+            </Text>
+            <Pressable
+              style={{
+                backgroundColor: theme.primaryColor,
+                borderRadius: 20,
+                padding: 10,
+                elevation: 2,
+              }}
+              onPressIn={() => Vibration.vibrate(10)}
+              onPress={() => {
+                setEditHabitNameModal(!editHabitNameModal);
+              }}
+            >
+              <Text
+                style={{
+                  color: theme.backgroundColor,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Yes
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
       <Modal
         animationType="slide"
         transparent={true}
@@ -164,16 +238,11 @@ const DotGraphBar = (props: {
               }}
             >
               <TouchableOpacity
-                onPress={() =>
-                  dispatch(
-                    updateHabitHiddenAction({
-                      _id: habitID,
-                      hidden: !isHidden,
-                    })
-                  )
-                }
+                onPress={() => {
+                  setEditHabitNameModal(!editHabitNameModal);
+                }}
               >
-                <EyeIcon hidden={isHidden} />
+                <EditIcon />
               </TouchableOpacity>
             </View>
             <View

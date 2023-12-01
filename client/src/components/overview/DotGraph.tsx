@@ -20,6 +20,8 @@ const DotGraph = (props: {
   selectedOverviewHabit: number;
   setSelectedOverviewHabit: Function;
   updateHabitColorAction: Function;
+  editHabitNameModal: boolean;
+  setEditHabitNameModal: Function;
   overviewColorModal: boolean;
   setOverviewColorModal: Function;
   overviewColor: string;
@@ -40,6 +42,8 @@ const DotGraph = (props: {
     selectedOverviewHabit,
     setSelectedOverviewHabit,
     updateHabitColorAction,
+    editHabitNameModal,
+    setEditHabitNameModal,
     overviewColorModal,
     setOverviewColorModal,
     overviewColor,
@@ -102,6 +106,8 @@ const DotGraph = (props: {
                 deleteHabitAction={deleteHabitAction}
                 updateHabitColorAction={updateHabitColorAction}
                 updateHabitHiddenAction={updateHabitHiddenAction}
+                editHabitNameModal={editHabitNameModal}
+                setEditHabitNameModal={setEditHabitNameModal}
                 overviewColorModal={overviewColorModal}
                 setOverviewColorModal={setOverviewColorModal}
                 overviewColor={overviewColor}

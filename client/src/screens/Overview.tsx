@@ -33,6 +33,8 @@ const Overview = memo(
     selectedOverviewHabit: number;
     setSelectedOverviewHabit: Function;
     updateHabitColorAction: Function;
+    editHabitNameModal: boolean;
+    setEditHabitNameModal: Function;
     overviewColorModal: boolean;
     setOverviewColorModal: Function;
     overviewColor: string;
@@ -55,6 +57,8 @@ const Overview = memo(
       selectedOverviewHabit,
       setSelectedOverviewHabit,
       updateHabitColorAction,
+      editHabitNameModal,
+      setEditHabitNameModal,
       overviewColorModal,
       setOverviewColorModal,
       overviewColor,
@@ -203,6 +207,8 @@ const Overview = memo(
                 selectedOverviewHabit={selectedOverviewHabit}
                 setSelectedOverviewHabit={setSelectedOverviewHabit}
                 updateHabitColorAction={updateHabitColorAction}
+                editHabitNameModal={editHabitNameModal}
+                setEditHabitNameModal={setEditHabitNameModal}
                 overviewColorModal={overviewColorModal}
                 setOverviewColorModal={setOverviewColorModal}
                 overviewColor={overviewColor}
