@@ -42,7 +42,7 @@ const DotGraphBarUnselected = (props: {
             backgroundColor: "transparent",
           }}
         >
-          {name.length > 22 ? `${name.substring(0, 19)}...` : name}
+          {name.length > 25 ? `${name.substring(0, 25)}...` : name}
         </Text>
       </View>
 

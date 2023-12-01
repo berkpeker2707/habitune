@@ -92,7 +92,7 @@ const DotGraphBarSelected = (props: {
               backgroundColor: theme.backgroundColor,
             }}
           >
-            {name.length > 22 ? `${name.substring(0, 19)}...` : name}
+            {name.length > 15 ? `${name.substring(0, 15)}...` : name}
           </Text>
         </View>
         <View>
@@ -138,11 +138,9 @@ const DotGraphBarSelected = (props: {
           >
             <TouchableOpacity
               onPressIn={() => Vibration.vibrate(10)}
-              onPress={() =>
-                setShareWithFriendListModal(!shareWithFriendListModal)
-              }
+              onPress={() => setEditHabitNameModal(!editHabitNameModal)}
             >
-              <AddFriendIcon />
+              <EditIcon />
             </TouchableOpacity>
           </View>
           <View
@@ -156,9 +154,11 @@ const DotGraphBarSelected = (props: {
           >
             <TouchableOpacity
               onPressIn={() => Vibration.vibrate(10)}
-              onPress={() => setEditHabitNameModal(!editHabitNameModal)}
+              onPress={() =>
+                setShareWithFriendListModal(!shareWithFriendListModal)
+              }
             >
-              <EditIcon />
+              <AddFriendIcon />
             </TouchableOpacity>
           </View>
           <View
@@ -166,6 +166,24 @@ const DotGraphBarSelected = (props: {
               position: "absolute",
               padding: 8,
               left: 187,
+              top: 10,
+              backgroundColor: theme.backgroundColor,
+            }}
+          >
+            <TouchableOpacity
+              onPressIn={() => Vibration.vibrate(10)}
+              onPress={() => {
+                setOverviewColorModal(!overviewColorModal);
+              }}
+            >
+              <ColorPaletteIcon />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              position: "absolute",
+              padding: 8,
+              left: 237,
               top: 10,
               backgroundColor: theme.backgroundColor,
             }}
@@ -183,24 +201,6 @@ const DotGraphBarSelected = (props: {
               }}
             >
               <EyeIcon hidden={isHidden} />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              position: "absolute",
-              padding: 8,
-              left: 237,
-              top: 10,
-              backgroundColor: theme.backgroundColor,
-            }}
-          >
-            <TouchableOpacity
-              onPressIn={() => Vibration.vibrate(10)}
-              onPress={() => {
-                setOverviewColorModal(!overviewColorModal);
-              }}
-            >
-              <ColorPaletteIcon />
             </TouchableOpacity>
           </View>
           <View
