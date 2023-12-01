@@ -12,6 +12,7 @@ export interface IUser {
   friends: [{ friend: Types.ObjectId; pending: boolean }];
   password: any;
   fcmToken: string;
+  feedback: Array<string>;
   lastLogin: Date;
   lastHabitUpdated: Date;
   dayOneNotificationSent: boolean;

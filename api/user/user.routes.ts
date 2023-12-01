@@ -8,6 +8,7 @@ import {
   sendFriendship,
   changeTheme,
   deleteUser,
+  sendFeedback,
 } from "./user.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -32,7 +33,17 @@ userRoutes.get(
   fetchUserProfile
 );
 
-userRoutes.post("/update/profile/image", [verifyToken], updateCurrentUserImage);
+userRoutes.post(
+  "/update/profile/image",
+  [verifyToken, defaultLimitter],
+  updateCurrentUserImage
+);
+
+userRoutes.post(
+  "/update/feedback",
+  [verifyToken, defaultLimitter],
+  sendFeedback
+);
 
 userRoutes.post(
   "/sendFriendshipRequest",

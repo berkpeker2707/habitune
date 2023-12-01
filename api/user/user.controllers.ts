@@ -443,6 +443,37 @@ export const updateCurrentUserImage = async (
   }
 };
 
+export const sendFeedback = async (req: IReq | any, res: Response) => {
+  try {
+    if (req.body.feedback.length < 501) {
+      var feedback = req.body.feedback;
+
+      const currentUser = await User.findById(req.user[0]?._id);
+
+      if (currentUser && currentUser.feedback.length >= 10) {
+        return res
+          .status(400)
+          .json({ error: "Feedback limit reached (10 items)." });
+      }
+
+      const loggedinUser = await User.findByIdAndUpdate(
+        req.user[0]?._id,
+        { $push: { feedback: feedback } },
+        { new: true }
+      );
+      res.status(200).json(loggedinUser);
+    } else {
+      Logger.error("Feedback limit 500 character reached");
+      return res
+        .status(400)
+        .json({ error: "Feedback limit 500 character reached." });
+    }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const changeTheme = async (req: IReq | any, res: Response) => {
   try {
     var newThemeValue = req.body.theme;
