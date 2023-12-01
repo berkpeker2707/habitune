@@ -42,6 +42,12 @@ const OverviewSection = (props: any) => {
     overviewColor,
     setOverviewColor,
     updateHabitNameAction,
+    updateHabitSharedWithAction,
+    shareWithFriendListModal,
+    setShareWithFriendListModal,
+    currentUser,
+    shareWithFriendList,
+    setShareWithFriendList,
   } = props;
   const { theme } = useTheme();
 
@@ -82,6 +88,12 @@ const OverviewSection = (props: any) => {
             overviewColor={overviewColor}
             setOverviewColor={setOverviewColor}
             updateHabitNameAction={updateHabitNameAction}
+            updateHabitSharedWithAction={updateHabitSharedWithAction}
+            shareWithFriendListModal={shareWithFriendListModal}
+            setShareWithFriendListModal={setShareWithFriendListModal}
+            currentUser={currentUser}
+            shareWithFriendList={shareWithFriendList}
+            setShareWithFriendList={setShareWithFriendList}
           />
         )}
         options={{

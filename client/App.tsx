@@ -548,6 +548,12 @@ const App = () => {
                   overviewColor={overviewColor}
                   setOverviewColor={setOverviewColor}
                   updateHabitNameAction={updateHabitNameAction}
+                  updateHabitSharedWithAction={updateHabitSharedWithAction}
+                  shareWithFriendListModal={shareWithFriendListModal}
+                  setShareWithFriendListModal={setShareWithFriendListModal}
+                  currentUser={currentUser}
+                  shareWithFriendList={shareWithFriendList}
+                  setShareWithFriendList={setShareWithFriendList}
                 />
               )}
               options={{

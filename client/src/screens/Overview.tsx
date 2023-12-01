@@ -40,6 +40,12 @@ const Overview = memo(
     overviewColor: string;
     setOverviewColor: Function;
     updateHabitNameAction: Function;
+    updateHabitSharedWithAction: Function;
+    shareWithFriendListModal: boolean;
+    setShareWithFriendListModal: Function;
+    currentUser: any;
+    shareWithFriendList: string[];
+    setShareWithFriendList: Function;
   }) => {
     const {
       dispatch,
@@ -65,6 +71,12 @@ const Overview = memo(
       overviewColor,
       setOverviewColor,
       updateHabitNameAction,
+      updateHabitSharedWithAction,
+      shareWithFriendListModal,
+      setShareWithFriendListModal,
+      currentUser,
+      shareWithFriendList,
+      setShareWithFriendList,
     } = props;
     const { theme } = useTheme();
 
@@ -216,6 +228,12 @@ const Overview = memo(
                 overviewColor={overviewColor}
                 setOverviewColor={setOverviewColor}
                 updateHabitNameAction={updateHabitNameAction}
+                updateHabitSharedWithAction={updateHabitSharedWithAction}
+                shareWithFriendListModal={shareWithFriendListModal}
+                setShareWithFriendListModal={setShareWithFriendListModal}
+                currentUser={currentUser}
+                shareWithFriendList={shareWithFriendList}
+                setShareWithFriendList={setShareWithFriendList}
               />
             </ScrollView>
           </View>

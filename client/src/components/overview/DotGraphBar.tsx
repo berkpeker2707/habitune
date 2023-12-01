@@ -21,6 +21,12 @@ const DotGraphBar = (props: {
   setOverviewColor: Function;
   setSelectedOverviewHabit: Function;
   updateHabitNameAction: Function;
+  updateHabitSharedWithAction: Function;
+  shareWithFriendListModal: boolean;
+  setShareWithFriendListModal: Function;
+  currentUser: any;
+  shareWithFriendList: string[];
+  setShareWithFriendList: Function;
 }) => {
   const {
     name,
@@ -41,6 +47,12 @@ const DotGraphBar = (props: {
     setOverviewColor,
     setSelectedOverviewHabit,
     updateHabitNameAction,
+    updateHabitSharedWithAction,
+    shareWithFriendListModal,
+    setShareWithFriendListModal,
+    currentUser,
+    shareWithFriendList,
+    setShareWithFriendList,
   } = props;
 
   if (selected) {
@@ -61,6 +73,12 @@ const DotGraphBar = (props: {
         setOverviewColor={setOverviewColor}
         setSelectedOverviewHabit={setSelectedOverviewHabit}
         updateHabitNameAction={updateHabitNameAction}
+        updateHabitSharedWithAction={updateHabitSharedWithAction}
+        shareWithFriendListModal={shareWithFriendListModal}
+        setShareWithFriendListModal={setShareWithFriendListModal}
+        currentUser={currentUser}
+        shareWithFriendList={shareWithFriendList}
+        setShareWithFriendList={setShareWithFriendList}
       />
     );
   } else {

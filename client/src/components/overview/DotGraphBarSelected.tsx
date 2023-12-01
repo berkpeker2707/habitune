@@ -1,13 +1,15 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Vibration } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ColorPaletteIcon from "../icons/ColorPaletteIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import EyeIcon from "../icons/EyeIcon";
 import EditIcon from "../icons/EditIcon";
-import UpdateHabitNameModal from "./UpdateHabitNameModal";
-import UpdateHabitColorModal from "./UpdateHabitColorModal";
+import UpdateHabitNameModal from "../modals/UpdateHabitNameModal";
+import UpdateHabitColorModal from "../modals/UpdateHabitColorModal";
+import UpdateHabitShareModal from "../modals/UpdateHabitShareModal";
+import AddFriendIcon from "../icons/AddFriendIcon";
 
 const DotGraphBarSelected = (props: {
   name: string;
@@ -25,6 +27,12 @@ const DotGraphBarSelected = (props: {
   setOverviewColor: Function;
   setSelectedOverviewHabit: Function;
   updateHabitNameAction: Function;
+  updateHabitSharedWithAction: Function;
+  shareWithFriendListModal: boolean;
+  setShareWithFriendListModal: Function;
+  currentUser: any;
+  shareWithFriendList: string[];
+  setShareWithFriendList: Function;
 }) => {
   const {
     name,
@@ -42,6 +50,12 @@ const DotGraphBarSelected = (props: {
     setOverviewColor,
     setSelectedOverviewHabit,
     updateHabitNameAction,
+    updateHabitSharedWithAction,
+    shareWithFriendListModal,
+    setShareWithFriendListModal,
+    currentUser,
+    shareWithFriendList,
+    setShareWithFriendList,
   } = props;
   const { theme } = useTheme();
 
@@ -102,16 +116,46 @@ const DotGraphBarSelected = (props: {
             updateHabitColorAction={updateHabitColorAction}
             setSelectedOverviewHabit={setSelectedOverviewHabit}
           />
+          <UpdateHabitShareModal
+            dispatch={dispatch}
+            name={name}
+            habitID={habitID}
+            updateHabitSharedWithAction={updateHabitSharedWithAction}
+            shareWithFriendListModal={shareWithFriendListModal}
+            setShareWithFriendListModal={setShareWithFriendListModal}
+            currentUser={currentUser}
+            shareWithFriendList={shareWithFriendList}
+            setShareWithFriendList={setShareWithFriendList}
+          />
           <View
             style={{
               position: "absolute",
-              padding: 5,
-              left: 107,
+              padding: 8,
+              left: 87,
               top: 10,
               backgroundColor: theme.backgroundColor,
             }}
           >
             <TouchableOpacity
+              onPressIn={() => Vibration.vibrate(10)}
+              onPress={() =>
+                setShareWithFriendListModal(!shareWithFriendListModal)
+              }
+            >
+              <AddFriendIcon />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              position: "absolute",
+              padding: 8,
+              left: 137,
+              top: 10,
+              backgroundColor: theme.backgroundColor,
+            }}
+          >
+            <TouchableOpacity
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => setEditHabitNameModal(!editHabitNameModal)}
             >
               <EditIcon />
@@ -120,13 +164,14 @@ const DotGraphBarSelected = (props: {
           <View
             style={{
               position: "absolute",
-              padding: 5,
-              left: 167,
+              padding: 8,
+              left: 187,
               top: 10,
               backgroundColor: theme.backgroundColor,
             }}
           >
             <TouchableOpacity
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 dispatch(
                   updateHabitHiddenAction({
@@ -143,13 +188,14 @@ const DotGraphBarSelected = (props: {
           <View
             style={{
               position: "absolute",
-              padding: 5,
-              left: 227,
+              padding: 8,
+              left: 237,
               top: 10,
               backgroundColor: theme.backgroundColor,
             }}
           >
             <TouchableOpacity
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 setOverviewColorModal(!overviewColorModal);
               }}
@@ -160,13 +206,14 @@ const DotGraphBarSelected = (props: {
           <View
             style={{
               position: "absolute",
-              padding: 5,
+              padding: 8,
               left: 287,
               top: 10,
               backgroundColor: theme.backgroundColor,
             }}
           >
             <TouchableOpacity
+              onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
                 dispatch(
                   deleteHabitAction({

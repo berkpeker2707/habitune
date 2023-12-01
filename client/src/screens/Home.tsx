@@ -34,7 +34,7 @@ const Home = memo(
     setTempBarFilled: Function;
     refreshing: boolean;
     setRefreshing: Function;
-    shareWithFriendList: [any];
+    shareWithFriendList: string[];
     setShareWithFriendList: Function;
     selectedItem: string;
     setSelectedItem: Function;
