@@ -16,7 +16,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
   try {
     const checkUser = await User.findById(req.user[0]._id);
 
-    if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
+    if (checkUser && checkUser.habits.length >= 20) {
       Logger.error("User already has 20 habits.");
       return res
         .status(500)
