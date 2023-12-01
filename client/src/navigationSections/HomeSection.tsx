@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import { Pressable, Vibration, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
