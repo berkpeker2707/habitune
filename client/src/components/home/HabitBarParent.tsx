@@ -74,34 +74,34 @@ const HabitBarParent = memo(
       ]
     );
 
-    const handleHabitBarLongPress = useCallback(
-      (item: any) => {
-        setHomeEditBool((prev: any) => !prev);
-        setHabitNameState(() => "");
-        setEditHabitSelected(item._id);
-        setSelectedItem((prev: any) =>
-          prev === item._id.toString() ? "" : item._id.toString()
-        );
-      },
-      [setHomeEditBool, setEditHabitSelected, setSelectedItem]
-    );
+    // const handleHabitBarLongPress = useCallback(
+    //   (item: any) => {
+    //     setHomeEditBool((prev: any) => !prev);
+    //     setHabitNameState(() => "");
+    //     setEditHabitSelected(item._id);
+    //     setSelectedItem((prev: any) =>
+    //       prev === item._id.toString() ? "" : item._id.toString()
+    //     );
+    //   },
+    //   [setHomeEditBool, setEditHabitSelected, setSelectedItem]
+    // );
 
     return (
       <View>
         {allHabits.map((item: any, index: any) => (
           <TouchableOpacity
             onPress={() => handleHabitBarPress(item, index)}
-            onLongPress={() => handleHabitBarLongPress(item)}
+            // onLongPress={() => handleHabitBarLongPress(item)}
             key={uuid.v4() as string}
           >
             <HabitBar
               filled={tempBarFilled[index]}
               item={item}
               itemStroke={item._id.toString() === selectedItem ? 2 : 0.5}
-              nameChangable={
-                item._id.toString() === selectedItem ? true : false
-              }
-              setHabitNameState={setHabitNameState}
+              // nameChangable={
+              //   item._id.toString() === selectedItem ? true : false
+              // }
+              // setHabitNameState={setHabitNameState}
             />
           </TouchableOpacity>
         ))}

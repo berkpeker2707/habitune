@@ -22,11 +22,15 @@ const HabitBar = memo(
       sharedWith: [] | [{ image: string }];
     };
     itemStroke: number;
-    nameChangable: boolean;
-    setHabitNameState: Function;
+    // nameChangable: boolean;
+    // setHabitNameState: Function;
   }) => {
-    const { filled, item, itemStroke, nameChangable, setHabitNameState } =
-      props;
+    const {
+      filled,
+      item,
+      itemStroke,
+      // , nameChangable, setHabitNameState
+    } = props;
     const { theme } = useTheme();
 
     return !filled ? (
