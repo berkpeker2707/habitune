@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ColorPaletteIcon from "../icons/ColorPaletteIcon";
-import TopNavbarDeleteButton from "../navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
+import DeleteIcon from "../icons/DeleteIcon";
 import EyeIcon from "../icons/EyeIcon";
 import EditIcon from "../icons/EditIcon";
 import UpdateHabitNameModal from "./UpdateHabitNameModal";
@@ -176,7 +176,7 @@ const DotGraphBarSelected = (props: {
                 setSelectedOverviewHabit(null);
               }}
             >
-              <TopNavbarDeleteButton />
+              <DeleteIcon />
             </TouchableOpacity>
           </View>
         </View>

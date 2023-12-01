@@ -8,14 +8,14 @@ import Profile from "../../src/screens/Profile";
 import Settings from "../../src/screens/Settings";
 import Friend from "../../src/screens/Friend";
 
-import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
+import NavbarLogo from "../components/icons/NavbarLogo";
 import TopNavbarProfileImage from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarProfileImage";
-import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
-import TopNavbarShareButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
-import TopNavbarSettingsButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
-import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
-import TopNavbarDeleteButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDeleteButton";
-import TopNavbarAddFriendButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarAddFriendButton";
+import BackIcon from "../components/icons/BackIcon";
+import ShareIcon from "../components/icons/ShareIcon";
+import SettingsIcon from "../components/icons/SettingsIcon";
+import DoneIcon from "../components/icons/DoneIcon";
+import DeleteIcon from "../components/icons/DeleteIcon";
+import AddFriendIcon from "../components/icons/AddFriendIcon";
 import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
@@ -63,8 +63,8 @@ const HomeSection = (props: any) => {
     setShareWithFriendList,
     selectedItem,
     setSelectedItem,
-    modalVisible,
-    setModalVisible,
+    shareWithFriendListModal,
+    setShareWithFriendListModal,
     showInfoText,
     setShowInfoText,
     acceptOrRemoveModalVisible,
@@ -110,8 +110,8 @@ const HomeSection = (props: any) => {
             setShareWithFriendList={setShareWithFriendList}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
+            shareWithFriendListModal={shareWithFriendListModal}
+            setShareWithFriendListModal={setShareWithFriendListModal}
             setEditHabitSelected={setEditHabitSelected}
             setHabitNameState={setHabitNameState}
           />
@@ -128,7 +128,7 @@ const HomeSection = (props: any) => {
                   padding: 5,
                 }}
               >
-                <TopNavbarLogo />
+                <NavbarLogo />
               </View>
             ) : (
               <View
@@ -149,7 +149,7 @@ const HomeSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarBackButton />
+                  <BackIcon />
                 </Pressable>
               </View>
             ),
@@ -206,15 +206,15 @@ const HomeSection = (props: any) => {
                       paddingLeft: 10,
                     }}
                   >
-                    {/* <TopNavbarEditButton /> */}
-                    <TopNavbarDoneButton />
+                    {/* <EditIcon /> */}
+                    <DoneIcon />
                   </View>
                 </Pressable>
                 <Pressable
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
                     try {
-                      setModalVisible(!modalVisible);
+                      setShareWithFriendListModal(!shareWithFriendListModal);
                     } catch (error) {
                       console.log(error);
                     }
@@ -229,7 +229,7 @@ const HomeSection = (props: any) => {
                       paddingLeft: 10,
                     }}
                   >
-                    <TopNavbarAddFriendButton />
+                    <AddFriendIcon />
                   </View>
                 </Pressable>
                 <Pressable
@@ -256,7 +256,7 @@ const HomeSection = (props: any) => {
                       paddingLeft: 10,
                     }}
                   >
-                    <TopNavbarDeleteButton />
+                    <DeleteIcon />
                   </View>
                 </Pressable>
               </View>
@@ -299,7 +299,7 @@ const HomeSection = (props: any) => {
                 padding: 5,
               }}
             >
-              <TopNavbarLogo />
+              <NavbarLogo />
             </View>
           ),
           headerRight: () => (
@@ -323,7 +323,7 @@ const HomeSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarShareButton />
+                  <ShareIcon />
                 </Pressable>
               </View>
               <View style={{ flexBasis: "100%", height: 0 }}></View>
@@ -338,7 +338,7 @@ const HomeSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarSettingsButton />
+                  <SettingsIcon />
                 </Pressable>
               </View>
             </View>
@@ -378,7 +378,7 @@ const HomeSection = (props: any) => {
                   }
                 }}
               >
-                <TopNavbarBackButton />
+                <BackIcon />
               </Pressable>
             </View>
           ),

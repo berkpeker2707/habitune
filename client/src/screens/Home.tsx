@@ -38,8 +38,8 @@ const Home = memo(
     setShareWithFriendList: Function;
     selectedItem: string;
     setSelectedItem: Function;
-    modalVisible: boolean;
-    setModalVisible: Function;
+    shareWithFriendListModal: boolean;
+    setShareWithFriendListModal: Function;
     setEditHabitSelected: Function;
     setHabitNameState: Function;
   }) => {
@@ -64,8 +64,8 @@ const Home = memo(
       setShareWithFriendList,
       selectedItem,
       setSelectedItem,
-      modalVisible,
-      setModalVisible,
+      shareWithFriendListModal,
+      setShareWithFriendListModal,
       setEditHabitSelected,
       setHabitNameState,
     } = props;
@@ -177,9 +177,9 @@ const Home = memo(
           <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={shareWithFriendListModal}
             onRequestClose={() => {
-              setModalVisible(!modalVisible);
+              setShareWithFriendListModal(!shareWithFriendListModal);
               setHomeEditBool(false);
             }}
           >
@@ -225,7 +225,7 @@ const Home = memo(
                   ]}
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() => {
-                    setModalVisible(!modalVisible);
+                    setShareWithFriendListModal(!shareWithFriendListModal);
                     dispatch(
                       updateHabitSharedWithAction({
                         _id: selectedItem,
@@ -250,7 +250,7 @@ const Home = memo(
           </Modal>
           <TouchableWithoutFeedback
             onBlur={() => {
-              if (!modalVisible) {
+              if (!shareWithFriendListModal) {
                 setHomeEditBool(false);
               }
             }}

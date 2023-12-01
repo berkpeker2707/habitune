@@ -22,9 +22,9 @@ import {
 import Signin from "./src/screens/Signin";
 
 //navbar components
-import BottomTabHomeButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabHomeButton";
-import BottomTabAddButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabAddButton";
-import BottomTabOverviewButton from "./src/components/navbarComponents/BottomNavbarComponents/BottomTabOverviewButton";
+import HomeIcon from "./src/components/icons/HomeIcon";
+import AddIcon from "./src/components/icons/AddIcon";
+import OverviewIcon from "./src/components/icons/OverviewIcon";
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -193,7 +193,8 @@ const App = () => {
   () => [];
   const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
   const [selectedItem, setSelectedItem] = useState<string>("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [shareWithFriendListModal, setShareWithFriendListModal] =
+    useState(false);
 
   const [showInfoText, setShowInfoText] = useState<boolean>(false);
   const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
@@ -454,8 +455,8 @@ const App = () => {
                   setShareWithFriendList={setShareWithFriendList}
                   selectedItem={selectedItem}
                   setSelectedItem={setSelectedItem}
-                  modalVisible={modalVisible}
-                  setModalVisible={setModalVisible}
+                  shareWithFriendListModal={shareWithFriendListModal}
+                  setShareWithFriendListModal={setShareWithFriendListModal}
                   showInfoText={showInfoText}
                   setShowInfoText={setShowInfoText}
                   acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
@@ -472,7 +473,7 @@ const App = () => {
                 // resets screen states below
                 // unmountOnBlur: true,
                 tabBarButton: (props) => (
-                  <BottomTabHomeButton
+                  <HomeIcon
                     {...props}
                     onPressIn={() => Vibration.vibrate(10)}
                   />
@@ -509,10 +510,7 @@ const App = () => {
               )}
               options={{
                 tabBarButton: (props) => (
-                  <BottomTabAddButton
-                    {...props}
-                    onPressIn={() => Vibration.vibrate(10)}
-                  />
+                  <AddIcon {...props} onPressIn={() => Vibration.vibrate(10)} />
                 ),
               }}
             />
@@ -554,7 +552,7 @@ const App = () => {
               )}
               options={{
                 tabBarButton: (props) => (
-                  <BottomTabOverviewButton
+                  <OverviewIcon
                     {...props}
                     onPressIn={() => Vibration.vibrate(10)}
                   />
