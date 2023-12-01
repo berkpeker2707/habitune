@@ -27,7 +27,7 @@ const Home = memo(
     allHabits: [];
     allHabitsNumber: number;
     currentHabitDatesIncluded: [];
-    homeEditBool: boolean;
+    // homeEditBool: boolean;
     setHomeEditBool: Function;
     habitLoading: boolean;
     tempBarFilled: [boolean];
@@ -40,8 +40,8 @@ const Home = memo(
     setSelectedItem: Function;
     shareWithFriendListModal: boolean;
     setShareWithFriendListModal: Function;
-    setEditHabitSelected: Function;
-    setHabitNameState: Function;
+    // setEditHabitSelected: Function;
+    // setHabitNameState: Function;
   }) => {
     const {
       dispatch,
@@ -53,7 +53,7 @@ const Home = memo(
       allHabits,
       allHabitsNumber,
       currentHabitDatesIncluded,
-      homeEditBool,
+      // homeEditBool,
       setHomeEditBool,
       habitLoading,
       tempBarFilled,
@@ -63,11 +63,11 @@ const Home = memo(
       shareWithFriendList,
       setShareWithFriendList,
       selectedItem,
-      setSelectedItem,
+      // setSelectedItem,
       shareWithFriendListModal,
       setShareWithFriendListModal,
-      setEditHabitSelected,
-      setHabitNameState,
+      // setEditHabitSelected,
+      // setHabitNameState,
     } = props;
 
     const { theme } = useTheme();
@@ -95,12 +95,12 @@ const Home = memo(
     //   setHomeEditBool(false);
     // }, []);
 
-    useEffect(() => {
-      if (homeEditBool === false) {
-        setSelectedItem(() => "");
-        setHabitNameState(() => "");
-      }
-    }, [homeEditBool]);
+    // useEffect(() => {
+    //   if (homeEditBool === false) {
+    //     setSelectedItem(() => "");
+    //     setHabitNameState(() => "");
+    //   }
+    // }, [homeEditBool]);
 
     const onRefresh = useCallback(() => {
       setRefreshing(true);
@@ -286,12 +286,12 @@ const Home = memo(
                   currentUser={currentUser}
                   allHabits={allHabits}
                   tempBarFilled={tempBarFilled}
-                  setHomeEditBool={setHomeEditBool}
+                  // setHomeEditBool={setHomeEditBool}
                   selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
+                  // setSelectedItem={setSelectedItem}
                   handleHabitClicked={handleHabitClicked}
-                  setEditHabitSelected={setEditHabitSelected}
-                  setHabitNameState={setHabitNameState}
+                  // setEditHabitSelected={setEditHabitSelected}
+                  // setHabitNameState={setHabitNameState}
                 />
               </ScrollView>
             </View>
