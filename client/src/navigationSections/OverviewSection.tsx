@@ -56,6 +56,7 @@ const OverviewSection = (props: any) => {
       screenOptions={{
         headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
         headerTitleStyle: { color: theme.borderColor },
+        cardStyle: { backgroundColor: theme.backgroundColor },
       }}
     >
       <StackNavigator.Screen
