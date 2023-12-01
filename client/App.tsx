@@ -549,6 +549,7 @@ const App = () => {
                   setOverviewColorModal={setOverviewColorModal}
                   overviewColor={overviewColor}
                   setOverviewColor={setOverviewColor}
+                  updateHabitNameAction={updateHabitNameAction}
                 />
               )}
               options={{
