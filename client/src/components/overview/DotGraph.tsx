@@ -98,8 +98,13 @@ const DotGraph = (props: {
           </TextInput>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => (
             <TouchableOpacity
-              activeOpacity={1}
+              // activeOpacity={1}
               key={uuid.v4() as string}
+              onPress={() =>
+                selectedOverviewHabit === allHabitsIndex
+                  ? ""
+                  : setSelectedOverviewHabit(null)
+              }
               onLongPress={() => {
                 setSelectedOverviewHabit(() => allHabitsIndex);
               }}
