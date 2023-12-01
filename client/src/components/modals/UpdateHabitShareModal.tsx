@@ -96,7 +96,7 @@ const UpdateHabitShareModal = (props: {
                   textAlign: "center",
                 }}
               >
-                Share habit {name}?
+                Share habit {name}
               </Text>
             </Pressable>
           </View>
