@@ -12,8 +12,8 @@ import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Add from "../../src/screens/Add";
 
 //navbar components
-import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
-import TopNavbarDoneButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarDoneButton";
+import BackIcon from "../components/icons/BackIcon";
+import DoneIcon from "../components/icons/DoneIcon";
 import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
@@ -50,6 +50,7 @@ const AddSection = memo((props: any) => {
       screenOptions={{
         headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
         headerTitleStyle: { color: theme.borderColor },
+        cardStyle: { backgroundColor: theme.backgroundColor },
       }}
     >
       <StackNavigator.Screen
@@ -100,7 +101,7 @@ const AddSection = memo((props: any) => {
                   }
                 }}
               >
-                <TopNavbarBackButton />
+                <BackIcon />
               </Pressable>
             </View>
           ),
@@ -136,7 +137,7 @@ const AddSection = memo((props: any) => {
                   }
                 }}
               >
-                <TopNavbarDoneButton />
+                <DoneIcon />
               </Pressable>
             </View>
           ),

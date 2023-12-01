@@ -20,10 +20,19 @@ const DotGraph = (props: {
   selectedOverviewHabit: number;
   setSelectedOverviewHabit: Function;
   updateHabitColorAction: Function;
+  editHabitNameModal: boolean;
+  setEditHabitNameModal: Function;
   overviewColorModal: boolean;
   setOverviewColorModal: Function;
   overviewColor: string;
   setOverviewColor: Function;
+  updateHabitNameAction: Function;
+  updateHabitSharedWithAction: Function;
+  shareWithFriendListModal: boolean;
+  setShareWithFriendListModal: Function;
+  currentUser: any;
+  shareWithFriendList: string[];
+  setShareWithFriendList: Function;
 }) => {
   const {
     dispatch,
@@ -40,10 +49,19 @@ const DotGraph = (props: {
     selectedOverviewHabit,
     setSelectedOverviewHabit,
     updateHabitColorAction,
+    editHabitNameModal,
+    setEditHabitNameModal,
     overviewColorModal,
     setOverviewColorModal,
     overviewColor,
     setOverviewColor,
+    updateHabitNameAction,
+    updateHabitSharedWithAction,
+    shareWithFriendListModal,
+    setShareWithFriendListModal,
+    currentUser,
+    shareWithFriendList,
+    setShareWithFriendList,
   } = props;
   const { theme } = useTheme();
 
@@ -51,7 +69,7 @@ const DotGraph = (props: {
     <View
       style={{
         display: "flex",
-        height: "100%",
+        // height: "100%",
         backgroundColor: theme.backgroundColor,
         justifyContent: "center",
         alignItems: "center",
@@ -80,8 +98,13 @@ const DotGraph = (props: {
           </TextInput>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => (
             <TouchableOpacity
-              activeOpacity={1}
+              // activeOpacity={1}
               key={uuid.v4() as string}
+              onPress={() =>
+                selectedOverviewHabit === allHabitsIndex
+                  ? ""
+                  : setSelectedOverviewHabit(null)
+              }
               onLongPress={() => {
                 setSelectedOverviewHabit(() => allHabitsIndex);
               }}
@@ -102,10 +125,20 @@ const DotGraph = (props: {
                 deleteHabitAction={deleteHabitAction}
                 updateHabitColorAction={updateHabitColorAction}
                 updateHabitHiddenAction={updateHabitHiddenAction}
+                editHabitNameModal={editHabitNameModal}
+                setEditHabitNameModal={setEditHabitNameModal}
                 overviewColorModal={overviewColorModal}
                 setOverviewColorModal={setOverviewColorModal}
                 overviewColor={overviewColor}
                 setOverviewColor={setOverviewColor}
+                setSelectedOverviewHabit={setSelectedOverviewHabit}
+                updateHabitNameAction={updateHabitNameAction}
+                updateHabitSharedWithAction={updateHabitSharedWithAction}
+                shareWithFriendListModal={shareWithFriendListModal}
+                setShareWithFriendListModal={setShareWithFriendListModal}
+                currentUser={currentUser}
+                shareWithFriendList={shareWithFriendList}
+                setShareWithFriendList={setShareWithFriendList}
               />
             </TouchableOpacity>
           ))}

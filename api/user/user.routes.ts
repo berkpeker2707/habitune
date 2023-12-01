@@ -4,9 +4,11 @@ import {
   signInController,
   fetchCurrentUserProfile,
   fetchUserProfile,
+  updateCurrentUserImage,
   sendFriendship,
   changeTheme,
   deleteUser,
+  sendFeedback,
 } from "./user.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -29,6 +31,18 @@ userRoutes.get(
   "/selectedUser/profile/:userID",
   [verifyToken, defaultLimitter],
   fetchUserProfile
+);
+
+userRoutes.post(
+  "/update/profile/image",
+  [verifyToken, defaultLimitter],
+  updateCurrentUserImage
+);
+
+userRoutes.post(
+  "/update/feedback",
+  [verifyToken, defaultLimitter],
+  sendFeedback
 );
 
 userRoutes.post(

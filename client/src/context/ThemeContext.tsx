@@ -26,6 +26,19 @@ interface Theme {
   color10: string;
   color11: string;
   color12: string;
+  permaColor0: string;
+  permaColor1: string;
+  permaColor2: string;
+  permaColor3: string;
+  permaColor4: string;
+  permaColor5: string;
+  permaColor6: string;
+  permaColor7: string;
+  permaColor8: string;
+  permaColor9: string;
+  permaColor10: string;
+  permaColor11: string;
+  permaColor12: string;
 }
 
 interface ThemeContextProps {
@@ -69,6 +82,19 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       color10: "#6EA8D8",
       color11: "#DEB4CF",
       color12: "#F6AF90",
+      permaColor0: "#FFFFFF",
+      permaColor1: "#968EB0",
+      permaColor2: "#9DB2CE",
+      permaColor3: "#C04F43",
+      permaColor4: "#A5D2AC",
+      permaColor5: "#99BB42",
+      permaColor6: "#F59732",
+      permaColor7: "#F1867E",
+      permaColor8: "#FCCA1B",
+      permaColor9: "#4D6691",
+      permaColor10: "#6EA8D8",
+      permaColor11: "#DEB4CF",
+      permaColor12: "#F6AF90",
     },
     dark: {
       themeType: "dark",
@@ -94,6 +120,19 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       color10: "#507BAE",
       color11: "#B0849E",
       color12: "#D9947A",
+      permaColor0: "#FFFFFF",
+      permaColor1: "#968EB0",
+      permaColor2: "#9DB2CE",
+      permaColor3: "#C04F43",
+      permaColor4: "#A5D2AC",
+      permaColor5: "#99BB42",
+      permaColor6: "#F59732",
+      permaColor7: "#F1867E",
+      permaColor8: "#FCCA1B",
+      permaColor9: "#4D6691",
+      permaColor10: "#6EA8D8",
+      permaColor11: "#DEB4CF",
+      permaColor12: "#F6AF90",
     },
   };
 

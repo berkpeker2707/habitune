@@ -16,7 +16,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
   try {
     const checkUser = await User.findById(req.user[0]._id);
 
-    if (checkUser && checkUser.habits && checkUser.habits.length >= 20) {
+    if (checkUser && checkUser.habits.length >= 20) {
       Logger.error("User already has 20 habits.");
       return res
         .status(500)
@@ -175,19 +175,24 @@ export const deleteHabit = async (req: IReq | any, res: Response) => {
 
 export const updateHabitName = async (req: IReq | any, res: Response) => {
   try {
-    const selectedHabit = await Habit.findByIdAndUpdate(
-      req.body._id,
-      {
-        $set: { name: req.body.name },
-      },
-      { new: true }
-    )
-      .populate({ path: "sharedWith", model: "User" })
-      .slice("dates", -10) //last 10 numbers of the dates array
-      .slice("upcomingDates", -10)
-      .exec();
+    if (req.body.name.length > 0) {
+      const selectedHabit = await Habit.findByIdAndUpdate(
+        req.body._id,
+        {
+          $set: { name: req.body.name },
+        },
+        { new: true }
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
+        .exec();
 
-    res.status(200).json(selectedHabit);
+      res.status(200).json(selectedHabit);
+    } else {
+      Logger.error("Habit name is invalid.");
+      return res.status(400).json({ error: "Habit name is invalid." });
+    }
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -196,19 +201,37 @@ export const updateHabitName = async (req: IReq | any, res: Response) => {
 
 export const updateHabitColor = async (req: IReq | any, res: Response) => {
   try {
-    const selectedHabit = await Habit.findByIdAndUpdate(
-      req.body._id,
-      {
-        $set: { color: req.body.color },
-      },
-      { new: true }
-    )
-      .populate({ path: "sharedWith", model: "User" })
-      .slice("dates", -10) //last 10 numbers of the dates array
-      .slice("upcomingDates", -10)
-      .exec();
+    if (
+      (req.body.color.length > 0 && req.body.color === "#968EB0") ||
+      req.body.color === "#9DB2CE" ||
+      req.body.color === "#C04F43" ||
+      req.body.color === "#A5D2AC" ||
+      req.body.color === "#99BB42" ||
+      req.body.color === "#F59732" ||
+      req.body.color === "#F1867E" ||
+      req.body.color === "#FCCA1B" ||
+      req.body.color === "#4D6691" ||
+      req.body.color === "#6EA8D8" ||
+      req.body.color === "#DEB4CF" ||
+      req.body.color === "#F6AF90"
+    ) {
+      const selectedHabit = await Habit.findByIdAndUpdate(
+        req.body._id,
+        {
+          $set: { color: req.body.color },
+        },
+        { new: true }
+      )
+        .populate({ path: "sharedWith", model: "User" })
+        .slice("dates", -10) //last 10 numbers of the dates array
+        .slice("upcomingDates", -10)
+        .exec();
 
-    res.status(200).json(selectedHabit);
+      res.status(200).json(selectedHabit);
+    } else {
+      Logger.error("Habit color is invalid.");
+      return res.status(400).json({ error: "Habit color is invalid." });
+    }
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));

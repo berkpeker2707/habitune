@@ -1,8 +1,8 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
-const TopNavbarLogo = () => {
+const NavbarLogo = () => {
   const { theme } = useTheme();
   return (
     <Svg width={46} height={32} fill="none" viewBox="0 0 46 32">
@@ -28,4 +28,4 @@ const TopNavbarLogo = () => {
   );
 };
 
-export default TopNavbarLogo;
+export default NavbarLogo;

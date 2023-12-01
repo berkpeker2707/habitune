@@ -37,6 +37,6 @@
         "projectId": "9adf561e-3713-4a21-a115-f42212038642"
       }
     },
-    "plugins": ["react-native-health"]
+    "plugins": ["react-native-health", "expo-image-picker"]
   }
 }

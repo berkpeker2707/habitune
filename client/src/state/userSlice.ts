@@ -2,7 +2,8 @@ import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Platform } from "react-native";
+import mime from "mime";
 interface userTypes {
   token: string;
   loading: boolean;
@@ -103,6 +104,78 @@ export const fetchUserProfileAction = createAsyncThunk(
       return data;
     } catch (error) {
       console.log("user error3: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateCurrentUserImageAction = createAsyncThunk(
+  "user/updateCurrentUserImage",
+  async (
+    updateCurrentUserImagePayload: any,
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    // const uri = updateCurrentUserImagePayload.uri;
+    const uri = updateCurrentUserImagePayload.assets[0].uri;
+    const FormData = global.FormData;
+    const formData = new FormData();
+
+    const trimmedURI =
+      Platform.OS === "android" ? uri : uri.replace("file://", "");
+    const fileName = trimmedURI.split("/").pop();
+
+    formData.append("image", {
+      name: fileName,
+      type: mime.getType(trimmedURI),
+      uri: trimmedURI,
+    } as any);
+
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    try {
+      const { data } = await axiosInstance.post(
+        `/user/update/profile/image`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${auth}`,
+          },
+          transformRequest: (data, headers) => {
+            return formData;
+          },
+        }
+      );
+
+      return data;
+    } catch (error) {
+      console.log("user error3: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const sendFeedbackAction = createAsyncThunk(
+  "user/sendFeedback",
+  async (sendFeedbackData: "", { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+    try {
+      const { data } = await axiosInstance.post(
+        `/user/update/feedback`,
+        sendFeedbackData,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      console.log("user error4: ", error);
       return rejectWithValue(error);
     }
   }
@@ -280,6 +353,36 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action?.error.toString();
     });
+    //update current user image reducer
+    builder.addCase(updateCurrentUserImageAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(updateCurrentUserImageAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.isUserUpdated = false;
+      state.currentUserData = action?.payload;
+    });
+    builder.addCase(updateCurrentUserImageAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
+    });
+    //send feedback reducer
+    builder.addCase(sendFeedbackAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(sendFeedbackAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.isUserUpdated = false;
+      state.currentUserData = action?.payload;
+    });
+    builder.addCase(sendFeedbackAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
+    });
     //change theme reducer
     builder.addCase(changeThemeAction.pending, (state) => {
       state.loading = true;
@@ -307,6 +410,8 @@ const userSlice = createSlice({
       state.isUserUpdated = false;
       state.currentUserData = {};
       state.selectedUserData = {};
+      state.deleteUserData = {};
+      state.changeThemeData = "default";
     });
     builder.addCase(deleteUserAction.rejected, (state, action) => {
       state.loading = false;
@@ -324,6 +429,7 @@ const userSlice = createSlice({
         (initialState.isUserUpdated = false),
         (initialState.currentUserData = {}),
         (initialState.selectedUserData = {});
+      initialState.deleteUserData = {};
       initialState.changeThemeData = "default";
     });
     builder.addCase(revertAll.rejected, (state, action) => {
@@ -354,8 +460,20 @@ export const selectFetchCurrentUserProfile = (state: any) => {
 export const selectFetchUserProfile = (state: any) => {
   return state.user.selectedUserData;
 };
+export const selectSendFriendship = (state: any) => {
+  return state.user.currentUserData;
+};
+export const selectUpdateCurrentUserImage = (state: any) => {
+  return state.user.currentUserData;
+};
+export const selectSendFeedback = (state: any) => {
+  return state.user.currentUserData;
+};
 export const selectChangeTheme = (state: any) => {
   return state.user.currentUserData.theme;
+};
+export const selectDeleteUser = (state: any) => {
+  return state.user.currentUserData;
 };
 
 export default userSlice.reducer;

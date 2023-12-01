@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
+
 import User from "./user.model";
 import Notification from "../notifications/notification.model";
 import Habit from "../habit/habit.model";
 
 import { IReq } from "../middlewares/interfaces";
 const jwt = require("jsonwebtoken");
+
+const {
+  cloudinaryUploadUserImg,
+  cloudinaryDeleteUserImg,
+} = require("../middlewares/cloudinary");
+const path = require("path");
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
@@ -21,6 +28,23 @@ export const signInWithGoogleController = async (
     var userExists = await User.exists({ email: req.body.email });
 
     if (userExists) {
+      //update user picture starts
+      var foundUser = await User.findOne({ email: req.body.email });
+
+      //delete old profile image if exists
+      if (
+        (foundUser && foundUser.image.length > 1) ||
+        (foundUser && foundUser.image.includes("https://res.cloudinary.com"))
+      ) {
+        await cloudinaryDeleteUserImg(foundUser.image);
+      }
+
+      await User.findOneAndUpdate(
+        { email: req.body.email },
+        { image: req.body.picture }
+      );
+
+      //update user picture ends
       var foundUser = await User.findOne({ email: req.body.email });
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -373,6 +397,76 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
     } else {
       // console.log("target user know");
       res.status(200).json(loggedinUser);
+    }
+  } catch (error) {
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
+  }
+};
+
+export const updateCurrentUserImage = async (
+  req: IReq | any,
+  res: Response
+) => {
+  try {
+    const localPath = req?.files?.image?.path;
+
+    const imgUploaded = await cloudinaryUploadUserImg(
+      localPath,
+      req.user[0]._id
+    );
+
+    const foundUserPicture = await User.findById(req.user[0]._id);
+
+    //delete old profile image if exists
+    if (
+      (foundUserPicture && foundUserPicture.image.length > 1) ||
+      (foundUserPicture &&
+        foundUserPicture.image.includes("https://res.cloudinary.com"))
+    ) {
+      await cloudinaryDeleteUserImg(foundUserPicture.image);
+
+      const user = await User.findByIdAndUpdate(
+        req.user[0]._id,
+        {
+          image: imgUploaded.secure_url,
+        },
+        { new: true }
+      );
+
+      res.status(200).json(user);
+    } else {
+      res.json("Profile photo already deleted.");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export const sendFeedback = async (req: IReq | any, res: Response) => {
+  try {
+    if (req.body.feedback.length < 501) {
+      var feedback = req.body.feedback;
+
+      const currentUser = await User.findById(req.user[0]?._id);
+
+      if (currentUser && currentUser.feedback.length >= 10) {
+        return res
+          .status(400)
+          .json({ error: "Feedback limit reached (10 items)." });
+      }
+
+      const loggedinUser = await User.findByIdAndUpdate(
+        req.user[0]?._id,
+        { $push: { feedback: feedback } },
+        { new: true }
+      );
+      res.status(200).json(loggedinUser);
+    } else {
+      Logger.error("Feedback limit 500 character reached");
+      return res
+        .status(400)
+        .json({ error: "Feedback limit 500 character reached." });
     }
   } catch (error) {
     Logger.error(error);

@@ -36,11 +36,12 @@ const DotGraphBarFriend = (props: {
         <Text
           style={{
             textAlign: "left",
-            fontSize: name.length > 23 ? 12 : 15,
+            fontSize: 14,
             color: theme.fadedShadowColor,
+            backgroundColor: "transparent",
           }}
         >
-          {name}
+          {name.length > 22 ? `${name.substring(0, 19)}...` : name}
         </Text>
       </View>
       <View

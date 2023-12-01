@@ -40,22 +40,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 9,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color2,
+            backgroundColor: theme.permaColor2,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color2)
+            color?.includes(theme.permaColor2)
               ? setColor(() => "")
-              : setColor(() => theme.color2)
+              : setColor(() => theme.permaColor2)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color2) ? (
+          {color?.includes(theme.permaColor2) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color2}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor2}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -74,22 +74,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 37,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color4,
+            backgroundColor: theme.permaColor4,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color4)
+            color?.includes(theme.permaColor4)
               ? setColor(() => "")
-              : setColor(() => theme.color4)
+              : setColor(() => theme.permaColor4)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color4) ? (
+          {color?.includes(theme.permaColor4) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color4}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor4}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -108,22 +108,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 65,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color3,
+            backgroundColor: theme.permaColor3,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color3)
+            color?.includes(theme.permaColor3)
               ? setColor(() => "")
-              : setColor(() => theme.color3)
+              : setColor(() => theme.permaColor3)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color3) ? (
+          {color?.includes(theme.permaColor3) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color3}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor3}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -142,22 +142,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 93,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color1,
+            backgroundColor: theme.permaColor1,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color1)
+            color?.includes(theme.permaColor1)
               ? setColor(() => "")
-              : setColor(() => theme.color1)
+              : setColor(() => theme.permaColor1)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color1) ? (
+          {color?.includes(theme.permaColor1) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color1}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor1}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -176,22 +176,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 121,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color6,
+            backgroundColor: theme.permaColor6,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color6)
+            color?.includes(theme.permaColor6)
               ? setColor(() => "")
-              : setColor(() => theme.color6)
+              : setColor(() => theme.permaColor6)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color6) ? (
+          {color?.includes(theme.permaColor6) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color6}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor6}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -210,22 +210,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 149,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color5,
+            backgroundColor: theme.permaColor5,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color5)
+            color?.includes(theme.permaColor5)
               ? setColor(() => "")
-              : setColor(() => theme.color5)
+              : setColor(() => theme.permaColor5)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color5) ? (
+          {color?.includes(theme.permaColor5) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color5}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor5}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -244,22 +244,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 177,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color7,
+            backgroundColor: theme.permaColor7,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color7)
+            color?.includes(theme.permaColor7)
               ? setColor(() => "")
-              : setColor(() => theme.color7)
+              : setColor(() => theme.permaColor7)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color7) ? (
+          {color?.includes(theme.permaColor7) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color7}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor7}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -278,22 +278,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 205,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color8,
+            backgroundColor: theme.permaColor8,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color8)
+            color?.includes(theme.permaColor8)
               ? setColor(() => "")
-              : setColor(() => theme.color8)
+              : setColor(() => theme.permaColor8)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color8) ? (
+          {color?.includes(theme.permaColor8) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color8}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor8}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -312,22 +312,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 233,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color10,
+            backgroundColor: theme.permaColor10,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color10)
+            color?.includes(theme.permaColor10)
               ? setColor(() => "")
-              : setColor(() => theme.color10)
+              : setColor(() => theme.permaColor10)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color10) ? (
+          {color?.includes(theme.permaColor10) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color10}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor10}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -346,22 +346,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 261,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color9,
+            backgroundColor: theme.permaColor9,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color9)
+            color?.includes(theme.permaColor9)
               ? setColor(() => "")
-              : setColor(() => theme.color9)
+              : setColor(() => theme.permaColor9)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color9) ? (
+          {color?.includes(theme.permaColor9) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color9}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor9}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -380,22 +380,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 289,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color11,
+            backgroundColor: theme.permaColor11,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color11)
+            color?.includes(theme.permaColor11)
               ? setColor(() => "")
-              : setColor(() => theme.color11)
+              : setColor(() => theme.permaColor11)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color11) ? (
+          {color?.includes(theme.permaColor11) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color11}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor11}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>
@@ -414,22 +414,22 @@ const Color = memo((props: { color: string; setColor: Function }) => {
             left: 317,
             top: 9,
             borderRadius: 15,
-            backgroundColor: theme.color12,
+            backgroundColor: theme.permaColor12,
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.color12)
+            color?.includes(theme.permaColor12)
               ? setColor(() => "")
-              : setColor(() => theme.color12)
+              : setColor(() => theme.permaColor12)
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.color12) ? (
+          {color?.includes(theme.permaColor12) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
-                  fill={theme.color0}
-                  stroke={theme.color12}
+                  fill={theme.permaColor0}
+                  stroke={theme.permaColor12}
                   d="M7.038 12.475L2.714 7.996l-.18-.185-.18.185L.822 9.573l-.17.174.17.174 6.037 6.253.18.186.18-.186L20.18 2.75l.168-.174-.168-.173L18.657.826l-.18-.186-.18.186L7.038 12.475z"
                 />
               </Svg>

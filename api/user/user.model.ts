@@ -11,6 +11,7 @@ const userSchema = new Schema<IUser>({
   friends: [{ friend: mongoose.Schema.Types.ObjectId, pending: Boolean }],
   password: { type: String },
   fcmToken: { type: String },
+  feedback: { type: [], default: [] },
   lastLogin: { type: Date, default: Date.now },
   lastHabitUpdated: { type: Date, default: Date.now },
   dayOneNotificationSent: { type: Boolean, default: false },

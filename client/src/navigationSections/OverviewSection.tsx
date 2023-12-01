@@ -4,10 +4,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Overview from "../../src/screens/Overview";
 import Settings from "../../src/screens/Settings";
-import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
-import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
-import TopNavbarShareButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
-import TopNavbarSettingsButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
+import NavbarLogo from "../components/icons/NavbarLogo";
+import BackIcon from "../components/icons/BackIcon";
+import ShareIcon from "../components/icons/ShareIcon";
+import SettingsIcon from "../components/icons/SettingsIcon";
 import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
@@ -23,6 +23,7 @@ const OverviewSection = (props: any) => {
     revertAll,
     revertAllHabit,
     deleteUserAction,
+    sendFeedbackAction,
     allHabits,
     allHabitsNumber,
     habitLoading,
@@ -34,10 +35,19 @@ const OverviewSection = (props: any) => {
     selectedOverviewHabit,
     setSelectedOverviewHabit,
     updateHabitColorAction,
+    editHabitNameModal,
+    setEditHabitNameModal,
     overviewColorModal,
     setOverviewColorModal,
     overviewColor,
     setOverviewColor,
+    updateHabitNameAction,
+    updateHabitSharedWithAction,
+    shareWithFriendListModal,
+    setShareWithFriendListModal,
+    currentUser,
+    shareWithFriendList,
+    setShareWithFriendList,
   } = props;
   const { theme } = useTheme();
 
@@ -46,6 +56,7 @@ const OverviewSection = (props: any) => {
       screenOptions={{
         headerStyle: { height: 70, backgroundColor: theme.backgroundColor },
         headerTitleStyle: { color: theme.borderColor },
+        cardStyle: { backgroundColor: theme.backgroundColor },
       }}
     >
       <StackNavigator.Screen
@@ -71,10 +82,19 @@ const OverviewSection = (props: any) => {
             selectedOverviewHabit={selectedOverviewHabit}
             setSelectedOverviewHabit={setSelectedOverviewHabit}
             updateHabitColorAction={updateHabitColorAction}
+            editHabitNameModal={editHabitNameModal}
+            setEditHabitNameModal={setEditHabitNameModal}
             overviewColorModal={overviewColorModal}
             setOverviewColorModal={setOverviewColorModal}
             overviewColor={overviewColor}
             setOverviewColor={setOverviewColor}
+            updateHabitNameAction={updateHabitNameAction}
+            updateHabitSharedWithAction={updateHabitSharedWithAction}
+            shareWithFriendListModal={shareWithFriendListModal}
+            setShareWithFriendListModal={setShareWithFriendListModal}
+            currentUser={currentUser}
+            shareWithFriendList={shareWithFriendList}
+            setShareWithFriendList={setShareWithFriendList}
           />
         )}
         options={{
@@ -88,7 +108,7 @@ const OverviewSection = (props: any) => {
                 padding: 5,
               }}
             >
-              <TopNavbarLogo />
+              <NavbarLogo />
             </View>
           ),
           headerRight: () => (
@@ -112,7 +132,7 @@ const OverviewSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarShareButton />
+                  <ShareIcon />
                 </Pressable>
               </View>
               <View style={{ flexBasis: "100%", height: 0 }}></View>
@@ -127,7 +147,7 @@ const OverviewSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarSettingsButton />
+                  <SettingsIcon />
                 </Pressable>
               </View>
             </View>
@@ -143,6 +163,7 @@ const OverviewSection = (props: any) => {
             revertAll={revertAll}
             revertAllHabit={revertAllHabit}
             deleteUserAction={deleteUserAction}
+            sendFeedbackAction={sendFeedbackAction}
           />
         )}
         options={{
@@ -166,7 +187,7 @@ const OverviewSection = (props: any) => {
                   }
                 }}
               >
-                <TopNavbarBackButton />
+                <BackIcon />
               </Pressable>
             </View>
           ),

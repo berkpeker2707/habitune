@@ -22,20 +22,24 @@ const HabitBar = memo(
       sharedWith: [] | [{ image: string }];
     };
     itemStroke: number;
-    nameChangable: boolean;
-    setHabitNameState: Function;
+    // nameChangable: boolean;
+    // setHabitNameState: Function;
   }) => {
-    const { filled, item, itemStroke, nameChangable, setHabitNameState } =
-      props;
+    const {
+      filled,
+      item,
+      itemStroke,
+      // , nameChangable, setHabitNameState
+    } = props;
     const { theme } = useTheme();
 
     return !filled ? (
       <Svg width={372} height={48} fill="none" viewBox="0 0 372 48">
-        {!nameChangable ? (
-          <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
-            {item.name}
-          </Text>
-        ) : (
+        {/* {!nameChangable ? ( */}
+        <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
+          {item.name}
+        </Text>
+        {/* ) : (
           <TextInput
             placeholder={item.name}
             style={{
@@ -51,7 +55,7 @@ const HabitBar = memo(
             autoFocus={true}
             placeholderTextColor={theme.fadedPrimaryText}
           />
-        )}
+        )} */}
 
         <G filter="url(#filter0_d_392_5163)">
           <Mask
@@ -205,11 +209,11 @@ const HabitBar = memo(
         />
         {/* mark ends */}
 
-        {!nameChangable ? (
-          <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
-            {item.name}
-          </Text>
-        ) : (
+        {/* {!nameChangable ? ( */}
+        <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
+          {item.name}
+        </Text>
+        {/* ) : (
           <TextInput
             placeholder={item.name}
             style={{
@@ -225,7 +229,7 @@ const HabitBar = memo(
             autoFocus={true}
             placeholderTextColor={theme.fadedPrimaryText}
           />
-        )}
+        )} */}
         {/* right side starts */}
         <>
           <LinearGradient
