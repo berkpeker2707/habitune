@@ -159,10 +159,6 @@ export const updateCurrentUserImageAction = createAsyncThunk(
 export const sendFeedbackAction = createAsyncThunk(
   "user/sendFeedback",
   async (sendFeedbackData: "", { rejectWithValue, getState, dispatch }) => {
-    console.log(
-      "🚀 ~ file: userSlice.ts:162 ~ sendFeedbackData:",
-      sendFeedbackData
-    );
     //get user token
     const auth = (getState() as RootState).user?.token;
     const config = {
