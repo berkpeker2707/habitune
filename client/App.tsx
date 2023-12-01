@@ -261,6 +261,7 @@ const App = () => {
 
   //overview screen states
   const [selectedOverviewHabit, setSelectedOverviewHabit] = useState<number>();
+  const [editHabitNameModal, setEditHabitNameModal] = useState<boolean>(false);
   const [overviewColorModal, setOverviewColorModal] = useState<boolean>(false);
   const [overviewColor, setOverviewColor] = useState<string>("#968EB0");
 
@@ -542,6 +543,8 @@ const App = () => {
                   selectedOverviewHabit={selectedOverviewHabit}
                   setSelectedOverviewHabit={setSelectedOverviewHabit}
                   updateHabitColorAction={updateHabitColorAction}
+                  editHabitNameModal={editHabitNameModal}
+                  setEditHabitNameModal={setEditHabitNameModal}
                   overviewColorModal={overviewColorModal}
                   setOverviewColorModal={setOverviewColorModal}
                   overviewColor={overviewColor}
