@@ -1,8 +1,8 @@
 import * as React from "react";
 import Svg, { Path, G, Defs } from "react-native-svg";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
-const TopNavbarAddFriendButton = () => {
+const AddFriendIcon = () => {
   const { theme } = useTheme();
 
   return (
@@ -20,4 +20,4 @@ const TopNavbarAddFriendButton = () => {
   );
 };
 
-export default TopNavbarAddFriendButton;
+export default AddFriendIcon;

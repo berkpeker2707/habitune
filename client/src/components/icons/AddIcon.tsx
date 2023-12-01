@@ -1,9 +1,9 @@
 import * as React from "react";
 import { View, TouchableOpacity } from "react-native";
 import Svg, { Circle, Defs, G, Path } from "react-native-svg";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
-const BottomTabAddButton = (props: any) => {
+const AddIcon = (props: any) => {
   const { onPressIn } = props;
   const { theme } = useTheme();
 
@@ -95,4 +95,4 @@ const BottomTabAddButton = (props: any) => {
   );
 };
 
-export default BottomTabAddButton;
+export default AddIcon;

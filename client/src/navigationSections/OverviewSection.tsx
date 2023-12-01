@@ -4,10 +4,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
 import Overview from "../../src/screens/Overview";
 import Settings from "../../src/screens/Settings";
-import TopNavbarLogo from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarLogo";
-import TopNavbarBackButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarBackButton";
-import TopNavbarShareButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarShareButton";
-import TopNavbarSettingsButton from "../../src/components/navbarComponents/TopNavbarComponents/TopNavbarSettingsButton";
+import NavbarLogo from "../components/icons/NavbarLogo";
+import BackIcon from "../components/icons/BackIcon";
+import ShareIcon from "../components/icons/ShareIcon";
+import SettingsIcon from "../components/icons/SettingsIcon";
 import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
@@ -95,7 +95,7 @@ const OverviewSection = (props: any) => {
                 padding: 5,
               }}
             >
-              <TopNavbarLogo />
+              <NavbarLogo />
             </View>
           ),
           headerRight: () => (
@@ -119,7 +119,7 @@ const OverviewSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarShareButton />
+                  <ShareIcon />
                 </Pressable>
               </View>
               <View style={{ flexBasis: "100%", height: 0 }}></View>
@@ -134,7 +134,7 @@ const OverviewSection = (props: any) => {
                     }
                   }}
                 >
-                  <TopNavbarSettingsButton />
+                  <SettingsIcon />
                 </Pressable>
               </View>
             </View>
@@ -174,7 +174,7 @@ const OverviewSection = (props: any) => {
                   }
                 }}
               >
-                <TopNavbarBackButton />
+                <BackIcon />
               </Pressable>
             </View>
           ),

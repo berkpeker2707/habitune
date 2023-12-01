@@ -1,8 +1,8 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
-const TopNavbarDoneButton = () => {
+const DoneIcon = () => {
   const { theme } = useTheme();
 
   return (
@@ -16,4 +16,4 @@ const TopNavbarDoneButton = () => {
   );
 };
 
-export default TopNavbarDoneButton;
+export default DoneIcon;
