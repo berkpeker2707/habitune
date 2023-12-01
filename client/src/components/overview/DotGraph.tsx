@@ -26,6 +26,7 @@ const DotGraph = (props: {
   setOverviewColorModal: Function;
   overviewColor: string;
   setOverviewColor: Function;
+  updateHabitNameAction: Function;
 }) => {
   const {
     dispatch,
@@ -48,6 +49,7 @@ const DotGraph = (props: {
     setOverviewColorModal,
     overviewColor,
     setOverviewColor,
+    updateHabitNameAction,
   } = props;
   const { theme } = useTheme();
 
@@ -112,6 +114,8 @@ const DotGraph = (props: {
                 setOverviewColorModal={setOverviewColorModal}
                 overviewColor={overviewColor}
                 setOverviewColor={setOverviewColor}
+                setSelectedOverviewHabit={setSelectedOverviewHabit}
+                updateHabitNameAction={updateHabitNameAction}
               />
             </TouchableOpacity>
           ))}

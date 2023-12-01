@@ -41,6 +41,7 @@ const OverviewSection = (props: any) => {
     setOverviewColorModal,
     overviewColor,
     setOverviewColor,
+    updateHabitNameAction,
   } = props;
   const { theme } = useTheme();
 
@@ -80,6 +81,7 @@ const OverviewSection = (props: any) => {
             setOverviewColorModal={setOverviewColorModal}
             overviewColor={overviewColor}
             setOverviewColor={setOverviewColor}
+            updateHabitNameAction={updateHabitNameAction}
           />
         )}
         options={{

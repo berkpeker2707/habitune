@@ -1,6 +1,14 @@
 import * as React from "react";
-import { View, Text, Modal, Pressable, Vibration } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  Pressable,
+  Vibration,
+  TextInput,
+} from "react-native";
 import { useTheme } from "../../context/ThemeContext";
+import { useState } from "react";
 
 const UpdateHabitNameModal = (props: {
   name: string;
@@ -8,6 +16,8 @@ const UpdateHabitNameModal = (props: {
   editHabitNameModal: boolean;
   setEditHabitNameModal: Function;
   setSelectedOverviewHabit: Function;
+  updateHabitNameAction: Function;
+  dispatch: Function;
 }) => {
   const {
     name,
@@ -15,8 +25,13 @@ const UpdateHabitNameModal = (props: {
     editHabitNameModal,
     setEditHabitNameModal,
     setSelectedOverviewHabit,
+    updateHabitNameAction,
+    dispatch,
   } = props;
+
   const { theme } = useTheme();
+
+  const [value, onChangeText] = useState(name);
 
   return (
     <>
@@ -54,6 +69,25 @@ const UpdateHabitNameModal = (props: {
               elevation: 5,
             }}
           >
+            <TextInput
+              placeholder={name}
+              style={{
+                height: 45,
+                width: 370,
+                // paddingLeft: 40,
+                borderRadius: 20,
+                fontSize: 19,
+                color: theme.primaryText,
+                textAlign: "center",
+              }}
+              maxLength={30}
+              // onChangeText={(text) => setHabitNameState(text)}
+              onChangeText={(text) => onChangeText(text)}
+              value={value}
+              autoFocus={true}
+              placeholderTextColor={theme.fadedPrimaryText}
+            />
+
             <Text
               style={{
                 color: theme.primaryColor,
@@ -73,6 +107,12 @@ const UpdateHabitNameModal = (props: {
               }}
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
+                dispatch(
+                  updateHabitNameAction({
+                    _id: habitID,
+                    name: value,
+                  })
+                );
                 setEditHabitNameModal(!editHabitNameModal);
                 setSelectedOverviewHabit(null);
               }}

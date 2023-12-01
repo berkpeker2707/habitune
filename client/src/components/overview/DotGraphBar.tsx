@@ -20,6 +20,7 @@ const DotGraphBar = (props: {
   overviewColor: string;
   setOverviewColor: Function;
   setSelectedOverviewHabit: Function;
+  updateHabitNameAction: Function;
 }) => {
   const {
     name,
@@ -39,6 +40,7 @@ const DotGraphBar = (props: {
     overviewColor,
     setOverviewColor,
     setSelectedOverviewHabit,
+    updateHabitNameAction,
   } = props;
 
   if (selected) {
@@ -58,6 +60,7 @@ const DotGraphBar = (props: {
         overviewColor={overviewColor}
         setOverviewColor={setOverviewColor}
         setSelectedOverviewHabit={setSelectedOverviewHabit}
+        updateHabitNameAction={updateHabitNameAction}
       />
     );
   } else {

@@ -39,6 +39,7 @@ const Overview = memo(
     setOverviewColorModal: Function;
     overviewColor: string;
     setOverviewColor: Function;
+    updateHabitNameAction: Function;
   }) => {
     const {
       dispatch,
@@ -63,13 +64,14 @@ const Overview = memo(
       setOverviewColorModal,
       overviewColor,
       setOverviewColor,
+      updateHabitNameAction,
     } = props;
     const { theme } = useTheme();
 
     const isFocused = useIsFocused();
 
     const handleBlur = () => {
-      setSelectedOverviewHabit();
+      setSelectedOverviewHabit(null);
     };
 
     useEffect(() => {
@@ -213,6 +215,7 @@ const Overview = memo(
                 setOverviewColorModal={setOverviewColorModal}
                 overviewColor={overviewColor}
                 setOverviewColor={setOverviewColor}
+                updateHabitNameAction={updateHabitNameAction}
               />
             </ScrollView>
           </View>
