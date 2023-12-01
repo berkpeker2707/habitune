@@ -28,10 +28,23 @@ export const signInWithGoogleController = async (
     var userExists = await User.exists({ email: req.body.email });
 
     if (userExists) {
+      //update user picture starts
+      var foundUser = await User.findOne({ email: req.body.email });
+
+      //delete old profile image if exists
+      if (
+        (foundUser && foundUser.image.length > 1) ||
+        (foundUser && foundUser.image.includes("https://res.cloudinary.com"))
+      ) {
+        await cloudinaryDeleteUserImg(foundUser.image);
+      }
+
       await User.findOneAndUpdate(
         { email: req.body.email },
         { image: req.body.picture }
       );
+
+      //update user picture ends
       var foundUser = await User.findOne({ email: req.body.email });
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
