@@ -31,6 +31,8 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 1111;
 
+app.set("trust proxy", 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
 app.use(formData.parse());
