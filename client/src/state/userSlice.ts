@@ -8,26 +8,36 @@ interface userTypes {
   token: string;
   loading: boolean;
   error: string;
-  email: string;
-  password: string;
+
   isUserUpdated: boolean;
   currentUserData: object;
   selectedUserData: object;
   deleteUserData: object;
   changeThemeData: string;
+
+  email: string;
+  password: string;
+  name: string;
+  loginModalVisible: boolean;
+  registerModalVisible: boolean;
 }
 
 const initialState: userTypes = {
   token: "",
   loading: false,
   error: "",
-  email: "",
-  password: "",
-  isUserUpdated: false,
+
   currentUserData: {},
   selectedUserData: {},
   deleteUserData: {},
   changeThemeData: "default",
+
+  email: "",
+  password: "",
+  name: "",
+  loginModalVisible: false,
+  registerModalVisible: false,
+  isUserUpdated: false,
 };
 
 const updatedUser = createAction("user/update");
@@ -49,6 +59,7 @@ export const signInWithGoogleAction = createAsyncThunk(
 export const signInAction = createAsyncThunk(
   "user/signIn",
   async (userInfo: any, { rejectWithValue, getState, dispatch }) => {
+    console.log("🚀 ~ file: userSlice.ts:62 ~ userInfo:", userInfo);
     try {
       const { data } = await axiosInstance.post(`/user/signin`, userInfo);
 
@@ -284,6 +295,15 @@ const userSlice = createSlice({
     setPassword: (state, action) => {
       state.password = action.payload;
     },
+    setName: (state, action) => {
+      state.name = action.payload;
+    },
+    setLoginModalVisible: (state, action) => {
+      state.loginModalVisible = action.payload;
+    },
+    setRegisterModalVisible: (state, action) => {
+      state.registerModalVisible = action.payload;
+    },
   },
   extraReducers: (builder) => {
     //updated user check reducer
@@ -423,6 +443,12 @@ const userSlice = createSlice({
       state.selectedUserData = {};
       state.deleteUserData = {};
       state.changeThemeData = "default";
+      state.email = "";
+      state.password = "";
+      state.name = "";
+      state.loginModalVisible = false;
+      state.registerModalVisible = false;
+      state.isUserUpdated = false;
     });
     builder.addCase(deleteUserAction.rejected, (state, action) => {
       state.loading = false;
@@ -434,14 +460,20 @@ const userSlice = createSlice({
       state.error = "";
     });
     builder.addCase(revertAll.fulfilled, (initialState) => {
-      (initialState.token = ""),
-        (initialState.loading = false),
-        (initialState.error = ""),
-        (initialState.isUserUpdated = false),
-        (initialState.currentUserData = {}),
-        (initialState.selectedUserData = {});
+      initialState.token = "";
+      initialState.loading = false;
+      initialState.error = "";
+      initialState.isUserUpdated = false;
+      initialState.currentUserData = {};
+      initialState.selectedUserData = {};
       initialState.deleteUserData = {};
       initialState.changeThemeData = "default";
+      initialState.email = "";
+      initialState.password = "";
+      initialState.name = "";
+      initialState.loginModalVisible = false;
+      initialState.registerModalVisible = false;
+      initialState.isUserUpdated = false;
     });
     builder.addCase(revertAll.rejected, (state, action) => {
       state.loading = false;
@@ -450,13 +482,36 @@ const userSlice = createSlice({
   },
 });
 
-export const { setEmail, setPassword } = userSlice.actions;
+//login states starts
+export const {
+  setEmail,
+  setPassword,
+  setName,
+  setLoginModalVisible,
+  setRegisterModalVisible,
+} = userSlice.actions;
 export const email = (state: any) => {
   return state.user.email;
 };
 export const password = (state: any) => {
   return state.user.password;
 };
+export const name = (state: any) => {
+  return state.user.name;
+};
+export const loginModalVisible = (state: any) => {
+  return state.user.loginModalVisible;
+};
+export const registerModalVisible = (state: any) => {
+  return state.user.registerModalVisible;
+};
+export const isUserUpdated = (state: any) => {
+  return state.user.isUserUpdated;
+};
+//login states ends
+//signin states starts
+
+//signin states ends
 
 export const selectUserLoading = (state: any) => {
   return state.user.loading;

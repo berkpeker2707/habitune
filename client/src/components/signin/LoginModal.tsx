@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import {
   View,
   Text,
@@ -8,26 +7,32 @@ import {
   Pressable,
   Vibration,
 } from "react-native";
-import { signInAction } from "../../state/userSlice";
 import { useTheme } from "../../context/ThemeContext";
-import { email, password, setEmail, setPassword } from "../../state/userSlice";
-import { useSelector } from "../../state/store";
+import { useAppDispatch, useSelector } from "../../state/store";
+import {
+  signInAction,
+  email,
+  password,
+  setEmail,
+  setPassword,
+  loginModalVisible,
+  setLoginModalVisible,
+} from "../../state/userSlice";
 
-const LoginModal = (props: any) => {
+const LoginModal = () => {
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const loginModalVisibleState = useSelector(loginModalVisible);
   const emailState = useSelector(email);
   const passwordState = useSelector(password);
-  const { dispatch, loginModalVisible, setLoginModalVisible } = props;
-  // const [emailState, setEmailState] = useState<string>("");
-  // const [passwordState, setPasswordState] = useState<string>("");
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={loginModalVisible}
+      visible={loginModalVisibleState}
       onRequestClose={() => {
-        setLoginModalVisible(!loginModalVisible);
+        dispatch(setLoginModalVisible(!loginModalVisibleState));
       }}
     >
       <View
@@ -79,6 +84,7 @@ const LoginModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="email"
+            value={emailState}
             onChangeText={(text) => dispatch(setEmail(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
@@ -98,6 +104,7 @@ const LoginModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="password"
+            value={passwordState}
             onChangeText={(text) => dispatch(setPassword(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
@@ -111,7 +118,7 @@ const LoginModal = (props: any) => {
             }}
             onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
-              setLoginModalVisible(!loginModalVisible);
+              dispatch(setLoginModalVisible(!loginModalVisibleState));
               dispatch(
                 signInAction({
                   email: emailState,

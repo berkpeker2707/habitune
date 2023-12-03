@@ -390,11 +390,7 @@ const App = () => {
           <BottomTabNav.Screen
             name="Signin"
             children={(props: any) => (
-              <Signin
-                {...props}
-                dispatch={dispatch}
-                userLoading={userLoading}
-              />
+              <Signin {...props} userLoading={userLoading} />
             )}
             options={{
               tabBarButton: () => null,
