@@ -16,15 +16,17 @@ import AddFriendsButton from "../components/profile/AddFriendsButton";
 
 import uuid from "react-native-uuid";
 import { useTheme } from "../context/ThemeContext";
+import {
+  fetchCurrentUserProfileAction,
+  selectFetchCurrentUserProfile,
+  sendFriendshipAction,
+} from "../state/userSlice";
+import { useAppDispatch, useSelector } from "../state/store";
 
 const Profile = memo((props: any) => {
   const {
     navigation,
-    dispatch,
-    fetchCurrentUserProfileAction,
-    sendFriendshipAction,
-    updateCurrentUserImageAction,
-    currentUser,
+    refreshCurrentUser,
     refreshing,
     setRefreshing,
     showInfoText,
@@ -39,25 +41,8 @@ const Profile = memo((props: any) => {
     setFriendName,
   } = props;
   const { theme } = useTheme();
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    dispatch(
-      fetchCurrentUserProfileAction(
-        new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate(),
-          new Date().getHours(),
-          new Date().getMinutes(),
-          new Date().getSeconds()
-        ).getTime()
-      )
-    );
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  const dispatch = useAppDispatch();
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
 
   return currentUser.friends ? (
     <View
@@ -74,7 +59,12 @@ const Profile = memo((props: any) => {
           marginBottom: 85,
         }}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() =>
+              refreshCurrentUser(setRefreshing, fetchCurrentUserProfileAction)
+            }
+          />
         }
       >
         {currentUser &&
@@ -85,8 +75,6 @@ const Profile = memo((props: any) => {
               name={currentUser.firstName}
               email={currentUser.email}
               image={currentUser.image}
-              dispatch={dispatch}
-              updateCurrentUserImageAction={updateCurrentUserImageAction}
             />
           )}
         <View

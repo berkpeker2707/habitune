@@ -18,6 +18,7 @@ import { useTheme } from "../context/ThemeContext";
 
 const Home = memo(
   (props: {
+    refreshCurrentUsersTodayHabits: Function;
     dispatch: Function;
     fetchAllTodayHabitsAction: Function;
     updateHabitCompletedDateAction: Function;
@@ -44,6 +45,7 @@ const Home = memo(
     // setHabitNameState: Function;
   }) => {
     const {
+      refreshCurrentUsersTodayHabits,
       dispatch,
       fetchAllTodayHabitsAction,
       updateHabitCompletedDateAction,
@@ -69,7 +71,6 @@ const Home = memo(
       // setEditHabitSelected,
       // setHabitNameState,
     } = props;
-
     const { theme } = useTheme();
 
     const handleHabitClicked = useMemo(() => {
@@ -90,37 +91,6 @@ const Home = memo(
         setTempBarFilled(() => [...currentHabitDatesIncluded]);
       }
     }, [currentHabitDatesIncluded, refreshing]);
-
-    // useEffect(() => {
-    //   setHomeEditBool(false);
-    // }, []);
-
-    // useEffect(() => {
-    //   if (homeEditBool === false) {
-    //     setSelectedItem(() => "");
-    //     setHabitNameState(() => "");
-    //   }
-    // }, [homeEditBool]);
-
-    const onRefresh = useCallback(() => {
-      setRefreshing(true);
-      setTempBarFilled(() => [...currentHabitDatesIncluded]);
-      dispatch(
-        fetchAllTodayHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
-    }, []);
 
     if (habitLoading) {
       return (
@@ -153,7 +123,16 @@ const Home = memo(
               marginBottom: 0,
             }}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() =>
+                  refreshCurrentUsersTodayHabits(
+                    setRefreshing,
+                    setTempBarFilled,
+                    currentHabitDatesIncluded
+                  )
+                }
+              />
             }
           >
             <TextInput
@@ -271,7 +250,13 @@ const Home = memo(
                 refreshControl={
                   <RefreshControl
                     refreshing={refreshing}
-                    onRefresh={onRefresh}
+                    onRefresh={() =>
+                      refreshCurrentUsersTodayHabits(
+                        setRefreshing,
+                        setTempBarFilled,
+                        currentHabitDatesIncluded
+                      )
+                    }
                   />
                 }
               >

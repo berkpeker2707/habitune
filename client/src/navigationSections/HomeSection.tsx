@@ -22,6 +22,8 @@ const StackNavigator = createStackNavigator<StackNavParamList>();
 const HomeSection = (props: any) => {
   const {
     navigation,
+    refreshCurrentUser,
+    refreshCurrentUsersTodayHabits,
     dispatch,
     updateCurrentUserImageAction,
     fetchCurrentUserProfileAction,
@@ -90,6 +92,7 @@ const HomeSection = (props: any) => {
         children={(props: any) => (
           <Home
             {...props}
+            refreshCurrentUsersTodayHabits={refreshCurrentUsersTodayHabits}
             dispatch={dispatch}
             fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
             updateHabitCompletedDateAction={updateHabitCompletedDateAction}
@@ -269,11 +272,7 @@ const HomeSection = (props: any) => {
           <Profile
             {...props}
             navigation={navigation}
-            dispatch={dispatch}
-            updateCurrentUserImageAction={updateCurrentUserImageAction}
-            fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
-            sendFriendshipAction={sendFriendshipAction}
-            currentUser={currentUser}
+            refreshCurrentUser={refreshCurrentUser}
             refreshing={refreshing}
             setRefreshing={setRefreshing}
             showInfoText={showInfoText}

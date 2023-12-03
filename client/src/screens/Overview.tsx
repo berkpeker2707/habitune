@@ -17,6 +17,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const Overview = memo(
   (props: {
+    refreshSelectedUserHabits: Function;
     dispatch: Function;
     fetchAllHabitsAction: Function;
     fetchAllHabitsOfSelectedUserAction: Function;
@@ -48,6 +49,7 @@ const Overview = memo(
     setShareWithFriendList: Function;
   }) => {
     const {
+      refreshSelectedUserHabits,
       dispatch,
       fetchAllHabitsAction,
       fetchAllHabitsOfSelectedUserAction,
@@ -90,28 +92,6 @@ const Overview = memo(
       setSelectedOverviewHabit(null);
     }, [isFocused]);
 
-    const onRefresh = useCallback(() => {
-      setRefreshing(true);
-      isItCurrentUser
-        ? dispatch(
-            fetchAllHabitsAction(
-              new Date(
-                new Date().getFullYear(),
-                new Date().getMonth(),
-                new Date().getDate(),
-                new Date().getHours(),
-                new Date().getMinutes(),
-                new Date().getSeconds()
-              ).getTime()
-            )
-          )
-        : // : dispatch(fetchAllHabitsOfSelectedUserAction());
-          "";
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
-    }, []);
-
     if (habitLoading) {
       return (
         <View
@@ -149,7 +129,16 @@ const Overview = memo(
               marginBottom: 0,
             }}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() =>
+                  refreshSelectedUserHabits(
+                    isItCurrentUser,
+                    setRefreshing,
+                    fetchAllHabitsAction
+                  )
+                }
+              />
             }
           >
             <TextInput
@@ -189,7 +178,16 @@ const Overview = memo(
               marginBottom: 85,
             }}
             refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() =>
+                  refreshSelectedUserHabits(
+                    isItCurrentUser,
+                    setRefreshing,
+                    fetchAllHabitsAction
+                  )
+                }
+              />
             }
           >
             {currentHabitWeekStreakState.some(

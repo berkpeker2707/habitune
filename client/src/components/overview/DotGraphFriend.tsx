@@ -42,9 +42,6 @@ const DotGraphFriend = (props: {
           style={{
             marginBottom: 85,
           }}
-          // refreshControl={
-          //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          // }
         >
           <TextInput
             style={{
