@@ -8,6 +8,8 @@ interface userTypes {
   token: string;
   loading: boolean;
   error: string;
+  email: string;
+  password: string;
   isUserUpdated: boolean;
   currentUserData: object;
   selectedUserData: object;
@@ -19,6 +21,8 @@ const initialState: userTypes = {
   token: "",
   loading: false,
   error: "",
+  email: "",
+  password: "",
   isUserUpdated: false,
   currentUserData: {},
   selectedUserData: {},
@@ -273,7 +277,14 @@ export const revertAll = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
+    setPassword: (state, action) => {
+      state.password = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     //updated user check reducer
     builder.addCase(updatedUser, (state) => {
@@ -438,6 +449,14 @@ const userSlice = createSlice({
     });
   },
 });
+
+export const { setEmail, setPassword } = userSlice.actions;
+export const email = (state: any) => {
+  return state.user.email;
+};
+export const password = (state: any) => {
+  return state.user.password;
+};
 
 export const selectUserLoading = (state: any) => {
   return state.user.loading;

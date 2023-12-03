@@ -10,13 +10,16 @@ import {
 } from "react-native";
 import { signInAction } from "../../state/userSlice";
 import { useTheme } from "../../context/ThemeContext";
+import { email, password, setEmail, setPassword } from "../../state/userSlice";
+import { useSelector } from "../../state/store";
 
 const LoginModal = (props: any) => {
   const { theme } = useTheme();
-
+  const emailState = useSelector(email);
+  const passwordState = useSelector(password);
   const { dispatch, loginModalVisible, setLoginModalVisible } = props;
-  const [emailState, setEmailState] = useState<string>("");
-  const [passwordState, setPasswordState] = useState<string>("");
+  // const [emailState, setEmailState] = useState<string>("");
+  // const [passwordState, setPasswordState] = useState<string>("");
 
   return (
     <Modal
@@ -76,7 +79,7 @@ const LoginModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="email"
-            onChangeText={(text) => setEmailState(text)}
+            onChangeText={(text) => dispatch(setEmail(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
           />
@@ -95,7 +98,7 @@ const LoginModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="password"
-            onChangeText={(text) => setPasswordState(text)}
+            onChangeText={(text) => dispatch(setPassword(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
           />
