@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   TouchableOpacity,
   View,
@@ -20,6 +20,7 @@ import * as WebBrowser from "expo-web-browser";
 import { useTheme } from "../context/ThemeContext";
 import { useAppDispatch, useSelector } from "../state/store";
 import {
+  selectUserLoading,
   signInWithGoogleAction,
   loginModalVisible,
   setLoginModalVisible,
@@ -29,13 +30,12 @@ import {
 
 WebBrowser.maybeCompleteAuthSession();
 
-const Signin = (props: any) => {
-  const { userLoading } = props;
+const Signin = () => {
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
+  const userLoading = useSelector(selectUserLoading);
   const loginModalVisibleState = useSelector(loginModalVisible);
   const registerModalVisibleState = useSelector(registerModalVisible);
-  const [userInfo, setUserInfo] = useState();
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
       "1018578640461-ujr095rgmk9315k12ror4q07h3fdnq8l.apps.googleusercontent.com",
@@ -50,21 +50,19 @@ const Signin = (props: any) => {
   }, [response]);
 
   async function handleSigninWithGoogle() {
-    if (!userInfo) {
-      if (response?.type === "success") {
-        const responseFromGoogle = await fetch(
-          "https://www.googleapis.com/userinfo/v2/me",
-          {
-            headers: {
-              Authorization: `Bearer ${response.authentication?.accessToken}`,
-            },
-          }
-        );
+    if (response?.type === "success") {
+      const responseFromGoogle = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: {
+            Authorization: `Bearer ${response.authentication?.accessToken}`,
+          },
+        }
+      );
 
-        const user = await responseFromGoogle.json();
+      const user = await responseFromGoogle.json();
 
-        await dispatch(signInWithGoogleAction(user));
-      }
+      await dispatch(signInWithGoogleAction(user));
     }
   }
 
@@ -148,7 +146,6 @@ const Signin = (props: any) => {
                 }}
                 onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
-                  console.log(loginModalVisibleState);
                   dispatch(setLoginModalVisible(!loginModalVisibleState));
                 }}
               >

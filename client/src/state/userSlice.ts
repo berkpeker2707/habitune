@@ -50,7 +50,7 @@ export const signInWithGoogleAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error1: ", error);
+      console.log("signInWithGoogleAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -59,13 +59,12 @@ export const signInWithGoogleAction = createAsyncThunk(
 export const signInAction = createAsyncThunk(
   "user/signIn",
   async (userInfo: any, { rejectWithValue, getState, dispatch }) => {
-    console.log("🚀 ~ file: userSlice.ts:62 ~ userInfo:", userInfo);
     try {
       const { data } = await axiosInstance.post(`/user/signin`, userInfo);
 
       return data;
     } catch (error) {
-      console.log("user error1: ", error);
+      console.log("signInAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -91,7 +90,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error2: ", error);
+      console.log("fetchCurrentUserProfileAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -118,7 +117,7 @@ export const fetchUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error3: ", error);
+      console.log("fetchUserProfileAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -165,7 +164,7 @@ export const updateCurrentUserImageAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error3: ", error);
+      console.log("updateCurrentUserImageAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -190,7 +189,7 @@ export const sendFeedbackAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error4: ", error);
+      console.log("sendFeedbackAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -217,7 +216,7 @@ export const sendFriendshipAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error4: ", error);
+      console.log("sendFriendshipAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -244,7 +243,7 @@ export const changeThemeAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error4: ", error);
+      console.log("changeThemeAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -265,7 +264,7 @@ export const deleteUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error5: ", error);
+      console.log("deleteUserAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -279,7 +278,7 @@ export const revertAll = createAsyncThunk(
 
       return {};
     } catch (error) {
-      console.log("user error6: ", error);
+      console.log("revertAll: ", error);
       return rejectWithValue(error);
     }
   }

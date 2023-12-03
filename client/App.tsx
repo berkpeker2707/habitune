@@ -389,9 +389,7 @@ const App = () => {
         {!token || !tokenSecondOption ? (
           <BottomTabNav.Screen
             name="Signin"
-            children={(props: any) => (
-              <Signin {...props} userLoading={userLoading} />
-            )}
+            children={() => <Signin />}
             options={{
               tabBarButton: () => null,
             }}
