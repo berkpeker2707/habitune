@@ -24,8 +24,8 @@ const Add = (props: {
   setDateBetweenModalOpen: any;
   shareWithFriendList: any;
   setShareWithFriendList: any;
-  openShare: any;
-  setOpenShare: any;
+  openShareHabit: any;
+  setOpenShareHabit: any;
   color: any;
   setColor: any;
 }) => {
@@ -46,8 +46,8 @@ const Add = (props: {
     setDateBetweenModalOpen,
     shareWithFriendList,
     setShareWithFriendList,
-    openShare,
-    setOpenShare,
+    openShareHabit,
+    setOpenShareHabit,
     color,
     setColor,
   } = props;
@@ -88,8 +88,8 @@ const Add = (props: {
           currentUser={currentUser}
           shareWithFriendList={shareWithFriendList}
           setShareWithFriendList={setShareWithFriendList}
-          openShare={openShare}
-          setOpenShare={setOpenShare}
+          openShareHabit={openShareHabit}
+          setOpenShareHabit={setOpenShareHabit}
         />
         {/* <Reminder /> */}
         <Color color={color} setColor={setColor} />

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StatusBar, Vibration } from "react-native";
 
 // import * as Device from "expo-device";
@@ -224,30 +224,30 @@ const App = () => {
     // "Fri",
     // "Sat",
   ]);
-  const [taskFirstDate, setTaskFirstDate] = useState<Date | any>(
-    new Date(
-      new Date(Date.now()).getFullYear(),
-      new Date(Date.now()).getMonth(),
-      new Date(Date.now()).getDate(),
-      new Date(Date.now()).getHours(),
-      new Date(Date.now()).getMinutes(),
-      new Date(Date.now()).getSeconds()
-    )
-  );
-  const [taskLastDate, setTaskLastDate] = useState<Date | any>(
-    new Date(
-      new Date(Date.now()).getFullYear() + 1,
-      new Date(Date.now()).getMonth(),
-      new Date(Date.now()).getDate(),
-      new Date(Date.now()).getHours(),
-      new Date(Date.now()).getMinutes(),
-      new Date(Date.now()).getSeconds()
-    )
-  );
+  // const [taskFirstDate, setTaskFirstDate] = useState<Date | any>(
+  //   new Date(
+  //     new Date(Date.now()).getFullYear(),
+  //     new Date(Date.now()).getMonth(),
+  //     new Date(Date.now()).getDate(),
+  //     new Date(Date.now()).getHours(),
+  //     new Date(Date.now()).getMinutes(),
+  //     new Date(Date.now()).getSeconds()
+  //   )
+  // );
+  // const [taskLastDate, setTaskLastDate] = useState<Date | any>(
+  //   new Date(
+  //     new Date(Date.now()).getFullYear() + 1,
+  //     new Date(Date.now()).getMonth(),
+  //     new Date(Date.now()).getDate(),
+  //     new Date(Date.now()).getHours(),
+  //     new Date(Date.now()).getMinutes(),
+  //     new Date(Date.now()).getSeconds()
+  //   )
+  // );
   const [dateBetweenModalOpen, setDateBetweenModalOpen] =
     useState<boolean>(false);
   // const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  const [openShare, setOpenShare] = useState<boolean>(false);
+  const [openShareHabit, setOpenShareHabit] = useState<boolean>(false);
   const [color, setColor] = useState<string>("#968EB0");
 
   const todayTemp = new Date();
@@ -265,6 +265,87 @@ const App = () => {
   const [editHabitNameModal, setEditHabitNameModal] = useState<boolean>(false);
   const [overviewColorModal, setOverviewColorModal] = useState<boolean>(false);
   const [overviewColor, setOverviewColor] = useState<string>("#968EB0");
+
+  //refresh current user starts
+  const refreshCurrentUser = useCallback(
+    (setRefreshing: Function, fetchCurrentUserProfileAction: Function) => {
+      setRefreshing(true);
+      dispatch(
+        fetchCurrentUserProfileAction(
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+            new Date().getHours(),
+            new Date().getMinutes(),
+            new Date().getSeconds()
+          ).getTime()
+        )
+      );
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    },
+    []
+  );
+  //refresh current user ends
+
+  //refresh current users today habits starts
+  const refreshCurrentUsersTodayHabits = useCallback(
+    (
+      setRefreshing: Function,
+      setTempBarFilled: Function,
+      currentHabitDatesIncluded: []
+    ) => {
+      setRefreshing(true);
+      setTempBarFilled(() => [...currentHabitDatesIncluded]);
+      dispatch(
+        fetchAllTodayHabitsAction(
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+            new Date().getHours(),
+            new Date().getMinutes(),
+            new Date().getSeconds()
+          ).getTime()
+        )
+      );
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    },
+    []
+  );
+  //refresh current users today habits ends
+
+  //refresh current user habits starts
+  const refreshCurrentUsersHabits = useCallback(
+    (
+      isItCurrentUser: boolean,
+      setRefreshing: Function,
+      fetchAllHabitsAction: Function
+    ) => {
+      setRefreshing(true);
+      dispatch(
+        fetchAllHabitsAction(
+          new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate(),
+            new Date().getHours(),
+            new Date().getMinutes(),
+            new Date().getSeconds()
+          ).getTime()
+        )
+      );
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    },
+    []
+  );
+  //refresh current user habits starts
 
   //token
   useEffect(() => {
@@ -401,6 +482,10 @@ const App = () => {
               children={(props: any) => (
                 <HomeSection
                   {...props}
+                  refreshCurrentUser={refreshCurrentUser}
+                  refreshCurrentUsersTodayHabits={
+                    refreshCurrentUsersTodayHabits
+                  }
                   dispatch={dispatch}
                   updateCurrentUserImageAction={updateCurrentUserImageAction}
                   fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
@@ -486,18 +571,12 @@ const App = () => {
                   setTaskName={setTaskName}
                   openFrequency={openFrequency}
                   setOpenFrequency={setOpenFrequency}
-                  taskUpcomingDates={taskUpcomingDates}
-                  setTaskUpcomingDates={setTaskUpcomingDates}
-                  taskFirstDate={taskFirstDate}
-                  setTaskFirstDate={setTaskFirstDate}
-                  taskLastDate={taskLastDate}
-                  setTaskLastDate={setTaskLastDate}
                   dateBetweenModalOpen={dateBetweenModalOpen}
                   setDateBetweenModalOpen={setDateBetweenModalOpen}
                   shareWithFriendList={shareWithFriendList}
                   setShareWithFriendList={setShareWithFriendList}
-                  openShare={openShare}
-                  setOpenShare={setOpenShare}
+                  openShareHabit={openShareHabit}
+                  setOpenShareHabit={setOpenShareHabit}
                   color={color}
                   setColor={setColor}
                 />
@@ -513,6 +592,7 @@ const App = () => {
               children={(props: any) => (
                 <OverviewSection
                   {...props}
+                  refreshCurrentUsersHabits={refreshCurrentUsersHabits}
                   dispatch={dispatch}
                   fetchAllHabitsAction={fetchAllHabitsAction}
                   fetchAllHabitsOfSelectedUserAction={

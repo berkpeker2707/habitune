@@ -15,7 +15,7 @@ const StackNavigator = createStackNavigator<StackNavParamList>();
 const OverviewSection = (props: any) => {
   const {
     navigation,
-    refreshSelectedUserHabits,
+    refreshCurrentUsersHabits,
     dispatch,
     fetchAllHabitsAction,
     fetchAllHabitsOfSelectedUserAction,
@@ -65,7 +65,7 @@ const OverviewSection = (props: any) => {
         children={(props: any) => (
           <Overview
             {...props}
-            refreshSelectedUserHabits={refreshSelectedUserHabits}
+            refreshCurrentUsersHabits={refreshCurrentUsersHabits}
             dispatch={dispatch}
             fetchAllHabitsAction={fetchAllHabitsAction}
             fetchAllHabitsOfSelectedUserAction={

@@ -15,6 +15,15 @@ import Add from "../../src/screens/Add";
 import BackIcon from "../components/icons/BackIcon";
 import DoneIcon from "../components/icons/DoneIcon";
 import { useTheme } from "../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../state/store";
+import {
+  taskUpcomingDates,
+  setTaskUpcomingDates,
+  taskFirstDate,
+  setTaskFirstDate,
+  taskLastDate,
+  setTaskLastDate,
+} from "../state/habitSlice";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -22,28 +31,26 @@ const AddSection = memo((props: any) => {
   const {
     navigation,
     currentUser,
-    dispatch,
     createHabitAction,
     taskName,
     setTaskName,
     openFrequency,
     setOpenFrequency,
-    taskUpcomingDates,
-    setTaskUpcomingDates,
-    taskFirstDate,
-    setTaskFirstDate,
-    taskLastDate,
-    setTaskLastDate,
     dateBetweenModalOpen,
     setDateBetweenModalOpen,
     shareWithFriendList,
     setShareWithFriendList,
-    openShare,
-    setOpenShare,
+    openShareHabit,
+    setOpenShareHabit,
     color,
     setColor,
   } = props;
+
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const taskUpcomingDatesState = useSelector(taskUpcomingDates);
+  const taskFirstDateState = useSelector(taskFirstDate);
+  const taskLastDateState = useSelector(taskLastDate);
 
   return (
     <StackNavigator.Navigator
@@ -64,18 +71,18 @@ const AddSection = memo((props: any) => {
             setTaskName={setTaskName}
             openFrequency={openFrequency}
             setOpenFrequency={setOpenFrequency}
-            taskUpcomingDates={taskUpcomingDates}
+            taskUpcomingDates={taskUpcomingDatesState}
             setTaskUpcomingDates={setTaskUpcomingDates}
-            taskFirstDate={taskFirstDate}
+            taskFirstDate={taskFirstDateState}
             setTaskFirstDate={setTaskFirstDate}
-            taskLastDate={taskLastDate}
+            taskLastDate={taskLastDateState}
             setTaskLastDate={setTaskLastDate}
             dateBetweenModalOpen={dateBetweenModalOpen}
             setDateBetweenModalOpen={setDateBetweenModalOpen}
             shareWithFriendList={shareWithFriendList}
             setShareWithFriendList={setShareWithFriendList}
-            openShare={openShare}
-            setOpenShare={setOpenShare}
+            openShareHabit={openShareHabit}
+            setOpenShareHabit={setOpenShareHabit}
             color={color}
             setColor={setColor}
           />
@@ -116,17 +123,19 @@ const AddSection = memo((props: any) => {
             >
               <Pressable
                 disabled={
-                  taskFirstDate && taskLastDate && taskName ? false : true
+                  taskFirstDateState && taskLastDateState && taskName
+                    ? false
+                    : true
                 }
                 onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     dispatch(
                       createHabitAction({
-                        firstDate: Date.parse(taskFirstDate),
-                        lastDate: Date.parse(taskLastDate),
+                        firstDate: Date.parse(taskFirstDateState),
+                        lastDate: Date.parse(taskLastDateState),
                         name: taskName,
-                        upcomingDates: taskUpcomingDates,
+                        upcomingDates: taskUpcomingDatesState,
                         color: color,
                         friendList: shareWithFriendList,
                       })

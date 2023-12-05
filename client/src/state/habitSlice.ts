@@ -24,6 +24,16 @@ const OneDayAgo = new Date(
     todayTemp.getSeconds()
   ).getTime()
 );
+const Tomorrow = new Date(
+  new Date(
+    new Date(Date.now()).getFullYear() + 1,
+    new Date(Date.now()).getMonth(),
+    new Date(Date.now()).getDate(),
+    new Date(Date.now()).getHours(),
+    new Date(Date.now()).getMinutes(),
+    new Date(Date.now()).getSeconds()
+  )
+);
 const TwoDayAgo = new Date(
   new Date(
     todayTemp.getFullYear(),
@@ -96,6 +106,12 @@ interface habitTypes {
   updateHabitFirstAndLastDateData: object;
   updateHabitDatesData: object;
   updateHabitCompletedDateData: object;
+  //habit add states start
+  taskUpcomingDates: string;
+  taskFirstDate: Date;
+  taskLastDate: Date;
+  dateBetweenModalOpen: boolean;
+  //habit add states ends
 }
 
 const initialState: habitTypes = {
@@ -119,6 +135,12 @@ const initialState: habitTypes = {
   updateHabitFirstAndLastDateData: {},
   updateHabitDatesData: {},
   updateHabitCompletedDateData: {},
+  //habit add states start
+  taskUpcomingDates: "",
+  taskFirstDate: today,
+  taskLastDate: Tomorrow,
+  dateBetweenModalOpen: false,
+  //habit add states ends
 };
 
 const updatedHabit = createAction("habit/update");
@@ -748,7 +770,22 @@ export const revertAllHabit = createAsyncThunk(
 const habitSlice = createSlice({
   name: "habit",
   initialState,
-  reducers: {},
+  reducers: {
+    //habit add states start
+    setTaskUpcomingDates: (state, action) => {
+      state.taskUpcomingDates = action.payload;
+    },
+    setTaskFirstDate: (state, action) => {
+      state.taskFirstDate = action.payload;
+    },
+    setTaskLastDate: (state, action) => {
+      state.taskLastDate = action.payload;
+    },
+    setDateBetweenModalOpen: (state, action) => {
+      state.dateBetweenModalOpen = action.payload;
+    },
+    //habit add states ends
+  },
   extraReducers: (builder) => {
     //updated check reducer
     builder.addCase(updatedHabit, (state) => {
@@ -1061,6 +1098,27 @@ const habitSlice = createSlice({
     });
   },
 });
+
+//habit add states start
+export const {
+  setTaskUpcomingDates,
+  setTaskFirstDate,
+  setTaskLastDate,
+  setDateBetweenModalOpen,
+} = habitSlice.actions;
+export const taskUpcomingDates = (state: any) => {
+  return state.habit.taskUpcomingDates;
+};
+export const taskFirstDate = (state: any) => {
+  return state.habit.taskFirstDate;
+};
+export const taskLastDate = (state: any) => {
+  return state.habit.taskLastDate;
+};
+export const dateBetweenModalOpen = (state: any) => {
+  return state.habit.dateBetweenModalOpen;
+};
+//habit add states ends
 
 export const selectHabitLoading = (state: any) => {
   return state.habit.loading;

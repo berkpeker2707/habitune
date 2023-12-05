@@ -7,26 +7,32 @@ const Share = (props: {
   currentUser: { friends: Array<object>; pending: boolean };
   shareWithFriendList: string[];
   setShareWithFriendList: Function;
-  openShare: boolean;
-  setOpenShare: Function;
+  openShareHabit: boolean;
+  setOpenShareHabit: Function;
 }) => {
   const {
     currentUser,
     shareWithFriendList,
     setShareWithFriendList,
-    openShare,
-    setOpenShare,
+    openShareHabit,
+    setOpenShareHabit,
   } = props;
 
   return (
     <>
-      {!openShare ? (
+      {!openShareHabit ? (
         <TouchableOpacity
           style={{ width: 345 }}
           onPressIn={() => Vibration.vibrate(10)}
-          onPress={() => setOpenShare((openShare: boolean) => !openShare)}
-          onBlur={() => setOpenShare((openShare: boolean) => !openShare)}
-          onLongPress={() => setOpenShare((openShare: boolean) => !openShare)}
+          onPress={() =>
+            setOpenShareHabit((openShareHabit: boolean) => !openShareHabit)
+          }
+          onBlur={() =>
+            setOpenShareHabit((openShareHabit: boolean) => !openShareHabit)
+          }
+          onLongPress={() =>
+            setOpenShareHabit((openShareHabit: boolean) => !openShareHabit)
+          }
         >
           <ShareWithPurpleIcon textInputTitle={"Share With Your Friends"} />
         </TouchableOpacity>

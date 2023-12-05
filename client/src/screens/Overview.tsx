@@ -17,7 +17,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 const Overview = memo(
   (props: {
-    refreshSelectedUserHabits: Function;
+    refreshCurrentUsersHabits: Function;
     dispatch: Function;
     fetchAllHabitsAction: Function;
     fetchAllHabitsOfSelectedUserAction: Function;
@@ -49,7 +49,7 @@ const Overview = memo(
     setShareWithFriendList: Function;
   }) => {
     const {
-      refreshSelectedUserHabits,
+      refreshCurrentUsersHabits,
       dispatch,
       fetchAllHabitsAction,
       fetchAllHabitsOfSelectedUserAction,
@@ -132,7 +132,7 @@ const Overview = memo(
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={() =>
-                  refreshSelectedUserHabits(
+                  refreshCurrentUsersHabits(
                     isItCurrentUser,
                     setRefreshing,
                     fetchAllHabitsAction
@@ -181,7 +181,7 @@ const Overview = memo(
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={() =>
-                  refreshSelectedUserHabits(
+                  refreshCurrentUsersHabits(
                     isItCurrentUser,
                     setRefreshing,
                     fetchAllHabitsAction
