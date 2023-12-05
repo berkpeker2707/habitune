@@ -17,10 +17,10 @@ export const createHabit = async (req: IReq | any, res: Response) => {
     const checkUser = await User.findById(req.user[0]._id);
 
     if (checkUser && checkUser.habits.length >= 20) {
-      Logger.error("User already has 20 habits.");
+      Logger.error("User already has 20 habits");
       return res
         .status(500)
-        .send(getErrorMessage("User already has 20 habits."));
+        .send(getErrorMessage("User already has 20 habits"));
     } else {
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
@@ -62,7 +62,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .exec();
 
       // console.log("newHabitItem: ", newHabitItem);
-
+      Logger.info(newHabit);
       res.status(200).json(newHabit);
     }
   } catch (error) {
@@ -79,6 +79,7 @@ export const getAllHabits = async (req: IReq | any, res: Response) => {
       .slice("upcomingDates", -10)
       .exec();
 
+    Logger.info(loggedinUsersHabits);
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
     Logger.error(error);
@@ -100,6 +101,7 @@ export const getAllHabitsOfSelectedUser = async (
       .slice("upcomingDates", -10)
       .exec();
 
+    Logger.info(loggedinUsersHabits);
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
     Logger.error(error);
@@ -129,6 +131,7 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
       .slice("upcomingDates", -10)
       .exec();
 
+    Logger.info(loggedinUsersTodayHabits);
     res.status(200).json(loggedinUsersTodayHabits);
   } catch (error) {
     Logger.error(error);
@@ -145,6 +148,7 @@ export const getSingleHabit = async (req: IReq | any, res: Response) => {
       .slice("upcomingDates", -10)
       .exec();
 
+    Logger.info(loggedinUsersHabits);
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
     Logger.error(error);
@@ -166,7 +170,8 @@ export const deleteHabit = async (req: IReq | any, res: Response) => {
       { upsert: true }
     );
 
-    res.status(200).json("Habit deleted.");
+    Logger.info("Habit deleted");
+    res.status(200).json("Habit deleted");
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -188,10 +193,12 @@ export const updateHabitName = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
+      Logger.info(selectedHabit);
       res.status(200).json(selectedHabit);
     } else {
-      Logger.error("Habit name is invalid.");
-      return res.status(400).json({ error: "Habit name is invalid." });
+      Logger.error("Habit name is invalid");
+
+      return res.status(400).send(getErrorMessage("Habit name is invalid"));
     }
   } catch (error) {
     Logger.error(error);
@@ -227,10 +234,11 @@ export const updateHabitColor = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
+      Logger.info(selectedHabit);
       res.status(200).json(selectedHabit);
     } else {
-      Logger.error("Habit color is invalid.");
-      return res.status(400).json({ error: "Habit color is invalid." });
+      Logger.error("Habit color is invalid");
+      return res.status(400).send(getErrorMessage("Habit color is invalid"));
     }
   } catch (error) {
     Logger.error(error);
@@ -254,6 +262,8 @@ export const updateHabitSharedWith = async (req: IReq | any, res: Response) => {
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
+
+      Logger.info(updatedSelectedHabit);
       res.status(200).json(updatedSelectedHabit);
     } else {
       const updatedSelectedHabit = await Habit.findByIdAndUpdate(
@@ -265,6 +275,8 @@ export const updateHabitSharedWith = async (req: IReq | any, res: Response) => {
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
+
+      Logger.info(updatedSelectedHabit);
       res.status(200).json(updatedSelectedHabit);
     }
   } catch (error) {
@@ -290,9 +302,13 @@ export const updateHabitFirstAndLastDate = async (
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
+      Logger.info(selectedHabit);
       res.status(200).json(selectedHabit);
     } else {
-      res.status(500).json("Last date cannot be earlier than first date.");
+      Logger.error("Last date cannot be earlier than first date");
+      return res
+        .status(500)
+        .send(getErrorMessage("Last date cannot be earlier than first date"));
     }
   } catch (error) {
     Logger.error(error);
@@ -317,6 +333,7 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
       // console.log(true);
+      Logger.info(updatedSelectedHabit);
       res.status(200).json(updatedSelectedHabit);
     } else {
       const updatedSelectedHabit = await Habit.findByIdAndUpdate(
@@ -329,6 +346,7 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
       // console.log(false);
+      Logger.info(updatedSelectedHabit);
       res.status(200).json(updatedSelectedHabit);
     }
   } catch (error) {
@@ -403,7 +421,7 @@ export const updateHabitCompletedDate = async (
         },
         { upsert: true }
       );
-
+      Logger.info(selectedHabit);
       res.status(200).json(selectedHabit);
     } else {
       await selectedHabit
@@ -414,6 +432,7 @@ export const updateHabitCompletedDate = async (
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
+      Logger.info(selectedHabit);
       res.status(200).json(selectedHabit);
     }
   } catch (error) {
@@ -435,7 +454,7 @@ export const updateHabitHidden = async (req: IReq | any, res: Response) => {
       .slice("dates", -10) //last 10 numbers of the dates array
       .slice("upcomingDates", -10)
       .exec();
-
+    Logger.info(selectedHabit);
     res.status(200).json(selectedHabit);
   } catch (error) {
     Logger.error(error);
