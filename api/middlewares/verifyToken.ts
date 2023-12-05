@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 import User from "../user/user.model";
+import { getErrorMessage } from "../utils/errors.util";
 import Logger from "./logger";
 
 interface idecoded {
@@ -26,7 +27,8 @@ const verifyToken = async (req: any, res: any, next: any) => {
     const decoded: idecoded = jwt.verify(token, jwtS);
 
     if (!decoded) {
-      return res.json({ message: "Unauthorized!" });
+      Logger.error("Unauthorized");
+      return res.status(500).send(getErrorMessage("Unauthorized"));
     }
 
     const user = await User.find({ email: decoded.user.email });
@@ -34,9 +36,9 @@ const verifyToken = async (req: any, res: any, next: any) => {
 
     next();
   } catch (error) {
-    Logger.error(error);
-    console.log("token error: ", error);
-    res.json(error);
+    Logger.error("token error: ", error);
+    // console.log("token error: ", error);
+    return res.status(500).send(getErrorMessage(error));
   }
 };
 
