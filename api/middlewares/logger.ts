@@ -42,6 +42,7 @@ const format = winston.format.combine(
 
 const transports = [
   // new winston.transports.Console(),
+
   // new winston.transports.File({
   //   filename: path.join(__dirname, "..", "logs/error.log"),
   //   level: "error",
@@ -64,6 +65,7 @@ const transports = [
     collection: "error_logs",
     level: "error",
   }),
+
   new winston_db.MongoDB({
     db: mongodbConnectionString,
     options: { useNewUrlParser: true, useUnifiedTopology: true },

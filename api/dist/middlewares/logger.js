@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const winston_1 = __importDefault(require("winston"));
+const winston_mongodb_1 = __importDefault(require("winston-mongodb"));
 // import path from "path";
 const mongodbConnectionString = process.env.MONGODB_LOG_URI;
 if (!mongodbConnectionString) {
@@ -31,7 +32,7 @@ const colors = {
 winston_1.default.addColors(colors);
 const format = winston_1.default.format.combine(winston_1.default.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }), winston_1.default.format.colorize({ all: true }), winston_1.default.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`));
 const transports = [
-    new winston_1.default.transports.Console(),
+    // new winston.transports.Console(),
     // new winston.transports.File({
     //   filename: path.join(__dirname, "..", "logs/error.log"),
     //   level: "error",
@@ -48,30 +49,30 @@ const transports = [
     //   filename: path.join(__dirname, "..", "logs/http.log"),
     //   level: "http",
     // }),
-    // new winston_db.MongoDB({
-    //   db: mongodbConnectionString,
-    //   options: { useNewUrlParser: true, useUnifiedTopology: true },
-    //   collection: "error_logs",
-    //   level: "error",
-    // }),
-    // new winston_db.MongoDB({
-    //   db: mongodbConnectionString,
-    //   options: { useNewUrlParser: true, useUnifiedTopology: true },
-    //   collection: "warn_logs",
-    //   level: "warn",
-    // }),
-    // new winston_db.MongoDB({
-    //   db: mongodbConnectionString,
-    //   options: { useNewUrlParser: true, useUnifiedTopology: true },
-    //   collection: "info_logs",
-    //   level: "info",
-    // }),
-    // new winston_db.MongoDB({
-    //   db: mongodbConnectionString,
-    //   options: { useNewUrlParser: true, useUnifiedTopology: true },
-    //   collection: "http_logs",
-    //   level: "http",
-    // }),
+    new winston_mongodb_1.default.MongoDB({
+        db: mongodbConnectionString,
+        options: { useNewUrlParser: true, useUnifiedTopology: true },
+        collection: "error_logs",
+        level: "error",
+    }),
+    new winston_mongodb_1.default.MongoDB({
+        db: mongodbConnectionString,
+        options: { useNewUrlParser: true, useUnifiedTopology: true },
+        collection: "warn_logs",
+        level: "warn",
+    }),
+    new winston_mongodb_1.default.MongoDB({
+        db: mongodbConnectionString,
+        options: { useNewUrlParser: true, useUnifiedTopology: true },
+        collection: "info_logs",
+        level: "info",
+    }),
+    new winston_mongodb_1.default.MongoDB({
+        db: mongodbConnectionString,
+        options: { useNewUrlParser: true, useUnifiedTopology: true },
+        collection: "http_logs",
+        level: "http",
+    }),
 ];
 const Logger = winston_1.default.createLogger({
     level: level(),
