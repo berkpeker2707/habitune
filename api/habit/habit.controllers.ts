@@ -198,7 +198,7 @@ export const updateHabitName = async (req: IReq | any, res: Response) => {
     } else {
       Logger.error("Habit name is invalid");
 
-      return res.status(400).send(getErrorMessage("Habit name is invalid"));
+      return res.status(500).send(getErrorMessage("Habit name is invalid"));
     }
   } catch (error) {
     Logger.error(error);
@@ -238,7 +238,7 @@ export const updateHabitColor = async (req: IReq | any, res: Response) => {
       res.status(200).json(selectedHabit);
     } else {
       Logger.error("Habit color is invalid");
-      return res.status(400).send(getErrorMessage("Habit color is invalid"));
+      return res.status(500).send(getErrorMessage("Habit color is invalid"));
     }
   } catch (error) {
     Logger.error(error);
