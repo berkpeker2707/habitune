@@ -18,7 +18,7 @@ const dbConnect = () => __awaiter(void 0, void 0, void 0, function* () {
         yield mongoose.connect(process.env.MONGODB_URI, {
             useUnifiedTopology: true,
             useNewUrlParser: true,
-            dbName: "habitapp_db",
+            dbName: "habitune_db",
         });
         console.log("Database connected");
     }
