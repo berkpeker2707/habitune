@@ -28,8 +28,10 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
         fcmToken: req.body.token,
       });
 
+      Logger.info(notification);
       res.status(200).json(notification);
     } else {
+      Logger.info(notification);
       res.status(200).json(notification);
     }
   } catch (error) {
@@ -81,10 +83,10 @@ export const notificationSend = async (req: any, res: Response) => {
         },
       })
       .exec();
-
+    Logger.info(notification);
     res.status(200).json(notification);
   } catch (error) {
-    console.log("error controller noti: ", error);
+    // console.log("error controller noti: ", error);
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
   }
