@@ -2,46 +2,45 @@ import * as React from "react";
 import { TouchableOpacity, Vibration } from "react-native";
 import ShareWithPurpleIcon from "./ShareWithPurpleIcon";
 import ShareOpened from "./ShareOpened";
+import { useAppDispatch, useSelector } from "../../../state/store";
+import { openShareHabit, setOpenShareHabit } from "../../../state/habitSlice";
 
-const Share = (props: {
-  currentUser: { friends: Array<object>; pending: boolean };
-  shareWithFriendList: string[];
-  setShareWithFriendList: Function;
-  openShareHabit: boolean;
-  setOpenShareHabit: Function;
-}) => {
-  const {
-    currentUser,
-    shareWithFriendList,
-    setShareWithFriendList,
-    openShareHabit,
-    setOpenShareHabit,
-  } = props;
+const Share = () => {
+  const dispatch = useAppDispatch();
+  const openShareHabitState = useSelector(openShareHabit);
 
   return (
     <>
-      {!openShareHabit ? (
+      {!openShareHabitState ? (
         <TouchableOpacity
           style={{ width: 345 }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            setOpenShareHabit((openShareHabit: boolean) => !openShareHabit)
+            dispatch(
+              setOpenShareHabit(
+                (openShareHabitState: boolean) => !openShareHabitState
+              )
+            )
           }
           onBlur={() =>
-            setOpenShareHabit((openShareHabit: boolean) => !openShareHabit)
+            dispatch(
+              setOpenShareHabit(
+                (openShareHabitState: boolean) => !openShareHabitState
+              )
+            )
           }
           onLongPress={() =>
-            setOpenShareHabit((openShareHabit: boolean) => !openShareHabit)
+            dispatch(
+              setOpenShareHabit(
+                (openShareHabitState: boolean) => !openShareHabitState
+              )
+            )
           }
         >
-          <ShareWithPurpleIcon textInputTitle={"Share With Your Friends"} />
+          <ShareWithPurpleIcon />
         </TouchableOpacity>
       ) : (
-        <ShareOpened
-          currentUser={currentUser}
-          shareWithFriendList={shareWithFriendList}
-          setShareWithFriendList={setShareWithFriendList}
-        />
+        <ShareOpened />
       )}
     </>
   );
