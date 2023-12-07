@@ -2,10 +2,13 @@ import * as React from "react";
 import { View, TextInput } from "react-native";
 import { memo } from "react";
 import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../../state/store";
+import { taskName, setTaskName } from "../../state/habitSlice";
 
-const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
-  const { taskName, setTaskName } = props;
+const TaskName = memo(() => {
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const taskNameState = useSelector(taskName);
 
   return (
     <View style={{ width: 345 }}>
@@ -17,11 +20,11 @@ const TaskName = memo((props: { taskName: string; setTaskName: Function }) => {
           paddingLeft: 20,
           marginBottom: 10,
           borderColor:
-            taskName.length > 0 ? theme.borderColor : theme.warningColor,
+            taskNameState.length > 0 ? theme.borderColor : theme.warningColor,
           color: theme.primaryText,
         }}
         placeholder="Task Name"
-        onChangeText={(text) => setTaskName(text)}
+        onChangeText={(text) => dispatch(setTaskName(text))}
         maxLength={30}
         placeholderTextColor={theme.fadedPrimaryText}
       />
