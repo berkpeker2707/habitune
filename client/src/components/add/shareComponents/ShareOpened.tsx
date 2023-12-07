@@ -3,14 +3,12 @@ import { View } from "react-native";
 import ShareWithNumber from "./ShareWithNumber";
 import FriendList from "./FriendList";
 import { useTheme } from "../../../context/ThemeContext";
+import { useSelector } from "../../../state/store";
+import { selectFetchCurrentUserProfile } from "../../../state/userSlice";
 
-const ShareOpened = (props: {
-  currentUser: { friends: Array<object>; pending: boolean };
-  shareWithFriendList: string[];
-  setShareWithFriendList: Function;
-}) => {
-  const { currentUser, shareWithFriendList, setShareWithFriendList } = props;
+const ShareOpened = () => {
   const { theme } = useTheme();
+  const currentUserState = useSelector(selectFetchCurrentUserProfile);
 
   return (
     <>
@@ -26,13 +24,11 @@ const ShareOpened = (props: {
         }}
       >
         <ShareWithNumber
-          shareWithNum={currentUser.friends ? currentUser.friends.length : 0}
+          shareWithNum={
+            currentUserState.friends ? currentUserState.friends.length : 0
+          }
         />
-        <FriendList
-          currentUser={currentUser}
-          shareWithFriendList={shareWithFriendList}
-          setShareWithFriendList={setShareWithFriendList}
-        />
+        <FriendList currentUser={currentUserState} />
       </View>
     </>
   );
