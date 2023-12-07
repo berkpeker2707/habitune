@@ -2,60 +2,45 @@ import * as React from "react";
 import { TouchableOpacity, Vibration } from "react-native";
 import FrequencyWithPurpleIcon from "./FrequencyWithPurpleIcon";
 import FrequencyOpened from "./FrequencyOpened";
+import { useAppDispatch, useSelector } from "../../../state/store";
+import { openFrequency, setOpenFrequency } from "../../../state/habitSlice";
 
-const Frequency = (props: {
-  openFrequency: boolean;
-  setOpenFrequency: Function;
-  taskUpcomingDates: string[];
-  setTaskUpcomingDates: Function;
-  taskFirstDate: Date;
-  setTaskFirstDate: Function;
-  taskLastDate: Date;
-  setTaskLastDate: Function;
-  dateBetweenModalOpen: boolean;
-  setDateBetweenModalOpen: Function;
-}) => {
-  const {
-    openFrequency,
-    setOpenFrequency,
-    taskUpcomingDates,
-    setTaskUpcomingDates,
-    taskFirstDate,
-    setTaskFirstDate,
-    taskLastDate,
-    setTaskLastDate,
-    dateBetweenModalOpen,
-    setDateBetweenModalOpen,
-  } = props;
+const Frequency = () => {
+  const dispatch = useAppDispatch();
+  const openFrequencyState = useSelector(openFrequency);
+
   return (
     <>
-      {!openFrequency ? (
+      {!openFrequencyState ? (
         <TouchableOpacity
           style={{ width: 345 }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            setOpenFrequency((openFrequency: boolean) => !openFrequency)
+            dispatch(
+              setOpenFrequency(
+                (openFrequencyState: boolean) => !openFrequencyState
+              )
+            )
           }
           onBlur={() =>
-            setOpenFrequency((openFrequency: boolean) => !openFrequency)
+            dispatch(
+              setOpenFrequency(
+                (openFrequencyState: boolean) => !openFrequencyState
+              )
+            )
           }
           onLongPress={() =>
-            setOpenFrequency((openFrequency: boolean) => !openFrequency)
+            dispatch(
+              setOpenFrequency(
+                (openFrequencyState: boolean) => !openFrequencyState
+              )
+            )
           }
         >
           <FrequencyWithPurpleIcon textInputTitle={"Frequency"} />
         </TouchableOpacity>
       ) : (
-        <FrequencyOpened
-          taskUpcomingDates={taskUpcomingDates}
-          setTaskUpcomingDates={setTaskUpcomingDates}
-          taskFirstDate={taskFirstDate}
-          setTaskFirstDate={setTaskFirstDate}
-          taskLastDate={taskLastDate}
-          setTaskLastDate={setTaskLastDate}
-          dateBetweenModalOpen={dateBetweenModalOpen}
-          setDateBetweenModalOpen={setDateBetweenModalOpen}
-        />
+        <FrequencyOpened />
       )}
     </>
   );
