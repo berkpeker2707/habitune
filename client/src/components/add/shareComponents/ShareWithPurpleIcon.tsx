@@ -2,8 +2,7 @@ import * as React from "react";
 import { View, TextInput } from "react-native";
 import { useTheme } from "../../../context/ThemeContext";
 
-const ShareWithPurpleIcon = (props: { textInputTitle: string }) => {
-  const { textInputTitle } = props;
+const ShareWithPurpleIcon = () => {
   const { theme } = useTheme();
 
   return (
@@ -31,7 +30,7 @@ const ShareWithPurpleIcon = (props: { textInputTitle: string }) => {
         editable={false}
         selectTextOnFocus={false}
       >
-        {textInputTitle}
+        Share With Your Friends
       </TextInput>
     </View>
   );
