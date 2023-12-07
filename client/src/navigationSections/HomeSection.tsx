@@ -92,31 +92,20 @@ const HomeSection = (props: any) => {
         children={(props: any) => (
           <Home
             {...props}
-            refreshCurrentUsersTodayHabits={refreshCurrentUsersTodayHabits}
+            refreshCurrentUserHabits={refreshCurrentUsersTodayHabits}
             dispatch={dispatch}
-            fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
             updateHabitCompletedDateAction={updateHabitCompletedDateAction}
-            updateHabitSharedWithAction={updateHabitSharedWithAction}
             notificationSendAction={notificationSendAction}
             currentUser={currentUser}
             allHabits={allHabitsToday}
             allHabitsNumber={allHabitsNumber}
             currentHabitDatesIncluded={currentHabitDatesIncluded}
-            homeEditBool={homeEditBool}
-            setHomeEditBool={setHomeEditBool}
             habitLoading={habitLoading}
             tempBarFilled={tempBarFilled}
             setTempBarFilled={setTempBarFilled}
             refreshing={refreshing}
             setRefreshing={setRefreshing}
-            shareWithFriendList={shareWithFriendList}
-            setShareWithFriendList={setShareWithFriendList}
             selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
-            shareWithFriendListModal={shareWithFriendListModal}
-            setShareWithFriendListModal={setShareWithFriendListModal}
-            setEditHabitSelected={setEditHabitSelected}
-            setHabitNameState={setHabitNameState}
           />
         )}
         options={{

@@ -20,56 +20,34 @@ const Home = memo(
   (props: {
     refreshCurrentUsersTodayHabits: Function;
     dispatch: Function;
-    fetchAllTodayHabitsAction: Function;
     updateHabitCompletedDateAction: Function;
-    updateHabitSharedWithAction: Function;
     notificationSendAction: Function;
     currentUser: { firstName: string; friends: object[]; pending: boolean };
     allHabits: [];
     allHabitsNumber: number;
     currentHabitDatesIncluded: [];
-    // homeEditBool: boolean;
-    setHomeEditBool: Function;
     habitLoading: boolean;
     tempBarFilled: [boolean];
     setTempBarFilled: Function;
     refreshing: boolean;
     setRefreshing: Function;
-    shareWithFriendList: string[];
-    setShareWithFriendList: Function;
     selectedItem: string;
-    setSelectedItem: Function;
-    shareWithFriendListModal: boolean;
-    setShareWithFriendListModal: Function;
-    // setEditHabitSelected: Function;
-    // setHabitNameState: Function;
   }) => {
     const {
       refreshCurrentUsersTodayHabits,
       dispatch,
-      fetchAllTodayHabitsAction,
       updateHabitCompletedDateAction,
-      updateHabitSharedWithAction,
       notificationSendAction,
       currentUser,
       allHabits,
       allHabitsNumber,
       currentHabitDatesIncluded,
-      // homeEditBool,
-      setHomeEditBool,
       habitLoading,
       tempBarFilled,
       setTempBarFilled,
       refreshing,
       setRefreshing,
-      shareWithFriendList,
-      setShareWithFriendList,
       selectedItem,
-      // setSelectedItem,
-      shareWithFriendListModal,
-      setShareWithFriendListModal,
-      // setEditHabitSelected,
-      // setHabitNameState,
     } = props;
     const { theme } = useTheme();
 
@@ -152,136 +130,50 @@ const Home = memo(
       );
     } else if (!habitLoading && allHabitsNumber > 0 && tempBarFilled) {
       return (
-        <>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={shareWithFriendListModal}
-            onRequestClose={() => {
-              setShareWithFriendListModal(!shareWithFriendListModal);
-              setHomeEditBool(false);
+        <View
+          style={{
+            display: "flex",
+            height: "100%",
+            backgroundColor: theme.backgroundColor,
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <ScrollView
+            style={{
+              marginBottom: 85,
             }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 22,
-                backgroundColor: theme.fadedBackgroundColor,
-              }}
-            >
-              <View
-                style={{
-                  margin: 20,
-                  backgroundColor: theme.backgroundColor,
-                  borderRadius: 20,
-                  padding: 35,
-                  alignItems: "center",
-                  shadowColor: theme.fadedShadowColor,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
-                }}
-              >
-                <ShareOpened
-                  currentUser={currentUser}
-                  shareWithFriendList={shareWithFriendList}
-                  setShareWithFriendList={setShareWithFriendList}
-                />
-                <Pressable
-                  style={[
-                    {
-                      backgroundColor: theme.primaryColor,
-                      borderRadius: 20,
-                      padding: 10,
-                      elevation: 2,
-                    },
-                  ]}
-                  onPressIn={() => Vibration.vibrate(10)}
-                  onPress={() => {
-                    setShareWithFriendListModal(!shareWithFriendListModal);
-                    dispatch(
-                      updateHabitSharedWithAction({
-                        _id: selectedItem,
-                        userId: shareWithFriendList[0],
-                      })
-                    );
-                    setHomeEditBool(false);
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.backgroundColor,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    Share
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
-          <TouchableWithoutFeedback
-            onBlur={() => {
-              if (!shareWithFriendListModal) {
-                setHomeEditBool(false);
-              }
-            }}
-          >
-            <View
-              style={{
-                display: "flex",
-                height: "100%",
-                backgroundColor: theme.backgroundColor,
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <ScrollView
-                style={{
-                  marginBottom: 85,
-                }}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={() =>
-                      refreshCurrentUsersTodayHabits(
-                        setRefreshing,
-                        setTempBarFilled,
-                        currentHabitDatesIncluded
-                      )
-                    }
-                  />
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={() =>
+                  refreshCurrentUsersTodayHabits(
+                    setRefreshing,
+                    setTempBarFilled,
+                    currentHabitDatesIncluded
+                  )
                 }
-              >
-                <View style={{ paddingTop: 20 }}></View>
-                {/* <Text>Habits</Text> */}
-                <HabitBarParent
-                  dispatch={dispatch}
-                  updateHabitCompletedDateAction={
-                    updateHabitCompletedDateAction
-                  }
-                  notificationSendAction={notificationSendAction}
-                  currentUser={currentUser}
-                  allHabits={allHabits}
-                  tempBarFilled={tempBarFilled}
-                  // setHomeEditBool={setHomeEditBool}
-                  selectedItem={selectedItem}
-                  // setSelectedItem={setSelectedItem}
-                  handleHabitClicked={handleHabitClicked}
-                  // setEditHabitSelected={setEditHabitSelected}
-                  // setHabitNameState={setHabitNameState}
-                />
-              </ScrollView>
-            </View>
-          </TouchableWithoutFeedback>
-        </>
+              />
+            }
+          >
+            <View style={{ paddingTop: 20 }}></View>
+            {/* <Text>Habits</Text> */}
+            <HabitBarParent
+              dispatch={dispatch}
+              updateHabitCompletedDateAction={updateHabitCompletedDateAction}
+              notificationSendAction={notificationSendAction}
+              currentUser={currentUser}
+              allHabits={allHabits}
+              tempBarFilled={tempBarFilled}
+              // setHomeEditBool={setHomeEditBool}
+              selectedItem={selectedItem}
+              // setSelectedItem={setSelectedItem}
+              handleHabitClicked={handleHabitClicked}
+              // setEditHabitSelected={setEditHabitSelected}
+              // setHabitNameState={setHabitNameState}
+            />
+          </ScrollView>
+        </View>
       );
     } else {
       return (
