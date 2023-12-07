@@ -1,56 +1,35 @@
 import * as React from "react";
 import { memo } from "react";
-
 import { Pressable, View, Vibration } from "react-native";
-
 import { createStackNavigator } from "@react-navigation/stack";
-
-//types
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
-
-// screens
 import Add from "../../src/screens/Add";
-
-//navbar components
 import BackIcon from "../components/icons/BackIcon";
 import DoneIcon from "../components/icons/DoneIcon";
 import { useTheme } from "../context/ThemeContext";
 import { useAppDispatch, useSelector } from "../state/store";
 import {
-  taskUpcomingDates,
-  setTaskUpcomingDates,
   taskFirstDate,
-  setTaskFirstDate,
   taskLastDate,
-  setTaskLastDate,
+  taskUpcomingDates,
+  shareWithFriendList,
+  color,
+  taskName,
+  createHabitAction,
 } from "../state/habitSlice";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const AddSection = memo((props: any) => {
-  const {
-    navigation,
-    currentUser,
-    createHabitAction,
-    taskName,
-    setTaskName,
-    openFrequency,
-    setOpenFrequency,
-    dateBetweenModalOpen,
-    setDateBetweenModalOpen,
-    shareWithFriendList,
-    setShareWithFriendList,
-    openShareHabit,
-    setOpenShareHabit,
-    color,
-    setColor,
-  } = props;
-
+  const { navigation } = props;
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
-  const taskUpcomingDatesState = useSelector(taskUpcomingDates);
   const taskFirstDateState = useSelector(taskFirstDate);
   const taskLastDateState = useSelector(taskLastDate);
+  const taskUpcomingDatesState = useSelector(taskUpcomingDates);
+  const shareWithFriendListState = useSelector(shareWithFriendList);
+  const colorState = useSelector(color);
+  const taskNameState = useSelector(taskName);
 
   return (
     <StackNavigator.Navigator
@@ -62,31 +41,7 @@ const AddSection = memo((props: any) => {
     >
       <StackNavigator.Screen
         name="Add"
-        children={(props: any) => (
-          <Add
-            {...props}
-            navigation={navigation}
-            currentUser={currentUser}
-            taskName={taskName}
-            setTaskName={setTaskName}
-            openFrequency={openFrequency}
-            setOpenFrequency={setOpenFrequency}
-            taskUpcomingDates={taskUpcomingDatesState}
-            setTaskUpcomingDates={setTaskUpcomingDates}
-            taskFirstDate={taskFirstDateState}
-            setTaskFirstDate={setTaskFirstDate}
-            taskLastDate={taskLastDateState}
-            setTaskLastDate={setTaskLastDate}
-            dateBetweenModalOpen={dateBetweenModalOpen}
-            setDateBetweenModalOpen={setDateBetweenModalOpen}
-            shareWithFriendList={shareWithFriendList}
-            setShareWithFriendList={setShareWithFriendList}
-            openShareHabit={openShareHabit}
-            setOpenShareHabit={setOpenShareHabit}
-            color={color}
-            setColor={setColor}
-          />
-        )}
+        children={(props: any) => <Add {...props} navigation={navigation} />}
         options={{
           headerTitle: "New Habit",
           headerLeft: () => (
@@ -123,7 +78,7 @@ const AddSection = memo((props: any) => {
             >
               <Pressable
                 disabled={
-                  taskFirstDateState && taskLastDateState && taskName
+                  taskFirstDateState && taskLastDateState && taskNameState
                     ? false
                     : true
                 }
@@ -134,10 +89,10 @@ const AddSection = memo((props: any) => {
                       createHabitAction({
                         firstDate: Date.parse(taskFirstDateState),
                         lastDate: Date.parse(taskLastDateState),
-                        name: taskName,
+                        name: taskNameState,
                         upcomingDates: taskUpcomingDatesState,
-                        color: color,
-                        friendList: shareWithFriendList,
+                        color: colorState,
+                        friendList: shareWithFriendListState,
                       })
                     );
                     navigation.navigate("Home");
