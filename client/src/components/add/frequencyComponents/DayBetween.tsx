@@ -4,119 +4,89 @@ import { TouchableOpacity, TextInput, Vibration } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import { useTheme } from "../../../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../../../state/store";
+import {
+  taskFirstDate,
+  setTaskFirstDate,
+  taskLastDate,
+  setTaskLastDate,
+  dateBetweenModalOpen,
+  setDateBetweenModalOpen,
+} from "../../../state/habitSlice";
+
 registerTranslation("en-GB", enGB);
 
-const DayBetween = (props: {
-  taskFirstDate: Date;
-  setTaskFirstDate: Function;
-  taskLastDate: Date;
-  setTaskLastDate: Function;
-  dateBetweenModalOpen: boolean;
-  setDateBetweenModalOpen: Function;
-}) => {
-  const {
-    taskFirstDate,
-    setTaskFirstDate,
-    taskLastDate,
-    setTaskLastDate,
-    dateBetweenModalOpen,
-    setDateBetweenModalOpen,
-  } = props;
+const DayBetween = () => {
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const dateBetweenModalOpenState = useSelector(dateBetweenModalOpen);
+  const taskFirstDateState = useSelector(taskFirstDate);
+  const taskLastDateState = useSelector(taskLastDate);
 
   const onDismiss = useCallback(() => {
-    setDateBetweenModalOpen(false);
-  }, [setDateBetweenModalOpen]);
+    dispatch(setDateBetweenModalOpen(true));
+  }, [dateBetweenModalOpenState]);
 
   const onConfirm = useCallback(
     ({ startDate, endDate }: { startDate: any; endDate: any }) => {
-      setDateBetweenModalOpen(false);
-      setTaskFirstDate(() => new Date(startDate?.getTime()));
-      setTaskLastDate(() => new Date(endDate?.getTime()));
+      dispatch(setTaskFirstDate(startDate));
+      dispatch(setTaskLastDate(endDate));
+      dispatch(setDateBetweenModalOpen(false));
     },
-    [setDateBetweenModalOpen, taskFirstDate, taskLastDate]
+    [setDateBetweenModalOpen]
   );
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+  // const monthNames = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  // ];
+
+  //   Between {monthNames[taskFirstDateState.getMonth()]}{" "}
+  // {taskFirstDateState?.getDate()?.toString()}
+  // {" - "}
+  // {monthNames[taskLastDateState?.getMonth()]}{" "}
+  // {taskLastDateState?.getDate()?.toString()}
 
   return (
     <TouchableOpacity
       style={{ top: 40 }}
       onPressIn={() => Vibration.vibrate(10)}
-      onPress={() => setDateBetweenModalOpen(true)}
+      onPress={() => dispatch(setDateBetweenModalOpen(true))}
     >
-      {taskFirstDate && taskLastDate ? (
-        <TextInput
-          style={{
-            height: 49.5,
-            borderTopWidth: 1,
-            paddingLeft: 20,
-            marginLeft: 7,
-            marginRight: 7,
-            marginBottom: 10,
-            borderColor: theme.borderColor,
-            color: theme.fadedPrimaryText,
-            textAlign: "left",
-          }}
-          editable={false}
-          selectTextOnFocus={false}
-        >
-          Between {monthNames[taskFirstDate?.getMonth()]}{" "}
-          {taskFirstDate?.getDate()?.toString()}
-          {" - "}
-          {monthNames[taskLastDate?.getMonth()]}{" "}
-          {taskLastDate?.getDate()?.toString()}
-        </TextInput>
-      ) : (
-        <TextInput
-          style={{
-            height: 49.5,
-            borderTopWidth: 1,
-            paddingLeft: 20,
-            marginLeft: 7,
-            marginRight: 7,
-            marginBottom: 10,
-            borderColor: theme.borderColor,
-            color: theme.fadedPrimaryText,
-            textAlign: "left",
-          }}
-          editable={false}
-          selectTextOnFocus={false}
-        >
-          Select Date
-        </TextInput>
-      )}
+      <TextInput
+        style={{
+          height: 49.5,
+          borderTopWidth: 1,
+          paddingLeft: 20,
+          marginLeft: 7,
+          marginRight: 7,
+          marginBottom: 10,
+          borderColor: theme.borderColor,
+          color: theme.fadedPrimaryText,
+          textAlign: "left",
+        }}
+        editable={false}
+        selectTextOnFocus={false}
+      >
+        Press to Select Date
+      </TextInput>
       <DatePickerModal
         locale="en-GB"
         mode="range"
-        visible={dateBetweenModalOpen}
+        visible={dateBetweenModalOpenState}
         onDismiss={onDismiss}
-        startDate={taskFirstDate}
-        endDate={
-          taskLastDate instanceof Date
-            ? new Date(
-                new Date(Date.now()).getFullYear() + 1,
-                new Date(Date.now()).getMonth(),
-                new Date(Date.now()).getDate(),
-                new Date(Date.now()).getHours(),
-                new Date(Date.now()).getMinutes(),
-                new Date(Date.now()).getSeconds()
-              )
-            : taskLastDate
-        }
+        startDate={new Date(taskFirstDateState)}
+        endDate={new Date(taskLastDateState)}
         onConfirm={onConfirm}
       />
     </TouchableOpacity>
