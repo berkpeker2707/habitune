@@ -12,8 +12,6 @@ const FriendsCard = memo(
     email: string;
     i: number;
     pending: boolean;
-    showInfoText: any;
-    setShowInfoText: any;
     acceptOrRemoveModalVisible: any;
     setAcceptOrRemoveModalVisible: any;
     selectedUser: any;
@@ -29,17 +27,12 @@ const FriendsCard = memo(
       name,
       image,
       email,
-      i,
       pending,
-      showInfoText,
-      setShowInfoText,
       acceptOrRemoveModalVisible,
       setAcceptOrRemoveModalVisible,
-      selectedUser,
       setSelectedUser,
       friendIDState,
       setFriendIDState,
-      friendName,
       setFriendName,
     } = props;
 
@@ -54,16 +47,9 @@ const FriendsCard = memo(
           <TouchableOpacity
             onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
-              // setShowInfoText(!showInfoText);
-              setTimeout(() => {
-                setShowInfoText(false);
-              }, 5000);
               setFriendIDState(() => friendID);
               setFriendName(() => name);
-              // console.log(selectedUser);
               navigation.navigate("Friend", {
-                // currentUser: currentUser,
-                // userUpdated: userUpdated,
                 name: name,
                 friendID: friendIDState,
               });
