@@ -24,7 +24,7 @@ const DayBetween = () => {
   const taskLastDateState = useSelector(taskLastDate);
 
   const onDismiss = useCallback(() => {
-    dispatch(setDateBetweenModalOpen(true));
+    dispatch(setDateBetweenModalOpen(false));
   }, [dateBetweenModalOpenState]);
 
   const onConfirm = useCallback(
