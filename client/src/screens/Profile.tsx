@@ -1,6 +1,5 @@
 import * as React from "react";
-import { memo, useCallback } from "react";
-
+import { memo } from "react";
 import {
   View,
   ScrollView,
@@ -13,24 +12,19 @@ import {
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
-
 import uuid from "react-native-uuid";
 import { useTheme } from "../context/ThemeContext";
 import {
-  fetchCurrentUserProfileAction,
+  refreshUser,
   selectFetchCurrentUserProfile,
   sendFriendshipAction,
 } from "../state/userSlice";
 import { useAppDispatch, useSelector } from "../state/store";
+import refreshCurrentUser from "../helpers/refreshers/refreshCurrentUser";
 
 const Profile = memo((props: any) => {
   const {
     navigation,
-    refreshCurrentUser,
-    refreshing,
-    setRefreshing,
-    showInfoText,
-    setShowInfoText,
     acceptOrRemoveModalVisible,
     setAcceptOrRemoveModalVisible,
     selectedUser,
@@ -43,6 +37,7 @@ const Profile = memo((props: any) => {
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const currentUser = useSelector(selectFetchCurrentUserProfile);
+  const refreshUserState = useSelector(refreshUser);
 
   return currentUser.friends ? (
     <View
@@ -60,10 +55,8 @@ const Profile = memo((props: any) => {
         }}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() =>
-              refreshCurrentUser(setRefreshing, fetchCurrentUserProfileAction)
-            }
+            refreshing={refreshUserState}
+            onRefresh={() => refreshCurrentUser(dispatch)}
           />
         }
       >
@@ -84,19 +77,6 @@ const Profile = memo((props: any) => {
           }}
         >
           <AddFriendsButton />
-          {showInfoText ? (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text>Press long to accept 🤝 or remove friend 💔</Text>
-            </View>
-          ) : (
-            ""
-          )}
           <Modal
             animationType="slide"
             transparent={true}
@@ -195,8 +175,6 @@ const Profile = memo((props: any) => {
                 i={index}
                 key={uuid.v4() as string}
                 pending={friendElem.pending}
-                showInfoText={showInfoText}
-                setShowInfoText={setShowInfoText}
                 acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
                 setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
                 selectedUser={selectedUser}
