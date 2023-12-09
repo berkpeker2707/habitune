@@ -1,63 +1,32 @@
 import * as React from "react";
-import { memo, useCallback } from "react";
-
-import {
-  View,
-  ScrollView,
-  RefreshControl,
-  Text,
-  Modal,
-  Pressable,
-  Vibration,
-} from "react-native";
+import { memo } from "react";
+import { View, ScrollView, RefreshControl } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
-
 import uuid from "react-native-uuid";
 import { useTheme } from "../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../state/store";
+import {
+  acceptOrRemoveFriendModalVisible,
+  refreshUser,
+  selectFetchCurrentUserProfile,
+  selectedUser,
+  setAcceptOrRemoveFriendModalVisible,
+} from "../state/userSlice";
+import refreshCurrentUser from "../helpers/refreshers/refreshCurrentUser";
+import AcceptOrRemoveFriendModal from "../components/modals/AcceptOrRemoveFriendModal";
 
-const Profile = memo((props: any) => {
-  const {
-    navigation,
-    dispatch,
-    fetchCurrentUserProfileAction,
-    sendFriendshipAction,
-    updateCurrentUserImageAction,
-    currentUser,
-    refreshing,
-    setRefreshing,
-    showInfoText,
-    setShowInfoText,
-    acceptOrRemoveModalVisible,
-    setAcceptOrRemoveModalVisible,
-    selectedUser,
-    setSelectedUser,
-    friendIDState,
-    setFriendIDState,
-    friendName,
-    setFriendName,
-  } = props;
+const Profile = memo((props: { navigation: any }) => {
+  const { navigation } = props;
   const { theme } = useTheme();
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    dispatch(
-      fetchCurrentUserProfileAction(
-        new Date(
-          new Date().getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate(),
-          new Date().getHours(),
-          new Date().getMinutes(),
-          new Date().getSeconds()
-        ).getTime()
-      )
-    );
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 2000);
-  }, []);
+  const dispatch = useAppDispatch();
+  const currentUser = useSelector(selectFetchCurrentUserProfile);
+  const refreshUserState = useSelector(refreshUser);
+  const acceptOrRemoveFriendModalVisibleState = useSelector(
+    acceptOrRemoveFriendModalVisible
+  );
+  const selectedUserState = useSelector(selectedUser);
 
   return currentUser.friends ? (
     <View
@@ -74,7 +43,10 @@ const Profile = memo((props: any) => {
           marginBottom: 85,
         }}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshUserState}
+            onRefresh={() => refreshCurrentUser(dispatch)}
+          />
         }
       >
         {currentUser &&
@@ -85,8 +57,6 @@ const Profile = memo((props: any) => {
               name={currentUser.firstName}
               email={currentUser.email}
               image={currentUser.image}
-              dispatch={dispatch}
-              updateCurrentUserImageAction={updateCurrentUserImageAction}
             />
           )}
         <View
@@ -96,127 +66,28 @@ const Profile = memo((props: any) => {
           }}
         >
           <AddFriendsButton />
-          {showInfoText ? (
-            <View
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text>Press long to accept 🤝 or remove friend 💔</Text>
-            </View>
-          ) : (
-            ""
-          )}
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={acceptOrRemoveModalVisible}
-            onRequestClose={() => {
-              setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 22,
-                backgroundColor: theme.fadedBackgroundColor,
-              }}
-            >
-              <View
-                style={{
-                  margin: 20,
-                  backgroundColor: theme.backgroundColor,
-                  borderRadius: 20,
-                  padding: 35,
-                  alignItems: "center",
-                  shadowColor: theme.fadedShadowColor,
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
-                }}
-              >
-                {selectedUser?.pending ? (
-                  <Text
-                    style={{
-                      color: theme.primaryColor,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      paddingBottom: 10,
-                    }}
-                  >
-                    Accept friendship request from {selectedUser?.name}?
-                  </Text>
-                ) : (
-                  <Text
-                    style={{
-                      color: theme.primaryColor,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      paddingBottom: 10,
-                    }}
-                  >
-                    Remove {selectedUser?.name} from friends?
-                  </Text>
-                )}
-                <Pressable
-                  style={{
-                    backgroundColor: theme.primaryColor,
-                    borderRadius: 20,
-                    padding: 10,
-                    elevation: 2,
-                  }}
-                  onPressIn={() => Vibration.vibrate(10)}
-                  onPress={() => {
-                    setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
-                    dispatch(
-                      sendFriendshipAction({ userMail: selectedUser.email })
-                    );
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: theme.backgroundColor,
-                      fontWeight: "bold",
-                      textAlign: "center",
-                    }}
-                  >
-                    Yes
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
+          <AcceptOrRemoveFriendModal
+            dispatch={dispatch}
+            acceptOrRemoveFriendModalVisible={
+              acceptOrRemoveFriendModalVisibleState
+            }
+            setAcceptOrRemoveFriendModalVisible={
+              setAcceptOrRemoveFriendModalVisible
+            }
+            selectedUser={selectedUserState}
+          />
           {currentUser &&
             currentUser.friends &&
             currentUser.friends.length > 0 &&
             currentUser.friends.map((friendElem: any, index: number) => (
               <FriendsCard
                 navigation={navigation}
-                friendID={friendElem.friend._id}
+                key={uuid.v4() as string}
+                friendElemID={friendElem.friend._id}
                 name={friendElem.friend.firstName}
                 image={friendElem.friend.image}
                 email={friendElem.friend.email}
-                i={index}
-                key={uuid.v4() as string}
                 pending={friendElem.pending}
-                showInfoText={showInfoText}
-                setShowInfoText={setShowInfoText}
-                acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
-                setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
-                selectedUser={selectedUser}
-                setSelectedUser={setSelectedUser}
-                friendIDState={friendIDState}
-                setFriendIDState={setFriendIDState}
-                friendName={friendName}
-                setFriendName={setFriendName}
               />
             ))}
         </View>

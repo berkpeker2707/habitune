@@ -8,8 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const cloudinary = require("cloudinary");
 const path = require("path");
+const logger_1 = __importDefault(require("./logger"));
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -39,17 +44,20 @@ const cloudinaryUploadUserImg = (fileToUpload, id) => __awaiter(void 0, void 0, 
                 if (result && result.hasOwnProperty("secure_url")) {
                     // if secure_url exists
                     // console.log(result);
+                    logger_1.default.info(result);
                     resolve(result);
                 }
             })
                 .catch((error) => {
-                console.error(error);
+                logger_1.default.error(error);
+                // console.error(error);
             });
         });
         let result = yield promise; // wait until the promise resolves (*)
         return result;
     }
     catch (error) {
+        logger_1.default.error(error);
         return error;
     }
 });
@@ -60,6 +68,7 @@ const cloudinaryDeleteUserImg = (public_id) => __awaiter(void 0, void 0, void 0,
         const getPublicId = (_a = public_id.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split(".")[0];
         var imagePath = "habitune/user/photos/" + getPublicId;
         const data = yield cloudinary.v2.uploader.destroy(imagePath, (error, result) => {
+            logger_1.default.info(result);
             // console.log(result);
         });
         return {
@@ -67,6 +76,7 @@ const cloudinaryDeleteUserImg = (public_id) => __awaiter(void 0, void 0, void 0,
         };
     }
     catch (error) {
+        logger_1.default.error(error);
         return error;
     }
 });

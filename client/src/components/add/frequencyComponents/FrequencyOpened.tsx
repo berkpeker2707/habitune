@@ -5,189 +5,153 @@ import DayCircle from "./DayCircle";
 import DayBetween from "./DayBetween";
 import Daily from "./Daily";
 import { useTheme } from "../../../context/ThemeContext";
-const FrequencyOpened = memo(
-  (props: {
-    taskUpcomingDates: string[];
-    setTaskUpcomingDates: Function;
-    taskFirstDate: Date;
-    setTaskFirstDate: Function;
-    taskLastDate: Date;
-    setTaskLastDate: Function;
-    dateBetweenModalOpen: boolean;
-    setDateBetweenModalOpen: Function;
-  }) => {
-    const {
-      taskUpcomingDates,
-      setTaskUpcomingDates,
-      taskFirstDate,
-      setTaskFirstDate,
-      taskLastDate,
-      setTaskLastDate,
-      dateBetweenModalOpen,
-      setDateBetweenModalOpen,
-    } = props;
-    const { theme } = useTheme();
-
-    return (
-      <View
-        style={{
-          backgroundColor: theme.backgroundColor,
-          width: 345,
-          height: 189,
-          borderRadius: 20,
-          borderColor:
-            taskUpcomingDates.length > 0
-              ? theme.primaryColor
-              : theme.warningColor,
-          borderWidth: 0.5,
-          marginBottom: 10,
+import { useAppDispatch, useSelector } from "../../../state/store";
+import {
+  setTaskUpcomingDates,
+  taskUpcomingDates,
+} from "../../../state/habitSlice";
+const FrequencyOpened = memo(() => {
+  const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const taskUpcomingDatesState = useSelector(taskUpcomingDates);
+  return (
+    <View
+      style={{
+        backgroundColor: theme.backgroundColor,
+        width: 345,
+        height: 189,
+        borderRadius: 20,
+        borderColor:
+          taskUpcomingDatesState.length > 0
+            ? theme.primaryColor
+            : theme.warningColor,
+        borderWidth: 0.5,
+        marginBottom: 10,
+      }}
+    >
+      <Daily />
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Mon")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Mon")
+            : [...taskUpcomingDatesState, "Mon"];
+          dispatch(setTaskUpcomingDates(updatedDates));
         }}
       >
-        <Daily />
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Mon")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Mon")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Mon",
-                ])
+        <DayCircle
+          day={"M"}
+          left={20}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Mon") ? true : false
           }
-        >
-          <DayCircle
-            day={"M"}
-            left={20}
-            dayCircleMarked={taskUpcomingDates.includes("Mon") ? true : false}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Tue")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Tue")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Tue",
-                ])
-          }
-        >
-          <DayCircle
-            day={"Tu"}
-            left={65}
-            dayCircleMarked={taskUpcomingDates.includes("Tue") ? true : false}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Wed")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Wed")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Wed",
-                ])
-          }
-        >
-          <DayCircle
-            day={"W"}
-            left={110}
-            dayCircleMarked={taskUpcomingDates.includes("Wed") ? true : false}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Thu")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Thu")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Thu",
-                ])
-          }
-        >
-          <DayCircle
-            day={"Th"}
-            left={155}
-            dayCircleMarked={taskUpcomingDates.includes("Thu") ? true : false}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Fri")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Fri")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Fri",
-                ])
-          }
-        >
-          <DayCircle
-            day={"F"}
-            left={200}
-            dayCircleMarked={taskUpcomingDates.includes("Fri") ? true : false}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Sat")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Sat")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Sat",
-                ])
-          }
-        >
-          <DayCircle
-            day={"Sa"}
-            left={245}
-            dayCircleMarked={taskUpcomingDates.includes("Sat") ? true : false}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPressIn={() => Vibration.vibrate(10)}
-          onPress={() =>
-            taskUpcomingDates.includes("Sun")
-              ? setTaskUpcomingDates(() =>
-                  taskUpcomingDates.filter((item: string) => item !== "Sun")
-                )
-              : setTaskUpcomingDates((prevState: Array<String>) => [
-                  ...prevState,
-                  "Sun",
-                ])
-          }
-        >
-          <DayCircle
-            day={"Su"}
-            left={290}
-            dayCircleMarked={taskUpcomingDates.includes("Sun") ? true : false}
-          />
-        </TouchableOpacity>
-        <DayBetween
-          taskFirstDate={taskFirstDate}
-          setTaskFirstDate={setTaskFirstDate}
-          taskLastDate={taskLastDate}
-          setTaskLastDate={setTaskLastDate}
-          dateBetweenModalOpen={dateBetweenModalOpen}
-          setDateBetweenModalOpen={setDateBetweenModalOpen}
         />
-      </View>
-    );
-  }
-);
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Tue")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Tue")
+            : [...taskUpcomingDatesState, "Tue"];
+          dispatch(setTaskUpcomingDates(updatedDates));
+        }}
+      >
+        <DayCircle
+          day={"Tu"}
+          left={65}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Tue") ? true : false
+          }
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Wed")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Wed")
+            : [...taskUpcomingDatesState, "Wed"];
+          dispatch(setTaskUpcomingDates(updatedDates));
+        }}
+      >
+        <DayCircle
+          day={"W"}
+          left={110}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Wed") ? true : false
+          }
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Thu")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Thu")
+            : [...taskUpcomingDatesState, "Thu"];
+          dispatch(setTaskUpcomingDates(updatedDates));
+        }}
+      >
+        <DayCircle
+          day={"Th"}
+          left={155}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Thu") ? true : false
+          }
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Fri")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Fri")
+            : [...taskUpcomingDatesState, "Fri"];
+          dispatch(setTaskUpcomingDates(updatedDates));
+        }}
+      >
+        <DayCircle
+          day={"F"}
+          left={200}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Fri") ? true : false
+          }
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Sat")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Sat")
+            : [...taskUpcomingDatesState, "Sat"];
+          dispatch(setTaskUpcomingDates(updatedDates));
+        }}
+      >
+        <DayCircle
+          day={"Sa"}
+          left={245}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Sat") ? true : false
+          }
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPressIn={() => Vibration.vibrate(10)}
+        onPress={() => {
+          const updatedDates = taskUpcomingDatesState.includes("Sun")
+            ? taskUpcomingDatesState.filter((item: string) => item !== "Sun")
+            : [...taskUpcomingDatesState, "Sun"];
+          dispatch(setTaskUpcomingDates(updatedDates));
+        }}
+      >
+        <DayCircle
+          day={"Su"}
+          left={290}
+          dayCircleMarked={
+            taskUpcomingDatesState.includes("Sun") ? true : false
+          }
+        />
+      </TouchableOpacity>
+      <DayBetween />
+    </View>
+  );
+});
 
 export default FrequencyOpened;

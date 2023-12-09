@@ -5,32 +5,28 @@ import DotGraphFriend from "../components/overview/DotGraphFriend";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import { useTheme } from "../context/ThemeContext";
+import { useSelector } from "../state/store";
+import {
+  allHabitsOfSelectedUserNumber,
+  selectFriendAllHabitDatesDots,
+  selectFriendCurrentHabitWeekStreak,
+  selectHabitLoading,
+  selectHabitsOfSelectedUser,
+} from "../state/habitSlice";
 
-const Friend = (props: {
-  dispatch: Function;
-  fetchAllHabitsAction: Function;
-  fetchAllHabitsOfSelectedUserAction: Function;
-  allHabitsOfSelectedUser: [];
-  allHabitsOfSelectedUserNumber: number;
-  habitLoading: boolean;
-  refreshing: boolean;
-  setRefreshing: Function;
-  friendCurrentHabitWeekStreakState: [];
-  friendAllHabitDatesDotsState: [];
-}) => {
-  const {
-    dispatch,
-    fetchAllHabitsAction,
-    fetchAllHabitsOfSelectedUserAction,
-    allHabitsOfSelectedUser,
-    allHabitsOfSelectedUserNumber,
-    habitLoading,
-    refreshing,
-    setRefreshing,
-    friendCurrentHabitWeekStreakState,
-    friendAllHabitDatesDotsState,
-  } = props;
+const Friend = () => {
   const { theme } = useTheme();
+  const habitLoading = useSelector(selectHabitLoading);
+  const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
+  const allHabitsOfSelectedUserState = useSelector(
+    allHabitsOfSelectedUserNumber
+  );
+  const friendCurrentHabitWeekStreakState = useSelector(
+    selectFriendCurrentHabitWeekStreak
+  );
+  const friendAllHabitDatesDotsState = useSelector(
+    selectFriendAllHabitDatesDots
+  );
 
   if (habitLoading) {
     return (
@@ -53,7 +49,7 @@ const Friend = (props: {
         </ScrollView>
       </View>
     );
-  } else if (!habitLoading && allHabitsOfSelectedUserNumber === 0) {
+  } else if (!habitLoading && allHabitsOfSelectedUserState === 0) {
     return (
       <View
         style={{
@@ -86,7 +82,7 @@ const Friend = (props: {
     );
   } else if (
     !habitLoading &&
-    allHabitsOfSelectedUserNumber > 0 &&
+    allHabitsOfSelectedUserState > 0 &&
     friendCurrentHabitWeekStreakState
   ) {
     return (
@@ -118,15 +114,9 @@ const Friend = (props: {
             <></>
           )}
           <DotGraphFriend
-            fetchAllHabitsAction={fetchAllHabitsAction}
-            fetchAllHabitsOfSelectedUserAction={
-              fetchAllHabitsOfSelectedUserAction
-            }
             allHabits={allHabitsOfSelectedUser}
-            allHabitsNumber={allHabitsOfSelectedUserNumber}
+            allHabitsNumber={allHabitsOfSelectedUserState}
             habitLoading={habitLoading}
-            refreshing={refreshing}
-            setRefreshing={setRefreshing}
             allHabitDatesDots={friendAllHabitDatesDotsState}
           />
         </ScrollView>

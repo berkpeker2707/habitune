@@ -31,9 +31,11 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
             yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
                 fcmToken: req.body.token,
             });
+            logger_1.default.info(notification);
             res.status(200).json(notification);
         }
         else {
+            logger_1.default.info(notification);
             res.status(200).json(notification);
         }
     }
@@ -81,10 +83,11 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
             },
         })
             .exec();
+        logger_1.default.info(notification);
         res.status(200).json(notification);
     }
     catch (error) {
-        console.log("error controller noti: ", error);
+        // console.log("error controller noti: ", error);
         logger_1.default.error(error);
         return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }

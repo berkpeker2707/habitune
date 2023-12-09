@@ -1,16 +1,15 @@
 import * as React from "react";
 import { TextInput } from "react-native";
 import StreakBar from "./StreakGraphBar";
-
 import uuid from "react-native-uuid";
 import { View } from "moti";
 import { useTheme } from "../../context/ThemeContext";
 
 const StreakGraph = (props: {
   allHabits: any;
-  currentHabitWeekStreak: Array<number>;
+  currentHabitWeekStreakState: Array<number>;
 }) => {
-  const { allHabits, currentHabitWeekStreak } = props;
+  const { allHabits, currentHabitWeekStreakState } = props;
   const { theme } = useTheme();
 
   return (
@@ -41,7 +40,7 @@ const StreakGraph = (props: {
             key={uuid.v4() as string}
             name={allHabitsItem.name}
             color={allHabitsItem.color}
-            currentHabitWeekStreak={currentHabitWeekStreak[allHabitsIndex]}
+            currentHabitWeekStreak={currentHabitWeekStreakState[allHabitsIndex]}
           />
         );
       })}

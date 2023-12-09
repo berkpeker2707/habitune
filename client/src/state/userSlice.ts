@@ -8,22 +8,64 @@ interface userTypes {
   token: string;
   loading: boolean;
   error: string;
-  isUserUpdated: boolean;
+
   currentUserData: object;
   selectedUserData: object;
   deleteUserData: object;
+  sendFeedbackData: string;
   changeThemeData: string;
+
+  refreshUser: boolean;
+
+  email: string;
+  password: string;
+  name: string;
+  loginModalVisible: boolean;
+  registerModalVisible: boolean;
+  isUserUpdated: boolean;
+
+  feedbackModalVisible: boolean;
+  aboutUsModalVisible: boolean;
+  feedback: string;
+
+  acceptOrRemoveFriendModalVisible: boolean;
+  selectedUser: {
+    email: string;
+    name: string;
+    pending: boolean;
+  };
+  friendID: any;
+  friendName: string;
 }
 
 const initialState: userTypes = {
   token: "",
   loading: false,
   error: "",
-  isUserUpdated: false,
+
   currentUserData: {},
   selectedUserData: {},
   deleteUserData: {},
+  sendFeedbackData: "",
   changeThemeData: "default",
+
+  refreshUser: false,
+
+  email: "",
+  password: "",
+  name: "",
+  loginModalVisible: false,
+  registerModalVisible: false,
+  isUserUpdated: false,
+
+  feedbackModalVisible: false,
+  aboutUsModalVisible: false,
+  feedback: "",
+
+  acceptOrRemoveFriendModalVisible: false,
+  selectedUser: { email: "", name: "", pending: false },
+  friendID: 0,
+  friendName: "",
 };
 
 const updatedUser = createAction("user/update");
@@ -36,7 +78,7 @@ export const signInWithGoogleAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error1: ", error);
+      console.log("signInWithGoogleAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -50,7 +92,7 @@ export const signInAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error1: ", error);
+      console.log("signInAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -76,7 +118,7 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error2: ", error);
+      console.log("fetchCurrentUserProfileAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -103,7 +145,7 @@ export const fetchUserProfileAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error3: ", error);
+      console.log("fetchUserProfileAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -150,7 +192,7 @@ export const updateCurrentUserImageAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error3: ", error);
+      console.log("updateCurrentUserImageAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -158,7 +200,7 @@ export const updateCurrentUserImageAction = createAsyncThunk(
 
 export const sendFeedbackAction = createAsyncThunk(
   "user/sendFeedback",
-  async (sendFeedbackData: "", { rejectWithValue, getState, dispatch }) => {
+  async (sendFeedbackPayload: {}, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
     const config = {
@@ -169,13 +211,13 @@ export const sendFeedbackAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.post(
         `/user/update/feedback`,
-        sendFeedbackData,
+        sendFeedbackPayload,
         config
       );
 
       return data;
     } catch (error) {
-      console.log("user error4: ", error);
+      console.log("sendFeedbackAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -202,7 +244,7 @@ export const sendFriendshipAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error4: ", error);
+      console.log("sendFriendshipAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -229,7 +271,7 @@ export const changeThemeAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error4: ", error);
+      console.log("changeThemeAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -250,7 +292,7 @@ export const deleteUserAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("user error5: ", error);
+      console.log("deleteUserAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -264,7 +306,7 @@ export const revertAll = createAsyncThunk(
 
       return {};
     } catch (error) {
-      console.log("user error6: ", error);
+      console.log("revertAll: ", error);
       return rejectWithValue(error);
     }
   }
@@ -273,7 +315,58 @@ export const revertAll = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    //login states starts
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
+    setPassword: (state, action) => {
+      state.password = action.payload;
+    },
+    setName: (state, action) => {
+      state.name = action.payload;
+    },
+    setLoginModalVisible: (state, action) => {
+      state.loginModalVisible = action.payload;
+    },
+    setRegisterModalVisible: (state, action) => {
+      state.registerModalVisible = action.payload;
+    },
+    //login states ends
+
+    //refresh states starts
+    setRefreshUser: (state, action) => {
+      state.refreshUser = action.payload;
+    },
+    //refresh states ends
+
+    //settings states starts
+    setFeedbackModalVisible: (state, action) => {
+      state.feedbackModalVisible = action.payload;
+    },
+    setAboutUsModalVisible: (state, action) => {
+      state.aboutUsModalVisible = action.payload;
+    },
+    setFeedback: (state, action) => {
+      state.feedback = action.payload;
+    },
+    //settings states ends
+
+    //friend states ends
+    setAcceptOrRemoveFriendModalVisible: (state, action) => {
+      state.acceptOrRemoveFriendModalVisible = action.payload;
+    },
+    setSelectedUser: (state, action) => {
+      state.selectedUser = action.payload;
+    },
+    setFriendID: (state, action) => {
+      state.friendID = action.payload;
+    },
+    setFriendName: (state, action) => {
+      state.friendName = action.payload;
+    },
+    //friend states ends
+  },
   extraReducers: (builder) => {
     //updated user check reducer
     builder.addCase(updatedUser, (state) => {
@@ -377,7 +470,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = "";
       state.isUserUpdated = false;
-      state.currentUserData = action?.payload;
+      state.sendFeedbackData = action?.payload;
     });
     builder.addCase(sendFeedbackAction.rejected, (state, action) => {
       state.loading = false;
@@ -411,7 +504,17 @@ const userSlice = createSlice({
       state.currentUserData = {};
       state.selectedUserData = {};
       state.deleteUserData = {};
+      state.sendFeedbackData = "";
       state.changeThemeData = "default";
+
+      state.refreshUser = false;
+
+      state.email = "";
+      state.password = "";
+      state.name = "";
+      state.loginModalVisible = false;
+      state.registerModalVisible = false;
+      state.isUserUpdated = false;
     });
     builder.addCase(deleteUserAction.rejected, (state, action) => {
       state.loading = false;
@@ -423,14 +526,21 @@ const userSlice = createSlice({
       state.error = "";
     });
     builder.addCase(revertAll.fulfilled, (initialState) => {
-      (initialState.token = ""),
-        (initialState.loading = false),
-        (initialState.error = ""),
-        (initialState.isUserUpdated = false),
-        (initialState.currentUserData = {}),
-        (initialState.selectedUserData = {});
+      initialState.token = "";
+      initialState.loading = false;
+      initialState.error = "";
+      initialState.isUserUpdated = false;
+      initialState.currentUserData = {};
+      initialState.selectedUserData = {};
       initialState.deleteUserData = {};
+      initialState.sendFeedbackData = "";
       initialState.changeThemeData = "default";
+      initialState.email = "";
+      initialState.password = "";
+      initialState.name = "";
+      initialState.loginModalVisible = false;
+      initialState.registerModalVisible = false;
+      initialState.isUserUpdated = false;
     });
     builder.addCase(revertAll.rejected, (state, action) => {
       state.loading = false;
@@ -439,41 +549,70 @@ const userSlice = createSlice({
   },
 });
 
-export const selectUserLoading = (state: any) => {
-  return state.user.loading;
-};
-export const selectUserError = (state: any) => {
-  return state.user.error;
-};
-export const selectUserUpdated = (state: any) => {
-  return state.user.isUserUpdated;
-};
-export const selectSignInWithGoogle = (state: any) => {
-  return state.user.token;
-};
-export const selectSignIn = (state: any) => {
-  return state.user.token;
-};
-export const selectFetchCurrentUserProfile = (state: any) => {
-  return state.user.currentUserData;
-};
-export const selectFetchUserProfile = (state: any) => {
-  return state.user.selectedUserData;
-};
-export const selectSendFriendship = (state: any) => {
-  return state.user.currentUserData;
-};
-export const selectUpdateCurrentUserImage = (state: any) => {
-  return state.user.currentUserData;
-};
-export const selectSendFeedback = (state: any) => {
-  return state.user.currentUserData;
-};
-export const selectChangeTheme = (state: any) => {
-  return state.user.currentUserData.theme;
-};
-export const selectDeleteUser = (state: any) => {
-  return state.user.currentUserData;
-};
+//login states starts
+export const {
+  setEmail,
+  setPassword,
+  setName,
+  setLoginModalVisible,
+  setRegisterModalVisible,
+} = userSlice.actions;
+export const email = (state: any) => state.user.email;
+export const password = (state: any) => state.user.password;
+
+export const name = (state: any) => state.user.name;
+export const loginModalVisible = (state: any) => state.user.loginModalVisible;
+export const registerModalVisible = (state: any) =>
+  state.user.registerModalVisible;
+export const isUserUpdated = (state: any) => state.user.isUserUpdated;
+//login states ends
+
+//refresh states starts
+export const { setRefreshUser } = userSlice.actions;
+export const refreshUser = (state: any) => state.user.refreshUser;
+//refresh states ends
+
+//settings states starts
+export const { setFeedbackModalVisible, setAboutUsModalVisible, setFeedback } =
+  userSlice.actions;
+
+export const feedbackModalVisible = (state: any) =>
+  state.user.feedbackModalVisible;
+export const aboutUsModalVisible = (state: any) =>
+  state.user.aboutUsModalVisible;
+export const feedback = (state: any) => state.user.feedback;
+//settings states ends
+
+//friend states ends
+export const {
+  setAcceptOrRemoveFriendModalVisible,
+  setSelectedUser,
+  setFriendID,
+  setFriendName,
+} = userSlice.actions;
+
+export const acceptOrRemoveFriendModalVisible = (state: any) =>
+  state.user.acceptOrRemoveFriendModalVisible;
+export const selectedUser = (state: any) => state.user.selectedUser;
+export const friendID = (state: any) => state.user.friendID;
+export const friendName = (state: any) => state.user.friendName;
+//friend states ends
+
+export const selectUserLoading = (state: any) => state.user.loading;
+export const selectUserError = (state: any) => state.user.error;
+export const selectUserUpdated = (state: any) => state.user.isUserUpdated;
+export const selectSignInWithGoogle = (state: any) => state.user.token;
+export const selectSignIn = (state: any) => state.user.token;
+export const selectFetchCurrentUserProfile = (state: any) =>
+  state.user.currentUserData;
+export const selectFetchUserProfile = (state: any) =>
+  state.user.selectedUserData;
+export const selectSendFriendship = (state: any) => state.user.currentUserData;
+export const selectUpdateCurrentUserImage = (state: any) =>
+  state.user.currentUserData;
+export const selectSendFeedback = (state: any) => state.user.currentUserData;
+export const selectChangeTheme = (state: any) =>
+  state.user.currentUserData.theme;
+export const selectDeleteUser = (state: any) => state.user.currentUserData;
 
 export default userSlice.reducer;

@@ -1,31 +1,24 @@
 import * as React from "react";
 import { View, Text, Modal, Pressable, Vibration } from "react-native";
-import { useTheme } from "../../context/ThemeContext";
 import ShareOpened from "../add/shareComponents/ShareOpened";
+import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch } from "../../state/store";
+import {
+  setSelectedOverviewHabit,
+  setShareWithFriendListModal,
+  updateHabitSharedWithAction,
+} from "../../state/habitSlice";
 
 const UpdateHabitShareModal = (props: {
-  dispatch: Function;
   name: string;
   habitID: any;
-  updateHabitSharedWithAction: Function;
   shareWithFriendListModal: boolean;
-  setShareWithFriendListModal: Function;
-  currentUser: any;
   shareWithFriendList: string[];
-  setShareWithFriendList: Function;
 }) => {
-  const {
-    dispatch,
-    name,
-    habitID,
-    updateHabitSharedWithAction,
-    shareWithFriendListModal,
-    setShareWithFriendListModal,
-    currentUser,
-    shareWithFriendList,
-    setShareWithFriendList,
-  } = props;
+  const { name, habitID, shareWithFriendListModal, shareWithFriendList } =
+    props;
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -34,7 +27,7 @@ const UpdateHabitShareModal = (props: {
         transparent={true}
         visible={shareWithFriendListModal}
         onRequestClose={() => {
-          setShareWithFriendListModal(!shareWithFriendListModal);
+          dispatch(setShareWithFriendListModal(false));
         }}
       >
         <View
@@ -63,11 +56,7 @@ const UpdateHabitShareModal = (props: {
               elevation: 5,
             }}
           >
-            <ShareOpened
-              currentUser={currentUser}
-              shareWithFriendList={shareWithFriendList}
-              setShareWithFriendList={setShareWithFriendList}
-            />
+            <ShareOpened />
             <Pressable
               style={[
                 {
@@ -79,14 +68,14 @@ const UpdateHabitShareModal = (props: {
               ]}
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
-                setShareWithFriendListModal(!shareWithFriendListModal);
                 dispatch(
                   updateHabitSharedWithAction({
                     _id: habitID,
                     userId: shareWithFriendList[0],
                   })
                 );
-                // setHomeEditBool(false);
+                dispatch(setShareWithFriendListModal(false));
+                dispatch(setSelectedOverviewHabit(null));
               }}
             >
               <Text

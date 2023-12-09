@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import {
   Modal,
   ScrollView,
@@ -13,29 +12,26 @@ import {
 import SettingsButton from "../components/settings/SettingsButton";
 import LinkButton from "../components/settings/LinkButton";
 import { useTheme } from "../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../state/store";
+import {
+  aboutUsModalVisible,
+  deleteUserAction,
+  feedback,
+  feedbackModalVisible,
+  revertAll,
+  sendFeedbackAction,
+  setAboutUsModalVisible,
+  setFeedback,
+  setFeedbackModalVisible,
+} from "../state/userSlice";
+import { revertAllHabit } from "../state/habitSlice";
 
-const Settings = (props: {
-  dispatch: Function;
-  revertAll: Function;
-  revertAllHabit: Function;
-  deleteUserAction: Function;
-  sendFeedbackAction: Function;
-}) => {
-  const {
-    dispatch,
-    revertAll,
-    revertAllHabit,
-    deleteUserAction,
-    sendFeedbackAction,
-  } = props;
-
+const Settings = () => {
   const { theme, setTheme, changeThemeAction } = useTheme();
-
-  const [feedbackModalVisible, setFeedbackModalVisible] =
-    useState<boolean>(false);
-  const [aboutUsModalVisible, setAboutUsModalVisible] =
-    useState<boolean>(false);
-  const [feedback, setFeedback] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const feedbackModalVisibleState = useSelector(feedbackModalVisible);
+  const aboutUsModalVisibleState = useSelector(aboutUsModalVisible);
+  const feedbackState = useSelector(feedback);
 
   return (
     <View
@@ -51,10 +47,8 @@ const Settings = (props: {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={feedbackModalVisible}
-        onRequestClose={() => {
-          setFeedbackModalVisible(!feedbackModalVisible);
-        }}
+        visible={feedbackModalVisibleState}
+        onRequestClose={() => dispatch(setFeedbackModalVisible(false))}
       >
         <View
           style={{
@@ -107,7 +101,9 @@ const Settings = (props: {
               selectTextOnFocus={false}
               maxLength={500}
               placeholder="My feedback is..."
-              onChangeText={(feedback) => setFeedback(feedback)}
+              onChangeText={(feedbackState) =>
+                dispatch(setFeedback(feedbackState))
+              }
               multiline
               placeholderTextColor={theme.fadedPrimaryText}
             />
@@ -120,8 +116,12 @@ const Settings = (props: {
               }}
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
-                setFeedbackModalVisible(!feedbackModalVisible),
-                  dispatch(sendFeedbackAction({ feedback: feedback }));
+                dispatch(setFeedbackModalVisible(false)),
+                  dispatch(
+                    sendFeedbackAction({
+                      feedback: feedbackState,
+                    })
+                  );
               }}
             >
               <Text
@@ -142,10 +142,8 @@ const Settings = (props: {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={aboutUsModalVisible}
-        onRequestClose={() => {
-          setAboutUsModalVisible(!aboutUsModalVisible);
-        }}
+        visible={aboutUsModalVisibleState}
+        onRequestClose={() => dispatch(setAboutUsModalVisible(false))}
       >
         <View
           style={{
@@ -198,7 +196,7 @@ const Settings = (props: {
               }}
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
-                setAboutUsModalVisible(!aboutUsModalVisible);
+                dispatch(setAboutUsModalVisible(false));
               }}
             >
               <Text
@@ -219,7 +217,7 @@ const Settings = (props: {
         style={{
           marginTop: 20,
           marginBottom: 85,
-          opacity: !feedbackModalVisible ? 1 : 0.3,
+          opacity: !feedbackModalVisibleState ? 1 : 0.3,
         }}
       >
         <TouchableOpacity
@@ -241,7 +239,7 @@ const Settings = (props: {
         </TouchableOpacity>
         <TouchableOpacity
           onPressIn={() => Vibration.vibrate(10)}
-          onPress={() => setFeedbackModalVisible(true)}
+          onPress={() => dispatch(setFeedbackModalVisible(true))}
         >
           <SettingsButton buttonName="Send Us Feedback" />
         </TouchableOpacity>
@@ -259,7 +257,7 @@ const Settings = (props: {
         </TouchableOpacity> */}
         <TouchableOpacity
           onPressIn={() => Vibration.vibrate(10)}
-          onPress={() => setAboutUsModalVisible(true)}
+          onPress={() => dispatch(setAboutUsModalVisible(true))}
         >
           <SettingsButton buttonName="About Us" />
         </TouchableOpacity>

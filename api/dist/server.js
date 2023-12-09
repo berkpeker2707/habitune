@@ -24,6 +24,7 @@ const lowLimitter_1 = __importDefault(require("./middlewares/lowLimitter"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
+app.set("trust proxy", 1);
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true })); //Parse URL-encoded bodies
 app.use(formData.parse());

@@ -8,47 +8,13 @@ import NavbarLogo from "../components/icons/NavbarLogo";
 import BackIcon from "../components/icons/BackIcon";
 import ShareIcon from "../components/icons/ShareIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
+import onShare from "../helpers/shareApp";
 import { useTheme } from "../context/ThemeContext";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const OverviewSection = (props: any) => {
-  const {
-    navigation,
-    dispatch,
-    fetchAllHabitsAction,
-    fetchAllHabitsOfSelectedUserAction,
-    deleteHabitAction,
-    updateHabitHiddenAction,
-    revertAll,
-    revertAllHabit,
-    deleteUserAction,
-    sendFeedbackAction,
-    allHabits,
-    allHabitsNumber,
-    habitLoading,
-    refreshing,
-    setRefreshing,
-    onShare,
-    currentHabitWeekStreakState,
-    allHabitDatesDots,
-    selectedOverviewHabit,
-    setSelectedOverviewHabit,
-    updateHabitColorAction,
-    editHabitNameModal,
-    setEditHabitNameModal,
-    overviewColorModal,
-    setOverviewColorModal,
-    overviewColor,
-    setOverviewColor,
-    updateHabitNameAction,
-    updateHabitSharedWithAction,
-    shareWithFriendListModal,
-    setShareWithFriendListModal,
-    currentUser,
-    shareWithFriendList,
-    setShareWithFriendList,
-  } = props;
+  const { navigation } = props;
   const { theme } = useTheme();
 
   return (
@@ -61,42 +27,7 @@ const OverviewSection = (props: any) => {
     >
       <StackNavigator.Screen
         name="Overview"
-        children={(props: any) => (
-          <Overview
-            {...props}
-            dispatch={dispatch}
-            fetchAllHabitsAction={fetchAllHabitsAction}
-            fetchAllHabitsOfSelectedUserAction={
-              fetchAllHabitsOfSelectedUserAction
-            }
-            deleteHabitAction={deleteHabitAction}
-            updateHabitHiddenAction={updateHabitHiddenAction}
-            allHabits={allHabits}
-            allHabitsNumber={allHabitsNumber}
-            habitLoading={habitLoading}
-            refreshing={refreshing}
-            setRefreshing={setRefreshing}
-            isItCurrentUser={true}
-            currentHabitWeekStreakState={currentHabitWeekStreakState}
-            allHabitDatesDots={allHabitDatesDots}
-            selectedOverviewHabit={selectedOverviewHabit}
-            setSelectedOverviewHabit={setSelectedOverviewHabit}
-            updateHabitColorAction={updateHabitColorAction}
-            editHabitNameModal={editHabitNameModal}
-            setEditHabitNameModal={setEditHabitNameModal}
-            overviewColorModal={overviewColorModal}
-            setOverviewColorModal={setOverviewColorModal}
-            overviewColor={overviewColor}
-            setOverviewColor={setOverviewColor}
-            updateHabitNameAction={updateHabitNameAction}
-            updateHabitSharedWithAction={updateHabitSharedWithAction}
-            shareWithFriendListModal={shareWithFriendListModal}
-            setShareWithFriendListModal={setShareWithFriendListModal}
-            currentUser={currentUser}
-            shareWithFriendList={shareWithFriendList}
-            setShareWithFriendList={setShareWithFriendList}
-          />
-        )}
+        children={(props: any) => <Overview {...props} />}
         options={{
           headerTitle: "Overview",
           headerLeft: () => (
@@ -156,16 +87,7 @@ const OverviewSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Settings"
-        children={(props: any) => (
-          <Settings
-            {...props}
-            dispatch={dispatch}
-            revertAll={revertAll}
-            revertAllHabit={revertAllHabit}
-            deleteUserAction={deleteUserAction}
-            sendFeedbackAction={sendFeedbackAction}
-          />
-        )}
+        children={(props: any) => <Settings {...props} />}
         options={{
           headerTitle: "Settings",
           headerLeft: () => (

@@ -9,77 +9,12 @@ const DotGraphBar = (props: {
   habitID: any;
   isHidden: boolean;
   selected: boolean;
-  dispatch: Function;
-  deleteHabitAction: Function;
-  updateHabitColorAction: Function;
-  updateHabitHiddenAction: Function;
-  editHabitNameModal: boolean;
-  setEditHabitNameModal: Function;
-  overviewColorModal: boolean;
-  setOverviewColorModal: Function;
-  overviewColor: string;
-  setOverviewColor: Function;
-  setSelectedOverviewHabit: Function;
-  updateHabitNameAction: Function;
-  updateHabitSharedWithAction: Function;
-  shareWithFriendListModal: boolean;
-  setShareWithFriendListModal: Function;
-  currentUser: any;
-  shareWithFriendList: string[];
-  setShareWithFriendList: Function;
 }) => {
-  const {
-    name,
-    color,
-    allHabitDatesDots,
-    habitID,
-    isHidden,
-    selected,
-    dispatch,
-    deleteHabitAction,
-    updateHabitColorAction,
-    updateHabitHiddenAction,
-    editHabitNameModal,
-    setEditHabitNameModal,
-    overviewColorModal,
-    setOverviewColorModal,
-    overviewColor,
-    setOverviewColor,
-    setSelectedOverviewHabit,
-    updateHabitNameAction,
-    updateHabitSharedWithAction,
-    shareWithFriendListModal,
-    setShareWithFriendListModal,
-    currentUser,
-    shareWithFriendList,
-    setShareWithFriendList,
-  } = props;
+  const { name, color, allHabitDatesDots, habitID, isHidden, selected } = props;
 
   if (selected) {
     return (
-      <DotGraphBarSelected
-        name={name}
-        habitID={habitID}
-        isHidden={isHidden}
-        dispatch={dispatch}
-        deleteHabitAction={deleteHabitAction}
-        updateHabitColorAction={updateHabitColorAction}
-        updateHabitHiddenAction={updateHabitHiddenAction}
-        editHabitNameModal={editHabitNameModal}
-        setEditHabitNameModal={setEditHabitNameModal}
-        overviewColorModal={overviewColorModal}
-        setOverviewColorModal={setOverviewColorModal}
-        overviewColor={overviewColor}
-        setOverviewColor={setOverviewColor}
-        setSelectedOverviewHabit={setSelectedOverviewHabit}
-        updateHabitNameAction={updateHabitNameAction}
-        updateHabitSharedWithAction={updateHabitSharedWithAction}
-        shareWithFriendListModal={shareWithFriendListModal}
-        setShareWithFriendListModal={setShareWithFriendListModal}
-        currentUser={currentUser}
-        shareWithFriendList={shareWithFriendList}
-        setShareWithFriendList={setShareWithFriendList}
-      />
+      <DotGraphBarSelected name={name} habitID={habitID} isHidden={isHidden} />
     );
   } else {
     return (

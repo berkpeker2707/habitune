@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const user_model_1 = __importDefault(require("../user/user.model"));
+const errors_util_1 = require("../utils/errors.util");
 const logger_1 = __importDefault(require("./logger"));
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -23,16 +24,17 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         const token = bearerHeader.split(" ")[1];
         const decoded = jwt.verify(token, jwtS);
         if (!decoded) {
-            return res.json({ message: "Unauthorized!" });
+            logger_1.default.error("Unauthorized");
+            return res.status(500).send((0, errors_util_1.getErrorMessage)("Unauthorized"));
         }
         const user = yield user_model_1.default.find({ email: decoded.user.email });
         req.user = user;
         next();
     }
     catch (error) {
-        logger_1.default.error(error);
-        console.log("token error: ", error);
-        res.json(error);
+        logger_1.default.error("token error: ", error);
+        // console.log("token error: ", error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.default = verifyToken;

@@ -1,7 +1,6 @@
 import * as React from "react";
-import { View, Text, Vibration } from "react-native";
+import { View, Text, Vibration, TouchableOpacity } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import ColorPaletteIcon from "../icons/ColorPaletteIcon";
 import DeleteIcon from "../icons/DeleteIcon";
 import EyeIcon from "../icons/EyeIcon";
@@ -10,54 +9,34 @@ import UpdateHabitNameModal from "../modals/UpdateHabitNameModal";
 import UpdateHabitColorModal from "../modals/UpdateHabitColorModal";
 import UpdateHabitShareModal from "../modals/UpdateHabitShareModal";
 import AddFriendIcon from "../icons/AddFriendIcon";
+import { useAppDispatch, useSelector } from "../../state/store";
+import {
+  updateHabitHiddenAction,
+  deleteHabitAction,
+  setEditHabitNameModal,
+  setOverviewColorModal,
+  setSelectedOverviewHabit,
+  setShareWithFriendListModal,
+  editHabitNameModal,
+  overviewColorModal,
+  shareWithFriendListModal,
+  color as colorFromSlice,
+  shareWithFriendList,
+} from "../../state/habitSlice";
 
 const DotGraphBarSelected = (props: {
   name: string;
   habitID: any;
   isHidden: boolean;
-  dispatch: Function;
-  deleteHabitAction: Function;
-  updateHabitColorAction: Function;
-  updateHabitHiddenAction: Function;
-  editHabitNameModal: boolean;
-  setEditHabitNameModal: Function;
-  overviewColorModal: boolean;
-  setOverviewColorModal: Function;
-  overviewColor: string;
-  setOverviewColor: Function;
-  setSelectedOverviewHabit: Function;
-  updateHabitNameAction: Function;
-  updateHabitSharedWithAction: Function;
-  shareWithFriendListModal: boolean;
-  setShareWithFriendListModal: Function;
-  currentUser: any;
-  shareWithFriendList: string[];
-  setShareWithFriendList: Function;
 }) => {
-  const {
-    name,
-    habitID,
-    isHidden,
-    dispatch,
-    deleteHabitAction,
-    updateHabitColorAction,
-    updateHabitHiddenAction,
-    editHabitNameModal,
-    setEditHabitNameModal,
-    overviewColorModal,
-    setOverviewColorModal,
-    overviewColor,
-    setOverviewColor,
-    setSelectedOverviewHabit,
-    updateHabitNameAction,
-    updateHabitSharedWithAction,
-    shareWithFriendListModal,
-    setShareWithFriendListModal,
-    currentUser,
-    shareWithFriendList,
-    setShareWithFriendList,
-  } = props;
+  const { name, habitID, isHidden } = props;
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const editHabitNameModalState = useSelector(editHabitNameModal);
+  const overviewColorModalState = useSelector(overviewColorModal);
+  const shareWithFriendListModalState = useSelector(shareWithFriendListModal);
+  const colorState = useSelector(colorFromSlice);
+  const shareWithFriendListState = useSelector(shareWithFriendList);
 
   return (
     <>
@@ -99,33 +78,19 @@ const DotGraphBarSelected = (props: {
           <UpdateHabitNameModal
             name={name}
             habitID={habitID}
-            editHabitNameModal={editHabitNameModal}
-            setEditHabitNameModal={setEditHabitNameModal}
-            setSelectedOverviewHabit={setSelectedOverviewHabit}
-            dispatch={dispatch}
-            updateHabitNameAction={updateHabitNameAction}
+            editHabitNameModal={editHabitNameModalState}
           />
           <UpdateHabitColorModal
             name={name}
             habitID={habitID}
-            overviewColorModal={overviewColorModal}
-            setOverviewColorModal={setOverviewColorModal}
-            overviewColor={overviewColor}
-            setOverviewColor={setOverviewColor}
-            dispatch={dispatch}
-            updateHabitColorAction={updateHabitColorAction}
-            setSelectedOverviewHabit={setSelectedOverviewHabit}
+            overviewColorModal={overviewColorModalState}
+            color={colorState}
           />
           <UpdateHabitShareModal
-            dispatch={dispatch}
             name={name}
             habitID={habitID}
-            updateHabitSharedWithAction={updateHabitSharedWithAction}
-            shareWithFriendListModal={shareWithFriendListModal}
-            setShareWithFriendListModal={setShareWithFriendListModal}
-            currentUser={currentUser}
-            shareWithFriendList={shareWithFriendList}
-            setShareWithFriendList={setShareWithFriendList}
+            shareWithFriendListModal={shareWithFriendListModalState}
+            shareWithFriendList={shareWithFriendListState}
           />
           <View
             style={{
@@ -138,7 +103,9 @@ const DotGraphBarSelected = (props: {
           >
             <TouchableOpacity
               onPressIn={() => Vibration.vibrate(10)}
-              onPress={() => setEditHabitNameModal(!editHabitNameModal)}
+              onPress={() => {
+                dispatch(setEditHabitNameModal(true));
+              }}
             >
               <EditIcon />
             </TouchableOpacity>
@@ -154,9 +121,9 @@ const DotGraphBarSelected = (props: {
           >
             <TouchableOpacity
               onPressIn={() => Vibration.vibrate(10)}
-              onPress={() =>
-                setShareWithFriendListModal(!shareWithFriendListModal)
-              }
+              onPress={() => {
+                dispatch(setShareWithFriendListModal(true));
+              }}
             >
               <AddFriendIcon />
             </TouchableOpacity>
@@ -173,7 +140,7 @@ const DotGraphBarSelected = (props: {
             <TouchableOpacity
               onPressIn={() => Vibration.vibrate(10)}
               onPress={() => {
-                setOverviewColorModal(!overviewColorModal);
+                dispatch(setOverviewColorModal(true));
               }}
             >
               <ColorPaletteIcon />
@@ -197,7 +164,7 @@ const DotGraphBarSelected = (props: {
                     hidden: !isHidden,
                   })
                 );
-                setSelectedOverviewHabit(null);
+                dispatch(setSelectedOverviewHabit(null));
               }}
             >
               <EyeIcon hidden={isHidden} />
@@ -220,7 +187,7 @@ const DotGraphBarSelected = (props: {
                     _id: habitID,
                   })
                 );
-                setSelectedOverviewHabit(null);
+                dispatch(setSelectedOverviewHabit(null));
               }}
             >
               <DeleteIcon />
