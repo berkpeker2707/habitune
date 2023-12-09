@@ -4,66 +4,24 @@ import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
 import { useTheme } from "../../context/ThemeContext";
+import {
+  allHabitsNumber,
+  selectAllHabitDatesDots,
+  selectHabitLoading,
+  selectHabits,
+  selectedOverviewHabit,
+  setSelectedOverviewHabit,
+} from "../../state/habitSlice";
+import { useAppDispatch, useSelector } from "../../state/store";
 
-const DotGraph = (props: {
-  dispatch: Function;
-  fetchAllHabitsAction: Function;
-  fetchAllHabitsOfSelectedUserAction: Function;
-  deleteHabitAction: Function;
-  updateHabitHiddenAction: Function;
-  allHabits: Array<any>;
-  allHabitsNumber: number;
-  habitLoading: boolean;
-  refreshing: boolean;
-  setRefreshing: Function;
-  allHabitDatesDots: Array<boolean>;
-  selectedOverviewHabit: number;
-  setSelectedOverviewHabit: Function;
-  updateHabitColorAction: Function;
-  editHabitNameModal: boolean;
-  setEditHabitNameModal: Function;
-  overviewColorModal: boolean;
-  setOverviewColorModal: Function;
-  overviewColor: string;
-  setOverviewColor: Function;
-  updateHabitNameAction: Function;
-  updateHabitSharedWithAction: Function;
-  shareWithFriendListModal: boolean;
-  setShareWithFriendListModal: Function;
-  currentUser: any;
-  shareWithFriendList: string[];
-  setShareWithFriendList: Function;
-}) => {
-  const {
-    dispatch,
-    fetchAllHabitsAction,
-    fetchAllHabitsOfSelectedUserAction,
-    deleteHabitAction,
-    updateHabitHiddenAction,
-    allHabits,
-    allHabitsNumber,
-    habitLoading,
-    refreshing,
-    setRefreshing,
-    allHabitDatesDots,
-    selectedOverviewHabit,
-    setSelectedOverviewHabit,
-    updateHabitColorAction,
-    editHabitNameModal,
-    setEditHabitNameModal,
-    overviewColorModal,
-    setOverviewColorModal,
-    overviewColor,
-    setOverviewColor,
-    updateHabitNameAction,
-    updateHabitSharedWithAction,
-    shareWithFriendListModal,
-    setShareWithFriendListModal,
-    currentUser,
-    shareWithFriendList,
-    setShareWithFriendList,
-  } = props;
+const DotGraph = () => {
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const habitLoading = useSelector(selectHabitLoading);
+  const allHabits = useSelector(selectHabits);
+  const allHabitsNumberState = useSelector(allHabitsNumber);
+  const allHabitDatesDots = useSelector(selectAllHabitDatesDots);
+  const selectedOverviewHabitState = useSelector(selectedOverviewHabit);
 
   return (
     <View
@@ -75,7 +33,7 @@ const DotGraph = (props: {
         alignItems: "center",
       }}
     >
-      {!habitLoading && allHabitDatesDots && allHabitsNumber > 0 ? (
+      {!habitLoading && allHabitDatesDots && allHabitsNumberState > 0 ? (
         <ScrollView
           style={{
             marginBottom: 85,
@@ -98,13 +56,13 @@ const DotGraph = (props: {
               // activeOpacity={1}
               key={uuid.v4() as string}
               onPress={() =>
-                selectedOverviewHabit === allHabitsIndex
+                selectedOverviewHabitState === allHabitsIndex
                   ? ""
-                  : setSelectedOverviewHabit(null)
+                  : dispatch(setSelectedOverviewHabit(null))
               }
-              onLongPress={() => {
-                setSelectedOverviewHabit(() => allHabitsIndex);
-              }}
+              onLongPress={() =>
+                dispatch(setSelectedOverviewHabit(allHabitsIndex))
+              }
             >
               <DotGraphBar
                 name={allHabitsItem.name}
@@ -116,26 +74,8 @@ const DotGraph = (props: {
                 habitID={allHabitsItem._id}
                 isHidden={allHabitsItem.isHidden}
                 selected={
-                  selectedOverviewHabit === allHabitsIndex ? true : false
+                  selectedOverviewHabitState === allHabitsIndex ? true : false
                 }
-                dispatch={dispatch}
-                deleteHabitAction={deleteHabitAction}
-                updateHabitColorAction={updateHabitColorAction}
-                updateHabitHiddenAction={updateHabitHiddenAction}
-                editHabitNameModal={editHabitNameModal}
-                setEditHabitNameModal={setEditHabitNameModal}
-                overviewColorModal={overviewColorModal}
-                setOverviewColorModal={setOverviewColorModal}
-                overviewColor={overviewColor}
-                setOverviewColor={setOverviewColor}
-                setSelectedOverviewHabit={setSelectedOverviewHabit}
-                updateHabitNameAction={updateHabitNameAction}
-                updateHabitSharedWithAction={updateHabitSharedWithAction}
-                shareWithFriendListModal={shareWithFriendListModal}
-                setShareWithFriendListModal={setShareWithFriendListModal}
-                currentUser={currentUser}
-                shareWithFriendList={shareWithFriendList}
-                setShareWithFriendList={setShareWithFriendList}
               />
             </TouchableOpacity>
           ))}
