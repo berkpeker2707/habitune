@@ -1,7 +1,6 @@
 import * as React from "react";
 import { TextInput } from "react-native";
 import StreakBar from "./StreakGraphBar";
-
 import uuid from "react-native-uuid";
 import { View } from "moti";
 import { useTheme } from "../../context/ThemeContext";
