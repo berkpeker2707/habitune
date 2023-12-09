@@ -1,6 +1,5 @@
 import * as React from "react";
-import { memo, useCallback, useEffect } from "react";
-
+import { memo, useEffect } from "react";
 import {
   ScrollView,
   TextInput,
@@ -13,157 +12,101 @@ import DotGraph from "../components/overview/DotGraph";
 import StreakGraph from "../components/overview/StreakGraph";
 import SkeletonPlaceholder from "../components/skeleton/SkeletonPlaceholder";
 import { useTheme } from "../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../state/store";
+import {
+  allHabitsNumber,
+  refreshHabits,
+  selectCurrentHabitWeekStreak,
+  selectHabitLoading,
+  selectHabits,
+  setSelectedOverviewHabit,
+} from "../state/habitSlice";
 import { useIsFocused } from "@react-navigation/native";
+import refreshCurrentUsersHabits from "../helpers/refreshers/refreshCurrentUsersHabits";
 
-const Overview = memo(
-  (props: {
-    refreshCurrentUsersHabits: Function;
-    dispatch: Function;
-    fetchAllHabitsAction: Function;
-    fetchAllHabitsOfSelectedUserAction: Function;
-    deleteHabitAction: Function;
-    updateHabitHiddenAction: Function;
-    allHabits: [];
-    allHabitsNumber: number;
-    habitLoading: boolean;
-    refreshing: boolean;
-    setRefreshing: Function;
-    isItCurrentUser: boolean;
-    currentHabitWeekStreakState: [];
-    allHabitDatesDots: [];
-    selectedOverviewHabit: number;
-    setSelectedOverviewHabit: Function;
-    updateHabitColorAction: Function;
-    editHabitNameModal: boolean;
-    setEditHabitNameModal: Function;
-    overviewColorModal: boolean;
-    setOverviewColorModal: Function;
-    overviewColor: string;
-    setOverviewColor: Function;
-    updateHabitNameAction: Function;
-    updateHabitSharedWithAction: Function;
-    shareWithFriendListModal: boolean;
-    setShareWithFriendListModal: Function;
-    currentUser: any;
-    shareWithFriendList: string[];
-    setShareWithFriendList: Function;
-  }) => {
-    const {
-      refreshCurrentUsersHabits,
-      dispatch,
-      fetchAllHabitsAction,
-      fetchAllHabitsOfSelectedUserAction,
-      deleteHabitAction,
-      updateHabitHiddenAction,
-      allHabits,
-      allHabitsNumber,
-      habitLoading,
-      refreshing,
-      setRefreshing,
-      isItCurrentUser,
-      currentHabitWeekStreakState,
-      allHabitDatesDots,
-      selectedOverviewHabit,
-      setSelectedOverviewHabit,
-      updateHabitColorAction,
-      editHabitNameModal,
-      setEditHabitNameModal,
-      overviewColorModal,
-      setOverviewColorModal,
-      overviewColor,
-      setOverviewColor,
-      updateHabitNameAction,
-      updateHabitSharedWithAction,
-      shareWithFriendListModal,
-      setShareWithFriendListModal,
-      currentUser,
-      shareWithFriendList,
-      setShareWithFriendList,
-    } = props;
-    const { theme } = useTheme();
+const Overview = memo(() => {
+  const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const refreshHabitsState = useSelector(refreshHabits);
+  const habitLoading = useSelector(selectHabitLoading);
+  const allHabitsNumberState = useSelector(allHabitsNumber);
+  const allHabits = useSelector(selectHabits);
+  const currentHabitWeekStreakState = useSelector(selectCurrentHabitWeekStreak);
 
-    const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
 
-    const handleBlur = () => {
-      setSelectedOverviewHabit(null);
-    };
+  const handleBlur = () => dispatch(setSelectedOverviewHabit(null));
 
-    useEffect(() => {
-      setSelectedOverviewHabit(null);
-    }, [isFocused]);
+  useEffect(() => {
+    dispatch(setSelectedOverviewHabit(null));
+  }, [isFocused]);
 
-    if (habitLoading) {
-      return (
-        <View
+  if (habitLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: theme.backgroundColor,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView
           style={{
-            display: "flex",
-            height: "100%",
-            backgroundColor: theme.backgroundColor,
-            justifyContent: "center",
-            alignItems: "center",
+            marginBottom: 0,
           }}
         >
-          <ScrollView
-            style={{
-              marginBottom: 0,
-            }}
-          >
-            <Text style={{ color: theme.primaryText }}>Loading...</Text>
-            <SkeletonPlaceholder width={345} height={39.5} radius={0} />
-          </ScrollView>
-        </View>
-      );
-    } else if (!habitLoading && allHabitsNumber === 0) {
-      return (
-        <View
+          <Text style={{ color: theme.primaryText }}>Loading...</Text>
+          <SkeletonPlaceholder width={345} height={39.5} radius={0} />
+        </ScrollView>
+      </View>
+    );
+  } else if (!habitLoading && allHabitsNumberState === 0) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: theme.backgroundColor,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView
           style={{
-            display: "flex",
-            height: "100%",
-            backgroundColor: theme.backgroundColor,
-            justifyContent: "center",
-            alignItems: "center",
+            marginBottom: 0,
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshHabitsState}
+              onRefresh={() => refreshCurrentUsersHabits(dispatch)}
+            />
+          }
         >
-          <ScrollView
+          <TextInput
             style={{
-              marginBottom: 0,
+              height: 29.5,
+              paddingLeft: 20,
+              color: theme.fadedShadowColor,
+              textAlign: "center",
             }}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={() =>
-                  refreshCurrentUsersHabits(
-                    isItCurrentUser,
-                    setRefreshing,
-                    fetchAllHabitsAction
-                  )
-                }
-              />
-            }
+            editable={false}
+            selectTextOnFocus={false}
           >
-            <TextInput
-              style={{
-                height: 29.5,
-                paddingLeft: 20,
-                color: theme.fadedShadowColor,
-                textAlign: "center",
-              }}
-              editable={false}
-              selectTextOnFocus={false}
-            >
-              Streaks Empty 😔
-            </TextInput>
-          </ScrollView>
-        </View>
-      );
-    } else if (
-      !habitLoading &&
-      allHabitsNumber > 0 &&
-      currentHabitWeekStreakState
-    ) {
-      return (
-        <TouchableWithoutFeedback onPress={handleBlur}>
-          {/* <View
+            Streaks Empty 😔
+          </TextInput>
+        </ScrollView>
+      </View>
+    );
+  } else if (
+    !habitLoading &&
+    allHabitsNumberState > 0 &&
+    currentHabitWeekStreakState
+  ) {
+    return (
+      <TouchableWithoutFeedback onPress={handleBlur}>
+        {/* <View
             style={{
               display: "flex",
               height: "100%",
@@ -172,86 +115,47 @@ const Overview = memo(
               alignItems: "center",
             }}
           > */}
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            style={{
-              marginBottom: 85,
-            }}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={() =>
-                  refreshCurrentUsersHabits(
-                    isItCurrentUser,
-                    setRefreshing,
-                    fetchAllHabitsAction
-                  )
-                }
-              />
-            }
-          >
-            {currentHabitWeekStreakState.some(
-              (value: number) => value !== 0
-            ) ? (
-              <StreakGraph
-                allHabits={allHabits}
-                currentHabitWeekStreak={currentHabitWeekStreakState}
-              />
-            ) : (
-              <></>
-            )}
-            <View style={{ margin: 20 }}></View>
-            <DotGraph
-              dispatch={dispatch}
-              fetchAllHabitsAction={fetchAllHabitsAction}
-              fetchAllHabitsOfSelectedUserAction={
-                fetchAllHabitsOfSelectedUserAction
-              }
-              allHabits={allHabits}
-              allHabitsNumber={allHabitsNumber}
-              habitLoading={habitLoading}
-              refreshing={refreshing}
-              setRefreshing={setRefreshing}
-              allHabitDatesDots={allHabitDatesDots}
-              deleteHabitAction={deleteHabitAction}
-              updateHabitHiddenAction={updateHabitHiddenAction}
-              selectedOverviewHabit={selectedOverviewHabit}
-              setSelectedOverviewHabit={setSelectedOverviewHabit}
-              updateHabitColorAction={updateHabitColorAction}
-              editHabitNameModal={editHabitNameModal}
-              setEditHabitNameModal={setEditHabitNameModal}
-              overviewColorModal={overviewColorModal}
-              setOverviewColorModal={setOverviewColorModal}
-              overviewColor={overviewColor}
-              setOverviewColor={setOverviewColor}
-              updateHabitNameAction={updateHabitNameAction}
-              updateHabitSharedWithAction={updateHabitSharedWithAction}
-              shareWithFriendListModal={shareWithFriendListModal}
-              setShareWithFriendListModal={setShareWithFriendListModal}
-              currentUser={currentUser}
-              shareWithFriendList={shareWithFriendList}
-              setShareWithFriendList={setShareWithFriendList}
-            />
-          </ScrollView>
-          {/* </View> */}
-        </TouchableWithoutFeedback>
-      );
-    } else {
-      return (
-        <View
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
           style={{
-            display: "flex",
-            height: "100%",
-            backgroundColor: theme.backgroundColor,
-            justifyContent: "center",
-            alignItems: "center",
+            marginBottom: 85,
           }}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshHabitsState}
+              onRefresh={() => refreshCurrentUsersHabits(dispatch)}
+            />
+          }
         >
-          <Text>"I have no memory of this place..." 🧙🏻</Text>
-        </View>
-      );
-    }
+          {currentHabitWeekStreakState.some((value: number) => value !== 0) ? (
+            <StreakGraph
+              allHabits={allHabits}
+              currentHabitWeekStreakState={currentHabitWeekStreakState}
+            />
+          ) : (
+            <></>
+          )}
+          <View style={{ margin: 20 }}></View>
+          <DotGraph />
+        </ScrollView>
+        {/* </View> */}
+      </TouchableWithoutFeedback>
+    );
+  } else {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: theme.backgroundColor,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>"I have no memory of this place..." 🧙🏻</Text>
+      </View>
+    );
   }
-);
+});
 
 export default Overview;
