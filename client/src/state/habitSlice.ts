@@ -106,6 +106,12 @@ interface habitTypes {
   updateHabitFirstAndLastDateData: object;
   updateHabitDatesData: object;
   updateHabitCompletedDateData: object;
+
+  //habit home states start
+  refreshHabits: boolean;
+  tempBarFilled: boolean[];
+  //habit home states ends
+
   //habit add states start
   taskUpcomingDates: string[];
   taskFirstDate: Date;
@@ -140,6 +146,12 @@ const initialState: habitTypes = {
   updateHabitFirstAndLastDateData: {},
   updateHabitDatesData: {},
   updateHabitCompletedDateData: {},
+
+  //habit home states start
+  refreshHabits: false,
+  tempBarFilled: [],
+  //habit home states ends
+
   //habit add states start
   taskFirstDate: new Date(
     todayTemp.getFullYear(),
@@ -797,6 +809,15 @@ const habitSlice = createSlice({
   name: "habit",
   initialState,
   reducers: {
+    //habit home states start
+    setRefreshHabits: (state, action) => {
+      state.refreshHabits = action.payload;
+    },
+    setTempBarFilled: (state, action) => {
+      state.tempBarFilled = action.payload;
+    },
+    //habit home states ends
+
     //habit add states start
     setTaskFirstDate: (state, action) => {
       state.taskFirstDate = action.payload;
@@ -1140,6 +1161,12 @@ const habitSlice = createSlice({
   },
 });
 
+//habit home states start
+export const { setTempBarFilled, setRefreshHabits } = habitSlice.actions;
+export const refreshHabits = (state: any) => state.habit.refreshHabits;
+export const tempBarFilled = (state: any) => state.habit.tempBarFilled;
+//habit home states ends
+
 //habit add states start
 export const {
   setTaskFirstDate,
@@ -1172,7 +1199,11 @@ export const selectCreateHabit = (state: any) => state.habit.singleHabitData;
 export const selectHabits = (state: any) => state.habit.totalHabitsData;
 export const selectHabitsOfSelectedUser = (state: any) =>
   state.habit.allHabitsOfSelectedUserData;
+export const allHabitsOfSelectedUserNumber = (state: any) =>
+  state.habit.allHabitsOfSelectedUserData.length;
 export const selectHabitsToday = (state: any) => state.habit.todaysHabitsData;
+export const allHabitsTodayNumber = (state: any) =>
+  state.habit.todaysHabitsData.length;
 export const selectHabitsTodayBoolean = (state: any) =>
   state.habit.todaysHabitBooleanData;
 export const selectCurrentHabitWeekStreak = (state: any) =>
