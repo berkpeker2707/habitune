@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   TouchableOpacity,
   View,
@@ -8,32 +8,34 @@ import {
   Vibration,
   ActivityIndicator,
 } from "react-native";
-
 import { StatusBar } from "expo-status-bar";
-
 import SigninBackground from "../assets/images/signin/signinBackground.png";
 import GoogleSigninButton from "../components/signin/GoogleSigninButton";
 import SigninLogo from "../components/signin/SigninLogo";
 import SinginText from "../components/signin/SinginText";
-
 import LoginModal from "../components/signin/LoginModal";
 import RegisterModal from "../components/signin/RegisterModal";
-
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
-
-import { signInWithGoogleAction } from "../state/userSlice";
 import { useTheme } from "../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../state/store";
+import {
+  selectUserLoading,
+  signInWithGoogleAction,
+  loginModalVisible,
+  setLoginModalVisible,
+  registerModalVisible,
+  setRegisterModalVisible,
+} from "../state/userSlice";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const Signin = (props: any) => {
-  const { dispatch, userLoading } = props;
+const Signin = () => {
   const { theme } = useTheme();
-
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
-  const [registerModalVisible, setRegisterModalVisible] = useState(false);
-  const [userInfo, setUserInfo] = useState();
+  const dispatch = useAppDispatch();
+  const userLoading = useSelector(selectUserLoading);
+  const loginModalVisibleState = useSelector(loginModalVisible);
+  const registerModalVisibleState = useSelector(registerModalVisible);
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
       "1018578640461-ujr095rgmk9315k12ror4q07h3fdnq8l.apps.googleusercontent.com",
@@ -48,44 +50,35 @@ const Signin = (props: any) => {
   }, [response]);
 
   async function handleSigninWithGoogle() {
-    if (!userInfo) {
-      if (response?.type === "success") {
-        const responseFromGoogle = await fetch(
-          "https://www.googleapis.com/userinfo/v2/me",
-          {
-            headers: {
-              Authorization: `Bearer ${response.authentication?.accessToken}`,
-            },
-          }
-        );
+    if (response?.type === "success") {
+      const responseFromGoogle = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: {
+            Authorization: `Bearer ${response.authentication?.accessToken}`,
+          },
+        }
+      );
 
-        const user = await responseFromGoogle.json();
+      const user = await responseFromGoogle.json();
 
-        await dispatch(signInWithGoogleAction(user));
-      }
+      await dispatch(signInWithGoogleAction(user));
     }
   }
 
   return !userLoading ? (
     <>
       <StatusBar style="light" />
-      <LoginModal
-        dispatch={dispatch}
-        loginModalVisible={loginModalVisible}
-        setLoginModalVisible={setLoginModalVisible}
-      />
-      <RegisterModal
-        dispatch={dispatch}
-        registerModalVisible={registerModalVisible}
-        setRegisterModalVisible={setRegisterModalVisible}
-      />
+      <LoginModal />
+      <RegisterModal />
       <View
         style={{
           display: "flex",
           height: "100%",
           backgroundColor: theme.backgroundColor,
           justifyContent: "center",
-          opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
+          opacity:
+            loginModalVisibleState || registerModalVisibleState ? 0.3 : 1,
           // alignItems: "center",
         }}
       >
@@ -152,7 +145,9 @@ const Signin = (props: any) => {
                   alignContent: "center",
                 }}
                 onPressIn={() => Vibration.vibrate(10)}
-                onPress={() => setLoginModalVisible(!loginModalVisible)}
+                onPress={() => {
+                  dispatch(setLoginModalVisible(!loginModalVisibleState));
+                }}
               >
                 <Text style={{ textDecorationLine: "underline" }}>Login</Text>
               </TouchableOpacity>
@@ -167,7 +162,9 @@ const Signin = (props: any) => {
                   alignContent: "center",
                 }}
                 onPressIn={() => Vibration.vibrate(10)}
-                onPress={() => setRegisterModalVisible(!registerModalVisible)}
+                onPress={() =>
+                  dispatch(setRegisterModalVisible(!registerModalVisibleState))
+                }
               >
                 <Text style={{ textDecorationLine: "underline" }}>
                   Register
@@ -186,7 +183,7 @@ const Signin = (props: any) => {
         height: "100%",
         backgroundColor: theme.backgroundColor,
         justifyContent: "center",
-        opacity: loginModalVisible || registerModalVisible ? 0.3 : 1,
+        opacity: loginModalVisibleState || registerModalVisibleState ? 0.3 : 1,
         // alignItems: "center",
       }}
     >

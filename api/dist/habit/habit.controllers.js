@@ -25,10 +25,10 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
         if (checkUser && checkUser.habits.length >= 20) {
-            logger_1.default.error("User already has 20 habits.");
+            logger_1.default.error("User already has 20 habits");
             return res
                 .status(500)
-                .send((0, errors_util_1.getErrorMessage)("User already has 20 habits."));
+                .send((0, errors_util_1.getErrorMessage)("User already has 20 habits"));
         }
         else {
             const newHabit = yield habit_model_1.default.create({
@@ -60,6 +60,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .slice("upcomingDates", -10)
                 .exec();
             // console.log("newHabitItem: ", newHabitItem);
+            logger_1.default.info(newHabit);
             res.status(200).json(newHabit);
         }
     }
@@ -76,6 +77,7 @@ const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             .slice("dates", -10) //last 10 numbers of the dates array
             .slice("upcomingDates", -10)
             .exec();
+        logger_1.default.info(loggedinUsersHabits);
         res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
@@ -94,6 +96,7 @@ const getAllHabitsOfSelectedUser = (req, res) => __awaiter(void 0, void 0, void 
             .slice("dates", -10) //last 10 numbers of the dates array
             .slice("upcomingDates", -10)
             .exec();
+        logger_1.default.info(loggedinUsersHabits);
         res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
@@ -121,6 +124,7 @@ const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function
             .slice("dates", -10) //last 10 numbers of the dates array
             .slice("upcomingDates", -10)
             .exec();
+        logger_1.default.info(loggedinUsersTodayHabits);
         res.status(200).json(loggedinUsersTodayHabits);
     }
     catch (error) {
@@ -137,6 +141,7 @@ const getSingleHabit = (req, res) => __awaiter(void 0, void 0, void 0, function*
             .slice("dates", -10) //last 10 numbers of the dates array
             .slice("upcomingDates", -10)
             .exec();
+        logger_1.default.info(loggedinUsersHabits);
         res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
@@ -153,7 +158,8 @@ const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
             $pull: { habits: req.params.id },
         }, { upsert: true });
-        res.status(200).json("Habit deleted.");
+        logger_1.default.info("Habit deleted");
+        res.status(200).json("Habit deleted");
     }
     catch (error) {
         logger_1.default.error(error);
@@ -171,11 +177,12 @@ const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
+            logger_1.default.info(selectedHabit);
             res.status(200).json(selectedHabit);
         }
         else {
-            logger_1.default.error("Habit name is invalid.");
-            return res.status(400).json({ error: "Habit name is invalid." });
+            logger_1.default.error("Habit name is invalid");
+            return res.status(500).send((0, errors_util_1.getErrorMessage)("Habit name is invalid"));
         }
     }
     catch (error) {
@@ -205,11 +212,12 @@ const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
+            logger_1.default.info(selectedHabit);
             res.status(200).json(selectedHabit);
         }
         else {
-            logger_1.default.error("Habit color is invalid.");
-            return res.status(400).json({ error: "Habit color is invalid." });
+            logger_1.default.error("Habit color is invalid");
+            return res.status(500).send((0, errors_util_1.getErrorMessage)("Habit color is invalid"));
         }
     }
     catch (error) {
@@ -230,6 +238,7 @@ const updateHabitSharedWith = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
+            logger_1.default.info(updatedSelectedHabit);
             res.status(200).json(updatedSelectedHabit);
         }
         else {
@@ -238,6 +247,7 @@ const updateHabitSharedWith = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
+            logger_1.default.info(updatedSelectedHabit);
             res.status(200).json(updatedSelectedHabit);
         }
     }
@@ -257,10 +267,14 @@ const updateHabitFirstAndLastDate = (req, res) => __awaiter(void 0, void 0, void
                 .slice("dates", -10) //last 10 numbers of the dates array
                 .slice("upcomingDates", -10)
                 .exec();
+            logger_1.default.info(selectedHabit);
             res.status(200).json(selectedHabit);
         }
         else {
-            res.status(500).json("Last date cannot be earlier than first date.");
+            logger_1.default.error("Last date cannot be earlier than first date");
+            return res
+                .status(500)
+                .send((0, errors_util_1.getErrorMessage)("Last date cannot be earlier than first date"));
         }
     }
     catch (error) {
@@ -282,6 +296,7 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 .slice("upcomingDates", -10)
                 .exec();
             // console.log(true);
+            logger_1.default.info(updatedSelectedHabit);
             res.status(200).json(updatedSelectedHabit);
         }
         else {
@@ -291,6 +306,7 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 .slice("upcomingDates", -10)
                 .exec();
             // console.log(false);
+            logger_1.default.info(updatedSelectedHabit);
             res.status(200).json(updatedSelectedHabit);
         }
     }
@@ -332,12 +348,14 @@ const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0,
                     dayNinetyNotificationSent: false,
                 },
             }, { upsert: true });
+            logger_1.default.info(selectedHabit);
             res.status(200).json(selectedHabit);
         }
         else {
             yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({
                 $pop: { dates: 1 }, // Remove the last element from the 'dates' array
             }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
+            logger_1.default.info(selectedHabit);
             res.status(200).json(selectedHabit);
         }
     }
@@ -356,6 +374,7 @@ const updateHabitHidden = (req, res) => __awaiter(void 0, void 0, void 0, functi
             .slice("dates", -10) //last 10 numbers of the dates array
             .slice("upcomingDates", -10)
             .exec();
+        logger_1.default.info(selectedHabit);
         res.status(200).json(selectedHabit);
     }
     catch (error) {

@@ -2,15 +2,20 @@ import * as React from "react";
 import { TouchableOpacity, Vibration, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import FriendBar from "./FriendBar";
-
 import uuid from "react-native-uuid";
+import { useAppDispatch, useSelector } from "../../../state/store";
+import {
+  shareWithFriendList,
+  setShareWithFriendList,
+} from "../../../state/habitSlice";
 
 const FriendList = (props: {
   currentUser: { friends: Array<object>; pending: boolean };
-  shareWithFriendList: string[];
-  setShareWithFriendList: Function;
 }) => {
-  const { currentUser, shareWithFriendList, setShareWithFriendList } = props;
+  const dispatch = useAppDispatch();
+  const shareWithFriendListState = useSelector(shareWithFriendList);
+
+  const { currentUser } = props;
 
   return (
     <ScrollView>
@@ -32,20 +37,24 @@ const FriendList = (props: {
                 <TouchableOpacity
                   onPressIn={() => Vibration.vibrate(10)}
                   onPress={() =>
-                    shareWithFriendList?.includes(friendsItem.friend._id)
-                      ? setShareWithFriendList(() =>
-                          shareWithFriendList.filter(
-                            (item) => item !== friendsItem.friend._id
+                    shareWithFriendListState?.includes(friendsItem.friend._id)
+                      ? dispatch(
+                          setShareWithFriendList(
+                            shareWithFriendListState.filter(
+                              (item: any) => item !== friendsItem.friend._id
+                            )
                           )
                         )
-                      : setShareWithFriendList(() => [friendsItem.friend._id])
+                      : dispatch(
+                          setShareWithFriendList([friendsItem.friend._id])
+                        )
                   }
                 >
                   <FriendBar
                     friendProfilePicture={friendsItem.friend.image}
                     friendName={friendsItem.friend.firstName}
                     friendSelected={
-                      shareWithFriendList?.includes(friendsItem.friend._id)
+                      shareWithFriendListState?.includes(friendsItem.friend._id)
                         ? true
                         : false
                     }

@@ -2,18 +2,15 @@ import * as React from "react";
 
 import { Image, View, Text, TouchableOpacity } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch } from "../../state/store";
+import { updateCurrentUserImageAction } from "../../state/userSlice";
 
 import * as ImagePicker from "expo-image-picker";
 
-const ProfileCard = (props: {
-  name: string;
-  email: string;
-  image: string;
-  dispatch: Function;
-  updateCurrentUserImageAction: Function;
-}) => {
-  const { name, email, image, dispatch, updateCurrentUserImageAction } = props;
+const ProfileCard = (props: { name: string; email: string; image: string }) => {
+  const { name, email, image } = props;
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

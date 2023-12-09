@@ -35,7 +35,7 @@ const TopNavbarProfileImage = (props: any) => {
       />
     </View>
   ) : (
-    <SkeletonPlaceholder width={35} height={35} radius={75} />
+    <></>
   );
 };
 

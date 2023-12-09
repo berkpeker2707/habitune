@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { View, Image, Text as RText, TextInput } from "react-native";
+import { View, Image, Text as RText } from "react-native";
 import Svg, {
   G,
   Rect,
@@ -22,15 +22,8 @@ const HabitBar = memo(
       sharedWith: [] | [{ image: string }];
     };
     itemStroke: number;
-    // nameChangable: boolean;
-    // setHabitNameState: Function;
   }) => {
-    const {
-      filled,
-      item,
-      itemStroke,
-      // , nameChangable, setHabitNameState
-    } = props;
+    const { filled, item, itemStroke } = props;
     const { theme } = useTheme();
 
     return !filled ? (
@@ -39,24 +32,6 @@ const HabitBar = memo(
         <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
           {item.name}
         </Text>
-        {/* ) : (
-          <TextInput
-            placeholder={item.name}
-            style={{
-              height: 45,
-              width: 370,
-              paddingLeft: 40,
-              borderRadius: 20,
-              fontSize: 19,
-              color: theme.primaryText,
-            }}
-            maxLength={30}
-            onChangeText={(text) => setHabitNameState(text)}
-            autoFocus={true}
-            placeholderTextColor={theme.fadedPrimaryText}
-          />
-        )} */}
-
         <G filter="url(#filter0_d_392_5163)">
           <Mask
             id="path-2-outside-1_392_5163"
@@ -80,7 +55,6 @@ const HabitBar = memo(
             mask="url(#path-2-outside-1_392_5163)"
           />
         </G>
-
         <G filter="url(#filter1_d_392_5163)">
           <Rect
             width={369.8}
@@ -208,28 +182,9 @@ const HabitBar = memo(
           d="M20.26 26.172l-2.432-2.433-.828.823 3.26 3.26 7-7-.822-.822-6.177 6.172z"
         />
         {/* mark ends */}
-
-        {/* {!nameChangable ? ( */}
         <Text fill={theme.primaryText} fontSize="19" x={40} y={30}>
           {item.name}
         </Text>
-        {/* ) : (
-          <TextInput
-            placeholder={item.name}
-            style={{
-              height: 45,
-              width: 370,
-              paddingLeft: 40,
-              borderRadius: 20,
-              fontSize: 19,
-              color: theme.primaryText,
-            }}
-            maxLength={30}
-            onChangeText={(text) => setHabitNameState(text)}
-            autoFocus={true}
-            placeholderTextColor={theme.fadedPrimaryText}
-          />
-        )} */}
         {/* right side starts */}
         <>
           <LinearGradient

@@ -12,7 +12,7 @@ const {
   cloudinaryUploadUserImg,
   cloudinaryDeleteUserImg,
 } = require("../middlewares/cloudinary");
-const path = require("path");
+// const path = require("path");
 
 import dotenv from "dotenv";
 import Logger from "../middlewares/logger";
@@ -59,7 +59,7 @@ export const signInWithGoogleController = async (
           tokenID: "empty",
         });
       }
-
+      Logger.info(token);
       res.status(200).json(token);
     } else {
       const user = await User.create({
@@ -86,6 +86,7 @@ export const signInWithGoogleController = async (
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });
+      Logger.info(token);
       res.status(200).json(token);
     }
   } catch (error) {
@@ -96,8 +97,11 @@ export const signInWithGoogleController = async (
 
 export const signInController = async (req: IReq | any, res: Response) => {
   try {
+    // const emailRegex = new RegExp(
+    //   "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+    // );
     const emailRegex = new RegExp(
-      "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 
     if (!emailRegex.test(req.body.email)) {
@@ -132,13 +136,13 @@ export const signInController = async (req: IReq | any, res: Response) => {
               tokenID: "empty",
             });
           }
-
+          Logger.info(token);
           res.status(200).json(token);
         } else {
-          Logger.error("Wrong password or email.");
+          Logger.error("Wrong password or email");
           return res
             .status(500)
-            .send(getErrorMessage("Wrong password or email."));
+            .send(getErrorMessage("Wrong password or email"));
         }
       } else {
         if (
@@ -175,6 +179,7 @@ export const signInController = async (req: IReq | any, res: Response) => {
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
           });
+          Logger.info(token);
           res.status(200).json(token);
         }
       }
@@ -216,7 +221,7 @@ export const fetchCurrentUserProfile = async (
         tokenID: "empty",
       });
     }
-
+    Logger.info(loggedinUser);
     res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
@@ -234,6 +239,7 @@ export const fetchUserProfile = async (req: IReq | any, res: Response) => {
         model: "Habit",
       })
       .exec();
+    Logger.info(user);
     res.status(200).json(user);
   } catch (error) {
     Logger.error(error);
@@ -251,6 +257,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       (await User.find({ email: userMail })).length < 1 ||
       userMail === req.user[0].email
     ) {
+      Logger.error("Invalid Email.");
       return res.json({
         message: "Invalid Email.",
       });
@@ -325,7 +332,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         },
         { upsert: true }
       );
-
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else if (
       !currentUserHasPendingUserFriend &&
@@ -350,7 +357,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         },
         { multi: true }
       );
-
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else if (
       currentUserAlreadyHasUserFriend &&
@@ -373,6 +380,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         },
         { multi: true }
       );
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else if (
       currentUserHasPendingUserFriend &&
@@ -392,10 +400,11 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
           $set: { "friends.$.pending": false },
         }
       );
-
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else {
       // console.log("target user know");
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     }
   } catch (error) {
@@ -433,13 +442,14 @@ export const updateCurrentUserImage = async (
         },
         { new: true }
       );
-
+      Logger.info(user);
       res.status(200).json(user);
     } else {
       res.json("Profile photo already deleted.");
     }
   } catch (error) {
-    res.status(500).json(error);
+    Logger.error(error);
+    return res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -451,9 +461,10 @@ export const sendFeedback = async (req: IReq | any, res: Response) => {
       const currentUser = await User.findById(req.user[0]?._id);
 
       if (currentUser && currentUser.feedback.length >= 10) {
+        Logger.error("Feedback limit reached (10 items)");
         return res
-          .status(400)
-          .json({ error: "Feedback limit reached (10 items)." });
+          .status(500)
+          .send(getErrorMessage("Feedback limit reached (10 items)"));
       }
 
       const loggedinUser = await User.findByIdAndUpdate(
@@ -461,12 +472,13 @@ export const sendFeedback = async (req: IReq | any, res: Response) => {
         { $push: { feedback: feedback } },
         { new: true }
       );
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else {
       Logger.error("Feedback limit 500 character reached");
       return res
-        .status(400)
-        .json({ error: "Feedback limit 500 character reached." });
+        .status(500)
+        .send(getErrorMessage("Feedback limit 500 character reached"));
     }
   } catch (error) {
     Logger.error(error);
@@ -484,6 +496,7 @@ export const changeTheme = async (req: IReq | any, res: Response) => {
       { new: true }
     );
 
+    Logger.info(loggedinUser);
     res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
@@ -524,6 +537,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
         userID: req.user[0]._id,
       });
 
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else {
       console.log("No habit detected.");
@@ -548,6 +562,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
       await Notification.findOneAndDelete({
         userID: req.user[0]._id,
       });
+      Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     }
   } catch (error) {

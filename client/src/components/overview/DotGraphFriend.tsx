@@ -6,25 +6,12 @@ import uuid from "react-native-uuid";
 import { useTheme } from "../../context/ThemeContext";
 
 const DotGraphFriend = (props: {
-  fetchAllHabitsAction: Function;
-  fetchAllHabitsOfSelectedUserAction: Function;
   allHabits: Array<any>;
   allHabitsNumber: number;
   habitLoading: boolean;
-  refreshing: boolean;
-  setRefreshing: Function;
   allHabitDatesDots: Array<boolean>;
 }) => {
-  const {
-    fetchAllHabitsAction,
-    fetchAllHabitsOfSelectedUserAction,
-    allHabits,
-    allHabitsNumber,
-    habitLoading,
-    refreshing,
-    setRefreshing,
-    allHabitDatesDots,
-  } = props;
+  const { allHabits, allHabitsNumber, habitLoading, allHabitDatesDots } = props;
   const { theme } = useTheme();
 
   return (
@@ -42,9 +29,6 @@ const DotGraphFriend = (props: {
           style={{
             marginBottom: 85,
           }}
-          // refreshControl={
-          //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          // }
         >
           <TextInput
             style={{

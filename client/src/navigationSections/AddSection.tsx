@@ -1,49 +1,35 @@
 import * as React from "react";
 import { memo } from "react";
-
 import { Pressable, View, Vibration } from "react-native";
-
 import { createStackNavigator } from "@react-navigation/stack";
-
-//types
 import { StackNavParamList } from "../../src/types/BottomTabNavParamList";
-
-// screens
 import Add from "../../src/screens/Add";
-
-//navbar components
 import BackIcon from "../components/icons/BackIcon";
 import DoneIcon from "../components/icons/DoneIcon";
 import { useTheme } from "../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../state/store";
+import {
+  taskFirstDate,
+  taskLastDate,
+  taskUpcomingDates,
+  shareWithFriendList,
+  color,
+  taskName,
+  createHabitAction,
+} from "../state/habitSlice";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
 const AddSection = memo((props: any) => {
-  const {
-    navigation,
-    currentUser,
-    dispatch,
-    createHabitAction,
-    taskName,
-    setTaskName,
-    openFrequency,
-    setOpenFrequency,
-    taskUpcomingDates,
-    setTaskUpcomingDates,
-    taskFirstDate,
-    setTaskFirstDate,
-    taskLastDate,
-    setTaskLastDate,
-    dateBetweenModalOpen,
-    setDateBetweenModalOpen,
-    shareWithFriendList,
-    setShareWithFriendList,
-    openShare,
-    setOpenShare,
-    color,
-    setColor,
-  } = props;
+  const { navigation } = props;
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const taskFirstDateState = useSelector(taskFirstDate);
+  const taskLastDateState = useSelector(taskLastDate);
+  const taskUpcomingDatesState = useSelector(taskUpcomingDates);
+  const shareWithFriendListState = useSelector(shareWithFriendList);
+  const colorState = useSelector(color);
+  const taskNameState = useSelector(taskName);
 
   return (
     <StackNavigator.Navigator
@@ -55,31 +41,7 @@ const AddSection = memo((props: any) => {
     >
       <StackNavigator.Screen
         name="Add"
-        children={(props: any) => (
-          <Add
-            {...props}
-            navigation={navigation}
-            currentUser={currentUser}
-            taskName={taskName}
-            setTaskName={setTaskName}
-            openFrequency={openFrequency}
-            setOpenFrequency={setOpenFrequency}
-            taskUpcomingDates={taskUpcomingDates}
-            setTaskUpcomingDates={setTaskUpcomingDates}
-            taskFirstDate={taskFirstDate}
-            setTaskFirstDate={setTaskFirstDate}
-            taskLastDate={taskLastDate}
-            setTaskLastDate={setTaskLastDate}
-            dateBetweenModalOpen={dateBetweenModalOpen}
-            setDateBetweenModalOpen={setDateBetweenModalOpen}
-            shareWithFriendList={shareWithFriendList}
-            setShareWithFriendList={setShareWithFriendList}
-            openShare={openShare}
-            setOpenShare={setOpenShare}
-            color={color}
-            setColor={setColor}
-          />
-        )}
+        children={(props: any) => <Add {...props} navigation={navigation} />}
         options={{
           headerTitle: "New Habit",
           headerLeft: () => (
@@ -116,19 +78,21 @@ const AddSection = memo((props: any) => {
             >
               <Pressable
                 disabled={
-                  taskFirstDate && taskLastDate && taskName ? false : true
+                  taskFirstDateState && taskLastDateState && taskNameState
+                    ? false
+                    : true
                 }
                 onPressIn={() => Vibration.vibrate(10)}
                 onPress={() => {
                   try {
                     dispatch(
                       createHabitAction({
-                        firstDate: Date.parse(taskFirstDate),
-                        lastDate: Date.parse(taskLastDate),
-                        name: taskName,
-                        upcomingDates: taskUpcomingDates,
-                        color: color,
-                        friendList: shareWithFriendList,
+                        firstDate: Date.parse(taskFirstDateState),
+                        lastDate: Date.parse(taskLastDateState),
+                        name: taskNameState,
+                        upcomingDates: taskUpcomingDatesState,
+                        color: colorState,
+                        friendList: shareWithFriendListState,
                       })
                     );
                     navigation.navigate("Home");

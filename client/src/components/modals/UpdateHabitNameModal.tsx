@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -8,29 +9,21 @@ import {
   TextInput,
 } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
-import { useState } from "react";
+import { useAppDispatch } from "../../state/store";
+import {
+  setEditHabitNameModal,
+  setSelectedOverviewHabit,
+  updateHabitNameAction,
+} from "../../state/habitSlice";
 
 const UpdateHabitNameModal = (props: {
   name: string;
   habitID: any;
   editHabitNameModal: boolean;
-  setEditHabitNameModal: Function;
-  setSelectedOverviewHabit: Function;
-  updateHabitNameAction: Function;
-  dispatch: Function;
 }) => {
-  const {
-    name,
-    habitID,
-    editHabitNameModal,
-    setEditHabitNameModal,
-    setSelectedOverviewHabit,
-    updateHabitNameAction,
-    dispatch,
-  } = props;
-
+  const { name, habitID, editHabitNameModal } = props;
   const { theme } = useTheme();
-
+  const dispatch = useAppDispatch();
   const [value, onChangeText] = useState(name);
 
   return (
@@ -40,7 +33,7 @@ const UpdateHabitNameModal = (props: {
         transparent={true}
         visible={editHabitNameModal}
         onRequestClose={() => {
-          setEditHabitNameModal(!editHabitNameModal);
+          dispatch(setEditHabitNameModal(false));
         }}
       >
         <View
@@ -81,7 +74,6 @@ const UpdateHabitNameModal = (props: {
                 textAlign: "center",
               }}
               maxLength={30}
-              // onChangeText={(text) => setHabitNameState(text)}
               onChangeText={(text) => onChangeText(text)}
               value={value}
               autoFocus={true}
@@ -113,8 +105,8 @@ const UpdateHabitNameModal = (props: {
                     name: value,
                   })
                 );
-                setEditHabitNameModal(!editHabitNameModal);
-                setSelectedOverviewHabit(null);
+                dispatch(setEditHabitNameModal(false));
+                dispatch(setSelectedOverviewHabit(null));
               }}
             >
               <Text

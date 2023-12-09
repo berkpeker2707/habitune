@@ -14,6 +14,16 @@ const today = new Date(
   todayTemp.getMinutes(),
   todayTemp.getSeconds()
 );
+const OneYearLater = new Date(
+  new Date(
+    new Date(Date.now()).getFullYear() + 1,
+    new Date(Date.now()).getMonth(),
+    new Date(Date.now()).getDate(),
+    new Date(Date.now()).getHours(),
+    new Date(Date.now()).getMinutes(),
+    new Date(Date.now()).getSeconds()
+  )
+);
 const OneDayAgo = new Date(
   new Date(
     todayTemp.getFullYear(),
@@ -96,6 +106,30 @@ interface habitTypes {
   updateHabitFirstAndLastDateData: object;
   updateHabitDatesData: object;
   updateHabitCompletedDateData: object;
+
+  //habit home states start
+  refreshHabits: boolean;
+  tempBarFilled: boolean[];
+  //habit home states ends
+
+  //habit add states start
+  taskUpcomingDates: string[];
+  taskFirstDate: Date;
+  taskLastDate: Date;
+  dateBetweenModalOpen: boolean;
+  openFrequency: boolean;
+  openShareHabit: boolean;
+  shareWithFriendList: string[];
+  color: string;
+  taskName: string;
+  //habit add states ends
+
+  //habit overview states starts
+  selectedOverviewHabit: number;
+  editHabitNameModal: boolean;
+  overviewColorModal: boolean;
+  shareWithFriendListModal: boolean;
+  //habit overview states ends
 }
 
 const initialState: habitTypes = {
@@ -119,6 +153,46 @@ const initialState: habitTypes = {
   updateHabitFirstAndLastDateData: {},
   updateHabitDatesData: {},
   updateHabitCompletedDateData: {},
+
+  //habit home states start
+  refreshHabits: false,
+  tempBarFilled: [],
+  //habit home states ends
+
+  //habit add states start
+  taskFirstDate: new Date(
+    todayTemp.getFullYear(),
+    todayTemp.getMonth(),
+    todayTemp.getDate(),
+    todayTemp.getHours(),
+    todayTemp.getMinutes(),
+    todayTemp.getSeconds()
+  ),
+  taskLastDate: new Date(
+    new Date(
+      new Date(Date.now()).getFullYear() + 1,
+      new Date(Date.now()).getMonth(),
+      new Date(Date.now()).getDate(),
+      new Date(Date.now()).getHours(),
+      new Date(Date.now()).getMinutes(),
+      new Date(Date.now()).getSeconds()
+    )
+  ),
+  taskUpcomingDates: [],
+  dateBetweenModalOpen: false,
+  openFrequency: false,
+  openShareHabit: false,
+  shareWithFriendList: [],
+  color: "#968EB0",
+  taskName: "",
+  //habit add states ends
+
+  //habit overview states starts
+  selectedOverviewHabit: 999,
+  editHabitNameModal: false,
+  overviewColorModal: false,
+  shareWithFriendListModal: false,
+  //habit overview states ends
 };
 
 const updatedHabit = createAction("habit/update");
@@ -557,7 +631,10 @@ export const updateHabitNameAction = createAsyncThunk(
 
 export const updateHabitColorAction = createAsyncThunk(
   "habit/updateHabitColor",
-  async (updateHabitColorPayload, { rejectWithValue, getState, dispatch }) => {
+  async (
+    updateHabitColorPayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
     const config = {
@@ -748,7 +825,62 @@ export const revertAllHabit = createAsyncThunk(
 const habitSlice = createSlice({
   name: "habit",
   initialState,
-  reducers: {},
+  reducers: {
+    //habit home states start
+    setRefreshHabits: (state, action) => {
+      state.refreshHabits = action.payload;
+    },
+    setTempBarFilled: (state, action) => {
+      state.tempBarFilled = action.payload;
+    },
+    //habit home states ends
+
+    //habit add states start
+    setTaskFirstDate: (state, action) => {
+      state.taskFirstDate = action.payload;
+    },
+    setTaskLastDate: (state, action) => {
+      state.taskLastDate = action.payload;
+    },
+    setTaskUpcomingDates: (state, action) => {
+      state.taskUpcomingDates = action.payload;
+    },
+    setDateBetweenModalOpen: (state, action) => {
+      state.dateBetweenModalOpen = action.payload;
+    },
+    setOpenFrequency: (state, action) => {
+      state.openFrequency = action.payload;
+    },
+    setOpenShareHabit: (state, action) => {
+      state.openShareHabit = action.payload;
+    },
+    setShareWithFriendList: (state, action) => {
+      state.shareWithFriendList = action.payload;
+    },
+    setColor: (state, action) => {
+      state.color = action.payload;
+    },
+    setTaskName: (state, action) => {
+      state.taskName = action.payload;
+    },
+    //habit add states ends
+
+    //habit overview states starts
+    setSelectedOverviewHabit: (state, action) => {
+      state.selectedOverviewHabit = action.payload;
+    },
+    setEditHabitNameModal: (state, action) => {
+      state.editHabitNameModal = action.payload;
+    },
+    setOverviewColorModal: (state, action) => {
+      state.overviewColorModal = action.payload;
+    },
+    setShareWithFriendListModal: (state, action) => {
+      state.shareWithFriendListModal = action.payload;
+    },
+
+    //habit overview states ends
+  },
   extraReducers: (builder) => {
     //updated check reducer
     builder.addCase(updatedHabit, (state) => {
@@ -1062,68 +1194,94 @@ const habitSlice = createSlice({
   },
 });
 
-export const selectHabitLoading = (state: any) => {
-  return state.habit.loading;
-};
-export const selectPostError = (state: any) => {
-  return state.habit.error;
-};
-export const selectHabitUpdated = (state: any) => {
-  return state.habit.isHabitUpdated;
-};
-export const selectCreateHabit = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectHabits = (state: any) => {
-  return state.habit.totalHabitsData;
-};
-export const selectHabitsOfSelectedUser = (state: any) => {
-  return state.habit.allHabitsOfSelectedUserData;
-};
-export const selectHabitsToday = (state: any) => {
-  return state.habit.todaysHabitsData;
-};
-export const selectHabitsTodayBoolean = (state: any) => {
-  return state.habit.todaysHabitBooleanData;
-};
-export const selectCurrentHabitWeekStreak = (state: any) => {
-  return state.habit.currentHabitWeekStreakData;
-};
-export const selectFriendCurrentHabitWeekStreak = (state: any) => {
-  return state.habit.friendCurrentHabitWeekData;
-};
-export const selectAllHabitDatesDots = (state: any) => {
-  return state.habit.allHabitDatesDotsData;
-};
-export const selectFriendAllHabitDatesDots = (state: any) => {
-  return state.habit.friendAllHabitDatesDotsData;
-};
-export const selectHabit = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectDeleteHabit = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitName = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitColor = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitSharedWith = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitFirstAndLastDate = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitDates = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitCompletedDate = (state: any) => {
-  return state.habit.singleHabitData;
-};
-export const selectUpdateHabitHidden = (state: any) => {
-  return state.habit.singleHabitData;
-};
+//habit home states start
+export const { setTempBarFilled, setRefreshHabits } = habitSlice.actions;
+export const refreshHabits = (state: any) => state.habit.refreshHabits;
+export const tempBarFilled = (state: any) => state.habit.tempBarFilled;
+//habit home states ends
+
+//habit add states start
+export const {
+  setTaskFirstDate,
+  setTaskLastDate,
+  setTaskUpcomingDates,
+  setDateBetweenModalOpen,
+  setOpenFrequency,
+  setOpenShareHabit,
+  setShareWithFriendList,
+  setColor,
+  setTaskName,
+} = habitSlice.actions;
+export const taskFirstDate = (state: any) => state.habit.taskFirstDate;
+export const taskLastDate = (state: any) => state.habit.taskLastDate;
+export const taskUpcomingDates = (state: any) => state.habit.taskUpcomingDates;
+export const dateBetweenModalOpen = (state: any) =>
+  state.habit.dateBetweenModalOpen;
+export const openFrequency = (state: any) => state.habit.openFrequency;
+export const openShareHabit = (state: any) => state.habit.openShareHabit;
+export const shareWithFriendList = (state: any) =>
+  state.habit.shareWithFriendList;
+export const color = (state: any) => state.habit.color;
+export const taskName = (state: any) => state.habit.taskName;
+//habit add states ends
+
+//habit overview states starts
+export const {
+  setSelectedOverviewHabit,
+  setEditHabitNameModal,
+  setOverviewColorModal,
+  setShareWithFriendListModal,
+} = habitSlice.actions;
+export const selectedOverviewHabit = (state: any) =>
+  state.habit.selectedOverviewHabit;
+export const editHabitNameModal = (state: any) =>
+  state.habit.editHabitNameModal;
+export const overviewColorModal = (state: any) =>
+  state.habit.overviewColorModal;
+export const shareWithFriendListModal = (state: any) =>
+  state.habit.shareWithFriendListModal;
+
+//habit overview states ends
+
+export const selectHabitLoading = (state: any) => state.habit.loading;
+export const selectPostError = (state: any) => state.habit.error;
+export const selectHabitUpdated = (state: any) => state.habit.isHabitUpdated;
+export const selectCreateHabit = (state: any) => state.habit.singleHabitData;
+export const selectHabits = (state: any) => state.habit.totalHabitsData;
+export const allHabitsNumber = (state: any) =>
+  state.habit.totalHabitsData.length;
+export const selectHabitsOfSelectedUser = (state: any) =>
+  state.habit.allHabitsOfSelectedUserData;
+export const allHabitsOfSelectedUserNumber = (state: any) =>
+  state.habit.allHabitsOfSelectedUserData.length;
+export const selectHabitsToday = (state: any) => state.habit.todaysHabitsData;
+export const allHabitsTodayNumber = (state: any) =>
+  state.habit.todaysHabitsData.length;
+export const selectHabitsTodayBoolean = (state: any) =>
+  state.habit.todaysHabitBooleanData;
+export const selectCurrentHabitWeekStreak = (state: any) =>
+  state.habit.currentHabitWeekStreakData;
+export const selectFriendCurrentHabitWeekStreak = (state: any) =>
+  state.habit.friendCurrentHabitWeekData;
+export const selectAllHabitDatesDots = (state: any) =>
+  state.habit.allHabitDatesDotsData;
+export const selectFriendAllHabitDatesDots = (state: any) =>
+  state.habit.friendAllHabitDatesDotsData;
+export const selectHabit = (state: any) => state.habit.singleHabitData;
+export const selectDeleteHabit = (state: any) => state.habit.singleHabitData;
+export const selectUpdateHabitName = (state: any) =>
+  state.habit.singleHabitData;
+export const selectUpdateHabitColor = (state: any) =>
+  state.habit.singleHabitData;
+export const selectUpdateHabitSharedWith = (state: any) =>
+  state.habit.singleHabitData;
+export const selectUpdateHabitFirstAndLastDate = (state: any) =>
+  state.habit.singleHabitData;
+export const selectUpdateHabitDates = (state: any) =>
+  state.habit.singleHabitData;
+export const selectUpdateHabitCompletedDate = (state: any) =>
+  state.habit.singleHabitData;
+export const selectUpdateHabitHidden = (state: any) =>
+  state.habit.singleHabitData;
 
 export default habitSlice.reducer;

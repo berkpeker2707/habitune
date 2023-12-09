@@ -3,10 +3,13 @@ import { memo } from "react";
 import { TextInput, TouchableOpacity, Vibration, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../../state/store";
+import { color, setColor } from "../../state/habitSlice";
 
-const Color = memo((props: { color: string; setColor: Function }) => {
-  const { color, setColor } = props;
+const Color = memo(() => {
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
+  const colorState = useSelector(color);
 
   return (
     <>
@@ -27,7 +30,7 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           height: 39.5,
           borderWidth: 0.5,
           borderRadius: 20,
-          borderColor: color ? theme.borderColor : theme.warningColor,
+          borderColor: colorState ? theme.borderColor : theme.warningColor,
           paddingLeft: 20,
           marginBottom: 10,
         }}
@@ -44,13 +47,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor2)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor2)
+            colorState?.includes(theme.permaColor2)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor2))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor2) ? (
+          {colorState?.includes(theme.permaColor2) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -78,13 +81,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor4)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor4)
+            colorState?.includes(theme.permaColor4)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor4))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor4) ? (
+          {colorState?.includes(theme.permaColor4) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -112,13 +115,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor3)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor3)
+            colorState?.includes(theme.permaColor3)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor3))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor3) ? (
+          {colorState?.includes(theme.permaColor3) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -146,13 +149,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor1)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor1)
+            colorState?.includes(theme.permaColor1)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor1))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor1) ? (
+          {colorState?.includes(theme.permaColor1) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -180,13 +183,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor6)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor6)
+            colorState?.includes(theme.permaColor6)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor6))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor6) ? (
+          {colorState?.includes(theme.permaColor6) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -214,13 +217,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor5)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor5)
+            colorState?.includes(theme.permaColor5)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor5))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor5) ? (
+          {colorState?.includes(theme.permaColor5) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -248,13 +251,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor7)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor7)
+            colorState?.includes(theme.permaColor7)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor7))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor7) ? (
+          {colorState?.includes(theme.permaColor7) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -282,13 +285,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor8)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor8)
+            colorState?.includes(theme.permaColor8)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor8))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor8) ? (
+          {colorState?.includes(theme.permaColor8) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -316,13 +319,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor10)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor10)
+            colorState?.includes(theme.permaColor10)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor10))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor10) ? (
+          {colorState?.includes(theme.permaColor10) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -350,13 +353,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor9)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor9)
+            colorState?.includes(theme.permaColor9)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor9))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor9) ? (
+          {colorState?.includes(theme.permaColor9) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -384,13 +387,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor11)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor11)
+            colorState?.includes(theme.permaColor11)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor11))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor11) ? (
+          {colorState?.includes(theme.permaColor11) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path
@@ -418,13 +421,13 @@ const Color = memo((props: { color: string; setColor: Function }) => {
           }}
           onPressIn={() => Vibration.vibrate(10)}
           onPress={() =>
-            color?.includes(theme.permaColor12)
-              ? setColor(() => "")
-              : setColor(() => theme.permaColor12)
+            colorState?.includes(theme.permaColor12)
+              ? dispatch(setColor(""))
+              : dispatch(setColor(theme.permaColor12))
           }
         >
           {/* marking starts */}
-          {color?.includes(theme.permaColor12) ? (
+          {colorState?.includes(theme.permaColor12) ? (
             <View style={{ position: "absolute", left: 0, top: 0 }}>
               <Svg width={21} height={17} fill="none" viewBox="0 0 21 17">
                 <Path

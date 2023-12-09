@@ -124,6 +124,7 @@ export const notifyUsersDaily = async () => {
             // imageUrl: "https://www.habitune.net/image/empty-shell",
           },
         });
+        Logger.info(notificationResponse);
       }
     } catch (error) {
       Logger.error(error);
@@ -212,6 +213,7 @@ export const notifyUsersThreeDaysLater = async () => {
             // imageUrl: "https://www.habitune.net/image/empty-shell",
           },
         });
+        Logger.info(notificationResponse);
       }
     } catch (error) {
       Logger.error(error);
@@ -300,6 +302,7 @@ export const notifyUsersSevenDaysLater = async () => {
             // imageUrl: "https://www.habitune.net/image/empty-shell",
           },
         });
+        Logger.info(notificationResponse);
       }
     } catch (error) {
       Logger.error(error);
@@ -388,6 +391,7 @@ export const notifyUsersThirtyDaysLater = async () => {
             // imageUrl: "https://www.habitune.net/image/empty-shell",
           },
         });
+        Logger.info(notificationResponse);
       }
     } catch (error) {
       Logger.error(error);
@@ -476,6 +480,7 @@ export const notifyUsersNinetyDaysLater = async () => {
             // imageUrl: "https://www.habitune.net/image/empty-shell",
           },
         });
+        Logger.info(notificationResponse);
       }
     } catch (error) {
       Logger.error(error);

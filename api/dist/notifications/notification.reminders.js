@@ -100,6 +100,7 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
                         // imageUrl: "https://www.habitune.net/image/empty-shell",
                     },
                 });
+                logger_1.default.info(notificationResponse);
             }
         }
         catch (error) {
@@ -113,7 +114,9 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
     // every 10 seconds */10 * * * * *
     // schedule.scheduleJob("*/10 * * * * *", async () => {
     //every day at 12:00 AM
-    schedule.scheduleJob("0 0 * * *", () => __awaiter(void 0, void 0, void 0, function* () {
+    // schedule.scheduleJob("0 0 * * *", async () => {
+    //every 6 hours
+    schedule.scheduleJob("0 0 */6 * *", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             console.log("timer three days run");
             // This function will run every hour
@@ -160,6 +163,7 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
                         // imageUrl: "https://www.habitune.net/image/empty-shell",
                     },
                 });
+                logger_1.default.info(notificationResponse);
             }
         }
         catch (error) {
@@ -173,7 +177,9 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
     // every 10 seconds */10 * * * * *
     // schedule.scheduleJob("*/10 * * * * *", async () => {
     //at 12:00 AM, every 5 days
-    schedule.scheduleJob("0 0 */5 * *", () => __awaiter(void 0, void 0, void 0, function* () {
+    // schedule.scheduleJob("0 0 */5 * *", async () => {
+    //every 6 hours
+    schedule.scheduleJob("0 0 */6 * *", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             console.log("timer seven days run");
             // This function will run every hour
@@ -220,6 +226,7 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
                         // imageUrl: "https://www.habitune.net/image/empty-shell",
                     },
                 });
+                logger_1.default.info(notificationResponse);
             }
         }
         catch (error) {
@@ -233,7 +240,9 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     // every 10 seconds */10 * * * * *
     // schedule.scheduleJob("*/10 * * * * *", async () => {
     //at 12:00 AM, every 15 days
-    schedule.scheduleJob("0 0 */15 * *", () => __awaiter(void 0, void 0, void 0, function* () {
+    // schedule.scheduleJob("0 0 */15 * *", async () => {
+    //every 6 hours
+    schedule.scheduleJob("0 0 */6 * *", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             console.log("timer 30 days run");
             // This function will run every hour
@@ -280,6 +289,7 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
                         // imageUrl: "https://www.habitune.net/image/empty-shell",
                     },
                 });
+                logger_1.default.info(notificationResponse);
             }
         }
         catch (error) {
@@ -293,7 +303,9 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     // every 10 seconds */10 * * * * *
     // schedule.scheduleJob("*/10 * * * * *", async () => {
     //at 12:00 AM, every 90 days
-    schedule.scheduleJob("0 0 */90 * *", () => __awaiter(void 0, void 0, void 0, function* () {
+    // schedule.scheduleJob("0 0 */90 * *", async () => {
+    //every 6 hours
+    schedule.scheduleJob("0 0 */6 * *", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
             console.log("timer 90 days run");
             // This function will run every hour
@@ -340,6 +352,7 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
                         // imageUrl: "https://www.habitune.net/image/empty-shell",
                     },
                 });
+                logger_1.default.info(notificationResponse);
             }
         }
         catch (error) {

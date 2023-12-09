@@ -1,31 +1,23 @@
 import * as React from "react";
 import { View, Text, Modal, Pressable, Vibration } from "react-native";
-import { useTheme } from "../../context/ThemeContext";
 import Color from "../add/Color";
+import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch } from "../../state/store";
+import {
+  setOverviewColorModal,
+  setSelectedOverviewHabit,
+  updateHabitColorAction,
+} from "../../state/habitSlice";
 
 const UpdateHabitColorModal = (props: {
   name: string;
   habitID: any;
   overviewColorModal: boolean;
-  setOverviewColorModal: Function;
-  overviewColor: string;
-  setOverviewColor: Function;
-  dispatch: Function;
-  updateHabitColorAction: Function;
-  setSelectedOverviewHabit: Function;
+  color: any;
 }) => {
-  const {
-    name,
-    habitID,
-    overviewColorModal,
-    setOverviewColorModal,
-    overviewColor,
-    setOverviewColor,
-    dispatch,
-    updateHabitColorAction,
-    setSelectedOverviewHabit,
-  } = props;
+  const { name, habitID, overviewColorModal, color } = props;
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -34,7 +26,7 @@ const UpdateHabitColorModal = (props: {
         transparent={true}
         visible={overviewColorModal}
         onRequestClose={() => {
-          setOverviewColorModal(!overviewColorModal);
+          dispatch(setOverviewColorModal(false));
         }}
       >
         <View
@@ -63,7 +55,7 @@ const UpdateHabitColorModal = (props: {
               elevation: 5,
             }}
           >
-            <Color color={overviewColor} setColor={setOverviewColor} />
+            <Color />
             <Text
               style={{
                 color: theme.primaryColor,
@@ -86,11 +78,11 @@ const UpdateHabitColorModal = (props: {
                 dispatch(
                   updateHabitColorAction({
                     _id: habitID,
-                    color: overviewColor,
+                    color: color,
                   })
                 );
-                setOverviewColorModal(!overviewColorModal);
-                setSelectedOverviewHabit(null);
+                dispatch(setOverviewColorModal(false));
+                dispatch(setSelectedOverviewHabit(null));
               }}
             >
               <Text

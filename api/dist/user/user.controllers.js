@@ -19,7 +19,7 @@ const notification_model_1 = __importDefault(require("../notifications/notificat
 const habit_model_1 = __importDefault(require("../habit/habit.model"));
 const jwt = require("jsonwebtoken");
 const { cloudinaryUploadUserImg, cloudinaryDeleteUserImg, } = require("../middlewares/cloudinary");
-const path = require("path");
+// const path = require("path");
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 const bcrypt = require("bcrypt");
@@ -50,6 +50,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                     tokenID: "empty",
                 });
             }
+            logger_1.default.info(token);
             res.status(200).json(token);
         }
         else {
@@ -75,6 +76,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
+            logger_1.default.info(token);
             res.status(200).json(token);
         }
     }
@@ -86,7 +88,10 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
 exports.signInWithGoogleController = signInWithGoogleController;
 const signInController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const emailRegex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])");
+        // const emailRegex = new RegExp(
+        //   "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+        // );
+        const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         if (!emailRegex.test(req.body.email)) {
             logger_1.default.error("Unacceptable email");
             res.status(500).send((0, errors_util_1.getErrorMessage)("Unacceptable email"));
@@ -110,13 +115,14 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                             tokenID: "empty",
                         });
                     }
+                    logger_1.default.info(token);
                     res.status(200).json(token);
                 }
                 else {
-                    logger_1.default.error("Wrong password or email.");
+                    logger_1.default.error("Wrong password or email");
                     return res
                         .status(500)
-                        .send((0, errors_util_1.getErrorMessage)("Wrong password or email."));
+                        .send((0, errors_util_1.getErrorMessage)("Wrong password or email"));
                 }
             }
             else {
@@ -151,6 +157,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
+                    logger_1.default.info(token);
                     res.status(200).json(token);
                 }
             }
@@ -186,6 +193,7 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
                 tokenID: "empty",
             });
         }
+        logger_1.default.info(loggedinUser);
         res.status(200).json(loggedinUser);
     }
     catch (error) {
@@ -204,6 +212,7 @@ const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
             model: "Habit",
         })
             .exec();
+        logger_1.default.info(user);
         res.status(200).json(user);
     }
     catch (error) {
@@ -219,6 +228,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const loggedinUser = yield user_model_1.default.findById(req.user[0]._id);
         if ((yield user_model_1.default.find({ email: userMail })).length < 1 ||
             userMail === req.user[0].email) {
+            logger_1.default.error("Invalid Email.");
             return res.json({
                 message: "Invalid Email.",
             });
@@ -259,6 +269,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield ((_a = user[0]) === null || _a === void 0 ? void 0 : _a.updateOne({
                 $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
             }, { upsert: true }));
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
         else if (!currentUserHasPendingUserFriend &&
@@ -274,6 +285,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield ((_b = user[0]) === null || _b === void 0 ? void 0 : _b.updateOne({
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
         else if (currentUserAlreadyHasUserFriend &&
@@ -287,6 +299,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield ((_c = user[0]) === null || _c === void 0 ? void 0 : _c.updateOne({
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
         else if (currentUserHasPendingUserFriend &&
@@ -301,10 +314,12 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             }, {
                 $set: { "friends.$.pending": false },
             });
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
         else {
             // console.log("target user know");
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
     }
@@ -328,6 +343,7 @@ const updateCurrentUserImage = (req, res) => __awaiter(void 0, void 0, void 0, f
             const user = yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
                 image: imgUploaded.secure_url,
             }, { new: true });
+            logger_1.default.info(user);
             res.status(200).json(user);
         }
         else {
@@ -335,7 +351,8 @@ const updateCurrentUserImage = (req, res) => __awaiter(void 0, void 0, void 0, f
         }
     }
     catch (error) {
-        res.status(500).json(error);
+        logger_1.default.error(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateCurrentUserImage = updateCurrentUserImage;
@@ -346,18 +363,20 @@ const sendFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             var feedback = req.body.feedback;
             const currentUser = yield user_model_1.default.findById((_f = req.user[0]) === null || _f === void 0 ? void 0 : _f._id);
             if (currentUser && currentUser.feedback.length >= 10) {
+                logger_1.default.error("Feedback limit reached (10 items)");
                 return res
-                    .status(400)
-                    .json({ error: "Feedback limit reached (10 items)." });
+                    .status(500)
+                    .send((0, errors_util_1.getErrorMessage)("Feedback limit reached (10 items)"));
             }
             const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_g = req.user[0]) === null || _g === void 0 ? void 0 : _g._id, { $push: { feedback: feedback } }, { new: true });
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
         else {
             logger_1.default.error("Feedback limit 500 character reached");
             return res
-                .status(400)
-                .json({ error: "Feedback limit 500 character reached." });
+                .status(500)
+                .send((0, errors_util_1.getErrorMessage)("Feedback limit 500 character reached"));
         }
     }
     catch (error) {
@@ -371,6 +390,7 @@ const changeTheme = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         var newThemeValue = req.body.theme;
         const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_h = req.user[0]) === null || _h === void 0 ? void 0 : _h._id, { $set: { theme: newThemeValue } }, { new: true });
+        logger_1.default.info(loggedinUser);
         res.status(200).json(loggedinUser);
     }
     catch (error) {
@@ -405,6 +425,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             yield notification_model_1.default.findOneAndDelete({
                 userID: req.user[0]._id,
             });
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
         else {
@@ -424,6 +445,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             yield notification_model_1.default.findOneAndDelete({
                 userID: req.user[0]._id,
             });
+            logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
     }

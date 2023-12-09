@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import {
   View,
   Text,
@@ -8,24 +7,35 @@ import {
   Pressable,
   Vibration,
 } from "react-native";
-import { signInAction } from "../../state/userSlice";
 import { useTheme } from "../../context/ThemeContext";
+import { useAppDispatch, useSelector } from "../../state/store";
+import {
+  signInAction,
+  email,
+  password,
+  name,
+  setName,
+  setEmail,
+  setPassword,
+  registerModalVisible,
+  setRegisterModalVisible,
+} from "../../state/userSlice";
 
-const RegisterModal = (props: any) => {
+const RegisterModal = () => {
   const { theme } = useTheme();
-
-  const { dispatch, registerModalVisible, setRegisterModalVisible } = props;
-  const [nameState, setNameState] = useState<string>("");
-  const [emailState, setEmailState] = useState<string>("");
-  const [passwordState, setPasswordState] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const registerModalVisibleState = useSelector(registerModalVisible);
+  const emailState = useSelector(email);
+  const passwordState = useSelector(password);
+  const nameState = useSelector(name);
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={registerModalVisible}
+      visible={registerModalVisibleState}
       onRequestClose={() => {
-        setRegisterModalVisible(!registerModalVisible);
+        dispatch(setRegisterModalVisible(!registerModalVisibleState));
       }}
     >
       <View
@@ -77,7 +87,8 @@ const RegisterModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="name"
-            onChangeText={(text) => setNameState(text)}
+            value={nameState}
+            onChangeText={(text) => dispatch(setName(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
           />
@@ -94,7 +105,8 @@ const RegisterModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="email"
-            onChangeText={(text) => setEmailState(text)}
+            value={emailState}
+            onChangeText={(text) => dispatch(setEmail(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
           />
@@ -113,7 +125,8 @@ const RegisterModal = (props: any) => {
               color: theme.primaryText,
             }}
             placeholder="password"
-            onChangeText={(text) => setPasswordState(text)}
+            value={passwordState}
+            onChangeText={(text) => dispatch(setPassword(text))}
             maxLength={30}
             placeholderTextColor={theme.fadedPrimaryText}
           />
@@ -126,7 +139,7 @@ const RegisterModal = (props: any) => {
             }}
             onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
-              setRegisterModalVisible(!registerModalVisible);
+              dispatch(setRegisterModalVisible(!registerModalVisibleState));
               dispatch(
                 signInAction({
                   id: 0,
