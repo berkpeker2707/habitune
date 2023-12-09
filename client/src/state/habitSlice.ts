@@ -123,6 +123,13 @@ interface habitTypes {
   color: string;
   taskName: string;
   //habit add states ends
+
+  //habit overview states starts
+  selectedOverviewHabit: number;
+  editHabitNameModal: boolean;
+  overviewColorModal: boolean;
+  shareWithFriendListModal: boolean;
+  //habit overview states ends
 }
 
 const initialState: habitTypes = {
@@ -179,6 +186,13 @@ const initialState: habitTypes = {
   color: "#968EB0",
   taskName: "",
   //habit add states ends
+
+  //habit overview states starts
+  selectedOverviewHabit: 999,
+  editHabitNameModal: false,
+  overviewColorModal: false,
+  shareWithFriendListModal: false,
+  //habit overview states ends
 };
 
 const updatedHabit = createAction("habit/update");
@@ -617,7 +631,10 @@ export const updateHabitNameAction = createAsyncThunk(
 
 export const updateHabitColorAction = createAsyncThunk(
   "habit/updateHabitColor",
-  async (updateHabitColorPayload, { rejectWithValue, getState, dispatch }) => {
+  async (
+    updateHabitColorPayload: {},
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
     const config = {
@@ -847,6 +864,22 @@ const habitSlice = createSlice({
       state.taskName = action.payload;
     },
     //habit add states ends
+
+    //habit overview states starts
+    setSelectedOverviewHabit: (state, action) => {
+      state.selectedOverviewHabit = action.payload;
+    },
+    setEditHabitNameModal: (state, action) => {
+      state.editHabitNameModal = action.payload;
+    },
+    setOverviewColorModal: (state, action) => {
+      state.overviewColorModal = action.payload;
+    },
+    setShareWithFriendListModal: (state, action) => {
+      state.shareWithFriendListModal = action.payload;
+    },
+
+    //habit overview states ends
   },
   extraReducers: (builder) => {
     //updated check reducer
@@ -1192,11 +1225,31 @@ export const color = (state: any) => state.habit.color;
 export const taskName = (state: any) => state.habit.taskName;
 //habit add states ends
 
+//habit overview states starts
+export const {
+  setSelectedOverviewHabit,
+  setEditHabitNameModal,
+  setOverviewColorModal,
+  setShareWithFriendListModal,
+} = habitSlice.actions;
+export const selectedOverviewHabit = (state: any) =>
+  state.habit.selectedOverviewHabit;
+export const editHabitNameModal = (state: any) =>
+  state.habit.editHabitNameModal;
+export const overviewColorModal = (state: any) =>
+  state.habit.overviewColorModal;
+export const shareWithFriendListModal = (state: any) =>
+  state.habit.shareWithFriendListModal;
+
+//habit overview states ends
+
 export const selectHabitLoading = (state: any) => state.habit.loading;
 export const selectPostError = (state: any) => state.habit.error;
 export const selectHabitUpdated = (state: any) => state.habit.isHabitUpdated;
 export const selectCreateHabit = (state: any) => state.habit.singleHabitData;
 export const selectHabits = (state: any) => state.habit.totalHabitsData;
+export const allHabitsNumber = (state: any) =>
+  state.habit.totalHabitsData.length;
 export const selectHabitsOfSelectedUser = (state: any) =>
   state.habit.allHabitsOfSelectedUserData;
 export const allHabitsOfSelectedUserNumber = (state: any) =>
