@@ -2,39 +2,27 @@ import * as React from "react";
 import { memo } from "react";
 import { View, ScrollView, TouchableOpacity, Vibration } from "react-native";
 import FriendBar from "../add/shareComponents/FriendBar";
+import { useAppDispatch, useSelector } from "../../state/store";
+import {
+  friendID,
+  setAcceptOrRemoveFriendModalVisible,
+  setFriendID,
+  setFriendName,
+  setSelectedUser,
+} from "../../state/userSlice";
 
 const FriendsCard = memo(
   (props: {
     navigation: any;
-    friendID: any;
+    friendElemID: any;
     name: string;
     image: string;
     email: string;
-    i: number;
     pending: boolean;
-    acceptOrRemoveModalVisible: any;
-    setAcceptOrRemoveModalVisible: any;
-    selectedUser: any;
-    setSelectedUser: any;
-    friendIDState: number;
-    setFriendIDState: Function;
-    friendName: number;
-    setFriendName: Function;
   }) => {
-    const {
-      navigation,
-      friendID,
-      name,
-      image,
-      email,
-      pending,
-      acceptOrRemoveModalVisible,
-      setAcceptOrRemoveModalVisible,
-      setSelectedUser,
-      friendIDState,
-      setFriendIDState,
-      setFriendName,
-    } = props;
+    const { navigation, friendElemID, name, image, email, pending } = props;
+    const dispatch = useAppDispatch();
+    const friendIDState = useSelector(friendID);
 
     return (
       <ScrollView>
@@ -47,16 +35,16 @@ const FriendsCard = memo(
           <TouchableOpacity
             onPressIn={() => Vibration.vibrate(10)}
             onPress={() => {
-              setFriendIDState(() => friendID);
-              setFriendName(() => name);
+              dispatch(setFriendID(friendElemID));
+              dispatch(setFriendName(name));
               navigation.navigate("Friend", {
                 name: name,
                 friendID: friendIDState,
               });
             }}
             onLongPress={() => {
-              setAcceptOrRemoveModalVisible(!acceptOrRemoveModalVisible);
-              setSelectedUser(() => ({ name, email, pending }));
+              dispatch(setAcceptOrRemoveFriendModalVisible(true));
+              dispatch(setSelectedUser({ name, email, pending }));
             }}
           >
             <FriendBar
