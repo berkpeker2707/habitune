@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { StatusBar, Vibration } from "react-native";
 
 // import * as Device from "expo-device";
@@ -38,11 +38,7 @@ import {
   useSelector,
 } from "./src/state/store";
 import {
-  deleteUserAction,
-  sendFeedbackAction,
   fetchCurrentUserProfileAction,
-  revertAll,
-  selectFetchCurrentUserProfile,
   selectSignIn,
   selectSignInWithGoogle,
   friendID,
@@ -51,18 +47,8 @@ import {
   fetchAllHabitsAction,
   fetchAllTodayHabitsAction,
   selectHabitUpdated,
-  selectHabits,
   selectHabitsTodayBoolean,
-  selectCurrentHabitWeekStreak,
-  selectHabitLoading,
-  updateHabitNameAction,
-  deleteHabitAction,
   fetchAllHabitsOfSelectedUserAction,
-  revertAllHabit,
-  updateHabitSharedWithAction,
-  selectAllHabitDatesDots,
-  updateHabitColorAction,
-  updateHabitHiddenAction,
   refreshHabits,
   setTempBarFilled,
 } from "./src/state/habitSlice";
@@ -97,7 +83,6 @@ import OverviewSection from "./src/navigationSections/OverviewSection";
 //helpers
 import registerForPushNotificationsAsync from "./src/helpers/registerForPushNotificationsAsync";
 import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
-import onShare from "./src/helpers/shareApp";
 
 import ErrorBoundary from "react-native-error-boundary";
 import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
@@ -146,107 +131,13 @@ const App = () => {
 
   const tokenSecondOption = useSelector(selectSignIn);
 
-  const currentUser = useSelector(selectFetchCurrentUserProfile);
-
-  // const userLoading = useSelector(selectUserLoading);
-
-  // const userUpdated = useSelector(selectUserUpdated);
-
-  const allHabits = useSelector(selectHabits);
-
-  // const allHabitsToday = useSelector(selectHabitsToday);
-
   const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
 
-  const currentHabitWeekStreak = useSelector(selectCurrentHabitWeekStreak);
-
-  // const friendCurrentHabitWeek = useSelector(
-  //   selectFriendCurrentHabitWeekStreak
-  // );
-
-  const allHabitDatesDots = useSelector(selectAllHabitDatesDots);
-
-  // const friendAllHabitDatesDots = useSelector(selectFriendAllHabitDatesDots);
-
-  // const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
-
   const habitUpdated = useSelector(selectHabitUpdated);
-
-  const habitLoading = useSelector(selectHabitLoading);
 
   const refreshHabitsState = useSelector(refreshHabits);
 
   const friendIDState = useSelector(friendID);
-
-  // const tempBarFilledState = useSelector(tempBarFilled);
-
-  // const [refreshing, setRefreshing] = useState<boolean>(false);
-
-  // const [homeEditBool, setHomeEditBool] = useState<boolean>(false);
-
-  // const [friendIDState, setFriendIDState] = useState<number>();
-  // const [friendName, setFriendName] = useState<string>();
-
-  //home screen states
-  // const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
-  // () => [];
-  const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  // const [selectedItem, setSelectedItem] = useState<string>("");
-  const [shareWithFriendListModal, setShareWithFriendListModal] =
-    useState(false);
-
-  // const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
-  //   useState<boolean>(false);
-  // const [selectedUser, setSelectedUser] = useState<{
-  //   email: string;
-  //   name: string;
-  //   pending: boolean;
-  // }>({
-  //   email: "",
-  //   name: "",
-  //   pending: false,
-  // });
-
-  // const [habitNameState, setHabitNameState] = useState<string>("");
-  // const [editHabitSelected, setEditHabitSelected] = useState<number>(0);
-
-  //add screen states
-  // const [taskName, setTaskName] = useState<string>("");
-  // const [openFrequency, setOpenFrequency] = useState<boolean>(false);
-  // const [taskUpcomingDates, setTaskUpcomingDates] = useState<string[]>([
-  // "Sun",
-  // "Mon",
-  // "Tue",
-  // "Wed",
-  // "Thu",
-  // "Fri",
-  // "Sat",
-  // ]);
-  // const [taskFirstDate, setTaskFirstDate] = useState<Date | any>(
-  //   new Date(
-  //     new Date(Date.now()).getFullYear(),
-  //     new Date(Date.now()).getMonth(),
-  //     new Date(Date.now()).getDate(),
-  //     new Date(Date.now()).getHours(),
-  //     new Date(Date.now()).getMinutes(),
-  //     new Date(Date.now()).getSeconds()
-  //   )
-  // );
-  // const [taskLastDate, setTaskLastDate] = useState<Date | any>(
-  //   new Date(
-  //     new Date(Date.now()).getFullYear() + 1,
-  //     new Date(Date.now()).getMonth(),
-  //     new Date(Date.now()).getDate(),
-  //     new Date(Date.now()).getHours(),
-  //     new Date(Date.now()).getMinutes(),
-  //     new Date(Date.now()).getSeconds()
-  //   )
-  // );
-  // const [dateBetweenModalOpen, setDateBetweenModalOpen] =
-  //   useState<boolean>(false);
-  // const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  // const [openShareHabit, setOpenShareHabit] = useState<boolean>(false);
-  // const [color, setColor] = useState<string>("#968EB0");
 
   const todayTemp = new Date();
   const today = new Date(
@@ -257,12 +148,6 @@ const App = () => {
     todayTemp.getMinutes(),
     todayTemp.getSeconds()
   );
-
-  //overview screen states
-  const [selectedOverviewHabit, setSelectedOverviewHabit] = useState<number>();
-  const [editHabitNameModal, setEditHabitNameModal] = useState<boolean>(false);
-  const [overviewColorModal, setOverviewColorModal] = useState<boolean>(false);
-  const [overviewColor, setOverviewColor] = useState<string>("#968EB0");
 
   useEffect(() => {
     if (habitsTodayBoolean) {
@@ -425,45 +310,7 @@ const App = () => {
             />
             <BottomTabNav.Screen
               name="OverviewSection"
-              children={(props: any) => (
-                <OverviewSection
-                  {...props}
-                  // refreshCurrentUsersHabits={refreshCurrentUsersHabits}
-                  dispatch={dispatch}
-                  fetchAllHabitsAction={fetchAllHabitsAction}
-                  fetchAllHabitsOfSelectedUserAction={
-                    fetchAllHabitsOfSelectedUserAction
-                  }
-                  deleteHabitAction={deleteHabitAction}
-                  updateHabitHiddenAction={updateHabitHiddenAction}
-                  revertAll={revertAll}
-                  revertAllHabit={revertAllHabit}
-                  deleteUserAction={deleteUserAction}
-                  sendFeedbackAction={sendFeedbackAction}
-                  allHabits={allHabits ? allHabits : []}
-                  allHabitsNumber={allHabits ? allHabits.length : 0}
-                  habitLoading={habitLoading}
-                  onShare={onShare}
-                  currentHabitWeekStreakState={currentHabitWeekStreak}
-                  allHabitDatesDots={allHabitDatesDots}
-                  selectedOverviewHabit={selectedOverviewHabit}
-                  setSelectedOverviewHabit={setSelectedOverviewHabit}
-                  updateHabitColorAction={updateHabitColorAction}
-                  editHabitNameModal={editHabitNameModal}
-                  setEditHabitNameModal={setEditHabitNameModal}
-                  overviewColorModal={overviewColorModal}
-                  setOverviewColorModal={setOverviewColorModal}
-                  overviewColor={overviewColor}
-                  setOverviewColor={setOverviewColor}
-                  updateHabitNameAction={updateHabitNameAction}
-                  updateHabitSharedWithAction={updateHabitSharedWithAction}
-                  shareWithFriendListModal={shareWithFriendListModal}
-                  setShareWithFriendListModal={setShareWithFriendListModal}
-                  currentUser={currentUser}
-                  shareWithFriendList={shareWithFriendList}
-                  setShareWithFriendList={setShareWithFriendList}
-                />
-              )}
+              children={(props: any) => <OverviewSection {...props} />}
               options={{
                 tabBarButton: (props) => (
                   <OverviewIcon
