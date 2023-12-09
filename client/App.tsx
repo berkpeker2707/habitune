@@ -1,12 +1,15 @@
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { StatusBar, Vibration } from "react-native";
 
 // import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
 
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  // , useNavigation
+} from "@react-navigation/native";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
@@ -16,7 +19,7 @@ import {
 import {
   BottomTabNavParamList,
   // StackNavParamList,
-  generalScreenProp,
+  // generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
 // screens
 import Signin from "./src/screens/Signin";
@@ -42,38 +45,28 @@ import {
   selectFetchCurrentUserProfile,
   selectSignIn,
   selectSignInWithGoogle,
-  selectUserLoading,
-  selectUserUpdated,
-  sendFriendshipAction,
-  updateCurrentUserImageAction,
+  friendID,
 } from "./src/state/userSlice";
 import {
-  createHabitAction,
   fetchAllHabitsAction,
   fetchAllTodayHabitsAction,
   selectHabitUpdated,
   selectHabits,
-  selectHabitsToday,
   selectHabitsTodayBoolean,
   selectCurrentHabitWeekStreak,
-  selectHabitsOfSelectedUser,
   selectHabitLoading,
   updateHabitNameAction,
   deleteHabitAction,
   fetchAllHabitsOfSelectedUserAction,
   revertAllHabit,
-  updateHabitCompletedDateAction,
   updateHabitSharedWithAction,
-  selectFriendCurrentHabitWeekStreak,
   selectAllHabitDatesDots,
-  selectFriendAllHabitDatesDots,
   updateHabitColorAction,
   updateHabitHiddenAction,
+  refreshHabits,
+  setTempBarFilled,
 } from "./src/state/habitSlice";
-import {
-  notificationSendAction,
-  notificationUpdateTokenAction,
-} from "./src/state/notificationSlice";
+import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
 
 import FlashMessage from "react-native-flash-message";
 
@@ -143,7 +136,7 @@ const AppWrapper = () => {
 const App = () => {
   const { theme, setTheme, changeTheme } = useTheme();
 
-  const navigation = useNavigation<generalScreenProp>();
+  // const navigation = useNavigation<generalScreenProp>();
 
   // const controller = new AbortController();
 
@@ -155,75 +148,80 @@ const App = () => {
 
   const currentUser = useSelector(selectFetchCurrentUserProfile);
 
-  const userLoading = useSelector(selectUserLoading);
+  // const userLoading = useSelector(selectUserLoading);
 
-  const userUpdated = useSelector(selectUserUpdated);
+  // const userUpdated = useSelector(selectUserUpdated);
 
   const allHabits = useSelector(selectHabits);
 
-  const allHabitsToday = useSelector(selectHabitsToday);
+  // const allHabitsToday = useSelector(selectHabitsToday);
 
   const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
 
   const currentHabitWeekStreak = useSelector(selectCurrentHabitWeekStreak);
 
-  const friendCurrentHabitWeek = useSelector(
-    selectFriendCurrentHabitWeekStreak
-  );
+  // const friendCurrentHabitWeek = useSelector(
+  //   selectFriendCurrentHabitWeekStreak
+  // );
 
   const allHabitDatesDots = useSelector(selectAllHabitDatesDots);
 
-  const friendAllHabitDatesDots = useSelector(selectFriendAllHabitDatesDots);
+  // const friendAllHabitDatesDots = useSelector(selectFriendAllHabitDatesDots);
 
-  const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
+  // const allHabitsOfSelectedUser = useSelector(selectHabitsOfSelectedUser);
 
   const habitUpdated = useSelector(selectHabitUpdated);
 
   const habitLoading = useSelector(selectHabitLoading);
 
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const refreshHabitsState = useSelector(refreshHabits);
 
-  const [homeEditBool, setHomeEditBool] = useState<boolean>(false);
+  const friendIDState = useSelector(friendID);
 
-  const [friendIDState, setFriendIDState] = useState<number>();
-  const [friendName, setFriendName] = useState<string>();
+  // const tempBarFilledState = useSelector(tempBarFilled);
+
+  // const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  // const [homeEditBool, setHomeEditBool] = useState<boolean>(false);
+
+  // const [friendIDState, setFriendIDState] = useState<number>();
+  // const [friendName, setFriendName] = useState<string>();
 
   //home screen states
-  const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
-  () => [];
+  // const [tempBarFilled, setTempBarFilled] = useState<Array<boolean>>();
+  // () => [];
   const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string>("");
+  // const [selectedItem, setSelectedItem] = useState<string>("");
   const [shareWithFriendListModal, setShareWithFriendListModal] =
     useState(false);
 
-  const [showInfoText, setShowInfoText] = useState<boolean>(false);
-  const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
-    useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<{
-    email: string;
-    name: string;
-    pending: boolean;
-  }>({
-    email: "",
-    name: "",
-    pending: false,
-  });
+  // const [acceptOrRemoveModalVisible, setAcceptOrRemoveModalVisible] =
+  //   useState<boolean>(false);
+  // const [selectedUser, setSelectedUser] = useState<{
+  //   email: string;
+  //   name: string;
+  //   pending: boolean;
+  // }>({
+  //   email: "",
+  //   name: "",
+  //   pending: false,
+  // });
 
-  const [habitNameState, setHabitNameState] = useState<string>("");
-  const [editHabitSelected, setEditHabitSelected] = useState<number>(0);
+  // const [habitNameState, setHabitNameState] = useState<string>("");
+  // const [editHabitSelected, setEditHabitSelected] = useState<number>(0);
 
   //add screen states
-  const [taskName, setTaskName] = useState<string>("");
-  const [openFrequency, setOpenFrequency] = useState<boolean>(false);
-  const [taskUpcomingDates, setTaskUpcomingDates] = useState<string[]>([
-    // "Sun",
-    // "Mon",
-    // "Tue",
-    // "Wed",
-    // "Thu",
-    // "Fri",
-    // "Sat",
-  ]);
+  // const [taskName, setTaskName] = useState<string>("");
+  // const [openFrequency, setOpenFrequency] = useState<boolean>(false);
+  // const [taskUpcomingDates, setTaskUpcomingDates] = useState<string[]>([
+  // "Sun",
+  // "Mon",
+  // "Tue",
+  // "Wed",
+  // "Thu",
+  // "Fri",
+  // "Sat",
+  // ]);
   // const [taskFirstDate, setTaskFirstDate] = useState<Date | any>(
   //   new Date(
   //     new Date(Date.now()).getFullYear(),
@@ -244,11 +242,11 @@ const App = () => {
   //     new Date(Date.now()).getSeconds()
   //   )
   // );
-  const [dateBetweenModalOpen, setDateBetweenModalOpen] =
-    useState<boolean>(false);
+  // const [dateBetweenModalOpen, setDateBetweenModalOpen] =
+  //   useState<boolean>(false);
   // const [shareWithFriendList, setShareWithFriendList] = useState<string[]>([]);
-  const [openShareHabit, setOpenShareHabit] = useState<boolean>(false);
-  const [color, setColor] = useState<string>("#968EB0");
+  // const [openShareHabit, setOpenShareHabit] = useState<boolean>(false);
+  // const [color, setColor] = useState<string>("#968EB0");
 
   const todayTemp = new Date();
   const today = new Date(
@@ -266,86 +264,11 @@ const App = () => {
   const [overviewColorModal, setOverviewColorModal] = useState<boolean>(false);
   const [overviewColor, setOverviewColor] = useState<string>("#968EB0");
 
-  //refresh current user starts
-  const refreshCurrentUser = useCallback(
-    (setRefreshing: Function, fetchCurrentUserProfileAction: Function) => {
-      setRefreshing(true);
-      dispatch(
-        fetchCurrentUserProfileAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
-    },
-    []
-  );
-  //refresh current user ends
-
-  //refresh current users today habits starts
-  const refreshCurrentUsersTodayHabits = useCallback(
-    (
-      setRefreshing: Function,
-      setTempBarFilled: Function,
-      currentHabitDatesIncluded: []
-    ) => {
-      setRefreshing(true);
-      setTempBarFilled(() => [...currentHabitDatesIncluded]);
-      dispatch(
-        fetchAllTodayHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
-    },
-    []
-  );
-  //refresh current users today habits ends
-
-  //refresh current user habits starts
-  const refreshCurrentUsersHabits = useCallback(
-    (
-      isItCurrentUser: boolean,
-      setRefreshing: Function,
-      fetchAllHabitsAction: Function
-    ) => {
-      setRefreshing(true);
-      dispatch(
-        fetchAllHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
-      setTimeout(() => {
-        setRefreshing(false);
-      }, 2000);
-    },
-    []
-  );
-  //refresh current user habits starts
+  useEffect(() => {
+    if (habitsTodayBoolean) {
+      dispatch(setTempBarFilled([...habitsTodayBoolean]));
+    }
+  }, [habitsTodayBoolean, refreshHabitsState]);
 
   //token
   useEffect(() => {
@@ -479,75 +402,7 @@ const App = () => {
           <>
             <BottomTabNav.Screen
               name="HomeSection"
-              children={(props: any) => (
-                <HomeSection
-                  {...props}
-                  refreshCurrentUser={refreshCurrentUser}
-                  refreshCurrentUsersTodayHabits={
-                    refreshCurrentUsersTodayHabits
-                  }
-                  dispatch={dispatch}
-                  updateCurrentUserImageAction={updateCurrentUserImageAction}
-                  fetchCurrentUserProfileAction={fetchCurrentUserProfileAction}
-                  fetchAllHabitsAction={fetchAllHabitsAction}
-                  fetchAllTodayHabitsAction={fetchAllTodayHabitsAction}
-                  fetchAllHabitsOfSelectedUserAction={
-                    fetchAllHabitsOfSelectedUserAction
-                  }
-                  updateHabitCompletedDateAction={
-                    updateHabitCompletedDateAction
-                  }
-                  updateHabitSharedWithAction={updateHabitSharedWithAction}
-                  updateHabitNameAction={updateHabitNameAction}
-                  sendFriendshipAction={sendFriendshipAction}
-                  deleteUserAction={deleteUserAction}
-                  sendFeedbackAction={sendFeedbackAction}
-                  deleteHabitAction={deleteHabitAction}
-                  notificationSendAction={notificationSendAction}
-                  revertAll={revertAll}
-                  revertAllHabit={revertAllHabit}
-                  currentUser={currentUser}
-                  allHabitsToday={allHabitsToday ? allHabitsToday : []}
-                  allHabitsNumber={allHabitsToday ? allHabitsToday.length : 0}
-                  allHabitsOfSelectedUser={
-                    allHabitsOfSelectedUser ? allHabitsOfSelectedUser : []
-                  }
-                  allHabitsOfSelectedUserNumber={
-                    allHabitsOfSelectedUser ? allHabitsOfSelectedUser.length : 0
-                  }
-                  currentHabitDatesIncluded={habitsTodayBoolean}
-                  homeEditBool={homeEditBool}
-                  setHomeEditBool={setHomeEditBool}
-                  habitLoading={habitLoading}
-                  refreshing={refreshing}
-                  setRefreshing={setRefreshing}
-                  onShare={onShare}
-                  friendIDState={friendIDState}
-                  setFriendIDState={setFriendIDState}
-                  friendName={friendName}
-                  setFriendName={setFriendName}
-                  friendCurrentHabitWeekStreakState={friendCurrentHabitWeek}
-                  friendAllHabitDatesDotsState={friendAllHabitDatesDots}
-                  tempBarFilled={tempBarFilled}
-                  setTempBarFilled={setTempBarFilled}
-                  shareWithFriendList={shareWithFriendList}
-                  setShareWithFriendList={setShareWithFriendList}
-                  selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
-                  shareWithFriendListModal={shareWithFriendListModal}
-                  setShareWithFriendListModal={setShareWithFriendListModal}
-                  showInfoText={showInfoText}
-                  setShowInfoText={setShowInfoText}
-                  acceptOrRemoveModalVisible={acceptOrRemoveModalVisible}
-                  setAcceptOrRemoveModalVisible={setAcceptOrRemoveModalVisible}
-                  selectedUser={selectedUser}
-                  setSelectedUser={setSelectedUser}
-                  editHabitSelected={editHabitSelected}
-                  setEditHabitSelected={setEditHabitSelected}
-                  habitNameState={habitNameState}
-                  setHabitNameState={setHabitNameState}
-                />
-              )}
+              children={(props: any) => <HomeSection {...props} />}
               options={{
                 // resets screen states below
                 // unmountOnBlur: true,
@@ -561,26 +416,7 @@ const App = () => {
             />
             <BottomTabNav.Screen
               name="AddSection"
-              children={(props: any) => (
-                <AddSection
-                  {...props}
-                  currentUser={currentUser}
-                  dispatch={dispatch}
-                  createHabitAction={createHabitAction}
-                  taskName={taskName}
-                  setTaskName={setTaskName}
-                  openFrequency={openFrequency}
-                  setOpenFrequency={setOpenFrequency}
-                  dateBetweenModalOpen={dateBetweenModalOpen}
-                  setDateBetweenModalOpen={setDateBetweenModalOpen}
-                  shareWithFriendList={shareWithFriendList}
-                  setShareWithFriendList={setShareWithFriendList}
-                  openShareHabit={openShareHabit}
-                  setOpenShareHabit={setOpenShareHabit}
-                  color={color}
-                  setColor={setColor}
-                />
-              )}
+              children={(props: any) => <AddSection {...props} />}
               options={{
                 tabBarButton: (props) => (
                   <AddIcon {...props} onPressIn={() => Vibration.vibrate(10)} />
@@ -592,7 +428,7 @@ const App = () => {
               children={(props: any) => (
                 <OverviewSection
                   {...props}
-                  refreshCurrentUsersHabits={refreshCurrentUsersHabits}
+                  // refreshCurrentUsersHabits={refreshCurrentUsersHabits}
                   dispatch={dispatch}
                   fetchAllHabitsAction={fetchAllHabitsAction}
                   fetchAllHabitsOfSelectedUserAction={
@@ -607,8 +443,6 @@ const App = () => {
                   allHabits={allHabits ? allHabits : []}
                   allHabitsNumber={allHabits ? allHabits.length : 0}
                   habitLoading={habitLoading}
-                  refreshing={refreshing}
-                  setRefreshing={setRefreshing}
                   onShare={onShare}
                   currentHabitWeekStreakState={currentHabitWeekStreak}
                   allHabitDatesDots={allHabitDatesDots}
