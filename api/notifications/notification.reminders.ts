@@ -137,7 +137,9 @@ export const notifyUsersThreeDaysLater = async () => {
   // every 10 seconds */10 * * * * *
   // schedule.scheduleJob("*/10 * * * * *", async () => {
   //every day at 12:00 AM
-  schedule.scheduleJob("0 0 * * *", async () => {
+  // schedule.scheduleJob("0 0 * * *", async () => {
+  //every 6 hours
+  schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
       console.log("timer three days run");
 
@@ -223,7 +225,9 @@ export const notifyUsersSevenDaysLater = async () => {
   // every 10 seconds */10 * * * * *
   // schedule.scheduleJob("*/10 * * * * *", async () => {
   //at 12:00 AM, every 5 days
-  schedule.scheduleJob("0 0 */5 * *", async () => {
+  // schedule.scheduleJob("0 0 */5 * *", async () => {
+  //every 6 hours
+  schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
       console.log("timer seven days run");
 
@@ -309,7 +313,9 @@ export const notifyUsersThirtyDaysLater = async () => {
   // every 10 seconds */10 * * * * *
   // schedule.scheduleJob("*/10 * * * * *", async () => {
   //at 12:00 AM, every 15 days
-  schedule.scheduleJob("0 0 */15 * *", async () => {
+  // schedule.scheduleJob("0 0 */15 * *", async () => {
+  //every 6 hours
+  schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
       console.log("timer 30 days run");
 
@@ -395,7 +401,9 @@ export const notifyUsersNinetyDaysLater = async () => {
   // every 10 seconds */10 * * * * *
   // schedule.scheduleJob("*/10 * * * * *", async () => {
   //at 12:00 AM, every 90 days
-  schedule.scheduleJob("0 0 */90 * *", async () => {
+  // schedule.scheduleJob("0 0 */90 * *", async () => {
+  //every 6 hours
+  schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
       console.log("timer 90 days run");
 
