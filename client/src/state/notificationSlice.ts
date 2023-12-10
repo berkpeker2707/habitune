@@ -61,7 +61,7 @@ export const notificationSendAction = createAsyncThunk(
     };
 
     try {
-      const { data } = await axiosInstance.put(
+      const { data } = await axiosInstance.post(
         `/notification/update/push`,
         notificationSendData,
         config
