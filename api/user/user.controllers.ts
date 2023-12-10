@@ -273,14 +273,20 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
       await loggedinUser?.updateOne(
         {
-          $push: { friends: [{ friend: user[0]._id, pending: false }] },
+          $push: {
+            friends: [{ friend: user[0]._id, pending: false, paired: false }],
+          },
         },
         { upsert: true }
       );
 
       await user[0]?.updateOne(
         {
-          $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
+          $push: {
+            friends: [
+              { friend: req.user[0]._id, pending: true, paired: false },
+            ],
+          },
         },
         { upsert: true }
       );
@@ -332,6 +338,17 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         },
         { multi: true }
       );
+
+      // const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id })
+      // await Habit.update(
+      //   { owner: req.user[0]._id },
+      //   { $pull: { sharedWith: user[0]._id } },
+      // );
+      await Habit.updateMany(
+        { owner: req.user[0]._id },
+        { $pull: { sharedWith: user[0]._id } }
+      );
+
       Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else if (
@@ -346,10 +363,29 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
       await User.findOneAndUpdate(
         {
-          friends: { $elemMatch: { friend: user[0]._id, pending: true } },
+          _id: req.user[0]._id,
+          friends: {
+            $elemMatch: { friend: user[0]._id, pending: true, paired: false },
+          },
         },
         {
-          $set: { "friends.$.pending": false },
+          $set: { "friends.$.pending": false, "friends.$.paired": true },
+        }
+      );
+
+      await User.findOneAndUpdate(
+        {
+          _id: user[0]._id,
+          friends: {
+            $elemMatch: {
+              friend: req.user[0]._id,
+              pending: false,
+              paired: false,
+            },
+          },
+        },
+        {
+          $set: { "friends.$.pending": false, "friends.$.paired": true },
         }
       );
       Logger.info(loggedinUser);

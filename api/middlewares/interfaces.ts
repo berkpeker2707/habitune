@@ -9,7 +9,7 @@ export interface IUser {
   email: string;
   image: string;
   habits: Types.ObjectId[];
-  friends: [{ friend: Types.ObjectId; pending: boolean }];
+  friends: [{ friend: Types.ObjectId; pending: boolean; paired: boolean }];
   password: any;
   fcmToken: string;
   feedback: Array<string>;

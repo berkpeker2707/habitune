@@ -8,7 +8,13 @@ const userSchema = new Schema<IUser>({
   email: { type: String, unique: true, index: true },
   image: { type: String },
   habits: [mongoose.Schema.Types.ObjectId],
-  friends: [{ friend: mongoose.Schema.Types.ObjectId, pending: Boolean }],
+  friends: [
+    {
+      friend: mongoose.Schema.Types.ObjectId,
+      pending: Boolean,
+      paired: { type: Boolean, default: false },
+    },
+  ],
   password: { type: String },
   fcmToken: { type: String },
   feedback: { type: [], default: [] },
