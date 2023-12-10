@@ -75,11 +75,11 @@ export const notificationSendAction = createAsyncThunk(
   }
 );
 
-export const revertAll = createAsyncThunk(
+export const revertAllNotifications = createAsyncThunk(
   "notification/logout",
   async (_, { rejectWithValue, getState, dispatch }) => {
     try {
-      await AsyncStorage.clear();
+      // await AsyncStorage.clear();
 
       return {};
     } catch (error) {
@@ -116,18 +116,18 @@ const notificationSlice = createSlice({
       state.error = action?.error.toString();
     });
     //logout
-    builder.addCase(revertAll.pending, (state, action) => {
+    builder.addCase(revertAllNotifications.pending, (state, action) => {
       state.loading = true;
       state.error = "";
     });
-    builder.addCase(revertAll.fulfilled, (initialState) => {
-      (initialState.token = ""),
-        (initialState.loading = false),
-        (initialState.error = ""),
-        (initialState.isNotificationUpdated = false),
-        (initialState.notificationData = {});
+    builder.addCase(revertAllNotifications.fulfilled, (state, action) => {
+      (state.token = ""),
+        (state.loading = false),
+        (state.error = ""),
+        (state.isNotificationUpdated = false),
+        (state.notificationData = {});
     });
-    builder.addCase(revertAll.rejected, (state, action) => {
+    builder.addCase(revertAllNotifications.rejected, (state, action) => {
       state.loading = false;
       state.error = action?.error.toString();
     });

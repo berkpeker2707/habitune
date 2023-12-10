@@ -1179,13 +1179,66 @@ const habitSlice = createSlice({
       state.loading = true;
       state.error = "";
     });
-    builder.addCase(revertAllHabit.fulfilled, (initialState) => {
-      (initialState.loading = false),
-        (initialState.error = ""),
-        (initialState.isHabitUpdated = false),
-        (initialState.singleHabitData = {});
-      initialState.totalHabitsData = [];
-      initialState.todaysHabitsData = [];
+    builder.addCase(revertAllHabit.fulfilled, (state, action) => {
+      (state.loading = false),
+        (state.error = ""),
+        (state.isHabitUpdated = false),
+        (state.singleHabitData = {}),
+        (state.totalHabitsData = []),
+        (state.allHabitsOfSelectedUserData = []),
+        (state.todaysHabitsData = []),
+        (state.todaysHabitBooleanData = []),
+        (state.currentHabitWeekStreakData = []),
+        (state.friendCurrentHabitWeekData = []),
+        (state.allHabitDatesDotsData = []),
+        (state.friendAllHabitDatesDotsData = []),
+        (state.createHabitData = {}),
+        (state.deleteHabitData = {}),
+        (state.updateHabitNameData = {}),
+        (state.updateHabitColorData = {}),
+        (state.updateHabitSharedWithData = {}),
+        (state.updateHabitFirstAndLastDateData = {}),
+        (state.updateHabitDatesData = {}),
+        (state.updateHabitCompletedDateData = {}),
+        //habit home states start
+        (state.refreshHabits = false),
+        (state.tempBarFilled = []),
+        //habit home states ends
+
+        //habit add states start
+        (state.taskFirstDate = new Date(
+          todayTemp.getFullYear(),
+          todayTemp.getMonth(),
+          todayTemp.getDate(),
+          todayTemp.getHours(),
+          todayTemp.getMinutes(),
+          todayTemp.getSeconds()
+        )),
+        (state.taskLastDate = new Date(
+          new Date(
+            new Date(Date.now()).getFullYear() + 1,
+            new Date(Date.now()).getMonth(),
+            new Date(Date.now()).getDate(),
+            new Date(Date.now()).getHours(),
+            new Date(Date.now()).getMinutes(),
+            new Date(Date.now()).getSeconds()
+          )
+        )),
+        (state.taskUpcomingDates = []),
+        (state.dateBetweenModalOpen = false),
+        (state.openFrequency = false),
+        (state.openShareHabit = false),
+        (state.shareWithFriendList = []),
+        (state.color = "#968EB0"),
+        (state.taskName = ""),
+        //habit add states ends
+
+        //habit overview states starts
+        (state.selectedOverviewHabit = 999),
+        (state.editHabitNameModal = false),
+        (state.overviewColorModal = false),
+        (state.shareWithFriendListModal = false);
+      //habit overview states ends
     });
     builder.addCase(revertAllHabit.rejected, (state, action) => {
       state.loading = false;

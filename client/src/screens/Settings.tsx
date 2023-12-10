@@ -18,13 +18,14 @@ import {
   deleteUserAction,
   feedback,
   feedbackModalVisible,
-  revertAll,
   sendFeedbackAction,
   setAboutUsModalVisible,
   setFeedback,
   setFeedbackModalVisible,
+  revertAll,
 } from "../state/userSlice";
 import { revertAllHabit } from "../state/habitSlice";
+import { revertAllNotifications } from "../state/notificationSlice";
 
 const Settings = () => {
   const { theme, setTheme, changeThemeAction } = useTheme();
@@ -272,6 +273,7 @@ const Settings = () => {
           onPress={() => {
             dispatch(revertAll());
             dispatch(revertAllHabit());
+            dispatch(revertAllNotifications());
           }}
         >
           <SettingsButton buttonName="Sign Out" />
