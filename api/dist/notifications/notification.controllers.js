@@ -22,22 +22,11 @@ dotenv_1.default.config();
 const admin = require("firebase-admin");
 const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const notification = yield notification_model_1.default.findOne({
-            userID: req.user[0]._id,
+        const updatedUser = yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
+            fcmToken: req.body.token,
         });
-        if (notification.tokenID === "" ||
-            notification.tokenID !== req.body.token) {
-            yield notification.updateOne({ tokenID: req.body.token }).exec();
-            yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
-                fcmToken: req.body.token,
-            });
-            logger_1.default.info(notification);
-            res.status(200).json(notification);
-        }
-        else {
-            logger_1.default.info(notification);
-            res.status(200).json(notification);
-        }
+        logger_1.default.info(updatedUser);
+        res.status(200).json(updatedUser);
     }
     catch (error) {
         logger_1.default.error(error);
@@ -47,7 +36,10 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.notificationUpdateToken = notificationUpdateToken;
 const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const notification = yield notification_model_1.default.findOne({
+        // const notification = await Notification.findOne({
+        //   userID: req.user[0]._id,
+        // });
+        const notification = yield notification_model_1.default.create({
             userID: req.user[0]._id,
         });
         const randomBodies = [
@@ -70,17 +62,14 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
         notification
             .updateOne({
-            $push: {
-                notifications: {
-                    title: `${req.body.firstName} completed a habit!`,
-                    body: randomBody,
-                    imageUrl: req.body.imageUrl,
-                    friend: req.body.friend,
-                    firstName: req.body.firstName,
-                    friendImage: req.body.friendImage,
-                    habitName: req.body.habitName,
-                },
-            },
+            habitID: req.body.habitID,
+            notificationTitle: `${req.body.firstName} completed a habit!`,
+            notificationBody: randomBody,
+            notificationImageUrl: req.body.imageUrl,
+            notificationFriend: req.body.friend,
+            notificationFriendImage: req.body.friendImage,
+            notificationFirstName: req.body.firstName,
+            notificationHabitName: req.body.habitName,
         })
             .exec();
         logger_1.default.info(notification);

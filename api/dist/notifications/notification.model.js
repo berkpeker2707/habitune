@@ -27,18 +27,45 @@ const notificationSchema = new mongoose_1.Schema({
     userID: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: "User",
-        unique: true,
-        index: true,
+        // unique: true,
+        // index: true,
     },
-    tokenID: {
+    habitID: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "Habit",
+        // unique: true,
+        // index: true,
+    },
+    notificationTitle: {
         type: String,
     },
-    notifications: {
-        type: [Object],
+    notificationBody: {
+        type: String,
+    },
+    notificationImageUrl: {
+        type: String,
+    },
+    notificationFriend: {
+        type: Array,
+    },
+    notificationFriendImage: {
+        type: Array,
+    },
+    notificationFirstName: {
+        type: String,
+    },
+    notificationHabitName: {
+        type: String,
     },
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+    expirationDate: {
+        type: Date,
+        // default: () => new Date(Date.now() + 1 * 60 * 1000), //1 minutes in milliseconds
+        default: () => new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+        index: { expires: "5m" }, //create a TTL (Time-To-Live) index, where documents expire after 5 minute
     },
 });
 module.exports = mongoose_1.default.model("Notification", notificationSchema);
