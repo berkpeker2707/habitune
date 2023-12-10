@@ -50,15 +50,6 @@ export const signInWithGoogleController = async (
         expiresIn: "365d",
       });
 
-      var foundNotification = await Notification.findOne({
-        userID: foundUser?._id,
-      });
-      if (!foundNotification) {
-        await Notification.create({
-          userID: foundUser?._id,
-          tokenID: "empty",
-        });
-      }
       Logger.info(token);
       res.status(200).json(token);
     } else {
@@ -72,16 +63,6 @@ export const signInWithGoogleController = async (
         theme: "default",
       });
       await user.save();
-
-      var foundNotification = await Notification.findOne({
-        userID: user?._id,
-      });
-      if (!foundNotification) {
-        await Notification.create({
-          userID: user?._id,
-          tokenID: "empty",
-        });
-      }
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -127,15 +108,6 @@ export const signInController = async (req: IReq | any, res: Response) => {
             }
           );
 
-          var foundNotification = await Notification.findOne({
-            userID: foundUser?._id,
-          });
-          if (!foundNotification) {
-            await Notification.create({
-              userID: foundUser?._id,
-              tokenID: "empty",
-            });
-          }
           Logger.info(token);
           res.status(200).json(token);
         } else {
@@ -165,16 +137,6 @@ export const signInController = async (req: IReq | any, res: Response) => {
             theme: "default",
           });
           await user.save();
-
-          var foundNotification = await Notification.findOne({
-            userID: user?._id,
-          });
-          if (!foundNotification) {
-            await Notification.create({
-              userID: user?._id,
-              tokenID: "empty",
-            });
-          }
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
@@ -211,16 +173,6 @@ export const fetchCurrentUserProfile = async (
       });
     }
 
-    var foundNotification = await Notification.findOne({
-      userID: req.user[0]._id,
-    });
-
-    if (!foundNotification) {
-      await Notification.create({
-        userID: req.user[0]._id,
-        tokenID: "empty",
-      });
-    }
     Logger.info(loggedinUser);
     res.status(200).json(loggedinUser);
   } catch (error) {
