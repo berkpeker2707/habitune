@@ -31,6 +31,7 @@ const HabitBarParent = memo((props: { tempBarFilled: [boolean] }) => {
       if (!tempBarFilled[index] && item.sharedWith.length > 0) {
         dispatch(
           notificationSendAction({
+            habitID: item._id,
             imageUrl: "image",
             friend: item.sharedWith.map(
               (sharedWithIds: any) => sharedWithIds._id
