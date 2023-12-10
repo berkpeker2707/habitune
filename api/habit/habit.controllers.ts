@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getErrorMessage } from "../utils/errors.util";
 import Habit from "./habit.model";
 import User from "../user/user.model";
+import Notification from "../notifications/notification.model";
 
 import { IReq } from "../middlewares/interfaces";
 
@@ -169,6 +170,10 @@ export const deleteHabit = async (req: IReq | any, res: Response) => {
       },
       { upsert: true }
     );
+
+    await Notification.deleteMany({
+      habitID: req.params.id,
+    });
 
     Logger.info("Habit deleted");
     res.status(200).json("Habit deleted");

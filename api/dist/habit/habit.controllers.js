@@ -16,6 +16,7 @@ exports.updateHabitHidden = exports.updateHabitCompletedDate = exports.updateHab
 const errors_util_1 = require("../utils/errors.util");
 const habit_model_1 = __importDefault(require("./habit.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
+const notification_model_1 = __importDefault(require("../notifications/notification.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = __importDefault(require("../middlewares/logger"));
 const calculateUpcomingDates_1 = __importDefault(require("../middlewares/calculateUpcomingDates"));
@@ -158,6 +159,9 @@ const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
             $pull: { habits: req.params.id },
         }, { upsert: true });
+        yield notification_model_1.default.deleteMany({
+            habitID: req.params.id,
+        });
         logger_1.default.info("Habit deleted");
         res.status(200).json("Habit deleted");
     }

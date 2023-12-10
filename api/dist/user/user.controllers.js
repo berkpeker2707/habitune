@@ -41,15 +41,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
-            var foundNotification = yield notification_model_1.default.findOne({
-                userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
-            });
-            if (!foundNotification) {
-                yield notification_model_1.default.create({
-                    userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
-                    tokenID: "empty",
-                });
-            }
             logger_1.default.info(token);
             res.status(200).json(token);
         }
@@ -64,15 +55,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 theme: "default",
             });
             yield user.save();
-            var foundNotification = yield notification_model_1.default.findOne({
-                userID: user === null || user === void 0 ? void 0 : user._id,
-            });
-            if (!foundNotification) {
-                yield notification_model_1.default.create({
-                    userID: user === null || user === void 0 ? void 0 : user._id,
-                    tokenID: "empty",
-                });
-            }
             var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
@@ -106,15 +88,6 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
-                    var foundNotification = yield notification_model_1.default.findOne({
-                        userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
-                    });
-                    if (!foundNotification) {
-                        yield notification_model_1.default.create({
-                            userID: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
-                            tokenID: "empty",
-                        });
-                    }
                     logger_1.default.info(token);
                     res.status(200).json(token);
                 }
@@ -145,15 +118,6 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         theme: "default",
                     });
                     yield user.save();
-                    var foundNotification = yield notification_model_1.default.findOne({
-                        userID: user === null || user === void 0 ? void 0 : user._id,
-                    });
-                    if (!foundNotification) {
-                        yield notification_model_1.default.create({
-                            userID: user === null || user === void 0 ? void 0 : user._id,
-                            tokenID: "empty",
-                        });
-                    }
                     var token = yield jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: "365d",
                     });
@@ -183,15 +147,6 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
                 $set: { lastLogin: clientTime },
             }));
-        }
-        var foundNotification = yield notification_model_1.default.findOne({
-            userID: req.user[0]._id,
-        });
-        if (!foundNotification) {
-            yield notification_model_1.default.create({
-                userID: req.user[0]._id,
-                tokenID: "empty",
-            });
         }
         logger_1.default.info(loggedinUser);
         res.status(200).json(loggedinUser);
@@ -264,10 +219,16 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             //   "condition #1: only loggedinUser wants friendship ///// DONE"
             // );
             yield (loggedinUser === null || loggedinUser === void 0 ? void 0 : loggedinUser.updateOne({
-                $push: { friends: [{ friend: user[0]._id, pending: false }] },
+                $push: {
+                    friends: [{ friend: user[0]._id, pending: false, paired: false }],
+                },
             }, { upsert: true }));
             yield ((_a = user[0]) === null || _a === void 0 ? void 0 : _a.updateOne({
-                $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
+                $push: {
+                    friends: [
+                        { friend: req.user[0]._id, pending: true, paired: false },
+                    ],
+                },
             }, { upsert: true }));
             logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
@@ -299,6 +260,12 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             yield ((_c = user[0]) === null || _c === void 0 ? void 0 : _c.updateOne({
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
+            // const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id })
+            // await Habit.update(
+            //   { owner: req.user[0]._id },
+            //   { $pull: { sharedWith: user[0]._id } },
+            // );
+            yield habit_model_1.default.updateMany({ owner: req.user[0]._id }, { $pull: { sharedWith: user[0]._id } });
             logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);
         }
@@ -310,9 +277,24 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             //   "condition #4: target user had sent friendship request and current user has just send as well --- from friendship ///// DONE"
             // );
             yield user_model_1.default.findOneAndUpdate({
-                friends: { $elemMatch: { friend: user[0]._id, pending: true } },
+                _id: req.user[0]._id,
+                friends: {
+                    $elemMatch: { friend: user[0]._id, pending: true, paired: false },
+                },
             }, {
-                $set: { "friends.$.pending": false },
+                $set: { "friends.$.pending": false, "friends.$.paired": true },
+            });
+            yield user_model_1.default.findOneAndUpdate({
+                _id: user[0]._id,
+                friends: {
+                    $elemMatch: {
+                        friend: req.user[0]._id,
+                        pending: false,
+                        paired: false,
+                    },
+                },
+            }, {
+                $set: { "friends.$.pending": false, "friends.$.paired": true },
             });
             logger_1.default.info(loggedinUser);
             res.status(200).json(loggedinUser);

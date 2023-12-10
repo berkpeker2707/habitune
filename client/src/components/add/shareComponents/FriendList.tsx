@@ -23,7 +23,9 @@ const FriendList = (props: {
       {currentUser.friends && currentUser.friends.length > 0 ? (
         currentUser.friends
           .filter(
-            (friendsItemPending: any) => friendsItemPending.pending == false
+            (friendsItemPending: any) =>
+              friendsItemPending.pending == false &&
+              friendsItemPending.paired == true
           )
           .map((friendsItem: any) => {
             return (

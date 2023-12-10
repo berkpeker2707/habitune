@@ -15,7 +15,7 @@ notificationRoutes.post(
   notificationUpdateToken
 );
 
-notificationRoutes.put(
+notificationRoutes.post(
   "/update/push",
   [verifyToken, defaultLimitter],
   notificationSend

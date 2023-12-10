@@ -14,26 +14,12 @@ const admin = require("firebase-admin");
 
 export const notificationUpdateToken = async (req: any, res: Response) => {
   try {
-    const notification = await Notification.findOne({
-      userID: req.user[0]._id,
+    const updatedUser = await User.findByIdAndUpdate(req.user[0]._id, {
+      fcmToken: req.body.token,
     });
 
-    if (
-      notification.tokenID === "" ||
-      notification.tokenID !== req.body.token
-    ) {
-      await notification.updateOne({ tokenID: req.body.token }).exec();
-
-      await User.findByIdAndUpdate(req.user[0]._id, {
-        fcmToken: req.body.token,
-      });
-
-      Logger.info(notification);
-      res.status(200).json(notification);
-    } else {
-      Logger.info(notification);
-      res.status(200).json(notification);
-    }
+    Logger.info(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -42,7 +28,11 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
 
 export const notificationSend = async (req: any, res: Response) => {
   try {
-    const notification = await Notification.findOne({
+    // const notification = await Notification.findOne({
+    //   userID: req.user[0]._id,
+    // });
+
+    const notification = await Notification.create({
       userID: req.user[0]._id,
     });
 
@@ -70,17 +60,14 @@ export const notificationSend = async (req: any, res: Response) => {
 
     notification
       .updateOne({
-        $push: {
-          notifications: {
-            title: `${req.body.firstName} completed a habit!`,
-            body: randomBody,
-            imageUrl: req.body.imageUrl,
-            friend: req.body.friend,
-            firstName: req.body.firstName,
-            friendImage: req.body.friendImage,
-            habitName: req.body.habitName,
-          },
-        },
+        habitID: req.body.habitID,
+        notificationTitle: `${req.body.firstName} completed a habit!`,
+        notificationBody: randomBody,
+        notificationImageUrl: req.body.imageUrl,
+        notificationFriend: req.body.friend,
+        notificationFriendImage: req.body.friendImage,
+        notificationFirstName: req.body.firstName,
+        notificationHabitName: req.body.habitName,
       })
       .exec();
     Logger.info(notification);

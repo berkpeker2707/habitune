@@ -50,15 +50,6 @@ export const signInWithGoogleController = async (
         expiresIn: "365d",
       });
 
-      var foundNotification = await Notification.findOne({
-        userID: foundUser?._id,
-      });
-      if (!foundNotification) {
-        await Notification.create({
-          userID: foundUser?._id,
-          tokenID: "empty",
-        });
-      }
       Logger.info(token);
       res.status(200).json(token);
     } else {
@@ -72,16 +63,6 @@ export const signInWithGoogleController = async (
         theme: "default",
       });
       await user.save();
-
-      var foundNotification = await Notification.findOne({
-        userID: user?._id,
-      });
-      if (!foundNotification) {
-        await Notification.create({
-          userID: user?._id,
-          tokenID: "empty",
-        });
-      }
 
       var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
         expiresIn: "365d",
@@ -127,15 +108,6 @@ export const signInController = async (req: IReq | any, res: Response) => {
             }
           );
 
-          var foundNotification = await Notification.findOne({
-            userID: foundUser?._id,
-          });
-          if (!foundNotification) {
-            await Notification.create({
-              userID: foundUser?._id,
-              tokenID: "empty",
-            });
-          }
           Logger.info(token);
           res.status(200).json(token);
         } else {
@@ -165,16 +137,6 @@ export const signInController = async (req: IReq | any, res: Response) => {
             theme: "default",
           });
           await user.save();
-
-          var foundNotification = await Notification.findOne({
-            userID: user?._id,
-          });
-          if (!foundNotification) {
-            await Notification.create({
-              userID: user?._id,
-              tokenID: "empty",
-            });
-          }
 
           var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
             expiresIn: "365d",
@@ -211,16 +173,6 @@ export const fetchCurrentUserProfile = async (
       });
     }
 
-    var foundNotification = await Notification.findOne({
-      userID: req.user[0]._id,
-    });
-
-    if (!foundNotification) {
-      await Notification.create({
-        userID: req.user[0]._id,
-        tokenID: "empty",
-      });
-    }
     Logger.info(loggedinUser);
     res.status(200).json(loggedinUser);
   } catch (error) {
@@ -321,14 +273,20 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
       await loggedinUser?.updateOne(
         {
-          $push: { friends: [{ friend: user[0]._id, pending: false }] },
+          $push: {
+            friends: [{ friend: user[0]._id, pending: false, paired: false }],
+          },
         },
         { upsert: true }
       );
 
       await user[0]?.updateOne(
         {
-          $push: { friends: [{ friend: req.user[0]._id, pending: true }] },
+          $push: {
+            friends: [
+              { friend: req.user[0]._id, pending: true, paired: false },
+            ],
+          },
         },
         { upsert: true }
       );
@@ -380,6 +338,17 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         },
         { multi: true }
       );
+
+      // const loggedinUsersHabits = await Habit.find({ owner: req.user[0]._id })
+      // await Habit.update(
+      //   { owner: req.user[0]._id },
+      //   { $pull: { sharedWith: user[0]._id } },
+      // );
+      await Habit.updateMany(
+        { owner: req.user[0]._id },
+        { $pull: { sharedWith: user[0]._id } }
+      );
+
       Logger.info(loggedinUser);
       res.status(200).json(loggedinUser);
     } else if (
@@ -394,10 +363,29 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
 
       await User.findOneAndUpdate(
         {
-          friends: { $elemMatch: { friend: user[0]._id, pending: true } },
+          _id: req.user[0]._id,
+          friends: {
+            $elemMatch: { friend: user[0]._id, pending: true, paired: false },
+          },
         },
         {
-          $set: { "friends.$.pending": false },
+          $set: { "friends.$.pending": false, "friends.$.paired": true },
+        }
+      );
+
+      await User.findOneAndUpdate(
+        {
+          _id: user[0]._id,
+          friends: {
+            $elemMatch: {
+              friend: req.user[0]._id,
+              pending: false,
+              paired: false,
+            },
+          },
+        },
+        {
+          $set: { "friends.$.pending": false, "friends.$.paired": true },
         }
       );
       Logger.info(loggedinUser);

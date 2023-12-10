@@ -9,5 +9,5 @@ const verifyToken_1 = __importDefault(require("../middlewares/verifyToken"));
 const defaultLimitter_1 = __importDefault(require("../middlewares/defaultLimitter"));
 const notificationRoutes = (0, express_1.Router)();
 notificationRoutes.post("/update/token", [verifyToken_1.default, defaultLimitter_1.default], notification_controllers_1.notificationUpdateToken);
-notificationRoutes.put("/update/push", [verifyToken_1.default, defaultLimitter_1.default], notification_controllers_1.notificationSend);
+notificationRoutes.post("/update/push", [verifyToken_1.default, defaultLimitter_1.default], notification_controllers_1.notificationSend);
 exports.default = notificationRoutes;
