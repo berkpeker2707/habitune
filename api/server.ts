@@ -15,19 +15,21 @@ import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
 
-// import {
-//   notifyUsersDaily,
-//   notifyUsersSevenDaysLater,
-//   notifyUsersThreeDaysLater,
-//   notifyUsersThirtyDaysLater,
-//   notifyUsersNinetyDaysLater,
-//   // notifyUser,
-// } from "./notifications/notification.reminders";
+import {
+  //   notifyUsersDaily,
+  //   notifyUsersSevenDaysLater,
+  //   notifyUsersThreeDaysLater,
+  //   notifyUsersThirtyDaysLater,
+  //   notifyUsersNinetyDaysLater,
+  notifyUser,
+} from "./notifications/notification.reminders";
 
 import path from "path";
 import lowLimitter from "./middlewares/lowLimitter";
 
 dotenv.config();
+
+const schedule = require("node-schedule");
 
 const app: Express = express();
 const port = process.env.PORT || 1111;
@@ -131,21 +133,24 @@ app.use("/api/user", userRoutes);
 app.use("/api/habit", habitRoutes);
 app.use("/api/notification", notificationRoutes);
 
-//reminders
-// try {
-// notifyUser();
-// yesterday reminder
-// notifyUsersDaily();
-//three days later reminder
-// notifyUsersThreeDaysLater();
-//seven days later reminder
-// notifyUsersSevenDaysLater();
-//thirty days later reminder
-// notifyUsersThirtyDaysLater();
-//ninety days later reminder
-// notifyUsersNinetyDaysLater();
-// } catch (error) {
-//   Logger.error(error);
-// }
+// reminders
+try {
+  schedule.scheduleJob("*/10 * * * * *", async () => {
+    // schedule.scheduleJob("0 0 */6 * *", async () => {
+    notifyUser();
+    // yesterday reminder
+    // notifyUsersDaily();
+    //three days later reminder
+    // notifyUsersThreeDaysLater();
+    //seven days later reminder
+    // notifyUsersSevenDaysLater();
+    //thirty days later reminder
+    // notifyUsersThirtyDaysLater();
+    //ninety days later reminder
+    // notifyUsersNinetyDaysLater();
+  });
+} catch (error) {
+  Logger.error(error);
+}
 
 export default app;
