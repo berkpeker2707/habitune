@@ -26,7 +26,6 @@ import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
 
 import { cronjob } from "./cronjob";
-import verifyToken from "./middlewares/verifyToken";
 import defaultLimitter from "./middlewares/defaultLimitter";
 
 const app: Express = express();
