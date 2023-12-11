@@ -1,6 +1,6 @@
 import { notifyUser } from "./notifications/notification.reminders";
 
-export default async (req: any, res: any) => {
+export const cronjob = async (req: any, res: any) => {
   try {
     await notifyUser();
     console.log("Cron job executed successfully");

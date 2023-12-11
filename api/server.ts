@@ -25,6 +25,10 @@ import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
 
+import { cronjob } from "./cronjob";
+import verifyToken from "./middlewares/verifyToken";
+import defaultLimitter from "./middlewares/defaultLimitter";
+
 const app: Express = express();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
@@ -107,6 +111,19 @@ app.get("/image/empty-shell", function (req, res) {
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/view/index.html"));
 });
+
+app.get(
+  "/api/cronjob",
+  [verifyToken, defaultLimitter],
+  async (req: any, res: any) => {
+    try {
+      await cronjob(req, res);
+    } catch (error) {
+      console.error("Error executing cron job:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 
 //routing
 app.use("/api/user", userRoutes);

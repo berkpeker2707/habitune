@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.cronjob = void 0;
 const notification_reminders_1 = require("./notifications/notification.reminders");
-exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const cronjob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, notification_reminders_1.notifyUser)();
         console.log("Cron job executed successfully");
@@ -21,3 +22,4 @@ exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send("Internal Server Error");
     }
 });
+exports.cronjob = cronjob;

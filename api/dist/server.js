@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -21,6 +30,9 @@ const admin = require("firebase-admin");
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
+const cronjob_1 = require("./cronjob");
+const verifyToken_1 = __importDefault(require("./middlewares/verifyToken"));
+const defaultLimitter_1 = __importDefault(require("./middlewares/defaultLimitter"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
@@ -84,6 +96,15 @@ app.get("/image/empty-shell", function (req, res) {
 app.get("/", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
 });
+app.get("/api/cronjob", [verifyToken_1.default, defaultLimitter_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield (0, cronjob_1.cronjob)(req, res);
+    }
+    catch (error) {
+        console.error("Error executing cron job:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}));
 //routing
 app.use("/api/user", user_routes_1.default);
 app.use("/api/habit", habit_routes_1.default);
