@@ -8,15 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const logger_1 = __importDefault(require("./middlewares/logger"));
 const notification_reminders_1 = require("./notifications/notification.reminders");
 exports.default = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, notification_reminders_1.notifyUser)();
+        logger_1.default.info("Cron job executed successfully");
         res.status(200).send("Cron job executed successfully");
     }
     catch (error) {
-        console.error("Error executing cron job:", error);
+        logger_1.default.info("Error executing cron job");
         res.status(500).send("Internal Server Error");
     }
 });
