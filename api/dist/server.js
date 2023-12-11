@@ -31,7 +31,6 @@ const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
 const cronjob_1 = require("./cronjob");
-const verifyToken_1 = __importDefault(require("./middlewares/verifyToken"));
 const defaultLimitter_1 = __importDefault(require("./middlewares/defaultLimitter"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
@@ -96,7 +95,7 @@ app.get("/image/empty-shell", function (req, res) {
 app.get("/", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
 });
-app.get("/api/cronjob", [verifyToken_1.default, defaultLimitter_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/api/cronjob", [defaultLimitter_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, cronjob_1.cronjob)(req, res);
     }

@@ -112,18 +112,14 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/view/index.html"));
 });
 
-app.get(
-  "/api/cronjob",
-  [verifyToken, defaultLimitter],
-  async (req: any, res: any) => {
-    try {
-      await cronjob(req, res);
-    } catch (error) {
-      console.error("Error executing cron job:", error);
-      res.status(500).send("Internal Server Error");
-    }
+app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
+  try {
+    await cronjob(req, res);
+  } catch (error) {
+    console.error("Error executing cron job:", error);
+    res.status(500).send("Internal Server Error");
   }
-);
+});
 
 //routing
 app.use("/api/user", userRoutes);
