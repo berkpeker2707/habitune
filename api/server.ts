@@ -15,13 +15,14 @@ import userRoutes from "./user/user.routes";
 import habitRoutes from "./habit/habit.routes";
 import notificationRoutes from "./notifications/notification.routes";
 
-import {
-  notifyUsersDaily,
-  notifyUsersSevenDaysLater,
-  notifyUsersThreeDaysLater,
-  notifyUsersThirtyDaysLater,
-  notifyUsersNinetyDaysLater,
-} from "./notifications/notification.reminders";
+// import {
+//   notifyUsersDaily,
+//   notifyUsersSevenDaysLater,
+//   notifyUsersThreeDaysLater,
+//   notifyUsersThirtyDaysLater,
+//   notifyUsersNinetyDaysLater,
+//   // notifyUser,
+// } from "./notifications/notification.reminders";
 
 import path from "path";
 import lowLimitter from "./middlewares/lowLimitter";
@@ -131,23 +132,20 @@ app.use("/api/habit", habitRoutes);
 app.use("/api/notification", notificationRoutes);
 
 //reminders
-try {
-  // yesterday reminder
-  notifyUsersDaily();
-
-  //three days later reminder
-  notifyUsersThreeDaysLater();
-
-  //seven days later reminder
-  notifyUsersSevenDaysLater();
-
-  //thirty days later reminder
-  notifyUsersThirtyDaysLater();
-
-  //ninety days later reminder
-  notifyUsersNinetyDaysLater();
-} catch (error) {
-  Logger.error(error);
-}
+// try {
+// notifyUser();
+// yesterday reminder
+// notifyUsersDaily();
+//three days later reminder
+// notifyUsersThreeDaysLater();
+//seven days later reminder
+// notifyUsersSevenDaysLater();
+//thirty days later reminder
+// notifyUsersThirtyDaysLater();
+//ninety days later reminder
+// notifyUsersNinetyDaysLater();
+// } catch (error) {
+//   Logger.error(error);
+// }
 
 export default app;
