@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -10,22 +19,19 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const formData = require("express-form-data");
 const helmet_1 = __importDefault(require("helmet"));
+//logger is winston, can log all and categorize all as you wish
+// import Logger from "./middlewares/logger";
+const logger_1 = __importDefault(require("./middlewares/logger"));
 //morgan is for checking requests
 const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const user_routes_1 = __importDefault(require("./user/user.routes"));
 const habit_routes_1 = __importDefault(require("./habit/habit.routes"));
 const notification_routes_1 = __importDefault(require("./notifications/notification.routes"));
-// import {
-//   notifyUsersDaily,
-//   notifyUsersSevenDaysLater,
-//   notifyUsersThreeDaysLater,
-//   notifyUsersThirtyDaysLater,
-//   notifyUsersNinetyDaysLater,
-//   // notifyUser,
-// } from "./notifications/notification.reminders";
+const notification_reminders_1 = require("./notifications/notification.reminders");
 const path_1 = __importDefault(require("path"));
 const lowLimitter_1 = __importDefault(require("./middlewares/lowLimitter"));
 dotenv_1.default.config();
+const schedule = require("node-schedule");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
 app.set("trust proxy", 1);
@@ -102,20 +108,24 @@ app.get("/", function (req, res) {
 app.use("/api/user", user_routes_1.default);
 app.use("/api/habit", habit_routes_1.default);
 app.use("/api/notification", notification_routes_1.default);
-//reminders
-// try {
-// notifyUser();
-// yesterday reminder
-// notifyUsersDaily();
-//three days later reminder
-// notifyUsersThreeDaysLater();
-//seven days later reminder
-// notifyUsersSevenDaysLater();
-//thirty days later reminder
-// notifyUsersThirtyDaysLater();
-//ninety days later reminder
-// notifyUsersNinetyDaysLater();
-// } catch (error) {
-//   Logger.error(error);
-// }
+// reminders
+try {
+    schedule.scheduleJob("*/10 * * * * *", () => __awaiter(void 0, void 0, void 0, function* () {
+        // schedule.scheduleJob("0 0 */6 * *", async () => {
+        (0, notification_reminders_1.notifyUser)();
+        // yesterday reminder
+        // notifyUsersDaily();
+        //three days later reminder
+        // notifyUsersThreeDaysLater();
+        //seven days later reminder
+        // notifyUsersSevenDaysLater();
+        //thirty days later reminder
+        // notifyUsersThirtyDaysLater();
+        //ninety days later reminder
+        // notifyUsersNinetyDaysLater();
+    }));
+}
+catch (error) {
+    logger_1.default.error(error);
+}
 exports.default = app;
