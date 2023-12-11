@@ -59,6 +59,7 @@ const transports = [
   //   filename: path.join(__dirname, "..", "logs/http.log"),
   //   level: "http",
   // }),
+
   new winston_db.MongoDB({
     db: mongodbConnectionString,
     options: { useNewUrlParser: true, useUnifiedTopology: true },
