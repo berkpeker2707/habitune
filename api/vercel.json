@@ -14,7 +14,7 @@
   ],
   "crons": [
     {
-      "path": "dist/cronjob.js",
+      "path": "dist/cronjob",
       "schedule": "*/10 * * * *"
     }
   ]
