@@ -106,7 +106,7 @@ const Friend = () => {
             <>
               <StreakGraph
                 allHabits={allHabitsOfSelectedUser}
-                currentHabitWeekStreak={friendCurrentHabitWeekStreakState}
+                currentHabitWeekStreakState={friendCurrentHabitWeekStreakState}
               />
               <View style={{ margin: 20 }}></View>
             </>
