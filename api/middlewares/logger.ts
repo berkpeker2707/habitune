@@ -41,7 +41,7 @@ const format = winston.format.combine(
 );
 
 const transports = [
-  // new winston.transports.Console(),
+  new winston.transports.Console(),
 
   // new winston.transports.File({
   //   filename: path.join(__dirname, "..", "logs/error.log"),
@@ -60,31 +60,31 @@ const transports = [
   //   level: "http",
   // }),
 
-  new winston_db.MongoDB({
-    db: mongodbConnectionString,
-    options: { useNewUrlParser: true, useUnifiedTopology: true },
-    collection: "error_logs",
-    level: "error",
-  }),
+  // new winston_db.MongoDB({
+  //   db: mongodbConnectionString,
+  //   options: { useNewUrlParser: true, useUnifiedTopology: true },
+  //   collection: "error_logs",
+  //   level: "error",
+  // }),
 
-  new winston_db.MongoDB({
-    db: mongodbConnectionString,
-    options: { useNewUrlParser: true, useUnifiedTopology: true },
-    collection: "warn_logs",
-    level: "warn",
-  }),
-  new winston_db.MongoDB({
-    db: mongodbConnectionString,
-    options: { useNewUrlParser: true, useUnifiedTopology: true },
-    collection: "info_logs",
-    level: "info",
-  }),
-  new winston_db.MongoDB({
-    db: mongodbConnectionString,
-    options: { useNewUrlParser: true, useUnifiedTopology: true },
-    collection: "http_logs",
-    level: "http",
-  }),
+  // new winston_db.MongoDB({
+  //   db: mongodbConnectionString,
+  //   options: { useNewUrlParser: true, useUnifiedTopology: true },
+  //   collection: "warn_logs",
+  //   level: "warn",
+  // }),
+  // new winston_db.MongoDB({
+  //   db: mongodbConnectionString,
+  //   options: { useNewUrlParser: true, useUnifiedTopology: true },
+  //   collection: "info_logs",
+  //   level: "info",
+  // }),
+  // new winston_db.MongoDB({
+  //   db: mongodbConnectionString,
+  //   options: { useNewUrlParser: true, useUnifiedTopology: true },
+  //   collection: "http_logs",
+  //   level: "http",
+  // }),
 ];
 
 const Logger = winston.createLogger({
