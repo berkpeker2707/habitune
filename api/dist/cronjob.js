@@ -19,8 +19,8 @@ const cronjob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(200).send("Cron job executed successfully");
     }
     catch (error) {
-        console.log("Error executing cron job");
-        return res.status(500).send((0, errors_util_1.getErrorMessage)("Internal Server Error"));
+        console.log(error);
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.cronjob = cronjob;

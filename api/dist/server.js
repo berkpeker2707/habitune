@@ -34,7 +34,6 @@ const defaultLimitter_1 = __importDefault(require("./middlewares/defaultLimitter
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
-const errors_util_1 = require("./utils/errors.util");
 app.use(morganMiddleware_1.default);
 (0, db_1.default)();
 // const mongoDBStore = mongoStore();
@@ -103,7 +102,7 @@ app.get("/api/cronjob", [defaultLimitter_1.default], (req, res) => __awaiter(voi
     }
     catch (error) {
         console.error("Error executing cron job:", error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)("Internal Server Error"));
+        // return res.status(500).send(getErrorMessage("Internal Server Error"));
     }
 }));
 //routing

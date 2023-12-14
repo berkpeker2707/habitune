@@ -117,7 +117,7 @@ app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
     await cronjob(req, res);
   } catch (error) {
     console.error("Error executing cron job:", error);
-    return res.status(500).send(getErrorMessage("Internal Server Error"));
+    // return res.status(500).send(getErrorMessage("Internal Server Error"));
   }
 });
 

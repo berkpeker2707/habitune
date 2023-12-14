@@ -45,7 +45,6 @@ export const signInWithGoogleController = async (
       );
 
       //update user picture ends
-      var foundUser = await User.findOne({ email: req.body.email });
       var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
         expiresIn: "365d",
       });

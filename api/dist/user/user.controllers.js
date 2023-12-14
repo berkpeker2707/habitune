@@ -37,7 +37,6 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
             }
             yield user_model_1.default.findOneAndUpdate({ email: req.body.email }, { image: req.body.picture });
             //update user picture ends
-            var foundUser = yield user_model_1.default.findOne({ email: req.body.email });
             var token = yield jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: "365d",
             });
