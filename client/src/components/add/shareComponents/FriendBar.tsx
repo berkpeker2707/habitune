@@ -61,7 +61,17 @@ const FriendBar = memo(
                 }}
               />
             ) : (
-              ""
+              <Image
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 20,
+                  marginLeft: 8,
+                }}
+                source={{
+                  uri: "https://www.habitune.net/image/empty-shell",
+                }}
+              />
             )}
             {/* marking starts */}
             {friendSelected ? (
