@@ -36,16 +36,16 @@ import { getErrorMessage } from "./utils/errors.util";
 app.use(morganMiddleware);
 
 db();
-const mongoDBStore = mongoStore();
+// const mongoDBStore = mongoStore();
 
-app.use(
-  session({
-    secret: process.env.MONGODB_SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    store: mongoDBStore,
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.MONGODB_SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     store: mongoDBStore,
+//   })
+// );
 
 app.set("trust proxy", 1);
 
