@@ -40,7 +40,7 @@ const mongoDBStore = mongoStore();
 
 app.use(
   session({
-    secret: "your-secret-key",
+    secret: process.env.MONGODB_SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     store: mongoDBStore,

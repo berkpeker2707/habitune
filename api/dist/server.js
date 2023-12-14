@@ -40,7 +40,7 @@ app.use(morganMiddleware_1.default);
 (0, db_1.default)();
 const mongoDBStore = (0, mongoStore_1.default)();
 app.use(session({
-    secret: "your-secret-key",
+    secret: process.env.MONGODB_SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     store: mongoDBStore,
