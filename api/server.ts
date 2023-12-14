@@ -32,6 +32,7 @@ const app: Express = express();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 
+import { getErrorMessage } from "./utils/errors.util";
 app.use(morganMiddleware);
 
 db();
@@ -102,13 +103,13 @@ admin.initializeApp({
 });
 
 app.get("/privacy", function (req, res) {
-  res.sendFile(path.join(__dirname, "/view/privacy.html"));
+  return res.sendFile(path.join(__dirname, "/view/privacy.html"));
 });
 app.get("/image/empty-shell", function (req, res) {
-  res.sendFile(path.join(__dirname, "/public/images/empty-shell.png"));
+  return res.sendFile(path.join(__dirname, "/public/images/empty-shell.png"));
 });
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/view/index.html"));
+  return res.sendFile(path.join(__dirname, "/view/index.html"));
 });
 
 app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
@@ -116,7 +117,7 @@ app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
     await cronjob(req, res);
   } catch (error) {
     console.error("Error executing cron job:", error);
-    res.status(500).send("Internal Server Error");
+    return res.status(500).send(getErrorMessage("Internal Server Error"));
   }
 });
 

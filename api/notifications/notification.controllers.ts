@@ -19,7 +19,7 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
     });
 
     Logger.info(updatedUser);
-    res.status(200).json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -71,7 +71,7 @@ export const notificationSend = async (req: any, res: Response) => {
       })
       .exec();
     Logger.info(notification);
-    res.status(200).json(notification);
+    return res.status(200).json(notification);
   } catch (error) {
     // console.log("error controller noti: ", error);
     Logger.error(error);

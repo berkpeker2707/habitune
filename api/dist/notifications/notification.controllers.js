@@ -26,7 +26,7 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
             fcmToken: req.body.token,
         });
         logger_1.default.info(updatedUser);
-        res.status(200).json(updatedUser);
+        return res.status(200).json(updatedUser);
     }
     catch (error) {
         logger_1.default.error(error);
@@ -73,7 +73,7 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
         })
             .exec();
         logger_1.default.info(notification);
-        res.status(200).json(notification);
+        return res.status(200).json(notification);
     }
     catch (error) {
         // console.log("error controller noti: ", error);

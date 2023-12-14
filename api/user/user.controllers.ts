@@ -51,7 +51,7 @@ export const signInWithGoogleController = async (
       });
 
       Logger.info(token);
-      res.status(200).json(token);
+      return res.status(200).json(token);
     } else {
       const user = await User.create({
         id: req.body.id,
@@ -68,7 +68,7 @@ export const signInWithGoogleController = async (
         expiresIn: "365d",
       });
       Logger.info(token);
-      res.status(200).json(token);
+      return res.status(200).json(token);
     }
   } catch (error) {
     Logger.error(error);
@@ -87,7 +87,7 @@ export const signInController = async (req: IReq | any, res: Response) => {
 
     if (!emailRegex.test(req.body.email)) {
       Logger.error("Unacceptable email");
-      res.status(500).send(getErrorMessage("Unacceptable email"));
+      return res.status(500).send(getErrorMessage("Unacceptable email"));
     } else {
       var userExists = await User.exists({ email: req.body.email });
 
@@ -109,7 +109,7 @@ export const signInController = async (req: IReq | any, res: Response) => {
           );
 
           Logger.info(token);
-          res.status(200).json(token);
+          return res.status(200).json(token);
         } else {
           Logger.error("Wrong password or email");
           return res
@@ -124,7 +124,9 @@ export const signInController = async (req: IReq | any, res: Response) => {
           (!req.body.password && req.body.password === "")
         ) {
           Logger.error("Need all required data");
-          res.status(500).send(getErrorMessage("Need all required data"));
+          return res
+            .status(500)
+            .send(getErrorMessage("Need all required data"));
         } else {
           const user = await User.create({
             id: req.body.id,
@@ -142,7 +144,7 @@ export const signInController = async (req: IReq | any, res: Response) => {
             expiresIn: "365d",
           });
           Logger.info(token);
-          res.status(200).json(token);
+          return res.status(200).json(token);
         }
       }
     }
@@ -174,7 +176,7 @@ export const fetchCurrentUserProfile = async (
     }
 
     Logger.info(loggedinUser);
-    res.status(200).json(loggedinUser);
+    return res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -192,7 +194,7 @@ export const fetchUserProfile = async (req: IReq | any, res: Response) => {
       })
       .exec();
     Logger.info(user);
-    res.status(200).json(user);
+    return res.status(200).json(user);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -209,10 +211,8 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       (await User.find({ email: userMail })).length < 1 ||
       userMail === req.user[0].email
     ) {
-      Logger.error("Invalid Email.");
-      return res.json({
-        message: "Invalid Email.",
-      });
+      Logger.error("Invalid Email");
+      return res.status(500).send(getErrorMessage("Invalid Email"));
     }
 
     const user = await User.find({ email: userMail });
@@ -291,7 +291,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         { upsert: true }
       );
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     } else if (
       !currentUserHasPendingUserFriend &&
       currentUserAlreadyHasUserFriend &&
@@ -316,7 +316,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         { multi: true }
       );
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     } else if (
       currentUserAlreadyHasUserFriend &&
       targetUserAlreadyHasCurrentUser
@@ -350,7 +350,7 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
       );
 
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     } else if (
       currentUserHasPendingUserFriend &&
       !currentUserAlreadyHasUserFriend &&
@@ -389,11 +389,11 @@ export const sendFriendship = async (req: IReq | any, res: Response) => {
         }
       );
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     } else {
       // console.log("target user know");
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     }
   } catch (error) {
     Logger.error(error);
@@ -431,9 +431,9 @@ export const updateCurrentUserImage = async (
         { new: true }
       );
       Logger.info(user);
-      res.status(200).json(user);
+      return res.status(200).json(user);
     } else {
-      res.json("Profile photo already deleted.");
+      return res.json("Profile photo already deleted.");
     }
   } catch (error) {
     Logger.error(error);
@@ -461,7 +461,7 @@ export const sendFeedback = async (req: IReq | any, res: Response) => {
         { new: true }
       );
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     } else {
       Logger.error("Feedback limit 500 character reached");
       return res
@@ -485,7 +485,7 @@ export const changeTheme = async (req: IReq | any, res: Response) => {
     );
 
     Logger.info(loggedinUser);
-    res.status(200).json(loggedinUser);
+    return res.status(200).json(loggedinUser);
   } catch (error) {
     Logger.error(error);
     return res.status(500).send(getErrorMessage(error));
@@ -526,7 +526,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
       });
 
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     } else {
       console.log("No habit detected.");
 
@@ -551,7 +551,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
         userID: req.user[0]._id,
       });
       Logger.info(loggedinUser);
-      res.status(200).json(loggedinUser);
+      return res.status(200).json(loggedinUser);
     }
   } catch (error) {
     Logger.error(error);

@@ -4,15 +4,20 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 require("dotenv").config();
 const mongoStore = () => {
-    const store = new MongoDBStore({
-        uri: process.env.MONGODB_URI,
-        collection: "sessions",
-        expires: 1000 * 60 * 60 * 24 * 7,
-        autoRemove: "native", //automatically remove expired sessions
-    });
-    store.on("error", function (error) {
-        console.log(`MongoDBStore Error: ${error}`);
-    });
-    return store;
+    try {
+        const store = new MongoDBStore({
+            uri: process.env.MONGODB_URI,
+            collection: "sessions",
+            expires: 1000 * 60 * 60 * 24 * 7,
+            autoRemove: "native", //automatically remove expired sessions
+        });
+        return store;
+    }
+    catch (error) {
+        console.log(error);
+    }
+    // store.on("error", function (error: any) {
+    //   console.log(`MongoDBStore Error: ${error}`);
+    // });
 };
 exports.default = mongoStore;
