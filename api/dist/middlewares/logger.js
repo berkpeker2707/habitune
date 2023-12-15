@@ -30,6 +30,7 @@ const httpLogger = winston_1.default.createLogger({
                 options: { useNewUrlParser: true, useUnifiedTopology: true },
                 collection: "http_logs",
                 level: "http",
+                tryReconnect: true,
             }),
         ],
 });
@@ -51,6 +52,7 @@ const infoLogger = winston_1.default.createLogger({
                 options: { useNewUrlParser: true, useUnifiedTopology: true },
                 collection: "info_logs",
                 level: "info",
+                tryReconnect: true,
             }),
         ],
 });
@@ -72,6 +74,7 @@ const errorLogger = winston_1.default.createLogger({
                 options: { useNewUrlParser: true, useUnifiedTopology: true },
                 collection: "error_logs",
                 level: "error",
+                tryReconnect: true,
             }),
         ],
 });
@@ -93,6 +96,7 @@ const warnLogger = winston_1.default.createLogger({
                 options: { useNewUrlParser: true, useUnifiedTopology: true },
                 collection: "warn_logs",
                 level: "warn",
+                tryReconnect: true,
             }),
         ],
 });
