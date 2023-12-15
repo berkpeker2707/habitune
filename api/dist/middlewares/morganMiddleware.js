@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const morgan_1 = __importDefault(require("morgan"));
-const logger_1 = __importDefault(require("./logger"));
+const logger_1 = require("./logger");
 // Override the stream method by telling
 // Morgan to use our custom logger instead of the console.log.
 const stream = {
     // Use the http severity
-    write: (message) => logger_1.default.http(message),
+    write: (message) => logger_1.httpLogger.http(message),
 };
 // Skip all the Morgan http log if the
 // application is not running in development mode.
@@ -30,5 +30,8 @@ const morganMiddleware = (0, morgan_1.default)(
 ":remote-addr - :remote-user [:date] :method :url HTTP/:http-version :status :res[content-length]", 
 // Options: in this case, I overwrote the stream and the skip logic.
 // See the methods above.
-{ stream, skip });
+{
+    stream,
+    skip,
+});
 exports.default = morganMiddleware;

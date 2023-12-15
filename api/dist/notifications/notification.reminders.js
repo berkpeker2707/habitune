@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.notifyUsersNinetyDaysLater = exports.notifyUsersThirtyDaysLater = exports.notifyUsersSevenDaysLater = exports.notifyUsersThreeDaysLater = exports.notifyUsersDaily = exports.notifyUser = void 0;
 const user_model_1 = __importDefault(require("../user/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const logger_1 = __importDefault(require("../middlewares/logger"));
+const logger_1 = require("../middlewares/logger");
 const isInYesterday_1 = __importDefault(require("../middlewares/isInYesterday"));
 const isInThreeToFiveDays_1 = __importDefault(require("../middlewares/isInThreeToFiveDays"));
 const isInSevenToFifteenDays_1 = __importDefault(require("../middlewares/isInSevenToFifteenDays"));
@@ -32,35 +32,35 @@ const notifyUser = () => __awaiter(void 0, void 0, void 0, function* () {
         yield step4();
         yield step5();
         yield step6();
-        logger_1.default.info("notifyUser steps completed successfully");
+        logger_1.warnLogger.info("notifyUser steps completed successfully");
     }
     catch (error) {
-        logger_1.default.error("Error in sequential steps:", error);
+        logger_1.errorLogger.error("Error in sequential steps:", error);
     }
 });
 exports.notifyUser = notifyUser;
 const step1 = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Step 1: Completed sequential step logic");
+    // console.log("Step 1: Completed sequential step logic");
     yield (0, exports.notifyUsersDaily)();
 });
 const step2 = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Step 2: Completed cron job logic");
+    // console.log("Step 2: Completed cron job logic");
     yield (0, exports.notifyUsersThreeDaysLater)();
 });
 const step3 = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Step 3: Completed cron job logic");
+    // console.log("Step 3: Completed cron job logic");
     yield (0, exports.notifyUsersSevenDaysLater)();
 });
 const step4 = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Step 4: Completed cron job logic");
+    // console.log("Step 4: Completed cron job logic");
     yield (0, exports.notifyUsersSevenDaysLater)();
 });
 const step5 = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Step 5: Completed cron job logic");
+    // console.log("Step 5: Completed cron job logic");
     yield (0, exports.notifyUsersThirtyDaysLater)();
 });
 const step6 = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Step 6: Completed cron job logic");
+    // console.log("Step 6: Completed cron job logic");
     yield (0, exports.notifyUsersNinetyDaysLater)();
 });
 const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -70,7 +70,7 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        console.log("timer yesterday run");
+        logger_1.warnLogger.info("reminder notifyUsersDaily started");
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
         var selectUsers = yield user_model_1.default.find({
@@ -139,11 +139,11 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.default.info(notificationResponse);
+            logger_1.warnLogger.info("reminder notifyUsersDaily ended: ", notificationResponse);
         }
     }
     catch (error) {
-        logger_1.default.error(error);
+        logger_1.errorLogger.error(error);
     }
     // });
 });
@@ -157,7 +157,7 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        console.log("timer three days run");
+        logger_1.warnLogger.info("reminder notifyUsersThreeDaysLater started ");
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
         var selectUsers = yield user_model_1.default.find({
@@ -202,11 +202,11 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.default.info(notificationResponse);
+            logger_1.warnLogger.info("reminder notifyUsersThreeDaysLater ended: ", notificationResponse);
         }
     }
     catch (error) {
-        logger_1.default.error(error);
+        logger_1.errorLogger.error(error);
     }
     // });
 });
@@ -220,7 +220,7 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        console.log("timer seven days run");
+        logger_1.warnLogger.info("reminder notifyUsersSevenDaysLater started");
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
         var selectUsers = yield user_model_1.default.find({
@@ -265,11 +265,11 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.default.info(notificationResponse);
+            logger_1.warnLogger.info("reminder notifyUsersSevenDaysLater ended: ", notificationResponse);
         }
     }
     catch (error) {
-        logger_1.default.error(error);
+        logger_1.errorLogger.error(error);
     }
     // });
 });
@@ -283,7 +283,7 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        console.log("timer 30 days run");
+        logger_1.warnLogger.info("reminder notifyUsersThirtyDaysLater started");
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
         var selectUsers = yield user_model_1.default.find({
@@ -328,11 +328,11 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.default.info(notificationResponse);
+            logger_1.warnLogger.info("reminder notifyUsersThirtyDaysLater ended: ", notificationResponse);
         }
     }
     catch (error) {
-        logger_1.default.error(error);
+        logger_1.errorLogger.error(error);
     }
     // });
 });
@@ -346,7 +346,7 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        console.log("timer 90 days run");
+        logger_1.warnLogger.info("reminder notifyUsersNinetyDaysLater started");
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
         var selectUsers = yield user_model_1.default.find({
@@ -391,11 +391,11 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.default.info(notificationResponse);
+            logger_1.warnLogger.info("reminder notifyUsersNinetyDaysLater ended: ", notificationResponse);
         }
     }
     catch (error) {
-        logger_1.default.error(error);
+        logger_1.errorLogger.error(error);
     }
     // });
 });
