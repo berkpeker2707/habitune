@@ -9,12 +9,12 @@ const key = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY?.replace(
 import morganMiddleware from "./middlewares/morganMiddleware";
 
 import express, { Express } from "express";
-const session = require("express-session");
+// const session = require("express-session");
 const formData = require("express-form-data");
 import cors from "cors";
 
 import db from "./config/db";
-import mongoStore from "./config/mongoStore";
+// import mongoStore from "./config/mongoStore";
 
 import helmet from "helmet";
 import lowLimitter from "./middlewares/lowLimitter";
