@@ -16,10 +16,10 @@ const stream = {
 // This method is not really needed here since
 // we already told to the logger that it should print
 // only warning and error messages in production.
-const skip = () => {
-    const env = process.env.NODE_ENV || "development";
-    return env !== "development";
-};
+// const skip = () => {
+//   const env = process.env.NODE_ENV || "development";
+//   return env !== "development";
+// };
 // Build the morgan middleware
 const morganMiddleware = (0, morgan_1.default)(
 // Define message format string (this is the default one).
@@ -32,6 +32,6 @@ const morganMiddleware = (0, morgan_1.default)(
 // See the methods above.
 {
     stream,
-    skip,
+    // skip,
 });
 exports.default = morganMiddleware;
