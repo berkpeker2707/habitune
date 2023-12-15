@@ -1,6 +1,6 @@
 import * as React from "react";
 import { memo } from "react";
-import { View, ScrollView, RefreshControl } from "react-native";
+import { View, Text, ScrollView, RefreshControl } from "react-native";
 import ProfileCard from "../components/profile/ProfileCard";
 import FriendsCard from "../components/profile/FriendsCard";
 import AddFriendsButton from "../components/profile/AddFriendsButton";
@@ -11,6 +11,7 @@ import {
   acceptOrRemoveFriendModalVisible,
   refreshUser,
   selectFetchCurrentUserProfile,
+  selectUserLoading,
   selectedUser,
   setAcceptOrRemoveFriendModalVisible,
 } from "../state/userSlice";
@@ -21,12 +22,29 @@ const Profile = memo((props: { navigation: any }) => {
   const { navigation } = props;
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
+  const userLoading = useSelector(selectUserLoading);
   const currentUser = useSelector(selectFetchCurrentUserProfile);
   const refreshUserState = useSelector(refreshUser);
   const acceptOrRemoveFriendModalVisibleState = useSelector(
     acceptOrRemoveFriendModalVisible
   );
   const selectedUserState = useSelector(selectedUser);
+
+  if (userLoading) {
+    return (
+      <View
+        style={{
+          display: "flex",
+          height: "100%",
+          backgroundColor: theme.backgroundColor,
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: theme.primaryText }}>Loading...</Text>
+      </View>
+    );
+  }
 
   return currentUser.friends ? (
     <View

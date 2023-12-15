@@ -10,16 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cronjob = void 0;
+const logger_1 = require("./middlewares/logger");
 const notification_reminders_1 = require("./notifications/notification.reminders");
+const errors_util_1 = require("./utils/errors.util");
 const cronjob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, notification_reminders_1.notifyUser)();
-        console.log("Cron job executed successfully");
+        // console.log("Cron job executed successfully");
+        logger_1.warnLogger.warn("Cron job executed successfully");
         res.status(200).send("Cron job executed successfully");
     }
     catch (error) {
-        console.log("Error executing cron job");
-        res.status(500).send("Internal Server Error");
+        // console.log(error);
+        logger_1.errorLogger.error(error);
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.cronjob = cronjob;

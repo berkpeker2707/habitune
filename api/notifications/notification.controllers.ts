@@ -6,7 +6,7 @@ import User from "../user/user.model";
 import { IReq } from "../middlewares/interfaces";
 
 import dotenv from "dotenv";
-import Logger from "../middlewares/logger";
+import { infoLogger, errorLogger } from "../middlewares/logger";
 
 dotenv.config();
 
@@ -18,11 +18,11 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
       fcmToken: req.body.token,
     });
 
-    Logger.info(updatedUser);
+    infoLogger.info(`User ${req.user[0]._id} invoked notificationUpdateToken`);
     res.status(200).json(updatedUser);
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -70,11 +70,11 @@ export const notificationSend = async (req: any, res: Response) => {
         notificationHabitName: req.body.habitName,
       })
       .exec();
-    Logger.info(notification);
+    infoLogger.info(`User ${req.user[0]._id} invoked notificationSend`);
     res.status(200).json(notification);
   } catch (error) {
     // console.log("error controller noti: ", error);
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };

@@ -9,21 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const logger_1 = require("../middlewares/logger");
 const errors_util_1 = require("../utils/errors.util");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const dbConnect = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         mongoose.set("strictQuery", false);
-        yield mongoose.connect(process.env.MONGODB_URI, {
+        const conn = yield mongoose.connect(process.env.MONGODB_URI, {
             useUnifiedTopology: true,
             useNewUrlParser: true,
             dbName: "habitune_db",
         });
-        console.log("Database connected");
+        logger_1.warnLogger.warn(`Connected to: ${conn.connection.host}`);
+        // console.log(`Connected to: ${conn.connection.host}`);
     }
     catch (error) {
-        console.log(`Database error: ${(0, errors_util_1.getErrorMessage)(error)}`);
+        logger_1.warnLogger.warn(`Database error: ${(0, errors_util_1.getErrorMessage)(error)}`);
+        // console.log(`Database error: ${getErrorMessage(error)}`);
+        process.exit(1);
     }
 });
 exports.default = dbConnect;

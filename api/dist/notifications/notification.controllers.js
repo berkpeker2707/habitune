@@ -17,7 +17,7 @@ const errors_util_1 = require("../utils/errors.util");
 const notification_model_1 = __importDefault(require("./notification.model"));
 const user_model_1 = __importDefault(require("../user/user.model"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const logger_1 = __importDefault(require("../middlewares/logger"));
+const logger_1 = require("../middlewares/logger");
 dotenv_1.default.config();
 const admin = require("firebase-admin");
 const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,12 +25,12 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
         const updatedUser = yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
             fcmToken: req.body.token,
         });
-        logger_1.default.info(updatedUser);
+        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked notificationUpdateToken`);
         res.status(200).json(updatedUser);
     }
     catch (error) {
-        logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        logger_1.errorLogger.error(error);
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.notificationUpdateToken = notificationUpdateToken;
@@ -72,13 +72,13 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
             notificationHabitName: req.body.habitName,
         })
             .exec();
-        logger_1.default.info(notification);
+        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked notificationSend`);
         res.status(200).json(notification);
     }
     catch (error) {
         // console.log("error controller noti: ", error);
-        logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        logger_1.errorLogger.error(error);
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.notificationSend = notificationSend;

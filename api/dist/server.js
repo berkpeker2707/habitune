@@ -19,11 +19,11 @@ dotenv_1.default.config();
 const key = (_a = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY) === null || _a === void 0 ? void 0 : _a.replace(/Ö/g, "").replace(/\\n/g, "\n");
 const morganMiddleware_1 = __importDefault(require("./middlewares/morganMiddleware"));
 const express_1 = __importDefault(require("express"));
-const session = require("express-session");
+// const session = require("express-session");
 const formData = require("express-form-data");
 const cors_1 = __importDefault(require("cors"));
 const db_1 = __importDefault(require("./config/db"));
-const mongoStore_1 = __importDefault(require("./config/mongoStore"));
+// import mongoStore from "./config/mongoStore";
 const helmet_1 = __importDefault(require("helmet"));
 const lowLimitter_1 = __importDefault(require("./middlewares/lowLimitter"));
 const admin = require("firebase-admin");
@@ -35,15 +35,18 @@ const defaultLimitter_1 = __importDefault(require("./middlewares/defaultLimitter
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
+const errors_util_1 = require("./utils/errors.util");
 app.use(morganMiddleware_1.default);
 (0, db_1.default)();
-const mongoDBStore = (0, mongoStore_1.default)();
-app.use(session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    store: mongoDBStore,
-}));
+// const mongoDBStore = mongoStore();
+// app.use(
+//   session({
+//     secret: process.env.MONGODB_SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     store: mongoDBStore,
+//   })
+// );
 app.set("trust proxy", 1);
 app.use(express_1.default.json());
 //parse URL-encoded bodies
@@ -101,7 +104,7 @@ app.get("/api/cronjob", [defaultLimitter_1.default], (req, res) => __awaiter(voi
     }
     catch (error) {
         console.error("Error executing cron job:", error);
-        res.status(500).send("Internal Server Error");
+        res.status(500).send((0, errors_util_1.getErrorMessage)("Internal Server Error"));
     }
 }));
 //routing

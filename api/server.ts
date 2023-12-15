@@ -9,12 +9,12 @@ const key = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY?.replace(
 import morganMiddleware from "./middlewares/morganMiddleware";
 
 import express, { Express } from "express";
-const session = require("express-session");
+// const session = require("express-session");
 const formData = require("express-form-data");
 import cors from "cors";
 
 import db from "./config/db";
-import mongoStore from "./config/mongoStore";
+// import mongoStore from "./config/mongoStore";
 
 import helmet from "helmet";
 import lowLimitter from "./middlewares/lowLimitter";
@@ -32,19 +32,20 @@ const app: Express = express();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
 
+import { getErrorMessage } from "./utils/errors.util";
 app.use(morganMiddleware);
 
 db();
-const mongoDBStore = mongoStore();
+// const mongoDBStore = mongoStore();
 
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    store: mongoDBStore,
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.MONGODB_SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     store: mongoDBStore,
+//   })
+// );
 
 app.set("trust proxy", 1);
 
@@ -116,7 +117,7 @@ app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
     await cronjob(req, res);
   } catch (error) {
     console.error("Error executing cron job:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send(getErrorMessage("Internal Server Error"));
   }
 });
 

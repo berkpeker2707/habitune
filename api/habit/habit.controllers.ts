@@ -7,7 +7,7 @@ import Notification from "../notifications/notification.model";
 import { IReq } from "../middlewares/interfaces";
 
 import dotenv from "dotenv";
-import Logger from "../middlewares/logger";
+import { infoLogger, errorLogger } from "../middlewares/logger";
 import calculateUpcomingDates from "../middlewares/calculateUpcomingDates";
 import isInCompletedDates from "../middlewares/isInCompletedDates";
 
@@ -18,10 +18,10 @@ export const createHabit = async (req: IReq | any, res: Response) => {
     const checkUser = await User.findById(req.user[0]._id);
 
     if (checkUser && checkUser.habits.length >= 20) {
-      Logger.error("User already has 20 habits");
-      return res
+      errorLogger.error(`User ${req.user[0]._id} already has 20 habits`);
+      res
         .status(500)
-        .send(getErrorMessage("User already has 20 habits"));
+        .send(getErrorMessage(`User ${req.user[0]._id} already has 20 habits`));
     } else {
       const newHabit = await Habit.create({
         owner: req.user[0]._id,
@@ -63,12 +63,12 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         .exec();
 
       // console.log("newHabitItem: ", newHabitItem);
-      Logger.info(newHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked createHabit`);
       res.status(200).json(newHabit);
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -80,11 +80,11 @@ export const getAllHabits = async (req: IReq | any, res: Response) => {
       .slice("upcomingDates", -10)
       .exec();
 
-    Logger.info(loggedinUsersHabits);
+    infoLogger.info(`User ${req.user[0]._id} invoked getAllHabits`);
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -102,11 +102,13 @@ export const getAllHabitsOfSelectedUser = async (
       .slice("upcomingDates", -10)
       .exec();
 
-    Logger.info(loggedinUsersHabits);
+    infoLogger.info(
+      `User ${req.user[0]._id} invoked getAllHabitsOfSelectedUser`
+    );
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -132,11 +134,11 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
       .slice("upcomingDates", -10)
       .exec();
 
-    Logger.info(loggedinUsersTodayHabits);
+    infoLogger.info(`User ${req.user[0]._id} invoked getTodaysHabits`);
     res.status(200).json(loggedinUsersTodayHabits);
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -149,11 +151,11 @@ export const getSingleHabit = async (req: IReq | any, res: Response) => {
       .slice("upcomingDates", -10)
       .exec();
 
-    Logger.info(loggedinUsersHabits);
+    infoLogger.info(`User ${req.user[0]._id} invoked getSingleHabit`);
     res.status(200).json(loggedinUsersHabits);
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -175,11 +177,11 @@ export const deleteHabit = async (req: IReq | any, res: Response) => {
       habitID: req.params.id,
     });
 
-    Logger.info("Habit deleted");
+    infoLogger.info(`User ${req.user[0]._id} invoked deleteHabit`);
     res.status(200).json("Habit deleted");
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -198,16 +200,15 @@ export const updateHabitName = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
-      Logger.info(selectedHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked updateHabitName`);
       res.status(200).json(selectedHabit);
     } else {
-      Logger.error("Habit name is invalid");
-
-      return res.status(500).send(getErrorMessage("Habit name is invalid"));
+      errorLogger.error(`User ${req.user[0]._id} habit name is invalid`);
+      res.status(500).send(getErrorMessage("Habit name is invalid"));
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -239,15 +240,15 @@ export const updateHabitColor = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
-      Logger.info(selectedHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked updateHabitColor`);
       res.status(200).json(selectedHabit);
     } else {
-      Logger.error("Habit color is invalid");
-      return res.status(500).send(getErrorMessage("Habit color is invalid"));
+      errorLogger.error(`User ${req.user[0]._id} habit color is invalid`);
+      res.status(500).send(getErrorMessage("Habit color is invalid"));
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -268,7 +269,7 @@ export const updateHabitSharedWith = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
-      Logger.info(updatedSelectedHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked updateHabitSharedWith`);
       res.status(200).json(updatedSelectedHabit);
     } else {
       const updatedSelectedHabit = await Habit.findByIdAndUpdate(
@@ -281,12 +282,12 @@ export const updateHabitSharedWith = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
 
-      Logger.info(updatedSelectedHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked updateHabitSharedWith`);
       res.status(200).json(updatedSelectedHabit);
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -307,17 +308,21 @@ export const updateHabitFirstAndLastDate = async (
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
-      Logger.info(selectedHabit);
+      infoLogger.info(
+        `User ${req.user[0]._id} invoked updateHabitFirstAndLastDate`
+      );
       res.status(200).json(selectedHabit);
     } else {
-      Logger.error("Last date cannot be earlier than first date");
-      return res
+      errorLogger.error(
+        `User ${req.user[0]._id} last date cannot be earlier than first date`
+      );
+      res
         .status(500)
         .send(getErrorMessage("Last date cannot be earlier than first date"));
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -338,7 +343,7 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
       // console.log(true);
-      Logger.info(updatedSelectedHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked updateHabitDates`);
       res.status(200).json(updatedSelectedHabit);
     } else {
       const updatedSelectedHabit = await Habit.findByIdAndUpdate(
@@ -351,12 +356,12 @@ export const updateHabitDates = async (req: IReq | any, res: Response) => {
         .slice("upcomingDates", -10)
         .exec();
       // console.log(false);
-      Logger.info(updatedSelectedHabit);
+      infoLogger.info(`User ${req.user[0]._id} invoked updateHabitDates`);
       res.status(200).json(updatedSelectedHabit);
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -426,7 +431,9 @@ export const updateHabitCompletedDate = async (
         },
         { upsert: true }
       );
-      Logger.info(selectedHabit);
+      infoLogger.info(
+        `User ${req.user[0]._id} invoked updateHabitCompletedDate`
+      );
       res.status(200).json(selectedHabit);
     } else {
       await selectedHabit
@@ -437,12 +444,14 @@ export const updateHabitCompletedDate = async (
         .slice("dates", -10) //last 10 numbers of the dates array
         .slice("upcomingDates", -10)
         .exec();
-      Logger.info(selectedHabit);
+      infoLogger.info(
+        `User ${req.user[0]._id} invoked updateHabitCompletedDate`
+      );
       res.status(200).json(selectedHabit);
     }
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
@@ -459,10 +468,10 @@ export const updateHabitHidden = async (req: IReq | any, res: Response) => {
       .slice("dates", -10) //last 10 numbers of the dates array
       .slice("upcomingDates", -10)
       .exec();
-    Logger.info(selectedHabit);
+    infoLogger.info(`User ${req.user[0]._id} invoked updateHabitHidden`);
     res.status(200).json(selectedHabit);
   } catch (error) {
-    Logger.error(error);
-    return res.status(500).send(getErrorMessage(error));
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
   }
 };

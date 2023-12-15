@@ -1,6 +1,6 @@
 const cloudinary = require("cloudinary");
 const path = require("path");
-import Logger from "./logger";
+import { infoLogger, errorLogger } from "./logger";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -34,12 +34,12 @@ const cloudinaryUploadUserImg = async (fileToUpload: any, id: any) => {
           if (result && result.hasOwnProperty("secure_url")) {
             // if secure_url exists
             // console.log(result);
-            Logger.info(result);
+            infoLogger.info(`User ${id} invoked cloudinaryUploadUserImg`);
             resolve(result);
           }
         })
         .catch((error: any) => {
-          Logger.error(error);
+          errorLogger.error(error);
           // console.error(error);
         });
     });
@@ -48,7 +48,7 @@ const cloudinaryUploadUserImg = async (fileToUpload: any, id: any) => {
 
     return result;
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
     return error;
   }
 };
@@ -62,7 +62,9 @@ const cloudinaryDeleteUserImg = async (public_id: string) => {
     const data = await cloudinary.v2.uploader.destroy(
       imagePath,
       (error: any, result: any) => {
-        Logger.info(result);
+        infoLogger.info(
+          `Photo ${getPublicId} deleted, invoked cloudinaryDeleteUserImg`
+        );
         // console.log(result);
       }
     );
@@ -71,7 +73,7 @@ const cloudinaryDeleteUserImg = async (public_id: string) => {
       data,
     };
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
     return error;
   }
 };
