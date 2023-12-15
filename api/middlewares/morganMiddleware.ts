@@ -1,12 +1,12 @@
 import morgan, { StreamOptions } from "morgan";
 
-import Logger from "./logger";
+import { httpLogger } from "./logger";
 
 // Override the stream method by telling
 // Morgan to use our custom logger instead of the console.log.
 const stream: StreamOptions = {
   // Use the http severity
-  write: (message) => Logger.http(message),
+  write: (message) => httpLogger.http(message),
 };
 
 // Skip all the Morgan http log if the
@@ -29,7 +29,10 @@ const morganMiddleware = morgan(
   ":remote-addr - :remote-user [:date] :method :url HTTP/:http-version :status :res[content-length]",
   // Options: in this case, I overwrote the stream and the skip logic.
   // See the methods above.
-  { stream, skip }
+  {
+    stream,
+    skip,
+  }
 );
 
 export default morganMiddleware;
