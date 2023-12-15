@@ -1,6 +1,6 @@
 import User from "../user/user.model";
 import dotenv from "dotenv";
-import Logger from "../middlewares/logger";
+import { warnLogger, errorLogger } from "../middlewares/logger";
 
 import isInYesterday from "../middlewares/isInYesterday";
 import isInThreeToFiveDays from "../middlewares/isInThreeToFiveDays";
@@ -23,42 +23,39 @@ export const notifyUser = async () => {
     await step5();
     await step6();
 
-    Logger.info("notifyUser steps completed successfully");
+    warnLogger.info("notifyUser steps completed successfully");
   } catch (error) {
-    Logger.error("Error in sequential steps:", error);
+    errorLogger.error("Error in sequential steps:", error);
   }
 };
 
 const step1 = async () => {
-  console.log("Step 1: Completed sequential step logic");
+  // console.log("Step 1: Completed sequential step logic");
   await notifyUsersDaily();
 };
 
 const step2 = async () => {
-  console.log("Step 2: Completed cron job logic");
+  // console.log("Step 2: Completed cron job logic");
   await notifyUsersThreeDaysLater();
 };
 
 const step3 = async () => {
-  console.log("Step 3: Completed cron job logic");
+  // console.log("Step 3: Completed cron job logic");
   await notifyUsersSevenDaysLater();
 };
 
 const step4 = async () => {
-  console.log("Step 4: Completed cron job logic");
-
+  // console.log("Step 4: Completed cron job logic");
   await notifyUsersSevenDaysLater();
 };
 
 const step5 = async () => {
-  console.log("Step 5: Completed cron job logic");
-
+  // console.log("Step 5: Completed cron job logic");
   await notifyUsersThirtyDaysLater();
 };
 
 const step6 = async () => {
-  console.log("Step 6: Completed cron job logic");
-
+  // console.log("Step 6: Completed cron job logic");
   await notifyUsersNinetyDaysLater();
 };
 
@@ -70,7 +67,7 @@ export const notifyUsersDaily = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    console.log("timer yesterday run");
+    warnLogger.info("reminder notifyUsersDaily started");
 
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -169,10 +166,13 @@ export const notifyUsersDaily = async () => {
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
       });
-      Logger.info(notificationResponse);
+      warnLogger.info(
+        "reminder notifyUsersDaily ended: ",
+        notificationResponse
+      );
     }
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
   }
 
   // });
@@ -188,7 +188,7 @@ export const notifyUsersThreeDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    console.log("timer three days run");
+    warnLogger.info("reminder notifyUsersThreeDaysLater started ");
 
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -259,10 +259,13 @@ export const notifyUsersThreeDaysLater = async () => {
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
       });
-      Logger.info(notificationResponse);
+      warnLogger.info(
+        "reminder notifyUsersThreeDaysLater ended: ",
+        notificationResponse
+      );
     }
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
   }
   // });
 };
@@ -277,8 +280,7 @@ export const notifyUsersSevenDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    console.log("timer seven days run");
-
+    warnLogger.info("reminder notifyUsersSevenDaysLater started");
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
     var selectUsers = await User.find({
@@ -348,10 +350,13 @@ export const notifyUsersSevenDaysLater = async () => {
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
       });
-      Logger.info(notificationResponse);
+      warnLogger.info(
+        "reminder notifyUsersSevenDaysLater ended: ",
+        notificationResponse
+      );
     }
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
   }
   // });
 };
@@ -366,8 +371,7 @@ export const notifyUsersThirtyDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    console.log("timer 30 days run");
-
+    warnLogger.info("reminder notifyUsersThirtyDaysLater started");
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
     var selectUsers = await User.find({
@@ -437,10 +441,13 @@ export const notifyUsersThirtyDaysLater = async () => {
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
       });
-      Logger.info(notificationResponse);
+      warnLogger.info(
+        "reminder notifyUsersThirtyDaysLater ended: ",
+        notificationResponse
+      );
     }
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
   }
   // });
 };
@@ -455,7 +462,7 @@ export const notifyUsersNinetyDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    console.log("timer 90 days run");
+    warnLogger.info("reminder notifyUsersNinetyDaysLater started");
 
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -526,10 +533,13 @@ export const notifyUsersNinetyDaysLater = async () => {
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
       });
-      Logger.info(notificationResponse);
+      warnLogger.info(
+        "reminder notifyUsersNinetyDaysLater ended: ",
+        notificationResponse
+      );
     }
   } catch (error) {
-    Logger.error(error);
+    errorLogger.error(error);
   }
   // });
 };
