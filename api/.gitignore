@@ -1,9 +1,4 @@
 node_modules
-
-# ignored files created by app
 # dist
-# logs
-.env
 logs
-
-habitune-395006-firebase-adminsdk-yxw8e-3842870d9c.json
+.env
