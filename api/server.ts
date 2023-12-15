@@ -103,13 +103,13 @@ admin.initializeApp({
 });
 
 app.get("/privacy", function (req, res) {
-  return res.sendFile(path.join(__dirname, "/view/privacy.html"));
+  res.sendFile(path.join(__dirname, "/view/privacy.html"));
 });
 app.get("/image/empty-shell", function (req, res) {
-  return res.sendFile(path.join(__dirname, "/public/images/empty-shell.png"));
+  res.sendFile(path.join(__dirname, "/public/images/empty-shell.png"));
 });
 app.get("/", function (req, res) {
-  return res.sendFile(path.join(__dirname, "/view/index.html"));
+  res.sendFile(path.join(__dirname, "/view/index.html"));
 });
 
 app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
@@ -117,7 +117,7 @@ app.get("/api/cronjob", [defaultLimitter], async (req: any, res: any) => {
     await cronjob(req, res);
   } catch (error) {
     console.error("Error executing cron job:", error);
-    // return res.status(500).send(getErrorMessage("Internal Server Error"));
+    res.status(500).send(getErrorMessage("Internal Server Error"));
   }
 });
 

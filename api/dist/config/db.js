@@ -24,6 +24,7 @@ const dbConnect = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.log(`Database error: ${(0, errors_util_1.getErrorMessage)(error)}`);
+        process.exit(1);
     }
 });
 exports.default = dbConnect;

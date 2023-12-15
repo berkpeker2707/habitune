@@ -41,7 +41,7 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 expiresIn: "365d",
             });
             logger_1.default.info(token);
-            return res.status(200).json(token);
+            res.status(200).json(token);
         }
         else {
             const user = yield user_model_1.default.create({
@@ -58,12 +58,12 @@ const signInWithGoogleController = (req, res) => __awaiter(void 0, void 0, void 
                 expiresIn: "365d",
             });
             logger_1.default.info(token);
-            return res.status(200).json(token);
+            res.status(200).json(token);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.signInWithGoogleController = signInWithGoogleController;
@@ -75,7 +75,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         if (!emailRegex.test(req.body.email)) {
             logger_1.default.error("Unacceptable email");
-            return res.status(500).send((0, errors_util_1.getErrorMessage)("Unacceptable email"));
+            res.status(500).send((0, errors_util_1.getErrorMessage)("Unacceptable email"));
         }
         else {
             var userExists = yield user_model_1.default.exists({ email: req.body.email });
@@ -88,13 +88,11 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         expiresIn: "365d",
                     });
                     logger_1.default.info(token);
-                    return res.status(200).json(token);
+                    res.status(200).json(token);
                 }
                 else {
                     logger_1.default.error("Wrong password or email");
-                    return res
-                        .status(500)
-                        .send((0, errors_util_1.getErrorMessage)("Wrong password or email"));
+                    res.status(500).send((0, errors_util_1.getErrorMessage)("Wrong password or email"));
                 }
             }
             else {
@@ -103,9 +101,7 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     (!req.body.email && req.body.email === "") ||
                     (!req.body.password && req.body.password === "")) {
                     logger_1.default.error("Need all required data");
-                    return res
-                        .status(500)
-                        .send((0, errors_util_1.getErrorMessage)("Need all required data"));
+                    res.status(500).send((0, errors_util_1.getErrorMessage)("Need all required data"));
                 }
                 else {
                     const user = yield user_model_1.default.create({
@@ -123,14 +119,14 @@ const signInController = (req, res) => __awaiter(void 0, void 0, void 0, functio
                         expiresIn: "365d",
                     });
                     logger_1.default.info(token);
-                    return res.status(200).json(token);
+                    res.status(200).json(token);
                 }
             }
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.signInController = signInController;
@@ -150,11 +146,11 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
             }));
         }
         logger_1.default.info(loggedinUser);
-        return res.status(200).json(loggedinUser);
+        res.status(200).json(loggedinUser);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.fetchCurrentUserProfile = fetchCurrentUserProfile;
@@ -169,11 +165,11 @@ const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functio
         })
             .exec();
         logger_1.default.info(user);
-        return res.status(200).json(user);
+        res.status(200).json(user);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.fetchUserProfile = fetchUserProfile;
@@ -185,7 +181,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if ((yield user_model_1.default.find({ email: userMail })).length < 1 ||
             userMail === req.user[0].email) {
             logger_1.default.error("Invalid Email");
-            return res.status(500).send((0, errors_util_1.getErrorMessage)("Invalid Email"));
+            res.status(500).send((0, errors_util_1.getErrorMessage)("Invalid Email"));
         }
         const user = yield user_model_1.default.find({ email: userMail });
         // const currentUserHasUserFriend = loggedinUser?.friends.some((element) => {
@@ -230,7 +226,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 },
             }, { upsert: true }));
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
         else if (!currentUserHasPendingUserFriend &&
             currentUserAlreadyHasUserFriend &&
@@ -246,7 +242,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 $pull: { friends: { friend: req.user[0]._id } },
             }, { multi: true }));
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
         else if (currentUserAlreadyHasUserFriend &&
             targetUserAlreadyHasCurrentUser) {
@@ -266,7 +262,7 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
             // );
             yield habit_model_1.default.updateMany({ owner: req.user[0]._id }, { $pull: { sharedWith: user[0]._id } });
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
         else if (currentUserHasPendingUserFriend &&
             !currentUserAlreadyHasUserFriend &&
@@ -296,17 +292,17 @@ const sendFriendship = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 $set: { "friends.$.pending": false, "friends.$.paired": true },
             });
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
         else {
             // console.log("target user know");
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.sendFriendship = sendFriendship;
@@ -325,15 +321,12 @@ const updateCurrentUserImage = (req, res) => __awaiter(void 0, void 0, void 0, f
                 image: imgUploaded.secure_url,
             }, { new: true });
             logger_1.default.info(user);
-            return res.status(200).json(user);
-        }
-        else {
-            return res.json("Profile photo already deleted.");
+            res.status(200).json(user);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateCurrentUserImage = updateCurrentUserImage;
@@ -345,24 +338,24 @@ const sendFeedback = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const currentUser = yield user_model_1.default.findById((_f = req.user[0]) === null || _f === void 0 ? void 0 : _f._id);
             if (currentUser && currentUser.feedback.length >= 10) {
                 logger_1.default.error("Feedback limit reached (10 items)");
-                return res
+                res
                     .status(500)
                     .send((0, errors_util_1.getErrorMessage)("Feedback limit reached (10 items)"));
             }
             const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_g = req.user[0]) === null || _g === void 0 ? void 0 : _g._id, { $push: { feedback: feedback } }, { new: true });
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
         else {
             logger_1.default.error("Feedback limit 500 character reached");
-            return res
+            res
                 .status(500)
                 .send((0, errors_util_1.getErrorMessage)("Feedback limit 500 character reached"));
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.sendFeedback = sendFeedback;
@@ -372,11 +365,11 @@ const changeTheme = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         var newThemeValue = req.body.theme;
         const loggedinUser = yield user_model_1.default.findByIdAndUpdate((_h = req.user[0]) === null || _h === void 0 ? void 0 : _h._id, { $set: { theme: newThemeValue } }, { new: true });
         logger_1.default.info(loggedinUser);
-        return res.status(200).json(loggedinUser);
+        res.status(200).json(loggedinUser);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.changeTheme = changeTheme;
@@ -407,7 +400,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 userID: req.user[0]._id,
             });
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
         else {
             console.log("No habit detected.");
@@ -427,12 +420,12 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 userID: req.user[0]._id,
             });
             logger_1.default.info(loggedinUser);
-            return res.status(200).json(loggedinUser);
+            res.status(200).json(loggedinUser);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.deleteUser = deleteUser;

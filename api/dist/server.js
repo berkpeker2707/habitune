@@ -34,6 +34,7 @@ const defaultLimitter_1 = __importDefault(require("./middlewares/defaultLimitter
 const app = (0, express_1.default)();
 const port = process.env.PORT || 1111;
 app.listen(port, () => console.log(`Server running at port: ${port}`));
+const errors_util_1 = require("./utils/errors.util");
 app.use(morganMiddleware_1.default);
 (0, db_1.default)();
 // const mongoDBStore = mongoStore();
@@ -88,13 +89,13 @@ admin.initializeApp({
     credential: admin.credential.cert(habitune_395006_firebase_adminsdk_yxw8e_3842870d9c),
 });
 app.get("/privacy", function (req, res) {
-    return res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
+    res.sendFile(path_1.default.join(__dirname, "/view/privacy.html"));
 });
 app.get("/image/empty-shell", function (req, res) {
-    return res.sendFile(path_1.default.join(__dirname, "/public/images/empty-shell.png"));
+    res.sendFile(path_1.default.join(__dirname, "/public/images/empty-shell.png"));
 });
 app.get("/", function (req, res) {
-    return res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
+    res.sendFile(path_1.default.join(__dirname, "/view/index.html"));
 });
 app.get("/api/cronjob", [defaultLimitter_1.default], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -102,7 +103,7 @@ app.get("/api/cronjob", [defaultLimitter_1.default], (req, res) => __awaiter(voi
     }
     catch (error) {
         console.error("Error executing cron job:", error);
-        // return res.status(500).send(getErrorMessage("Internal Server Error"));
+        res.status(500).send((0, errors_util_1.getErrorMessage)("Internal Server Error"));
     }
 }));
 //routing

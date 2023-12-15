@@ -27,9 +27,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
         if (checkUser && checkUser.habits.length >= 20) {
             logger_1.default.error("User already has 20 habits");
-            return res
-                .status(500)
-                .send((0, errors_util_1.getErrorMessage)("User already has 20 habits"));
+            res.status(500).send((0, errors_util_1.getErrorMessage)("User already has 20 habits"));
         }
         else {
             const newHabit = yield habit_model_1.default.create({
@@ -62,12 +60,12 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .exec();
             // console.log("newHabitItem: ", newHabitItem);
             logger_1.default.info(newHabit);
-            return res.status(200).json(newHabit);
+            res.status(200).json(newHabit);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.createHabit = createHabit;
@@ -79,11 +77,11 @@ const getAllHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             .slice("upcomingDates", -10)
             .exec();
         logger_1.default.info(loggedinUsersHabits);
-        return res.status(200).json(loggedinUsersHabits);
+        res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.getAllHabits = getAllHabits;
@@ -98,11 +96,11 @@ const getAllHabitsOfSelectedUser = (req, res) => __awaiter(void 0, void 0, void 
             .slice("upcomingDates", -10)
             .exec();
         logger_1.default.info(loggedinUsersHabits);
-        return res.status(200).json(loggedinUsersHabits);
+        res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.getAllHabitsOfSelectedUser = getAllHabitsOfSelectedUser;
@@ -126,11 +124,11 @@ const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function
             .slice("upcomingDates", -10)
             .exec();
         logger_1.default.info(loggedinUsersTodayHabits);
-        return res.status(200).json(loggedinUsersTodayHabits);
+        res.status(200).json(loggedinUsersTodayHabits);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.getTodaysHabits = getTodaysHabits;
@@ -143,11 +141,11 @@ const getSingleHabit = (req, res) => __awaiter(void 0, void 0, void 0, function*
             .slice("upcomingDates", -10)
             .exec();
         logger_1.default.info(loggedinUsersHabits);
-        return res.status(200).json(loggedinUsersHabits);
+        res.status(200).json(loggedinUsersHabits);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.getSingleHabit = getSingleHabit;
@@ -163,11 +161,11 @@ const deleteHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             habitID: req.params.id,
         });
         logger_1.default.info("Habit deleted");
-        return res.status(200).json("Habit deleted");
+        res.status(200).json("Habit deleted");
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.deleteHabit = deleteHabit;
@@ -182,16 +180,16 @@ const updateHabitName = (req, res) => __awaiter(void 0, void 0, void 0, function
                 .slice("upcomingDates", -10)
                 .exec();
             logger_1.default.info(selectedHabit);
-            return res.status(200).json(selectedHabit);
+            res.status(200).json(selectedHabit);
         }
         else {
             logger_1.default.error("Habit name is invalid");
-            return res.status(500).send((0, errors_util_1.getErrorMessage)("Habit name is invalid"));
+            res.status(500).send((0, errors_util_1.getErrorMessage)("Habit name is invalid"));
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitName = updateHabitName;
@@ -217,16 +215,16 @@ const updateHabitColor = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 .slice("upcomingDates", -10)
                 .exec();
             logger_1.default.info(selectedHabit);
-            return res.status(200).json(selectedHabit);
+            res.status(200).json(selectedHabit);
         }
         else {
             logger_1.default.error("Habit color is invalid");
-            return res.status(500).send((0, errors_util_1.getErrorMessage)("Habit color is invalid"));
+            res.status(500).send((0, errors_util_1.getErrorMessage)("Habit color is invalid"));
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitColor = updateHabitColor;
@@ -243,7 +241,7 @@ const updateHabitSharedWith = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 .slice("upcomingDates", -10)
                 .exec();
             logger_1.default.info(updatedSelectedHabit);
-            return res.status(200).json(updatedSelectedHabit);
+            res.status(200).json(updatedSelectedHabit);
         }
         else {
             const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { sharedWith: req.body.userId } }, { new: true })
@@ -252,12 +250,12 @@ const updateHabitSharedWith = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 .slice("upcomingDates", -10)
                 .exec();
             logger_1.default.info(updatedSelectedHabit);
-            return res.status(200).json(updatedSelectedHabit);
+            res.status(200).json(updatedSelectedHabit);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitSharedWith = updateHabitSharedWith;
@@ -272,18 +270,18 @@ const updateHabitFirstAndLastDate = (req, res) => __awaiter(void 0, void 0, void
                 .slice("upcomingDates", -10)
                 .exec();
             logger_1.default.info(selectedHabit);
-            return res.status(200).json(selectedHabit);
+            res.status(200).json(selectedHabit);
         }
         else {
             logger_1.default.error("Last date cannot be earlier than first date");
-            return res
+            res
                 .status(500)
                 .send((0, errors_util_1.getErrorMessage)("Last date cannot be earlier than first date"));
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitFirstAndLastDate = updateHabitFirstAndLastDate;
@@ -301,7 +299,7 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 .exec();
             // console.log(true);
             logger_1.default.info(updatedSelectedHabit);
-            return res.status(200).json(updatedSelectedHabit);
+            res.status(200).json(updatedSelectedHabit);
         }
         else {
             const updatedSelectedHabit = yield habit_model_1.default.findByIdAndUpdate(req.body._id, { $push: { dates: req.body.date } }, { new: true })
@@ -311,12 +309,12 @@ const updateHabitDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 .exec();
             // console.log(false);
             logger_1.default.info(updatedSelectedHabit);
-            return res.status(200).json(updatedSelectedHabit);
+            res.status(200).json(updatedSelectedHabit);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitDates = updateHabitDates;
@@ -353,19 +351,19 @@ const updateHabitCompletedDate = (req, res) => __awaiter(void 0, void 0, void 0,
                 },
             }, { upsert: true });
             logger_1.default.info(selectedHabit);
-            return res.status(200).json(selectedHabit);
+            res.status(200).json(selectedHabit);
         }
         else {
             yield (selectedHabit === null || selectedHabit === void 0 ? void 0 : selectedHabit.updateOne({
                 $pop: { dates: 1 }, // Remove the last element from the 'dates' array
             }).populate({ path: "sharedWith", model: "User" }).slice("dates", -10).slice("upcomingDates", -10).exec());
             logger_1.default.info(selectedHabit);
-            return res.status(200).json(selectedHabit);
+            res.status(200).json(selectedHabit);
         }
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitCompletedDate = updateHabitCompletedDate;
@@ -379,11 +377,11 @@ const updateHabitHidden = (req, res) => __awaiter(void 0, void 0, void 0, functi
             .slice("upcomingDates", -10)
             .exec();
         logger_1.default.info(selectedHabit);
-        return res.status(200).json(selectedHabit);
+        res.status(200).json(selectedHabit);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.updateHabitHidden = updateHabitHidden;

@@ -26,11 +26,11 @@ const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, 
             fcmToken: req.body.token,
         });
         logger_1.default.info(updatedUser);
-        return res.status(200).json(updatedUser);
+        res.status(200).json(updatedUser);
     }
     catch (error) {
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.notificationUpdateToken = notificationUpdateToken;
@@ -73,12 +73,12 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
         })
             .exec();
         logger_1.default.info(notification);
-        return res.status(200).json(notification);
+        res.status(200).json(notification);
     }
     catch (error) {
         // console.log("error controller noti: ", error);
         logger_1.default.error(error);
-        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.notificationSend = notificationSend;

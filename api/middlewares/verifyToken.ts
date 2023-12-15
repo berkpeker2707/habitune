@@ -28,7 +28,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
 
     if (!decoded) {
       Logger.error("Unauthorized");
-      return res.status(500).send(getErrorMessage("Unauthorized"));
+      res.status(500).send(getErrorMessage("Unauthorized"));
     }
 
     const user = await User.find({ email: decoded.user.email });
@@ -38,7 +38,7 @@ const verifyToken = async (req: any, res: any, next: any) => {
   } catch (error) {
     Logger.error("token error: ", error);
     // console.log("token error: ", error);
-    return res.status(500).send(getErrorMessage(error));
+    res.status(500).send(getErrorMessage(error));
   }
 };
 
