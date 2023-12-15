@@ -3,8 +3,7 @@ import winston_db from "winston-mongodb";
 import path from "path";
 const env = process.env.NODE_ENV || "development";
 
-// const mongodbConnectionString = process.env.MONGODB_LOG_URI;
-const mongodbConnectionString = process.env.MONGODB_URI;
+const mongodbConnectionString = process.env.MONGODB_LOG_URI;
 
 if (!mongodbConnectionString) {
   throw new Error("MongoDB connection string is not provided.");
