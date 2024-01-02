@@ -42,6 +42,7 @@ import {
   selectSignIn,
   selectSignInWithGoogle,
   friendID,
+  revertAll,
 } from "./src/state/userSlice";
 import {
   fetchAllHabitsAction,
@@ -51,8 +52,12 @@ import {
   fetchAllHabitsOfSelectedUserAction,
   refreshHabits,
   setTempBarFilled,
+  revertAllHabit,
 } from "./src/state/habitSlice";
-import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
+import {
+  notificationUpdateTokenAction,
+  revertAllNotifications,
+} from "./src/state/notificationSlice";
 
 import FlashMessage from "react-native-flash-message";
 
@@ -95,10 +100,16 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const errorHandler = (error: Error, stackTrace: string) => {
+const errorHandler = async (error: Error, stackTrace: string) => {
+  const dispatch = useAppDispatch();
+
   /* Log the error to an error reporting service */
   console.log("error: ", error);
   console.log("stackTrace: ", stackTrace);
+
+  dispatch(revertAll());
+  dispatch(revertAllHabit());
+  dispatch(revertAllNotifications());
 };
 
 //wrapper for state
@@ -108,9 +119,7 @@ const AppWrapper = () => {
       <PersistGate persistor={persistor}>
         <ThemeProvider>
           <NavigationContainer>
-            <ErrorBoundary onError={errorHandler}>
-              <App />
-            </ErrorBoundary>
+            <App />
           </NavigationContainer>
         </ThemeProvider>
       </PersistGate>
@@ -262,7 +271,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <ErrorBoundary onError={errorHandler}>
       <StatusBar
         hidden={false}
         barStyle={
@@ -324,7 +333,7 @@ const App = () => {
         )}
       </BottomTabNav.Navigator>
       <FlashMessage position="top" />
-    </>
+    </ErrorBoundary>
   );
 };
 

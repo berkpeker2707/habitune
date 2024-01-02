@@ -302,7 +302,8 @@ export const revertAll = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue, getState, dispatch }) => {
     try {
-      await AsyncStorage.clear();
+      // await AsyncStorage.clear();
+      AsyncStorage.getAllKeys().then((keys) => AsyncStorage.multiRemove(keys));
 
       return {};
     } catch (error) {
