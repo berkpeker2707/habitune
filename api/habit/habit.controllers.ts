@@ -142,6 +142,36 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
   }
 };
 
+export const getTodaysHabitsBoolean = async (
+  req: IReq | any,
+  res: Response
+) => {
+  try {
+    var clientTime = parseInt(req.params.today);
+
+    const loggedinUsersTodayHabits = await Habit.find({
+      owner: req.user[0]._id,
+    })
+      .populate({ path: "sharedWith", model: "User" })
+      .slice("dates", -10) //last 10 numbers of the dates array
+      .slice("upcomingDates", -10)
+      .exec();
+
+    var todaysHabitBooleanData;
+    todaysHabitBooleanData = loggedinUsersTodayHabits.map(
+      (allHabitsItem: any) => {
+        return isInCompletedDates(allHabitsItem.dates, new Date(clientTime));
+      }
+    );
+
+    infoLogger.info(`User ${req.user[0]._id} invoked getTodaysHabitsBoolean`);
+    res.status(200).json(todaysHabitBooleanData);
+  } catch (error) {
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const getSingleHabit = async (req: IReq | any, res: Response) => {
   try {
     const selectedHabit = req.body.selectedHabit;

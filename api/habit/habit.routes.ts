@@ -4,6 +4,7 @@ import {
   getAllHabits,
   getAllHabitsOfSelectedUser,
   getTodaysHabits,
+  getTodaysHabitsBoolean,
   getSingleHabit,
   deleteHabit,
   updateHabitName,
@@ -34,6 +35,12 @@ habitRoutes.get(
   "/all/today/:today",
   [verifyToken, defaultLimitter],
   getTodaysHabits
+);
+
+habitRoutes.get(
+  "/all/today/boolean/:today",
+  [verifyToken, defaultLimitter],
+  getTodaysHabitsBoolean
 );
 
 habitRoutes.get("/single", [verifyToken, defaultLimitter], getSingleHabit);
