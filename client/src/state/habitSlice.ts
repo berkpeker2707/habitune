@@ -14,16 +14,6 @@ const today = new Date(
   todayTemp.getMinutes(),
   todayTemp.getSeconds()
 );
-const OneYearLater = new Date(
-  new Date(
-    new Date(Date.now()).getFullYear() + 1,
-    new Date(Date.now()).getMonth(),
-    new Date(Date.now()).getDate(),
-    new Date(Date.now()).getHours(),
-    new Date(Date.now()).getMinutes(),
-    new Date(Date.now()).getSeconds()
-  )
-);
 const OneDayAgo = new Date(
   new Date(
     todayTemp.getFullYear(),
@@ -250,8 +240,8 @@ export const fetchAllHabitsAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.get(`/habit/all`, config);
 
-      dispatch(currentHabitWeekStreakAction(today.getTime()));
-      dispatch(allHabitDatesDotsAction(data));
+      dispatch(getCurrentHabitWeekStreakBooleanAction(today.getTime()));
+      dispatch(getAllHabitDatesDotsBooleanAction(today.getTime()));
 
       return data;
     } catch (error) {
@@ -319,8 +309,8 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
   }
 );
 
-export const todaysHabitBooleanAction = createAsyncThunk(
-  "habit/fetchTodaysHabitBoolean",
+export const getTodaysHabitsBooleanAction = createAsyncThunk(
+  "habit/getTodaysHabitsBoolean",
   async (today: number, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
@@ -333,20 +323,20 @@ export const todaysHabitBooleanAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.get(
-        `/habit/all/today/boolean/${today}`,
+        `/habit/home/boolean/${today}`,
         config
       );
 
       return data;
     } catch (error) {
-      console.log("todaysHabitBooleanAction: ", error);
+      console.log("getTodaysHabitsBooleanAction: ", error);
       return rejectWithValue(error);
     }
   }
 );
 
-export const currentHabitWeekStreakAction = createAsyncThunk(
-  "habit/fetchCurrentHabitWeekStreak",
+export const getCurrentHabitWeekStreakBooleanAction = createAsyncThunk(
+  "habit/getCurrentHabitWeekStreakBoolean",
   async (today: number, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
@@ -359,13 +349,13 @@ export const currentHabitWeekStreakAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.get(
-        `/habit/all/today/streak/${today}`,
+        `/habit/overview/streak/${today}`,
         config
       );
 
       return data;
     } catch (error) {
-      console.log("currentHabitWeekStreakAction: ", error);
+      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -432,31 +422,33 @@ export const friendCurrentHabitWeekStreakAction = createAsyncThunk(
 
       return friendCurrentHabitWeekData;
     } catch (error) {
-      console.log("currentHabitWeekStreakAction: ", error);
+      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
       return rejectWithValue(error);
     }
   }
 );
 
-export const allHabitDatesDotsAction = createAsyncThunk(
+export const getAllHabitDatesDotsBooleanAction = createAsyncThunk(
   "habit/allHabitDatesDots",
-  async (data: [dates: any], { rejectWithValue, getState, dispatch }) => {
+  async (today: number, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
     try {
-      var allHabitDatesDotsData: Array<boolean> = [];
+      const { data } = await axiosInstance.get(
+        `/habit/overview/dots/${today}`,
+        config
+      );
 
-      for (var i = 0; i < data.length; i++) {
-        allHabitDatesDotsData.push(isInArray(data[i].dates, today));
-        allHabitDatesDotsData.push(isInArray(data[i].dates, OneDayAgo));
-        allHabitDatesDotsData.push(isInArray(data[i].dates, TwoDayAgo));
-        allHabitDatesDotsData.push(isInArray(data[i].dates, ThreeDayAgo));
-        allHabitDatesDotsData.push(isInArray(data[i].dates, FourDayAgo));
-        allHabitDatesDotsData.push(isInArray(data[i].dates, FiveDayAgo));
-        allHabitDatesDotsData.push(isInArray(data[i].dates, SixDayAgo));
-      }
-
-      return allHabitDatesDotsData;
+      return data;
     } catch (error) {
-      console.log("currentHabitWeekStreakAction: ", error);
+      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -480,7 +472,7 @@ export const friendAllHabitDatesDotsAction = createAsyncThunk(
 
       return friendAllHabitDatesDotsData;
     } catch (error) {
-      console.log("currentHabitWeekStreakAction: ", error);
+      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -901,33 +893,39 @@ const habitSlice = createSlice({
       state.error = action.error.toString();
     });
     //todays habit completed boolean reducer
-    builder.addCase(todaysHabitBooleanAction.pending, (state) => {
+    builder.addCase(getTodaysHabitsBooleanAction.pending, (state) => {
       state.loading = true;
       state.error = "";
     });
-    builder.addCase(todaysHabitBooleanAction.fulfilled, (state, action) => {
+    builder.addCase(getTodaysHabitsBooleanAction.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
       state.todaysHabitBooleanData = action?.payload;
     });
-    builder.addCase(todaysHabitBooleanAction.rejected, (state, action) => {
+    builder.addCase(getTodaysHabitsBooleanAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.toString();
     });
     //current weeks habit streak reducer
-    builder.addCase(currentHabitWeekStreakAction.pending, (state) => {
+    builder.addCase(getCurrentHabitWeekStreakBooleanAction.pending, (state) => {
       state.loading = true;
       state.error = "";
     });
-    builder.addCase(currentHabitWeekStreakAction.fulfilled, (state, action) => {
-      state.loading = false;
-      state.error = "";
-      state.currentHabitWeekStreakData = action?.payload;
-    });
-    builder.addCase(currentHabitWeekStreakAction.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.toString();
-    });
+    builder.addCase(
+      getCurrentHabitWeekStreakBooleanAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.currentHabitWeekStreakData = action?.payload;
+      }
+    );
+    builder.addCase(
+      getCurrentHabitWeekStreakBooleanAction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.toString();
+      }
+    );
     //friend current habit week streak reducer
     builder.addCase(friendCurrentHabitWeekStreakAction.pending, (state) => {
       state.loading = true;
@@ -949,19 +947,25 @@ const habitSlice = createSlice({
       }
     );
     //all habit dates dots reducer
-    builder.addCase(allHabitDatesDotsAction.pending, (state) => {
+    builder.addCase(getAllHabitDatesDotsBooleanAction.pending, (state) => {
       state.loading = true;
       state.error = "";
     });
-    builder.addCase(allHabitDatesDotsAction.fulfilled, (state, action) => {
-      state.loading = false;
-      state.error = "";
-      state.allHabitDatesDotsData = action?.payload;
-    });
-    builder.addCase(allHabitDatesDotsAction.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.toString();
-    });
+    builder.addCase(
+      getAllHabitDatesDotsBooleanAction.fulfilled,
+      (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.allHabitDatesDotsData = action?.payload;
+      }
+    );
+    builder.addCase(
+      getAllHabitDatesDotsBooleanAction.rejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.toString();
+      }
+    );
     //friend all habit dates dots action reducer
     builder.addCase(friendAllHabitDatesDotsAction.pending, (state) => {
       state.loading = true;

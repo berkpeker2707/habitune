@@ -1,14 +1,14 @@
 import {
   fetchAllTodayHabitsAction,
   setRefreshHabits,
-  todaysHabitBooleanAction,
+  getTodaysHabitsBooleanAction,
 } from "../../state/habitSlice";
 
 //refresh current users today habits starts
 const refreshCurrentUsersTodayHabits = (dispatch: Function) => {
   dispatch(setRefreshHabits(true));
   dispatch(
-    todaysHabitBooleanAction(
+    getTodaysHabitsBooleanAction(
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),

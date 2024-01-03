@@ -49,7 +49,7 @@ import {
   fetchAllHabitsOfSelectedUserAction,
   refreshHabits,
   revertAllHabit,
-  todaysHabitBooleanAction,
+  getTodaysHabitsBooleanAction,
 } from "./src/state/habitSlice";
 import {
   notificationUpdateTokenAction,
@@ -165,7 +165,7 @@ const App = () => {
       dispatch(fetchCurrentUserProfileAction(today.getTime()));
       dispatch(fetchAllHabitsAction());
       dispatch(fetchAllTodayHabitsAction(today.getTime()));
-      dispatch(todaysHabitBooleanAction(today.getTime()));
+      dispatch(getTodaysHabitsBooleanAction(today.getTime()));
     }
   }, [token, tokenSecondOption]);
 
@@ -179,7 +179,7 @@ const App = () => {
   useEffect(() => {
     if (habitUpdated) {
       dispatch(fetchAllHabitsAction());
-      dispatch(todaysHabitBooleanAction(today.getTime()));
+      dispatch(getTodaysHabitsBooleanAction(today.getTime()));
     }
   }, [habitUpdated]);
 
