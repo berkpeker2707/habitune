@@ -8,13 +8,14 @@ import { selectFetchCurrentUserProfile } from "../../state/userSlice";
 import {
   updateHabitCompletedDateAction,
   selectHabitsToday,
+  selectHabitUpdated,
 } from "../../state/habitSlice";
 import { notificationSendAction } from "../../state/notificationSlice";
-import handleTempBarFilled from "../../helpers/handleTempBarFilled";
 
-const HabitBarParent = memo((props: { tempBarFilled: [boolean] }) => {
-  const { tempBarFilled } = props;
+const HabitBarParent = memo((props: { habitsTodayBoolean: [boolean] }) => {
+  const { habitsTodayBoolean } = props;
   const dispatch = useAppDispatch();
+  const habitUpdated = useSelector(selectHabitUpdated);
   const currentUserState = useSelector(selectFetchCurrentUserProfile);
   const allHabitsToday = useSelector(selectHabitsToday);
 
@@ -28,7 +29,7 @@ const HabitBarParent = memo((props: { tempBarFilled: [boolean] }) => {
         })
       );
 
-      if (!tempBarFilled[index] && item.sharedWith.length > 0) {
+      if (!habitsTodayBoolean[index] && item.sharedWith.length > 0) {
         dispatch(
           notificationSendAction({
             habitID: item._id,
@@ -47,15 +48,13 @@ const HabitBarParent = memo((props: { tempBarFilled: [boolean] }) => {
           })
         );
       }
-      handleTempBarFilled(index, dispatch, tempBarFilled);
     },
     [
       dispatch,
       updateHabitCompletedDateAction,
       notificationSendAction,
       currentUserState,
-      tempBarFilled,
-      handleTempBarFilled,
+      habitUpdated,
     ]
   );
 
@@ -67,7 +66,7 @@ const HabitBarParent = memo((props: { tempBarFilled: [boolean] }) => {
           key={uuid.v4() as string}
         >
           <HabitBar
-            filled={tempBarFilled[index]}
+            filled={habitsTodayBoolean[index]}
             item={item}
             itemStroke={0.5}
           />

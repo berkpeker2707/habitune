@@ -48,8 +48,8 @@ import {
   selectHabitsTodayBoolean,
   fetchAllHabitsOfSelectedUserAction,
   refreshHabits,
-  setTempBarFilled,
   revertAllHabit,
+  todaysHabitBooleanAction,
 } from "./src/state/habitSlice";
 import {
   notificationUpdateTokenAction,
@@ -156,12 +156,6 @@ const App = () => {
     todayTemp.getSeconds()
   );
 
-  React.useLayoutEffect(() => {
-    if (habitsTodayBoolean) {
-      dispatch(setTempBarFilled([...habitsTodayBoolean]));
-    }
-  }, [habitsTodayBoolean, refreshHabitsState]);
-
   //token
   React.useLayoutEffect(() => {
     if (
@@ -171,6 +165,7 @@ const App = () => {
       dispatch(fetchCurrentUserProfileAction(today.getTime()));
       dispatch(fetchAllHabitsAction());
       dispatch(fetchAllTodayHabitsAction(today.getTime()));
+      dispatch(todaysHabitBooleanAction(today.getTime()));
     }
   }, [token, tokenSecondOption]);
 
@@ -184,6 +179,7 @@ const App = () => {
   useEffect(() => {
     if (habitUpdated) {
       dispatch(fetchAllHabitsAction());
+      dispatch(todaysHabitBooleanAction(today.getTime()));
     }
   }, [habitUpdated]);
 

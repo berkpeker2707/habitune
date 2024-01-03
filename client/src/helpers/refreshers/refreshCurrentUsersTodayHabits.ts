@@ -1,16 +1,24 @@
 import {
   fetchAllTodayHabitsAction,
   setRefreshHabits,
-  setTempBarFilled,
+  todaysHabitBooleanAction,
 } from "../../state/habitSlice";
 
 //refresh current users today habits starts
-const refreshCurrentUsersTodayHabits = (
-  dispatch: Function,
-  habitsTodayBoolean: []
-) => {
+const refreshCurrentUsersTodayHabits = (dispatch: Function) => {
   dispatch(setRefreshHabits(true));
-  dispatch(setTempBarFilled(() => [...habitsTodayBoolean]));
+  dispatch(
+    todaysHabitBooleanAction(
+      new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate(),
+        new Date().getHours(),
+        new Date().getMinutes(),
+        new Date().getSeconds()
+      ).getTime()
+    )
+  );
   dispatch(
     fetchAllTodayHabitsAction(
       new Date(

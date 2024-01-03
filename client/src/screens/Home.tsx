@@ -16,7 +16,6 @@ import {
   refreshHabits,
   selectHabitLoading,
   selectHabitsTodayBoolean,
-  tempBarFilled,
 } from "../state/habitSlice";
 import refreshCurrentUsersTodayHabits from "../helpers/refreshers/refreshCurrentUsersTodayHabits";
 
@@ -25,7 +24,6 @@ const Home = memo(() => {
   const dispatch = useAppDispatch();
   const habitLoadingState = useSelector(selectHabitLoading);
   const refreshHabitsState = useSelector(refreshHabits);
-  const tempBarFilledState = useSelector(tempBarFilled);
   const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
 
   const allHabitsTodayNumberState = useSelector(allHabitsTodayNumber);
@@ -63,9 +61,7 @@ const Home = memo(() => {
           refreshControl={
             <RefreshControl
               refreshing={refreshHabitsState}
-              onRefresh={() =>
-                refreshCurrentUsersTodayHabits(dispatch, habitsTodayBoolean)
-              }
+              onRefresh={() => refreshCurrentUsersTodayHabits(dispatch)}
             />
           }
         >
@@ -87,7 +83,7 @@ const Home = memo(() => {
   } else if (
     !habitLoadingState &&
     allHabitsTodayNumberState > 0 &&
-    tempBarFilledState
+    habitsTodayBoolean
   ) {
     return (
       <View
@@ -106,15 +102,13 @@ const Home = memo(() => {
           refreshControl={
             <RefreshControl
               refreshing={refreshHabitsState}
-              onRefresh={() =>
-                refreshCurrentUsersTodayHabits(dispatch, habitsTodayBoolean)
-              }
+              onRefresh={() => refreshCurrentUsersTodayHabits(dispatch)}
             />
           }
         >
           <View style={{ paddingTop: 20 }}></View>
           {/* <Text>Habits</Text> */}
-          <HabitBarParent tempBarFilled={tempBarFilledState} />
+          <HabitBarParent habitsTodayBoolean={habitsTodayBoolean} />
         </ScrollView>
       </View>
     );
