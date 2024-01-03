@@ -6,10 +6,7 @@ import { StatusBar, Vibration } from "react-native";
 import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
 
-import {
-  NavigationContainer,
-  // , useNavigation
-} from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
@@ -19,7 +16,7 @@ import {
 import {
   BottomTabNavParamList,
   // StackNavParamList,
-  // generalScreenProp,
+  generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
 // screens
 import Signin from "./src/screens/Signin";
@@ -130,7 +127,8 @@ const AppWrapper = () => {
 const App = () => {
   const { theme, setTheme, changeTheme } = useTheme();
 
-  // const navigation = useNavigation<generalScreenProp>();
+  // const navigation = useNavigation();
+  const navigation = useNavigation<generalScreenProp>();
 
   // const controller = new AbortController();
 
@@ -158,14 +156,14 @@ const App = () => {
     todayTemp.getSeconds()
   );
 
-  useEffect(() => {
+  React.useLayoutEffect(() => {
     if (habitsTodayBoolean) {
       dispatch(setTempBarFilled([...habitsTodayBoolean]));
     }
   }, [habitsTodayBoolean, refreshHabitsState]);
 
   //token
-  useEffect(() => {
+  React.useLayoutEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
@@ -195,7 +193,7 @@ const App = () => {
   }, []);
 
   //register fcm
-  useEffect(() => {
+  React.useLayoutEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
@@ -303,7 +301,14 @@ const App = () => {
                 tabBarButton: (props) => (
                   <HomeIcon
                     {...props}
-                    onPressIn={() => Vibration.vibrate(10)}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      navigation.navigate("HomeSection");
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "HomeSection" }],
+                      });
+                    }}
                   />
                 ),
               }}
@@ -313,7 +318,17 @@ const App = () => {
               children={(props: any) => <AddSection {...props} />}
               options={{
                 tabBarButton: (props) => (
-                  <AddIcon {...props} onPressIn={() => Vibration.vibrate(10)} />
+                  <AddIcon
+                    {...props}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      navigation.navigate("AddSection");
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "AddSection" }],
+                      });
+                    }}
+                  />
                 ),
               }}
             />
@@ -324,7 +339,14 @@ const App = () => {
                 tabBarButton: (props) => (
                   <OverviewIcon
                     {...props}
-                    onPressIn={() => Vibration.vibrate(10)}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      navigation.navigate("OverviewSection");
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "OverviewSection" }],
+                      });
+                    }}
                   />
                 ),
               }}
