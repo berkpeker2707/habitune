@@ -109,7 +109,6 @@ interface habitTypes {
 
   //habit home states start
   refreshHabits: boolean;
-  tempBarFilled: boolean[];
   //habit home states ends
 
   //habit add states start
@@ -156,7 +155,6 @@ const initialState: habitTypes = {
 
   //habit home states start
   refreshHabits: false,
-  tempBarFilled: [],
   //habit home states ends
 
   //habit add states start
@@ -313,8 +311,6 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
         config
       );
 
-      dispatch(todaysHabitBooleanAction(data));
-
       return data;
     } catch (error) {
       console.log("fetchAllTodayHabitsAction: ", error);
@@ -325,24 +321,23 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
 
 export const todaysHabitBooleanAction = createAsyncThunk(
   "habit/updateTodaysHabitBoolean",
-  async (data: [], { rejectWithValue, getState, dispatch }) => {
-    try {
-      var todaysHabitBooleanData;
-      todaysHabitBooleanData = data.map((allHabitsItem: any) => {
-        return isInCompletedDates(
-          allHabitsItem.dates,
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          )
-        );
-      });
+  async (today: number, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
 
-      return todaysHabitBooleanData;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    try {
+      const { data } = await axiosInstance.get(
+        `/habit/all/today/boolean/${today}`,
+        config
+      );
+
+      return data;
     } catch (error) {
       console.log("todaysHabitBooleanAction: ", error);
       return rejectWithValue(error);
@@ -830,9 +825,6 @@ const habitSlice = createSlice({
     setRefreshHabits: (state, action) => {
       state.refreshHabits = action.payload;
     },
-    setTempBarFilled: (state, action) => {
-      state.tempBarFilled = action.payload;
-    },
     //habit home states ends
 
     //habit add states start
@@ -1202,7 +1194,6 @@ const habitSlice = createSlice({
         (state.updateHabitCompletedDateData = {}),
         //habit home states start
         (state.refreshHabits = false),
-        (state.tempBarFilled = []),
         //habit home states ends
 
         //habit add states start
@@ -1248,9 +1239,8 @@ const habitSlice = createSlice({
 });
 
 //habit home states start
-export const { setTempBarFilled, setRefreshHabits } = habitSlice.actions;
+export const { setRefreshHabits } = habitSlice.actions;
 export const refreshHabits = (state: any) => state.habit.refreshHabits;
-export const tempBarFilled = (state: any) => state.habit.tempBarFilled;
 //habit home states ends
 
 //habit add states start
