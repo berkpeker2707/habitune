@@ -14,6 +14,7 @@ import {
   updateHabitDates,
   updateHabitCompletedDate,
   updateHabitHidden,
+  getCurrentHabitWeekStreakBoolean,
 } from "./habit.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -41,6 +42,12 @@ habitRoutes.get(
   "/all/today/boolean/:today",
   [verifyToken, defaultLimitter],
   getTodaysHabitsBoolean
+);
+
+habitRoutes.get(
+  "/all/today/streak/:today",
+  [verifyToken, defaultLimitter],
+  getCurrentHabitWeekStreakBoolean
 );
 
 habitRoutes.get("/single", [verifyToken, defaultLimitter], getSingleHabit);
