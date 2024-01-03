@@ -250,7 +250,7 @@ export const fetchAllHabitsAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.get(`/habit/all`, config);
 
-      dispatch(currentHabitWeekStreakAction(data));
+      dispatch(currentHabitWeekStreakAction(today.getTime()));
       dispatch(allHabitDatesDotsAction(data));
 
       return data;
@@ -320,7 +320,7 @@ export const fetchAllTodayHabitsAction = createAsyncThunk(
 );
 
 export const todaysHabitBooleanAction = createAsyncThunk(
-  "habit/updateTodaysHabitBoolean",
+  "habit/fetchTodaysHabitBoolean",
   async (today: number, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
@@ -346,65 +346,24 @@ export const todaysHabitBooleanAction = createAsyncThunk(
 );
 
 export const currentHabitWeekStreakAction = createAsyncThunk(
-  "habit/currentHabitWeekStreak",
-  async (data: [], { rejectWithValue, getState, dispatch }) => {
+  "habit/fetchCurrentHabitWeekStreak",
+  async (today: number, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
     try {
-      var currentHabitWeekStreakData;
+      const { data } = await axiosInstance.get(
+        `/habit/all/today/streak/${today}`,
+        config
+      );
 
-      currentHabitWeekStreakData = data.map((allHabitsItem: any) => {
-        if (
-          isInArray(allHabitsItem.dates, SixDayAgo) &&
-          isInArray(allHabitsItem.dates, FiveDayAgo) &&
-          isInArray(allHabitsItem.dates, FourDayAgo) &&
-          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-          isInArray(allHabitsItem.dates, TwoDayAgo) &&
-          isInArray(allHabitsItem.dates, OneDayAgo) &&
-          isInArray(allHabitsItem.dates, today)
-        ) {
-          return 7;
-        } else if (
-          isInArray(allHabitsItem.dates, FiveDayAgo) &&
-          isInArray(allHabitsItem.dates, FourDayAgo) &&
-          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-          isInArray(allHabitsItem.dates, TwoDayAgo) &&
-          isInArray(allHabitsItem.dates, OneDayAgo) &&
-          isInArray(allHabitsItem.dates, today)
-        ) {
-          return 6;
-        } else if (
-          isInArray(allHabitsItem.dates, FourDayAgo) &&
-          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-          isInArray(allHabitsItem.dates, TwoDayAgo) &&
-          isInArray(allHabitsItem.dates, OneDayAgo) &&
-          isInArray(allHabitsItem.dates, today)
-        ) {
-          return 5;
-        } else if (
-          isInArray(allHabitsItem.dates, ThreeDayAgo) &&
-          isInArray(allHabitsItem.dates, TwoDayAgo) &&
-          isInArray(allHabitsItem.dates, OneDayAgo) &&
-          isInArray(allHabitsItem.dates, today)
-        ) {
-          return 4;
-        } else if (
-          isInArray(allHabitsItem.dates, TwoDayAgo) &&
-          isInArray(allHabitsItem.dates, OneDayAgo) &&
-          isInArray(allHabitsItem.dates, today)
-        ) {
-          return 3;
-        } else if (
-          isInArray(allHabitsItem.dates, OneDayAgo) &&
-          isInArray(allHabitsItem.dates, today)
-        ) {
-          return 2;
-        } else if (isInArray(allHabitsItem.dates, today)) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-
-      return currentHabitWeekStreakData;
+      return data;
     } catch (error) {
       console.log("currentHabitWeekStreakAction: ", error);
       return rejectWithValue(error);
