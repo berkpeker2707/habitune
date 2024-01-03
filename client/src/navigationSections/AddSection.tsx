@@ -95,7 +95,7 @@ const AddSection = memo((props: any) => {
                         friendList: shareWithFriendListState,
                       })
                     );
-                    navigation.navigate("Home");
+                    navigation.navigate("HomeSection");
                   } catch (error) {
                     console.log(error);
                   }
