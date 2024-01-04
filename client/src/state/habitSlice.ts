@@ -361,6 +361,7 @@ export const getCurrentHabitWeekStreakBooleanAction = createAsyncThunk(
   }
 );
 
+//x
 export const friendCurrentHabitWeekStreakAction = createAsyncThunk(
   "habit/friendCurrentHabitWeekStreak",
   async (data: [], { rejectWithValue, getState, dispatch }) => {
@@ -422,7 +423,7 @@ export const friendCurrentHabitWeekStreakAction = createAsyncThunk(
 
       return friendCurrentHabitWeekData;
     } catch (error) {
-      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
+      console.log("friendCurrentHabitWeekStreakAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -448,7 +449,7 @@ export const getAllHabitDatesDotsBooleanAction = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
+      console.log("getAllHabitDatesDotsBooleanAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -472,7 +473,7 @@ export const friendAllHabitDatesDotsAction = createAsyncThunk(
 
       return friendAllHabitDatesDotsData;
     } catch (error) {
-      console.log("getCurrentHabitWeekStreakBooleanAction: ", error);
+      console.log("friendAllHabitDatesDotsAction: ", error);
       return rejectWithValue(error);
     }
   }
