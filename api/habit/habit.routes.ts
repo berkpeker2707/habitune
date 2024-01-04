@@ -16,6 +16,8 @@ import {
   updateHabitHidden,
   getCurrentHabitWeekStreakBoolean,
   getAllHabitDatesDotsBoolean,
+  getFriendHabitWeekStreakBoolean,
+  getFriendHabitDatesDotsBoolean,
 } from "./habit.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -52,9 +54,21 @@ habitRoutes.get(
 );
 
 habitRoutes.get(
+  "/friend/:friend/overview/streak/:today",
+  [verifyToken, defaultLimitter],
+  getFriendHabitWeekStreakBoolean
+);
+
+habitRoutes.get(
   "/overview/dots/:today",
   [verifyToken, defaultLimitter],
   getAllHabitDatesDotsBoolean
+);
+
+habitRoutes.get(
+  "/friend/:friend/overview/dots/:today",
+  [verifyToken, defaultLimitter],
+  getFriendHabitDatesDotsBoolean
 );
 
 habitRoutes.get("/single", [verifyToken, defaultLimitter], getSingleHabit);
