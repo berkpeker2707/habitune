@@ -292,6 +292,8 @@ const App = () => {
               name="HomeSection"
               children={(props: any) => <HomeSection {...props} />}
               options={{
+                lazy: true,
+                freezeOnBlur: true,
                 // resets screen states below
                 // unmountOnBlur: true,
                 tabBarButton: (props) => (
@@ -313,6 +315,8 @@ const App = () => {
               name="AddSection"
               children={(props: any) => <AddSection {...props} />}
               options={{
+                lazy: true,
+                freezeOnBlur: true,
                 tabBarButton: (props) => (
                   <AddIcon
                     {...props}
@@ -332,6 +336,8 @@ const App = () => {
               name="OverviewSection"
               children={(props: any) => <OverviewSection {...props} />}
               options={{
+                lazy: true,
+                freezeOnBlur: true,
                 tabBarButton: (props) => (
                   <OverviewIcon
                     {...props}
