@@ -1,8 +1,7 @@
 import * as React from "react";
-import { TextInput } from "react-native";
 import StreakBar from "./StreakGraphBar";
 import uuid from "react-native-uuid";
-import { View } from "moti";
+import { View, Text } from "moti";
 import { useTheme } from "../../context/ThemeContext";
 
 const StreakGraph = (props: {
@@ -22,18 +21,30 @@ const StreakGraph = (props: {
         alignItems: "center",
       }}
     >
-      <TextInput
-        style={{
-          height: 29.5,
-          paddingLeft: 20,
-          color: theme.fadedShadowColor,
-          textAlign: "center",
-        }}
-        editable={false}
-        selectTextOnFocus={false}
-      >
-        Streaks 🔥
-      </TextInput>
+      <Text style={{ textAlign: "center", paddingLeft: 20 }}>
+        <Text
+          style={{
+            height: 29.5,
+
+            color: theme.fadedShadowColor,
+
+            fontSize: 16,
+          }}
+        >
+          Streaks
+        </Text>
+        <Text
+          style={{
+            height: 29.5,
+
+            color: theme.fadedShadowColor,
+
+            fontSize: 14,
+          }}
+        >
+          🔥
+        </Text>
+      </Text>
       {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => {
         return (
           <StreakBar
