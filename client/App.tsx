@@ -39,7 +39,6 @@ import {
   selectSignIn,
   selectSignInWithGoogle,
   friendID,
-  revertAll,
 } from "./src/state/userSlice";
 import {
   fetchAllHabitsAction,
@@ -48,13 +47,9 @@ import {
   selectHabitsTodayBoolean,
   fetchAllHabitsOfSelectedUserAction,
   refreshHabits,
-  revertAllHabit,
   getTodaysHabitsBooleanAction,
 } from "./src/state/habitSlice";
-import {
-  notificationUpdateTokenAction,
-  revertAllNotifications,
-} from "./src/state/notificationSlice";
+import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
 
 import FlashMessage from "react-native-flash-message";
 
@@ -86,7 +81,6 @@ import OverviewSection from "./src/navigationSections/OverviewSection";
 import registerForPushNotificationsAsync from "./src/helpers/registerForPushNotificationsAsync";
 import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
 
-import ErrorBoundary from "react-native-error-boundary";
 import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 
 Notifications.setNotificationHandler({
@@ -96,18 +90,6 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-
-const errorHandler = async (error: Error, stackTrace: string) => {
-  const dispatch = useAppDispatch();
-
-  /* Log the error to an error reporting service */
-  console.log("error: ", error);
-  console.log("stackTrace: ", stackTrace);
-
-  dispatch(revertAll());
-  dispatch(revertAllHabit());
-  dispatch(revertAllNotifications());
-};
 
 //wrapper for state
 const AppWrapper = () => {
@@ -138,11 +120,7 @@ const App = () => {
 
   const tokenSecondOption = useSelector(selectSignIn);
 
-  const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
-
   const habitUpdated = useSelector(selectHabitUpdated);
-
-  const refreshHabitsState = useSelector(refreshHabits);
 
   const friendIDState = useSelector(friendID);
 
@@ -265,7 +243,7 @@ const App = () => {
   }, []);
 
   return (
-    <ErrorBoundary onError={errorHandler}>
+    <>
       <StatusBar
         hidden={false}
         barStyle={
@@ -357,7 +335,7 @@ const App = () => {
         )}
       </BottomTabNav.Navigator>
       <FlashMessage position="top" />
-    </ErrorBoundary>
+    </>
   );
 };
 

@@ -10,6 +10,8 @@ import ShareIcon from "../components/icons/ShareIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
 import onShare from "../helpers/shareApp";
 import { useTheme } from "../context/ThemeContext";
+import ErrorBoundary from "react-native-error-boundary";
+import CustomFallback from "../helpers/errorFallback";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -27,7 +29,11 @@ const OverviewSection = (props: any) => {
     >
       <StackNavigator.Screen
         name="Overview"
-        children={(props: any) => <Overview {...props} />}
+        children={(props: any) => (
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Overview {...props} />
+          </ErrorBoundary>
+        )}
         options={{
           headerTitle: "Overview",
           headerLeft: () => (
@@ -87,7 +93,11 @@ const OverviewSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Settings"
-        children={(props: any) => <Settings {...props} />}
+        children={(props: any) => (
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Settings {...props} />
+          </ErrorBoundary>
+        )}
         options={{
           headerTitle: "Settings",
           headerLeft: () => (

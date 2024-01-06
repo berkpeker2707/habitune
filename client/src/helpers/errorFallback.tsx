@@ -80,11 +80,7 @@ const CustomFallback = (props: { error: Error; resetError: Function }) => {
           dispatch(fetchAllTodayHabitsAction(today.getTime()));
           dispatch(getTodaysHabitsBooleanAction(today.getTime()));
 
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "HomeSection" }],
-          });
-          navigation.navigate("HomeSection");
+          navigation.goBack();
         }}
       >
         <Text

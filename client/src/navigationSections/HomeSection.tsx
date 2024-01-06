@@ -15,6 +15,8 @@ import { useTheme } from "../context/ThemeContext";
 import { useSelector } from "../state/store";
 import { friendName, selectFetchCurrentUserProfile } from "../state/userSlice";
 import onShare from "../helpers/shareApp";
+import ErrorBoundary from "react-native-error-boundary";
+import CustomFallback from "../helpers/errorFallback";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -34,7 +36,11 @@ const HomeSection = (props: any) => {
     >
       <StackNavigator.Screen
         name="Home"
-        children={(props: any) => <Home {...props} />}
+        children={(props: any) => (
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Home {...props} />
+          </ErrorBoundary>
+        )}
         options={{
           headerTitle: "Today",
           headerLeft: () => (
@@ -77,7 +83,9 @@ const HomeSection = (props: any) => {
       <StackNavigator.Screen
         name="Profile"
         children={(props: any) => (
-          <Profile {...props} navigation={navigation} />
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Profile {...props} navigation={navigation} />
+          </ErrorBoundary>
         )}
         options={{
           headerTitle: "Profile",
@@ -138,7 +146,11 @@ const HomeSection = (props: any) => {
       />
       <StackNavigator.Screen
         name="Settings"
-        children={(props: any) => <Settings {...props} />}
+        children={(props: any) => (
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Settings {...props} />
+          </ErrorBoundary>
+        )}
         options={{
           headerTitle: "Settings",
           headerLeft: () => (
@@ -169,7 +181,11 @@ const HomeSection = (props: any) => {
       <StackNavigator.Screen
         name="Friend"
         options={{ title: `${friendNameState}'s Habits` }}
-        children={(props: any) => <Friend {...props} />}
+        children={(props: any) => (
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Friend {...props} />
+          </ErrorBoundary>
+        )}
       />
     </StackNavigator.Navigator>
   );
