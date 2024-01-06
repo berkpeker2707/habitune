@@ -54,15 +54,15 @@ habitRoutes.get(
 );
 
 habitRoutes.get(
-  "/friend/:friend/overview/streak/:today",
-  [verifyToken, defaultLimitter],
-  getFriendHabitWeekStreakBoolean
-);
-
-habitRoutes.get(
   "/overview/dots/:today",
   [verifyToken, defaultLimitter],
   getAllHabitDatesDotsBoolean
+);
+
+habitRoutes.get(
+  "/friend/:friend/overview/streak/:today",
+  [verifyToken, defaultLimitter],
+  getFriendHabitWeekStreakBoolean
 );
 
 habitRoutes.get(
