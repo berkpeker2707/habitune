@@ -63,6 +63,8 @@ const step6 = () => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("Step 6: Completed cron job logic");
     yield (0, exports.notifyUsersNinetyDaysLater)();
 });
+//every 6 hours 0 minute past
+//0 */6 * * *
 const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
     // dayOneNotificationSent
     //every 10 seconds */10 * * * * *
