@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { StatusBar, Vibration } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 
 // import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -44,9 +45,7 @@ import {
   fetchAllHabitsAction,
   fetchAllTodayHabitsAction,
   selectHabitUpdated,
-  selectHabitsTodayBoolean,
   fetchAllHabitsOfSelectedUserAction,
-  refreshHabits,
   getTodaysHabitsBooleanAction,
 } from "./src/state/habitSlice";
 import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
@@ -198,32 +197,24 @@ const App = () => {
       });
   }, []);
 
-  // do stuff if app background notification is pressed
+  //check connection status
   useEffect(() => {
-    const unsubscribe = messaging().setBackgroundMessageHandler(
-      async (remoteMessage) => {
-        // Update a users messages list using AsyncStorage
-        // const currentMessages = await AsyncStorage.getItem('messages');
-        // const messageArray = JSON.parse(currentMessages);
-        // messageArray.push(remoteMessage.data);
-        // await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
-        // console.log(remoteMessage);
-        return unsubscribe;
+    const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+      if (!state.isConnected) {
+        showMessage({
+          message: "Connection Lost",
+          description: "Please check your internet connection.",
+          type: "default",
+          backgroundColor: theme.primaryColor,
+          color: theme.primaryText,
+          duration: 30000,
+        });
       }
-    );
-  }, []);
+    });
 
-  //assume a message-notification contains a "type" property in the data payload of the screen to open
-  useEffect(() => {
-    const unsubscribe = messaging().onNotificationOpenedApp(
-      async (remoteMessage) => {
-        // console.log(
-        //   "Notification caused app to open from background state:",
-        //   remoteMessage.notification
-        // )
-        return unsubscribe;
-      }
-    );
+    return () => {
+      unsubscribeNetInfo();
+    };
   }, []);
 
   //do stuff if app foreground notification is pressed
