@@ -39,7 +39,8 @@ const StreakGraphBar = (props: {
             textAlign: "center",
             fontSize: 16,
             color: theme.fadedShadowColor,
-            fontStyle: "italic",
+            fontStyle: "normal",
+            fontWeight: "bold",
           }}
         >
           {name}
@@ -54,7 +55,7 @@ const StreakGraphBar = (props: {
           top: 20,
         }}
       >
-        <Svg width={25} height={34} fill="none" viewBox="0 0 25 34">
+        <Svg width={25} height={30} fill="none" viewBox="0 0 25 34">
           <Path
             fill={color}
             stroke={theme.fadedShadowColor}
