@@ -3,7 +3,7 @@
     "name": "Habitune",
     "slug": "Habitune",
     "scheme": "Habitune",
-    "version": "1.3.6",
+    "version": "1.3.8",
     "orientation": "portrait",
     "icon": "src/assets/images/icon.png",
     "userInterfaceStyle": "light",

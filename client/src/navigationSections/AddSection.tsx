@@ -17,6 +17,8 @@ import {
   taskName,
   createHabitAction,
 } from "../state/habitSlice";
+import ErrorBoundary from "react-native-error-boundary";
+import CustomFallback from "../helpers/errorFallback";
 
 const StackNavigator = createStackNavigator<StackNavParamList>();
 
@@ -41,7 +43,11 @@ const AddSection = memo((props: any) => {
     >
       <StackNavigator.Screen
         name="Add"
-        children={(props: any) => <Add {...props} navigation={navigation} />}
+        children={(props: any) => (
+          <ErrorBoundary FallbackComponent={CustomFallback}>
+            <Add {...props} navigation={navigation} />
+          </ErrorBoundary>
+        )}
         options={{
           headerTitle: "New Habit",
           headerLeft: () => (
@@ -95,7 +101,7 @@ const AddSection = memo((props: any) => {
                         friendList: shareWithFriendListState,
                       })
                     );
-                    navigation.navigate("Home");
+                    navigation.navigate("HomeSection");
                   } catch (error) {
                     console.log(error);
                   }

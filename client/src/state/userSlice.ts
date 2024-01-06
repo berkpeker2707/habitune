@@ -27,6 +27,7 @@ interface userTypes {
   feedbackModalVisible: boolean;
   aboutUsModalVisible: boolean;
   feedback: string;
+  deleteModalVisible: boolean;
 
   acceptOrRemoveFriendModalVisible: boolean;
   selectedUser: {
@@ -61,6 +62,7 @@ const initialState: userTypes = {
   feedbackModalVisible: false,
   aboutUsModalVisible: false,
   feedback: "",
+  deleteModalVisible: false,
 
   acceptOrRemoveFriendModalVisible: false,
   selectedUser: { email: "", name: "", pending: false },
@@ -298,11 +300,26 @@ export const deleteUserAction = createAsyncThunk(
   }
 );
 
+export const revertUserAction = createAsyncThunk(
+  "user/revertUser",
+  async (_, { rejectWithValue, getState, dispatch }) => {
+    try {
+      // await AsyncStorage.clear();
+
+      return {};
+    } catch (error) {
+      console.log("revertUserAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const revertAll = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue, getState, dispatch }) => {
     try {
-      await AsyncStorage.clear();
+      // await AsyncStorage.clear();
+      AsyncStorage.getAllKeys().then((keys) => AsyncStorage.multiRemove(keys));
 
       return {};
     } catch (error) {
@@ -349,6 +366,9 @@ const userSlice = createSlice({
     },
     setFeedback: (state, action) => {
       state.feedback = action.payload;
+    },
+    setDeleteModalVisible: (state, action) => {
+      state.deleteModalVisible = action.payload;
     },
     //settings states ends
 
@@ -520,6 +540,39 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action?.error.toString();
     });
+    //revert user
+    builder.addCase(revertUserAction.pending, (state, action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(revertUserAction.fulfilled, (state, action) => {
+      (state.loading = false),
+        (state.error = ""),
+        (state.currentUserData = {}),
+        (state.selectedUserData = {}),
+        (state.deleteUserData = {}),
+        (state.sendFeedbackData = ""),
+        (state.changeThemeData = "default"),
+        (state.refreshUser = false),
+        (state.email = ""),
+        (state.password = ""),
+        (state.name = ""),
+        (state.loginModalVisible = false),
+        (state.registerModalVisible = false),
+        (state.isUserUpdated = false),
+        (state.feedbackModalVisible = false),
+        (state.aboutUsModalVisible = false),
+        (state.feedback = ""),
+        (state.deleteModalVisible = false),
+        (state.acceptOrRemoveFriendModalVisible = false),
+        (state.selectedUser = { email: "", name: "", pending: false }),
+        (state.friendID = 0),
+        (state.friendName = "");
+    });
+    builder.addCase(revertUserAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
+    });
     //logout
     builder.addCase(revertAll.pending, (state, action) => {
       state.loading = true;
@@ -544,6 +597,7 @@ const userSlice = createSlice({
         (state.feedbackModalVisible = false),
         (state.aboutUsModalVisible = false),
         (state.feedback = ""),
+        (state.deleteModalVisible = false),
         (state.acceptOrRemoveFriendModalVisible = false),
         (state.selectedUser = { email: "", name: "", pending: false }),
         (state.friendID = 0),
@@ -580,14 +634,19 @@ export const refreshUser = (state: any) => state.user.refreshUser;
 //refresh states ends
 
 //settings states starts
-export const { setFeedbackModalVisible, setAboutUsModalVisible, setFeedback } =
-  userSlice.actions;
+export const {
+  setFeedbackModalVisible,
+  setAboutUsModalVisible,
+  setFeedback,
+  setDeleteModalVisible,
+} = userSlice.actions;
 
 export const feedbackModalVisible = (state: any) =>
   state.user.feedbackModalVisible;
 export const aboutUsModalVisible = (state: any) =>
   state.user.aboutUsModalVisible;
 export const feedback = (state: any) => state.user.feedback;
+export const deleteModalVisible = (state: any) => state.user.deleteModalVisible;
 //settings states ends
 
 //friend states ends

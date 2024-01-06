@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View, Text } from "react-native";
 import DotGraphBar from "./DotGraphBar";
 import SkeletonPlaceholder from "../skeleton/SkeletonPlaceholder";
 import uuid from "react-native-uuid";
@@ -39,18 +39,26 @@ const DotGraph = () => {
             marginBottom: 85,
           }}
         >
-          <TextInput
-            style={{
-              height: 29.5,
-              paddingLeft: 20,
-              color: theme.fadedShadowColor,
-              textAlign: "center",
-            }}
-            editable={false}
-            selectTextOnFocus={false}
-          >
-            All Habits 🐌
-          </TextInput>
+          <Text style={{ textAlign: "center", paddingLeft: 20 }}>
+            <Text
+              style={{
+                height: 29.5,
+                color: theme.fadedShadowColor,
+                fontSize: 16,
+              }}
+            >
+              All Habits
+            </Text>
+            <Text
+              style={{
+                height: 29.5,
+                color: theme.fadedShadowColor,
+                fontSize: 14,
+              }}
+            >
+              🐌
+            </Text>
+          </Text>
           {allHabits.map((allHabitsItem: any, allHabitsIndex: number) => (
             <TouchableOpacity
               // activeOpacity={1}
@@ -86,18 +94,26 @@ const DotGraph = () => {
             marginBottom: 85,
           }}
         >
-          <TextInput
-            style={{
-              height: 29.5,
-              paddingLeft: 20,
-              color: theme.fadedShadowColor,
-              textAlign: "center",
-            }}
-            editable={false}
-            selectTextOnFocus={false}
-          >
-            All Habits 🐌
-          </TextInput>
+          <Text style={{ textAlign: "center", paddingLeft: 20 }}>
+            <Text
+              style={{
+                height: 29.5,
+                color: theme.fadedShadowColor,
+                fontSize: 16,
+              }}
+            >
+              All Habits
+            </Text>
+            <Text
+              style={{
+                height: 29.5,
+                color: theme.fadedShadowColor,
+                fontSize: 14,
+              }}
+            >
+              🐌
+            </Text>
+          </Text>
           <SkeletonPlaceholder width={345} height={39.5} radius={0} />
         </ScrollView>
       ) : (
@@ -106,18 +122,16 @@ const DotGraph = () => {
             marginBottom: 85,
           }}
         >
-          <TextInput
+          <Text
             style={{
               height: 29.5,
               paddingLeft: 20,
               color: theme.fadedShadowColor,
               textAlign: "center",
             }}
-            editable={false}
-            selectTextOnFocus={false}
           >
             All Habits Empty 😔
-          </TextInput>
+          </Text>
         </ScrollView>
       )}
     </View>

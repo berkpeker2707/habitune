@@ -1,13 +1,14 @@
 {
   "name": "habitune_api",
-  "version": "1.4.12",
+  "version": "1.7.1",
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build": "rimraf dist && tsc && npm run copyLogs && npm run copyHTML && npm run copyStatic",
+    "build": "rimraf dist && tsc && npm run copyLogs && npm run copyHTML && npm run copyStatic && npm run copyRobots",
     "copyLogs": "copyfiles logs/** dist",
     "copyHTML": "copyfiles view/** dist",
     "copyStatic": "copyfiles public/** dist",
+    "copyRobots": "copyfiles robots.txt dist",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "api": "nodemon server.ts",

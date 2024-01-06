@@ -4,6 +4,7 @@ import {
   getAllHabits,
   getAllHabitsOfSelectedUser,
   getTodaysHabits,
+  getTodaysHabitsBoolean,
   getSingleHabit,
   deleteHabit,
   updateHabitName,
@@ -13,6 +14,10 @@ import {
   updateHabitDates,
   updateHabitCompletedDate,
   updateHabitHidden,
+  getCurrentHabitWeekStreakBoolean,
+  getAllHabitDatesDotsBoolean,
+  getFriendHabitWeekStreakBoolean,
+  getFriendHabitDatesDotsBoolean,
 } from "./habit.controllers";
 
 import verifyToken from "../middlewares/verifyToken";
@@ -34,6 +39,36 @@ habitRoutes.get(
   "/all/today/:today",
   [verifyToken, defaultLimitter],
   getTodaysHabits
+);
+
+habitRoutes.get(
+  "/home/boolean/:today",
+  [verifyToken, defaultLimitter],
+  getTodaysHabitsBoolean
+);
+
+habitRoutes.get(
+  "/overview/streak/:today",
+  [verifyToken, defaultLimitter],
+  getCurrentHabitWeekStreakBoolean
+);
+
+habitRoutes.get(
+  "/overview/dots/:today",
+  [verifyToken, defaultLimitter],
+  getAllHabitDatesDotsBoolean
+);
+
+habitRoutes.get(
+  "/friend/:friend/overview/streak/:today",
+  [verifyToken, defaultLimitter],
+  getFriendHabitWeekStreakBoolean
+);
+
+habitRoutes.get(
+  "/friend/:friend/overview/dots/:today",
+  [verifyToken, defaultLimitter],
+  getFriendHabitDatesDotsBoolean
 );
 
 habitRoutes.get("/single", [verifyToken, defaultLimitter], getSingleHabit);

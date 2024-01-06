@@ -74,12 +74,12 @@ http://localhost:1111/api/user/google/callback
 "ipconfig" to check netowork
 setx /M REACT_NATIVE_PACKAGER_HOSTNAME 192.168.1.33
 
-Extra libraries to "create-expo-app ." fresh start:
+<!-- Extra libraries to "create-expo-app ." fresh start:
 npm install @react-native-async-storage/async-storage @react-navigation/bottom-tabs @react-navigation/native @react-navigation/stack @reduxjs/toolkit axios expo-application expo-auth-session expo-web-browser react-native-gesture-handler react-native-paper react-native-paper-dates react-native-render-html react-native-safe-area-context react-native-screens react-native-svg react-native-webview react-redux redux-persist expo-linear-gradient
 npx expo install expo-linear-gradient
 npm i moti --legacy-peer-deps
 npm install lottie-react-native @types/react-lottie
-expo install react-native-svg
+expo install react-native-svg -->
 
 Expo Dev Client Deployment (Stream)
 

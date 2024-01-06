@@ -1,15 +1,13 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { StatusBar, Vibration } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 
 // import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import messaging from "@react-native-firebase/messaging";
 
-import {
-  NavigationContainer,
-  // , useNavigation
-} from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
@@ -19,7 +17,7 @@ import {
 import {
   BottomTabNavParamList,
   // StackNavParamList,
-  // generalScreenProp,
+  generalScreenProp,
 } from "./src/types/BottomTabNavParamList";
 // screens
 import Signin from "./src/screens/Signin";
@@ -47,10 +45,8 @@ import {
   fetchAllHabitsAction,
   fetchAllTodayHabitsAction,
   selectHabitUpdated,
-  selectHabitsTodayBoolean,
   fetchAllHabitsOfSelectedUserAction,
-  refreshHabits,
-  setTempBarFilled,
+  getTodaysHabitsBooleanAction,
 } from "./src/state/habitSlice";
 import { notificationUpdateTokenAction } from "./src/state/notificationSlice";
 
@@ -84,7 +80,6 @@ import OverviewSection from "./src/navigationSections/OverviewSection";
 import registerForPushNotificationsAsync from "./src/helpers/registerForPushNotificationsAsync";
 import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
 
-import ErrorBoundary from "react-native-error-boundary";
 import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 
 Notifications.setNotificationHandler({
@@ -95,12 +90,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const errorHandler = (error: Error, stackTrace: string) => {
-  /* Log the error to an error reporting service */
-  console.log("error: ", error);
-  console.log("stackTrace: ", stackTrace);
-};
-
 //wrapper for state
 const AppWrapper = () => {
   return (
@@ -108,9 +97,7 @@ const AppWrapper = () => {
       <PersistGate persistor={persistor}>
         <ThemeProvider>
           <NavigationContainer>
-            <ErrorBoundary onError={errorHandler}>
-              <App />
-            </ErrorBoundary>
+            <App />
           </NavigationContainer>
         </ThemeProvider>
       </PersistGate>
@@ -121,7 +108,8 @@ const AppWrapper = () => {
 const App = () => {
   const { theme, setTheme, changeTheme } = useTheme();
 
-  // const navigation = useNavigation<generalScreenProp>();
+  // const navigation = useNavigation();
+  const navigation = useNavigation<generalScreenProp>();
 
   // const controller = new AbortController();
 
@@ -131,11 +119,7 @@ const App = () => {
 
   const tokenSecondOption = useSelector(selectSignIn);
 
-  const habitsTodayBoolean = useSelector(selectHabitsTodayBoolean);
-
   const habitUpdated = useSelector(selectHabitUpdated);
-
-  const refreshHabitsState = useSelector(refreshHabits);
 
   const friendIDState = useSelector(friendID);
 
@@ -149,14 +133,8 @@ const App = () => {
     todayTemp.getSeconds()
   );
 
-  useEffect(() => {
-    if (habitsTodayBoolean) {
-      dispatch(setTempBarFilled([...habitsTodayBoolean]));
-    }
-  }, [habitsTodayBoolean, refreshHabitsState]);
-
   //token
-  useEffect(() => {
+  React.useLayoutEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
@@ -164,6 +142,7 @@ const App = () => {
       dispatch(fetchCurrentUserProfileAction(today.getTime()));
       dispatch(fetchAllHabitsAction());
       dispatch(fetchAllTodayHabitsAction(today.getTime()));
+      dispatch(getTodaysHabitsBooleanAction(today.getTime()));
     }
   }, [token, tokenSecondOption]);
 
@@ -177,6 +156,7 @@ const App = () => {
   useEffect(() => {
     if (habitUpdated) {
       dispatch(fetchAllHabitsAction());
+      dispatch(getTodaysHabitsBooleanAction(today.getTime()));
     }
   }, [habitUpdated]);
 
@@ -186,7 +166,7 @@ const App = () => {
   }, []);
 
   //register fcm
-  useEffect(() => {
+  React.useLayoutEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
@@ -217,32 +197,24 @@ const App = () => {
       });
   }, []);
 
-  // do stuff if app background notification is pressed
+  //check connection status
   useEffect(() => {
-    const unsubscribe = messaging().setBackgroundMessageHandler(
-      async (remoteMessage) => {
-        // Update a users messages list using AsyncStorage
-        // const currentMessages = await AsyncStorage.getItem('messages');
-        // const messageArray = JSON.parse(currentMessages);
-        // messageArray.push(remoteMessage.data);
-        // await AsyncStorage.setItem('messages', JSON.stringify(messageArray));
-        // console.log(remoteMessage);
-        return unsubscribe;
+    const unsubscribeNetInfo = NetInfo.addEventListener((state) => {
+      if (!state.isConnected) {
+        showMessage({
+          message: "Connection Lost",
+          description: "Please check your internet connection.",
+          type: "default",
+          backgroundColor: theme.primaryColor,
+          color: theme.primaryText,
+          duration: 30000,
+        });
       }
-    );
-  }, []);
+    });
 
-  //assume a message-notification contains a "type" property in the data payload of the screen to open
-  useEffect(() => {
-    const unsubscribe = messaging().onNotificationOpenedApp(
-      async (remoteMessage) => {
-        // console.log(
-        //   "Notification caused app to open from background state:",
-        //   remoteMessage.notification
-        // )
-        return unsubscribe;
-      }
-    );
+    return () => {
+      unsubscribeNetInfo();
+    };
   }, []);
 
   //do stuff if app foreground notification is pressed
@@ -289,12 +261,21 @@ const App = () => {
               name="HomeSection"
               children={(props: any) => <HomeSection {...props} />}
               options={{
+                lazy: true,
+                freezeOnBlur: true,
                 // resets screen states below
                 // unmountOnBlur: true,
                 tabBarButton: (props) => (
                   <HomeIcon
                     {...props}
-                    onPressIn={() => Vibration.vibrate(10)}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      navigation.navigate("HomeSection");
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "HomeSection" }],
+                      });
+                    }}
                   />
                 ),
               }}
@@ -303,8 +284,20 @@ const App = () => {
               name="AddSection"
               children={(props: any) => <AddSection {...props} />}
               options={{
+                lazy: true,
+                freezeOnBlur: true,
                 tabBarButton: (props) => (
-                  <AddIcon {...props} onPressIn={() => Vibration.vibrate(10)} />
+                  <AddIcon
+                    {...props}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      navigation.navigate("AddSection");
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "AddSection" }],
+                      });
+                    }}
+                  />
                 ),
               }}
             />
@@ -312,10 +305,19 @@ const App = () => {
               name="OverviewSection"
               children={(props: any) => <OverviewSection {...props} />}
               options={{
+                lazy: true,
+                freezeOnBlur: true,
                 tabBarButton: (props) => (
                   <OverviewIcon
                     {...props}
-                    onPressIn={() => Vibration.vibrate(10)}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      navigation.navigate("OverviewSection");
+                      navigation.reset({
+                        index: 0,
+                        routes: [{ name: "OverviewSection" }],
+                      });
+                    }}
                   />
                 ),
               }}
