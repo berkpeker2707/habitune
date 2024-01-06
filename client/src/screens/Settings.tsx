@@ -23,6 +23,8 @@ import {
   setFeedback,
   setFeedbackModalVisible,
   revertAll,
+  deleteModalVisible,
+  setDeleteModalVisible,
 } from "../state/userSlice";
 import { revertAllHabit } from "../state/habitSlice";
 import { revertAllNotifications } from "../state/notificationSlice";
@@ -33,6 +35,7 @@ const Settings = () => {
   const feedbackModalVisibleState = useSelector(feedbackModalVisible);
   const aboutUsModalVisibleState = useSelector(aboutUsModalVisible);
   const feedbackState = useSelector(feedback);
+  const deleteModalVisibleState = useSelector(deleteModalVisible);
 
   return (
     <View
@@ -214,6 +217,77 @@ const Settings = () => {
         </View>
       </Modal>
       {/* about us ends */}
+      {/* delete modal starts */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={deleteModalVisibleState}
+        onRequestClose={() => dispatch(setDeleteModalVisible(false))}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
+            backgroundColor: theme.fadedBackgroundColor,
+          }}
+        >
+          <View
+            style={{
+              height: 300,
+              width: 300,
+              backgroundColor: theme.backgroundColor,
+              borderRadius: 20,
+              padding: 35,
+              justifyContent: "center",
+              alignItems: "center",
+              shadowColor: theme.fadedShadowColor,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+          >
+            <Text
+              style={{
+                color: theme.primaryText,
+                marginBottom: 10,
+                textAlign: "center",
+              }}
+            >
+              Are you sure want to proceed with account deletion?
+            </Text>
+            <Pressable
+              style={{
+                borderRadius: 20,
+                padding: 10,
+                elevation: 2,
+                backgroundColor: theme.warningColor,
+              }}
+              onPressIn={() => Vibration.vibrate(10)}
+              onPress={() => {
+                dispatch(setDeleteModalVisible(false));
+                dispatch(deleteUserAction());
+              }}
+            >
+              <Text
+                style={{
+                  color: theme.primaryColor,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Delete My Account
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      {/* delete modal ends */}
       <ScrollView
         style={{
           marginTop: 20,
@@ -264,7 +338,7 @@ const Settings = () => {
         </TouchableOpacity>
         <TouchableOpacity
           onPressIn={() => Vibration.vibrate(10)}
-          onPress={() => dispatch(deleteUserAction())}
+          onPress={() => dispatch(setDeleteModalVisible(true))}
         >
           <SettingsButton buttonName="Delete Account" />
         </TouchableOpacity>
