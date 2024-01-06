@@ -59,6 +59,9 @@ const step6 = async () => {
   await notifyUsersNinetyDaysLater();
 };
 
+//every 6 hours 0 minute past
+//0 */6 * * *
+
 export const notifyUsersDaily = async () => {
   // dayOneNotificationSent
 
