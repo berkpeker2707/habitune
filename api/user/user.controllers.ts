@@ -186,6 +186,31 @@ export const fetchCurrentUserProfile = async (
   }
 };
 
+export const getUserLocalTimeZone = async (req: IReq | any, res: Response) => {
+  try {
+    var clientTimeZoneRegion = req.params.region;
+    var clientTimeZoneCity = req.params.city;
+    var timeZone = clientTimeZoneRegion + "/" + clientTimeZoneCity;
+
+    const loggedinUser = await User.findOneAndUpdate(
+      { _id: req.user[0]._id },
+      { $set: { localTimeZone: timeZone } },
+      { new: true }
+    )
+      .populate({ path: "friends.friend", model: "User" })
+      .populate({
+        path: "habits",
+        model: "Habit",
+      })
+      .exec();
+    infoLogger.info(`User ${req.user[0]._id} invoked getUserLocalTimeZone`);
+    res.status(200).json(loggedinUser);
+  } catch (error) {
+    errorLogger.error(error);
+    res.status(500).send(getErrorMessage(error));
+  }
+};
+
 export const fetchUserProfile = async (req: IReq | any, res: Response) => {
   try {
     const userID = req.params.userID;

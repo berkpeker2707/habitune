@@ -3,6 +3,7 @@ import {
   signInWithGoogleController,
   signInController,
   fetchCurrentUserProfile,
+  getUserLocalTimeZone,
   fetchUserProfile,
   updateCurrentUserImage,
   sendFriendship,
@@ -25,6 +26,12 @@ userRoutes.get(
   "/profile/:today",
   [verifyToken, defaultLimitter],
   fetchCurrentUserProfile
+);
+
+userRoutes.get(
+  "/timezone/:region/:city",
+  [verifyToken, defaultLimitter],
+  getUserLocalTimeZone
 );
 
 userRoutes.get(

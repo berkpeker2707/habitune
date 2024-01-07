@@ -23,6 +23,7 @@ export interface IUser {
   userType: string;
   theme: string;
   createdAt: Date;
+  localTimeZone: String;
 }
 
 export interface IHabit {
