@@ -118,9 +118,43 @@ export const fetchCurrentUserProfileAction = createAsyncThunk(
         config
       );
 
+      dispatch(
+        getUserLocalTimeZoneAction(
+          Intl.DateTimeFormat().resolvedOptions().timeZone
+        )
+      );
+
       return data;
     } catch (error) {
       console.log("fetchCurrentUserProfileAction: ", error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getUserLocalTimeZoneAction = createAsyncThunk(
+  "user/getUserLocalTimeZone",
+  async (timeZone: string, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const auth = (getState() as RootState).user?.token;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${auth}`,
+      },
+    };
+
+    const timeZoneArray = timeZone.split("/");
+
+    try {
+      const { data } = await axiosInstance.get(
+        `/user/timezone/${timeZoneArray[0]}/${timeZoneArray[1]}`,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      console.log("getUserLocalTimeZoneAction: ", error);
       return rejectWithValue(error);
     }
   }
@@ -434,6 +468,20 @@ const userSlice = createSlice({
       }
     );
     builder.addCase(fetchCurrentUserProfileAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action?.error.toString();
+    });
+    //get user local time zone reducer
+    builder.addCase(getUserLocalTimeZoneAction.pending, (state) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(getUserLocalTimeZoneAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.currentUserData = action?.payload;
+    });
+    builder.addCase(getUserLocalTimeZoneAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action?.error.toString();
     });
