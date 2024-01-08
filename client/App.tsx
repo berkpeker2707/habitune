@@ -81,6 +81,7 @@ import registerForPushNotificationsAsync from "./src/helpers/registerForPushNoti
 import registerDeviceForMessaging from "./src/helpers/registerDeviceForMessaging";
 
 import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
+import getCurrentDateAndTime from "./src/helpers/functions/getCurrentDateAndTime";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -123,26 +124,18 @@ const App = () => {
 
   const friendIDState = useSelector(friendID);
 
-  const todayTemp = new Date();
-  const today = new Date(
-    todayTemp.getFullYear(),
-    todayTemp.getMonth(),
-    todayTemp.getDate(),
-    todayTemp.getHours(),
-    todayTemp.getMinutes(),
-    todayTemp.getSeconds()
-  );
-
   //token
   React.useLayoutEffect(() => {
     if (
       (token && token.length > 0) ||
       (tokenSecondOption && tokenSecondOption.length > 0)
     ) {
-      dispatch(fetchCurrentUserProfileAction(today.getTime()));
-      dispatch(fetchAllHabitsAction());
-      dispatch(fetchAllTodayHabitsAction(today.getTime()));
-      dispatch(getTodaysHabitsBooleanAction(today.getTime()));
+      dispatch(
+        fetchCurrentUserProfileAction(getCurrentDateAndTime().getTime())
+      );
+      dispatch(fetchAllHabitsAction(getCurrentDateAndTime().getTime()));
+      dispatch(fetchAllTodayHabitsAction(getCurrentDateAndTime().getTime()));
+      dispatch(getTodaysHabitsBooleanAction(getCurrentDateAndTime().getTime()));
     }
   }, [token, tokenSecondOption]);
 
@@ -155,8 +148,8 @@ const App = () => {
   //update overview if home is updated
   useEffect(() => {
     if (habitUpdated) {
-      dispatch(fetchAllHabitsAction());
-      dispatch(getTodaysHabitsBooleanAction(today.getTime()));
+      dispatch(fetchAllHabitsAction(getCurrentDateAndTime().getTime()));
+      dispatch(getTodaysHabitsBooleanAction(getCurrentDateAndTime().getTime()));
     }
   }, [habitUpdated]);
 
@@ -178,7 +171,12 @@ const App = () => {
   //fetch selected friend
   useEffect(() => {
     if (friendIDState) {
-      dispatch(fetchAllHabitsOfSelectedUserAction(friendIDState));
+      dispatch(
+        fetchAllHabitsOfSelectedUserAction({
+          friendIDState: friendIDState,
+          today: getCurrentDateAndTime().getTime(),
+        })
+      );
     }
   }, [friendIDState]);
 
