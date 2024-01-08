@@ -11,6 +11,7 @@ import {
   selectHabitUpdated,
 } from "../../state/habitSlice";
 import { notificationSendAction } from "../../state/notificationSlice";
+import getDateNow from "../../helpers/functions/getDateNow";
 
 const HabitBarParent = memo((props: { habitsTodayBoolean: [boolean] }) => {
   const { habitsTodayBoolean } = props;
@@ -25,7 +26,7 @@ const HabitBarParent = memo((props: { habitsTodayBoolean: [boolean] }) => {
       dispatch(
         updateHabitCompletedDateAction({
           _id: item._id,
-          date: Date.now(),
+          date: getDateNow(),
         })
       );
 
