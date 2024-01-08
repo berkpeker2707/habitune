@@ -1,19 +1,9 @@
 import axiosInstance from "../helpers/axios";
 import { createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import getCurrentDateAndTime from "../helpers/functions/getCurrentDateAndTime";
+import getNextYearDateAndTime from "../helpers/functions/getNextYearDateAndTime";
 
-//date stuff starts
-const todayTemp = new Date();
-const today = new Date(
-  todayTemp.getFullYear(),
-  todayTemp.getMonth(),
-  todayTemp.getDate(),
-  todayTemp.getHours(),
-  todayTemp.getMinutes(),
-  todayTemp.getSeconds()
-);
-
-//date stuff ends
 interface habitTypes {
   loading: boolean;
   error: string;
@@ -87,24 +77,8 @@ const initialState: habitTypes = {
   //habit home states ends
 
   //habit add states start
-  taskFirstDate: new Date(
-    todayTemp.getFullYear(),
-    todayTemp.getMonth(),
-    todayTemp.getDate(),
-    todayTemp.getHours(),
-    todayTemp.getMinutes(),
-    todayTemp.getSeconds()
-  ),
-  taskLastDate: new Date(
-    new Date(
-      new Date(Date.now()).getFullYear() + 1,
-      new Date(Date.now()).getMonth(),
-      new Date(Date.now()).getDate(),
-      new Date(Date.now()).getHours(),
-      new Date(Date.now()).getMinutes(),
-      new Date(Date.now()).getSeconds()
-    )
-  ),
+  taskFirstDate: getCurrentDateAndTime(),
+  taskLastDate: getNextYearDateAndTime(),
   taskUpcomingDates: [],
   dateBetweenModalOpen: false,
   openFrequency: false,
@@ -141,18 +115,7 @@ export const createHabitAction = createAsyncThunk(
         config
       );
 
-      dispatch(
-        fetchAllTodayHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
+      dispatch(fetchAllTodayHabitsAction(getCurrentDateAndTime().getTime()));
 
       dispatch(updatedHabit());
 
@@ -166,7 +129,7 @@ export const createHabitAction = createAsyncThunk(
 
 export const fetchAllHabitsAction = createAsyncThunk(
   "habit/fetchAllHabits",
-  async (_, { rejectWithValue, getState, dispatch }) => {
+  async (today: number, { rejectWithValue, getState, dispatch }) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
 
@@ -179,8 +142,14 @@ export const fetchAllHabitsAction = createAsyncThunk(
     try {
       const { data } = await axiosInstance.get(`/habit/all`, config);
 
-      dispatch(getCurrentHabitWeekStreakBooleanAction(today.getTime()));
-      dispatch(getAllHabitDatesDotsBooleanAction(today.getTime()));
+      dispatch(
+        getCurrentHabitWeekStreakBooleanAction(
+          getCurrentDateAndTime().getTime()
+        )
+      );
+      dispatch(
+        getAllHabitDatesDotsBooleanAction(getCurrentDateAndTime().getTime())
+      );
 
       return data;
     } catch (error) {
@@ -193,7 +162,7 @@ export const fetchAllHabitsAction = createAsyncThunk(
 export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
   "habit/fetchAllHabitsOfSelectedUser",
   async (
-    fetchAllHabitsOfSelectedUserPayload: {},
+    friend: { friendIDState: number; today: number },
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
@@ -207,20 +176,12 @@ export const fetchAllHabitsOfSelectedUserAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.get(
-        `/habit/all/of/selected/user/${fetchAllHabitsOfSelectedUserPayload}`,
+        `/habit/all/of/selected/user/${friend.friendIDState}`,
         config
       );
 
-      dispatch(
-        getFriendHabitWeekStreakBooleanAction(
-          fetchAllHabitsOfSelectedUserPayload
-        )
-      );
-      dispatch(
-        getFriendHabitDatesDotsBooleanAction(
-          fetchAllHabitsOfSelectedUserPayload
-        )
-      );
+      dispatch(getFriendHabitWeekStreakBooleanAction(friend));
+      dispatch(getFriendHabitDatesDotsBooleanAction(friend));
 
       return data;
     } catch (error) {
@@ -337,7 +298,10 @@ export const getAllHabitDatesDotsBooleanAction = createAsyncThunk(
 //x
 export const getFriendHabitWeekStreakBooleanAction = createAsyncThunk(
   "habit/getFriendHabitWeekStreakBoolean",
-  async (friend: {}, { rejectWithValue, getState, dispatch }) => {
+  async (
+    friend: { friendIDState: number; today: number },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //get user token
     const auth = (getState() as RootState).user?.token;
 
@@ -349,7 +313,7 @@ export const getFriendHabitWeekStreakBooleanAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.get(
-        `/habit/friend/${friend}/overview/streak/${today}`,
+        `/habit/friend/${friend.friendIDState}/overview/streak/${friend.today}`,
         config
       );
 
@@ -365,7 +329,8 @@ export const getFriendHabitWeekStreakBooleanAction = createAsyncThunk(
 export const getFriendHabitDatesDotsBooleanAction = createAsyncThunk(
   "habit/getFriendHabitDatesDotsBoolean",
   async (
-    fetchAllHabitsOfSelectedUserPayload: {},
+    friend: { friendIDState: number; today: number },
+
     { rejectWithValue, getState, dispatch }
   ) => {
     //get user token
@@ -379,7 +344,7 @@ export const getFriendHabitDatesDotsBooleanAction = createAsyncThunk(
 
     try {
       const { data } = await axiosInstance.get(
-        `/habit/friend/${fetchAllHabitsOfSelectedUserPayload}/overview/dots/${today}`,
+        `/habit/friend/${friend.friendIDState}/overview/dots/${friend.today}`,
         config
       );
 
@@ -435,18 +400,7 @@ export const deleteHabitAction = createAsyncThunk(
         config
       );
 
-      dispatch(
-        fetchAllTodayHabitsAction(
-          new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            new Date().getDate(),
-            new Date().getHours(),
-            new Date().getMinutes(),
-            new Date().getSeconds()
-          ).getTime()
-        )
-      );
+      dispatch(fetchAllTodayHabitsAction(getCurrentDateAndTime().getTime()));
 
       dispatch(updatedHabit());
 
@@ -734,7 +688,6 @@ const habitSlice = createSlice({
     setShareWithFriendListModal: (state, action) => {
       state.shareWithFriendListModal = action.payload;
     },
-
     //habit overview states ends
   },
   extraReducers: (builder) => {
@@ -1076,24 +1029,8 @@ const habitSlice = createSlice({
         //habit home states ends
 
         //habit add states start
-        (state.taskFirstDate = new Date(
-          todayTemp.getFullYear(),
-          todayTemp.getMonth(),
-          todayTemp.getDate(),
-          todayTemp.getHours(),
-          todayTemp.getMinutes(),
-          todayTemp.getSeconds()
-        )),
-        (state.taskLastDate = new Date(
-          new Date(
-            new Date(Date.now()).getFullYear() + 1,
-            new Date(Date.now()).getMonth(),
-            new Date(Date.now()).getDate(),
-            new Date(Date.now()).getHours(),
-            new Date(Date.now()).getMinutes(),
-            new Date(Date.now()).getSeconds()
-          )
-        )),
+        (state.taskFirstDate = getCurrentDateAndTime()),
+        (state.taskLastDate = getNextYearDateAndTime()),
         (state.taskUpcomingDates = []),
         (state.dateBetweenModalOpen = false),
         (state.openFrequency = false),
@@ -1162,7 +1099,6 @@ export const overviewColorModal = (state: any) =>
   state.habit.overviewColorModal;
 export const shareWithFriendListModal = (state: any) =>
   state.habit.shareWithFriendListModal;
-
 //habit overview states ends
 
 export const selectHabitLoading = (state: any) => state.habit.loading;
