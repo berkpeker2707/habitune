@@ -40,7 +40,7 @@ const calculateUpcomingDates = (startTime, endstartTime, reqBodyDays) => __await
             result.push(new Date(tempDate));
         tempDate.setDate(tempDate.getDate() + 1);
     }
-    result.forEach((day) => day.getTime() + dayTimeInMilliseconds);
+    result.forEach((day) => day.setTime(day.getTime() + dayTimeInMilliseconds));
     return result;
 });
 exports.default = calculateUpcomingDates;

@@ -7,7 +7,7 @@ const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 //rate limitter (100 requests per 15 minutes)
 const defaultLimitter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 10000,
     standardHeaders: true,
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.changeTheme = exports.sendFeedback = exports.updateCurrentUserImage = exports.sendFriendship = exports.fetchUserProfile = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
+exports.deleteUser = exports.changeTheme = exports.sendFeedback = exports.updateCurrentUserImage = exports.sendFriendship = exports.fetchUserProfile = exports.getUserLocalTimeZone = exports.fetchCurrentUserProfile = exports.signInController = exports.signInWithGoogleController = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const user_model_1 = __importDefault(require("./user.model"));
 const notification_model_1 = __importDefault(require("../notifications/notification.model"));
@@ -154,6 +154,27 @@ const fetchCurrentUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.fetchCurrentUserProfile = fetchCurrentUserProfile;
+const getUserLocalTimeZone = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        var clientTimeZoneRegion = req.params.region;
+        var clientTimeZoneCity = req.params.city;
+        var timeZone = clientTimeZoneRegion + "/" + clientTimeZoneCity;
+        const loggedinUser = yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, { $set: { localTimeZone: timeZone } }, { new: true })
+            .populate({ path: "friends.friend", model: "User" })
+            .populate({
+            path: "habits",
+            model: "Habit",
+        })
+            .exec();
+        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked getUserLocalTimeZone`);
+        res.status(200).json(loggedinUser);
+    }
+    catch (error) {
+        logger_1.errorLogger.error(error);
+        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+    }
+});
+exports.getUserLocalTimeZone = getUserLocalTimeZone;
 const fetchUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userID = req.params.userID;

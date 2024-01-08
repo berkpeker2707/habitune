@@ -50,5 +50,6 @@ const userSchema = new mongoose_1.Schema({
     userType: { type: String, default: "standart" },
     theme: { type: String, default: "default" },
     createdAt: { type: Date, default: Date.now },
+    localTimeZone: { type: String, default: "Coordinated Universal Time" },
 });
 module.exports = mongoose_1.default.model("User", userSchema);

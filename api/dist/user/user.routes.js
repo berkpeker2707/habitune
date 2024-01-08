@@ -12,6 +12,7 @@ const userRoutes = (0, express_1.Router)();
 userRoutes.post("/google", lowLimitter_1.default, user_controllers_1.signInWithGoogleController);
 userRoutes.post("/signin", lowLimitter_1.default, user_controllers_1.signInController);
 userRoutes.get("/profile/:today", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.fetchCurrentUserProfile);
+userRoutes.get("/timezone/:region/:city", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.getUserLocalTimeZone);
 userRoutes.get("/selectedUser/profile/:userID", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.fetchUserProfile);
 userRoutes.post("/update/profile/image", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.updateCurrentUserImage);
 userRoutes.post("/update/feedback", [verifyToken_1.default, defaultLimitter_1.default], user_controllers_1.sendFeedback);
