@@ -27,14 +27,14 @@ const calculateUpcomingDates = async (
   //re-creating without specific time to avoid unnecessary iterations
   //format: yyyy,mm,dd
   var startDate = new Date(
-    startTimeStamp.getFullYear(),
-    startTimeStamp.getMonth(),
-    startTimeStamp.getDate()
+    startTimeStamp.getUTCFullYear(),
+    startTimeStamp.getUTCMonth(),
+    startTimeStamp.getUTCDate()
   );
   var endDate = new Date(
-    endstartTimeStamp.getFullYear(),
-    endstartTimeStamp.getMonth(),
-    endstartTimeStamp.getDate()
+    endstartTimeStamp.getUTCFullYear(),
+    endstartTimeStamp.getUTCMonth(),
+    endstartTimeStamp.getUTCDate()
   );
   var tempDate = startDate;
   var result = [];
@@ -42,9 +42,11 @@ const calculateUpcomingDates = async (
   //remove prefix to specify week days
   while (tempDate.valueOf() !== endDate.valueOf()) {
     if (re.test(tempDate.toDateString())) result.push(new Date(tempDate));
-    tempDate.setDate(tempDate.getDate() + 1);
+    tempDate.setUTCDate(tempDate.getUTCDate() + 1);
   }
-  result.forEach((day) => day.getTime() + dayTimeInMilliseconds);
+  //commented out local hour calculation again
+  // result.forEach((day) => day.setTime(day.getTime() + dayTimeInMilliseconds));
+  result.forEach((day) => day.setTime(day.getTime()));
 
   return result;
 };
