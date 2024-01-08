@@ -16,17 +16,9 @@ import { useAppDispatch } from "../state/store";
 import { useTheme } from "../context/ThemeContext";
 import { generalScreenProp } from "../types/BottomTabNavParamList";
 import { useNavigation } from "@react-navigation/native";
+import getCurrentDateAndTime from "./functions/getCurrentDateAndTime";
 
 const CustomFallback = (props: { error: Error; resetError: Function }) => {
-  const todayTemp = new Date();
-  const today = new Date(
-    todayTemp.getFullYear(),
-    todayTemp.getMonth(),
-    todayTemp.getDate(),
-    todayTemp.getHours(),
-    todayTemp.getMinutes(),
-    todayTemp.getSeconds()
-  );
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const navigation = useNavigation<generalScreenProp>();
@@ -74,11 +66,17 @@ const CustomFallback = (props: { error: Error; resetError: Function }) => {
 
           dispatch(revertAllNotifications());
 
-          dispatch(fetchCurrentUserProfileAction(today.getTime()));
+          dispatch(
+            fetchCurrentUserProfileAction(getCurrentDateAndTime().getTime())
+          );
 
-          dispatch(fetchAllHabitsAction());
-          dispatch(fetchAllTodayHabitsAction(today.getTime()));
-          dispatch(getTodaysHabitsBooleanAction(today.getTime()));
+          dispatch(fetchAllHabitsAction(getCurrentDateAndTime().getTime()));
+          dispatch(
+            fetchAllTodayHabitsAction(getCurrentDateAndTime().getTime())
+          );
+          dispatch(
+            getTodaysHabitsBooleanAction(getCurrentDateAndTime().getTime())
+          );
 
           navigation.goBack();
         }}

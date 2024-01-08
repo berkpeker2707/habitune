@@ -3,34 +3,13 @@ import {
   setRefreshHabits,
   getTodaysHabitsBooleanAction,
 } from "../../state/habitSlice";
+import getCurrentDateAndTime from "../functions/getCurrentDateAndTime";
 
 //refresh current users today habits starts
 const refreshCurrentUsersTodayHabits = (dispatch: Function) => {
   dispatch(setRefreshHabits(true));
-  dispatch(
-    getTodaysHabitsBooleanAction(
-      new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate(),
-        new Date().getHours(),
-        new Date().getMinutes(),
-        new Date().getSeconds()
-      ).getTime()
-    )
-  );
-  dispatch(
-    fetchAllTodayHabitsAction(
-      new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate(),
-        new Date().getHours(),
-        new Date().getMinutes(),
-        new Date().getSeconds()
-      ).getTime()
-    )
-  );
+  dispatch(getTodaysHabitsBooleanAction(getCurrentDateAndTime().getTime()));
+  dispatch(fetchAllTodayHabitsAction(getCurrentDateAndTime().getTime()));
   setTimeout(() => {
     dispatch(setRefreshHabits(false));
   }, 2000);
