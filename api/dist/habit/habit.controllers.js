@@ -144,10 +144,9 @@ const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.getTodaysHabits = getTodaysHabits;
 const getTodaysHabitsBoolean = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var clientTimeO = parseInt(req.params.today);
-        var clientTime = (0, moment_timezone_1.default)(clientTimeO)
+        var clientTime = (0, moment_timezone_1.default)(parseInt(req.params.today))
             .tz(req.user[0].localTimeZone)
-            .format("YYYY-MM-DD[T]HH:mm:ss");
+            .toDate();
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
         })
@@ -170,10 +169,9 @@ const getTodaysHabitsBoolean = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.getTodaysHabitsBoolean = getTodaysHabitsBoolean;
 const getCurrentHabitWeekStreakBoolean = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var clientTimeO = parseInt(req.params.today);
-        var clientTime = (0, moment_timezone_1.default)(clientTimeO)
+        var clientTime = (0, moment_timezone_1.default)(parseInt(req.params.today))
             .tz(req.user[0].localTimeZone)
-            .format("YYYY-MM-DD[T]HH:mm:ss");
+            .toDate();
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
         })
@@ -239,10 +237,9 @@ const getCurrentHabitWeekStreakBoolean = (req, res) => __awaiter(void 0, void 0,
 });
 exports.getCurrentHabitWeekStreakBoolean = getCurrentHabitWeekStreakBoolean;
 const getAllHabitDatesDotsBoolean = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var clientTimeO = parseInt(req.params.today);
-    var clientTime = (0, moment_timezone_1.default)(clientTimeO)
+    var clientTime = (0, moment_timezone_1.default)(parseInt(req.params.today))
         .tz(req.user[0].localTimeZone)
-        .format("YYYY-MM-DD[T]HH:mm:ss");
+        .toDate();
     const loggedinUsersTodayHabits = yield habit_model_1.default.find({
         owner: req.user[0]._id,
     })
@@ -260,15 +257,15 @@ const getAllHabitDatesDotsBoolean = (req, res) => __awaiter(void 0, void 0, void
         allHabitDatesDotsData.push((0, isInArray_1.default)(loggedinUsersTodayHabits[i].dates, new Date(new Date(new Date(clientTime).getFullYear(), new Date(clientTime).getMonth(), new Date(clientTime).getDate() - 5, new Date(clientTime).getHours(), new Date(clientTime).getMinutes(), new Date(clientTime).getSeconds()))));
         allHabitDatesDotsData.push((0, isInArray_1.default)(loggedinUsersTodayHabits[i].dates, new Date(new Date(new Date(clientTime).getFullYear(), new Date(clientTime).getMonth(), new Date(clientTime).getDate() - 6, new Date(clientTime).getHours(), new Date(clientTime).getMinutes(), new Date(clientTime).getSeconds()))));
     }
+    logger_1.infoLogger.info(`User ${req.user[0]._id} invoked getAllHabitDatesDotsBoolean`);
     res.status(200).json(allHabitDatesDotsData);
 });
 exports.getAllHabitDatesDotsBoolean = getAllHabitDatesDotsBoolean;
 const getFriendHabitWeekStreakBoolean = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        var clientTimeO = parseInt(req.params.today);
-        var clientTime = (0, moment_timezone_1.default)(clientTimeO)
+        var clientTime = (0, moment_timezone_1.default)(parseInt(req.params.today))
             .tz(req.user[0].localTimeZone)
-            .format("YYYY-MM-DD[T]HH:mm:ss");
+            .toDate();
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.params.friend,
         })
@@ -324,7 +321,7 @@ const getFriendHabitWeekStreakBoolean = (req, res) => __awaiter(void 0, void 0, 
                 return 0;
             }
         });
-        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked getCurrentHabitWeekStreakBoolean`);
+        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked getFriendHabitWeekStreakBoolean`);
         res.status(200).json(currentHabitWeekStreakData);
     }
     catch (error) {
@@ -334,10 +331,9 @@ const getFriendHabitWeekStreakBoolean = (req, res) => __awaiter(void 0, void 0, 
 });
 exports.getFriendHabitWeekStreakBoolean = getFriendHabitWeekStreakBoolean;
 const getFriendHabitDatesDotsBoolean = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var clientTimeO = parseInt(req.params.today);
-    var clientTime = (0, moment_timezone_1.default)(clientTimeO)
+    var clientTime = (0, moment_timezone_1.default)(parseInt(req.params.today))
         .tz(req.user[0].localTimeZone)
-        .format("YYYY-MM-DD[T]HH:mm:ss");
+        .toDate();
     const loggedinUsersTodayHabits = yield habit_model_1.default.find({
         owner: req.params.friend,
     })
@@ -355,6 +351,7 @@ const getFriendHabitDatesDotsBoolean = (req, res) => __awaiter(void 0, void 0, v
         allHabitDatesDotsData.push((0, isInArray_1.default)(loggedinUsersTodayHabits[i].dates, new Date(new Date(new Date(clientTime).getFullYear(), new Date(clientTime).getMonth(), new Date(clientTime).getDate() - 5, new Date(clientTime).getHours(), new Date(clientTime).getMinutes(), new Date(clientTime).getSeconds()))));
         allHabitDatesDotsData.push((0, isInArray_1.default)(loggedinUsersTodayHabits[i].dates, new Date(new Date(new Date(clientTime).getFullYear(), new Date(clientTime).getMonth(), new Date(clientTime).getDate() - 6, new Date(clientTime).getHours(), new Date(clientTime).getMinutes(), new Date(clientTime).getSeconds()))));
     }
+    logger_1.infoLogger.info(`User ${req.user[0]._id} invoked getFriendHabitDatesDotsBoolean`);
     res.status(200).json(allHabitDatesDotsData);
 });
 exports.getFriendHabitDatesDotsBoolean = getFriendHabitDatesDotsBoolean;
