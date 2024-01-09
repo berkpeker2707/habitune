@@ -154,10 +154,9 @@ export const getTodaysHabitsBoolean = async (
   res: Response
 ) => {
   try {
-    var clientTimeO = parseInt(req.params.today);
-    var clientTime = moment(clientTimeO)
+    var clientTime = moment(parseInt(req.params.today))
       .tz(req.user[0].localTimeZone)
-      .format("YYYY-MM-DD[T]HH:mm:ss");
+      .toDate();
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
@@ -187,10 +186,9 @@ export const getCurrentHabitWeekStreakBoolean = async (
   res: Response
 ) => {
   try {
-    var clientTimeO = parseInt(req.params.today);
-    var clientTime = moment(clientTimeO)
+    var clientTime = moment(parseInt(req.params.today))
       .tz(req.user[0].localTimeZone)
-      .format("YYYY-MM-DD[T]HH:mm:ss");
+      .toDate();
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,
@@ -522,10 +520,9 @@ export const getAllHabitDatesDotsBoolean = async (
   req: IReq | any,
   res: Response
 ) => {
-  var clientTimeO = parseInt(req.params.today);
-  var clientTime = moment(clientTimeO)
+  var clientTime = moment(parseInt(req.params.today))
     .tz(req.user[0].localTimeZone)
-    .format("YYYY-MM-DD[T]HH:mm:ss");
+    .toDate();
 
   const loggedinUsersTodayHabits = await Habit.find({
     owner: req.user[0]._id,
@@ -632,6 +629,9 @@ export const getAllHabitDatesDotsBoolean = async (
       )
     );
   }
+  infoLogger.info(
+    `User ${req.user[0]._id} invoked getAllHabitDatesDotsBoolean`
+  );
   res.status(200).json(allHabitDatesDotsData);
 };
 
@@ -640,10 +640,9 @@ export const getFriendHabitWeekStreakBoolean = async (
   res: Response
 ) => {
   try {
-    var clientTimeO = parseInt(req.params.today);
-    var clientTime = moment(clientTimeO)
+    var clientTime = moment(parseInt(req.params.today))
       .tz(req.user[0].localTimeZone)
-      .format("YYYY-MM-DD[T]HH:mm:ss");
+      .toDate();
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.params.friend,
@@ -962,7 +961,7 @@ export const getFriendHabitWeekStreakBoolean = async (
     );
 
     infoLogger.info(
-      `User ${req.user[0]._id} invoked getCurrentHabitWeekStreakBoolean`
+      `User ${req.user[0]._id} invoked getFriendHabitWeekStreakBoolean`
     );
     res.status(200).json(currentHabitWeekStreakData);
   } catch (error) {
@@ -975,10 +974,9 @@ export const getFriendHabitDatesDotsBoolean = async (
   req: IReq | any,
   res: Response
 ) => {
-  var clientTimeO = parseInt(req.params.today);
-  var clientTime = moment(clientTimeO)
+  var clientTime = moment(parseInt(req.params.today))
     .tz(req.user[0].localTimeZone)
-    .format("YYYY-MM-DD[T]HH:mm:ss");
+    .toDate();
 
   const loggedinUsersTodayHabits = await Habit.find({
     owner: req.params.friend,
@@ -1085,6 +1083,9 @@ export const getFriendHabitDatesDotsBoolean = async (
       )
     );
   }
+  infoLogger.info(
+    `User ${req.user[0]._id} invoked getFriendHabitDatesDotsBoolean`
+  );
   res.status(200).json(allHabitDatesDotsData);
 };
 
