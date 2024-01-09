@@ -14,21 +14,6 @@ import isInArray from "../middlewares/isInArray";
 import moment from "moment-timezone";
 dotenv.config();
 
-function getDateUTC(initDate: any) {
-  var now = new Date(initDate);
-  var utc_timestamp = Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    now.getUTCHours(),
-    now.getUTCMinutes(),
-    now.getUTCSeconds(),
-    now.getUTCMilliseconds()
-  );
-  let utc_timestamp_formatted = moment(utc_timestamp).toDate();
-  return utc_timestamp_formatted;
-}
-
 export const createHabit = async (req: IReq | any, res: Response) => {
   try {
     const checkUser = await User.findById(req.user[0]._id);
@@ -138,43 +123,11 @@ export const getAllHabitsOfSelectedUser = async (
 
 export const getTodaysHabits = async (req: IReq | any, res: Response) => {
   try {
-    // var clientTimeO = parseInt(req.params.today);
-    //  var clientTime = moment(clientTimeO).tz(req.user[0].localTimeZone).format("YYYY-MM-DD[T]HH:mm:ss");
-
-    // for a specific moment (m)
-
-    // var start = moment()
-    //   .tz(req.user[0].localTimeZone)
-    //   .startOf("day")
-    //   .utc()
-    //   .toDate();
-
-    // var end = moment()
-    //   .tz(req.user[0].localTimeZone)
-    //   .endOf("day")
-    //   .utc()
-    //   .toDate();
-    console.log(Date.now());
-    console.log(new Date());
     const start = moment()
       .tz(req.user[0].localTimeZone)
       .startOf("day")
       .toDate();
     const end = moment().tz(req.user[0].localTimeZone).endOf("day").toDate();
-    console.log(
-      "🚀 ~ file: habit.controllers.ts:156 ~ getTodaysHabits ~ start:",
-      start
-    );
-    console.log(
-      "🚀 ~ file: habit.controllers.ts:161 ~ getTodaysHabits ~ end:",
-      end
-    );
-
-    // //calculate the start and end timestamps for the current day
-    // const startOfToday = new Date(clientTime);
-    // startOfToday.setHours(0, 0, 0, 0); //set the time to 00:00:00.000
-    // const endOfToday = new Date(clientTime);
-    // endOfToday.setHours(23, 59, 59, 999); //set the time to 23:59:59.999
 
     const loggedinUsersTodayHabits = await Habit.find({
       owner: req.user[0]._id,

@@ -24,12 +24,6 @@ const isInCompletedDates_1 = __importDefault(require("../middlewares/isInComplet
 const isInArray_1 = __importDefault(require("../middlewares/isInArray"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 dotenv_1.default.config();
-function getDateUTC(initDate) {
-    var now = new Date(initDate);
-    var utc_timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-    let utc_timestamp_formatted = (0, moment_timezone_1.default)(utc_timestamp).toDate();
-    return utc_timestamp_formatted;
-}
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const checkUser = yield user_model_1.default.findById(req.user[0]._id);
@@ -123,33 +117,11 @@ const getAllHabitsOfSelectedUser = (req, res) => __awaiter(void 0, void 0, void 
 exports.getAllHabitsOfSelectedUser = getAllHabitsOfSelectedUser;
 const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // var clientTimeO = parseInt(req.params.today);
-        //  var clientTime = moment(clientTimeO).tz(req.user[0].localTimeZone).format("YYYY-MM-DD[T]HH:mm:ss");
-        // for a specific moment (m)
-        // var start = moment()
-        //   .tz(req.user[0].localTimeZone)
-        //   .startOf("day")
-        //   .utc()
-        //   .toDate();
-        // var end = moment()
-        //   .tz(req.user[0].localTimeZone)
-        //   .endOf("day")
-        //   .utc()
-        //   .toDate();
-        console.log(Date.now());
-        console.log(new Date());
         const start = (0, moment_timezone_1.default)()
             .tz(req.user[0].localTimeZone)
             .startOf("day")
             .toDate();
         const end = (0, moment_timezone_1.default)().tz(req.user[0].localTimeZone).endOf("day").toDate();
-        console.log("🚀 ~ file: habit.controllers.ts:156 ~ getTodaysHabits ~ start:", start);
-        console.log("🚀 ~ file: habit.controllers.ts:161 ~ getTodaysHabits ~ end:", end);
-        // //calculate the start and end timestamps for the current day
-        // const startOfToday = new Date(clientTime);
-        // startOfToday.setHours(0, 0, 0, 0); //set the time to 00:00:00.000
-        // const endOfToday = new Date(clientTime);
-        // endOfToday.setHours(23, 59, 59, 999); //set the time to 23:59:59.999
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
             upcomingDates: {
