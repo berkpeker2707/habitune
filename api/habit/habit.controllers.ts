@@ -29,14 +29,16 @@ function getDateUTC(initDate: any) {
   return utc_timestamp_formatted;
 }
 
-export default getDateUTC;
-
 export const createHabit = async (req: IReq | any, res: Response) => {
   try {
     const checkUser = await User.findById(req.user[0]._id);
 
-    var UTCFirstDate = getDateUTC(req.body.firstDate);
-    var UTCLastDate = getDateUTC(req.body.lastDate);
+    var localFirstDate = moment(req.body.firstDate)
+      .tz(req.user[0].localTimeZone)
+      .toDate();
+    var localLastDate = moment(req.body.lastDate)
+      .tz(req.user[0].localTimeZone)
+      .toDate();
 
     if (checkUser && checkUser.habits.length >= 20) {
       errorLogger.error(`User ${req.user[0]._id} already has 20 habits`);
@@ -49,8 +51,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         name: req.body.name,
         color: req.body.color ? req.body.color : "#968EB0",
         sharedWith: req.body.friendList,
-        firstDate: UTCFirstDate,
-        lastDate: UTCLastDate,
+        firstDate: localFirstDate,
+        lastDate: localLastDate,
         dates: [],
         upcomingDates: [],
         isHidden: false,
@@ -69,8 +71,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
           $push: {
             upcomingDates: [
               ...(await calculateUpcomingDates(
-                UTCFirstDate,
-                UTCLastDate,
+                localFirstDate,
+                localLastDate,
                 req.body.upcomingDates
                   ? req.body.upcomingDates
                   : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -139,17 +141,33 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
     //  var clientTime = moment(clientTimeO).tz(req.user[0].localTimeZone).format("YYYY-MM-DD[T]HH:mm:ss");
 
     // for a specific moment (m)
-    var start = moment()
+
+    // var start = moment()
+    //   .tz(req.user[0].localTimeZone)
+    //   .startOf("day")
+    //   .utc()
+    //   .toDate();
+
+    // var end = moment()
+    //   .tz(req.user[0].localTimeZone)
+    //   .endOf("day")
+    //   .utc()
+    //   .toDate();
+    console.log(Date.now());
+    console.log(new Date());
+    const start = moment()
       .tz(req.user[0].localTimeZone)
       .startOf("day")
-      .utc()
       .toDate();
-
-    var end = moment()
-      .tz(req.user[0].localTimeZone)
-      .endOf("day")
-      .utc()
-      .toDate();
+    const end = moment().tz(req.user[0].localTimeZone).endOf("day").toDate();
+    console.log(
+      "🚀 ~ file: habit.controllers.ts:156 ~ getTodaysHabits ~ start:",
+      start
+    );
+    console.log(
+      "🚀 ~ file: habit.controllers.ts:161 ~ getTodaysHabits ~ end:",
+      end
+    );
 
     // //calculate the start and end timestamps for the current day
     // const startOfToday = new Date(clientTime);
@@ -1271,10 +1289,17 @@ export const updateHabitFirstAndLastDate = async (
 ) => {
   try {
     if (req.body.lastDate > req.body.firstDate) {
+      var localFirstDate = moment(req.body.firstDate)
+        .tz(req.user[0].localTimeZone)
+        .toDate();
+      var localLastDate = moment(req.body.lastDate)
+        .tz(req.user[0].localTimeZone)
+        .toDate();
+
       const selectedHabit = await Habit.findByIdAndUpdate(
         req.body._id,
         {
-          $set: { firstDate: req.body.firstDate, lastDate: req.body.lastDate },
+          $set: { firstDate: localFirstDate, lastDate: localLastDate },
         },
         { upsert: false, new: true }
       )
