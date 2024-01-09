@@ -56,6 +56,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 dates: [],
                 upcomingDates: [],
                 isHidden: false,
+                localTime: req.user[0].localTimeZone,
             });
             yield user_model_1.default.findOneAndUpdate({ _id: req.user[0]._id }, {
                 $push: { habits: [newHabit._id] },

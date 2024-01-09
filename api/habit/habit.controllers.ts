@@ -56,6 +56,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
         dates: [],
         upcomingDates: [],
         isHidden: false,
+        localTime: req.user[0].localTimeZone,
       });
 
       await User.findOneAndUpdate(

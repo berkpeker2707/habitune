@@ -33,5 +33,6 @@ const habitSchema = new mongoose_1.Schema({
     dates: [{ type: Date }],
     upcomingDates: [{ type: Date }],
     isHidden: { type: Boolean, default: false },
+    localTime: { type: String, default: "Coordinated Universal Time" },
 });
 module.exports = mongoose_1.default.model("Habit", habitSchema);

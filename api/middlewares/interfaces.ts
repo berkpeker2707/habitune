@@ -36,6 +36,7 @@ export interface IHabit {
   dates: Date[];
   upcomingDates: Date[];
   isHidden: boolean;
+  localTime: string;
 }
 
 export interface IReq extends Request {
