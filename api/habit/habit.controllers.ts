@@ -181,6 +181,342 @@ export const getTodaysHabitsBoolean = async (
   }
 };
 
+//old controller which does not check current day has non serial habits
+// export const getCurrentHabitWeekStreakBoolean = async (
+//   req: IReq | any,
+//   res: Response
+// ) => {
+//   try {
+//     var clientTime = moment(parseInt(req.params.today))
+//       .tz(req.user[0].localTimeZone)
+//       .toDate();
+
+//     const loggedinUsersTodayHabits = await Habit.find({
+//       owner: req.user[0]._id,
+//     })
+//       .populate({ path: "sharedWith", model: "User" })
+//       .slice("dates", -10) //last 10 numbers of the dates array
+//       .slice("upcomingDates", -10)
+//       .exec();
+
+//     var currentHabitWeekStreakData;
+//     currentHabitWeekStreakData = loggedinUsersTodayHabits.map(
+//       (allHabitsItem: any) => {
+//         if (
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 6,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 5,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 4,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 3,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 2,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 1,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(allHabitsItem.dates, new Date(clientTime))
+//         ) {
+//           return 7;
+//         } else if (
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 5,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 4,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 3,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 2,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 1,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(allHabitsItem.dates, new Date(clientTime))
+//         ) {
+//           return 6;
+//         } else if (
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 4,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 3,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 2,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 1,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(allHabitsItem.dates, new Date(clientTime))
+//         ) {
+//           return 5;
+//         } else if (
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 3,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 2,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 1,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(allHabitsItem.dates, new Date(clientTime))
+//         ) {
+//           return 4;
+//         } else if (
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 2,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 1,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(allHabitsItem.dates, new Date(clientTime))
+//         ) {
+//           return 3;
+//         } else if (
+//           isInArray(
+//             allHabitsItem.dates,
+//             new Date(
+//               new Date(
+//                 new Date(clientTime).getFullYear(),
+//                 new Date(clientTime).getMonth(),
+//                 new Date(clientTime).getDate() - 1,
+//                 new Date(clientTime).getHours(),
+//                 new Date(clientTime).getMinutes(),
+//                 new Date(clientTime).getSeconds()
+//               )
+//             )
+//           ) &&
+//           isInArray(allHabitsItem.dates, new Date(clientTime))
+//         ) {
+//           return 2;
+//         } else if (isInArray(allHabitsItem.dates, new Date(clientTime))) {
+//           return 1;
+//         } else {
+//           return 0;
+//         }
+//       }
+//     );
+
+//     infoLogger.info(
+//       `User ${req.user[0]._id} invoked getCurrentHabitWeekStreakBoolean`
+//     );
+//     res.status(200).json(currentHabitWeekStreakData);
+//   } catch (error) {
+//     errorLogger.error(error);
+//     res.status(500).send(getErrorMessage(error));
+//   }
+// };
+
 export const getCurrentHabitWeekStreakBoolean = async (
   req: IReq | any,
   res: Response
@@ -198,8 +534,8 @@ export const getCurrentHabitWeekStreakBoolean = async (
       .slice("upcomingDates", -10)
       .exec();
 
-    var currentHabitWeekStreakData;
-    currentHabitWeekStreakData = loggedinUsersTodayHabits.map(
+    var currentHabitWeekStreakDataInOrder;
+    currentHabitWeekStreakDataInOrder = loggedinUsersTodayHabits.map(
       (allHabitsItem: any) => {
         if (
           isInArray(
@@ -506,15 +842,158 @@ export const getCurrentHabitWeekStreakBoolean = async (
       }
     );
 
+    const currentHabitWeekStreakDataNotInOrder = loggedinUsersTodayHabits.map(
+      (habitItem: any) => {
+        const habitStreak = habitItem.upcomingDates.reduce(
+          (streak: number, date: string | number | Date) => {
+            if (isInArray(habitItem.dates, date)) {
+              return streak + 1;
+            }
+            return streak;
+          },
+          0
+        );
+
+        return habitStreak;
+      }
+    );
+
+    var sumOfTwoArray = currentHabitWeekStreakDataInOrder.map(function (
+      num: any,
+      idx: any
+    ) {
+      return num + currentHabitWeekStreakDataNotInOrder[idx];
+    });
+
     infoLogger.info(
       `User ${req.user[0]._id} invoked getCurrentHabitWeekStreakBoolean`
     );
-    res.status(200).json(currentHabitWeekStreakData);
+    res.status(200).json(sumOfTwoArray);
   } catch (error) {
     errorLogger.error(error);
     res.status(500).send(getErrorMessage(error));
   }
 };
+
+//old controller which does not check cnon serial habits
+// export const getAllHabitDatesDotsBoolean = async (
+//   req: IReq | any,
+//   res: Response
+// ) => {
+//   var clientTime = moment(parseInt(req.params.today))
+//     .tz(req.user[0].localTimeZone)
+//     .toDate();
+
+//   const loggedinUsersTodayHabits = await Habit.find({
+//     owner: req.user[0]._id,
+//   })
+//     .populate({ path: "sharedWith", model: "User" })
+//     .slice("dates", -10) //last 10 numbers of the dates array
+//     .slice("upcomingDates", -10)
+//     .exec();
+
+//   var allHabitDatesDotsData: Array<boolean> = [];
+
+//   for (var i = 0; i < loggedinUsersTodayHabits.length; i++) {
+//     allHabitDatesDotsData.push(
+//       isInArray(loggedinUsersTodayHabits[i].dates, new Date(clientTime))
+//     );
+//     allHabitDatesDotsData.push(
+//       isInArray(
+//         loggedinUsersTodayHabits[i].dates,
+//         new Date(
+//           new Date(
+//             new Date(clientTime).getFullYear(),
+//             new Date(clientTime).getMonth(),
+//             new Date(clientTime).getDate() - 1,
+//             new Date(clientTime).getHours(),
+//             new Date(clientTime).getMinutes(),
+//             new Date(clientTime).getSeconds()
+//           )
+//         )
+//       )
+//     );
+//     allHabitDatesDotsData.push(
+//       isInArray(
+//         loggedinUsersTodayHabits[i].dates,
+//         new Date(
+//           new Date(
+//             new Date(clientTime).getFullYear(),
+//             new Date(clientTime).getMonth(),
+//             new Date(clientTime).getDate() - 2,
+//             new Date(clientTime).getHours(),
+//             new Date(clientTime).getMinutes(),
+//             new Date(clientTime).getSeconds()
+//           )
+//         )
+//       )
+//     );
+//     allHabitDatesDotsData.push(
+//       isInArray(
+//         loggedinUsersTodayHabits[i].dates,
+//         new Date(
+//           new Date(
+//             new Date(clientTime).getFullYear(),
+//             new Date(clientTime).getMonth(),
+//             new Date(clientTime).getDate() - 3,
+//             new Date(clientTime).getHours(),
+//             new Date(clientTime).getMinutes(),
+//             new Date(clientTime).getSeconds()
+//           )
+//         )
+//       )
+//     );
+//     allHabitDatesDotsData.push(
+//       isInArray(
+//         loggedinUsersTodayHabits[i].dates,
+//         new Date(
+//           new Date(
+//             new Date(clientTime).getFullYear(),
+//             new Date(clientTime).getMonth(),
+//             new Date(clientTime).getDate() - 4,
+//             new Date(clientTime).getHours(),
+//             new Date(clientTime).getMinutes(),
+//             new Date(clientTime).getSeconds()
+//           )
+//         )
+//       )
+//     );
+//     allHabitDatesDotsData.push(
+//       isInArray(
+//         loggedinUsersTodayHabits[i].dates,
+//         new Date(
+//           new Date(
+//             new Date(clientTime).getFullYear(),
+//             new Date(clientTime).getMonth(),
+//             new Date(clientTime).getDate() - 5,
+//             new Date(clientTime).getHours(),
+//             new Date(clientTime).getMinutes(),
+//             new Date(clientTime).getSeconds()
+//           )
+//         )
+//       )
+//     );
+//     allHabitDatesDotsData.push(
+//       isInArray(
+//         loggedinUsersTodayHabits[i].dates,
+//         new Date(
+//           new Date(
+//             new Date(clientTime).getFullYear(),
+//             new Date(clientTime).getMonth(),
+//             new Date(clientTime).getDate() - 6,
+//             new Date(clientTime).getHours(),
+//             new Date(clientTime).getMinutes(),
+//             new Date(clientTime).getSeconds()
+//           )
+//         )
+//       )
+//     );
+//   }
+//   infoLogger.info(
+//     `User ${req.user[0]._id} invoked getAllHabitDatesDotsBoolean`
+//   );
+//   res.status(200).json(allHabitDatesDotsData);
+// };
 
 export const getAllHabitDatesDotsBoolean = async (
   req: IReq | any,
