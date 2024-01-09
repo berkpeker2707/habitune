@@ -25,7 +25,8 @@ function getDateUTC(initDate: any) {
     now.getUTCSeconds(),
     now.getUTCMilliseconds()
   );
-  return utc_timestamp;
+  let utc_timestamp_formatted = moment(utc_timestamp).toDate();
+  return utc_timestamp_formatted;
 }
 
 export default getDateUTC;
@@ -68,8 +69,8 @@ export const createHabit = async (req: IReq | any, res: Response) => {
           $push: {
             upcomingDates: [
               ...(await calculateUpcomingDates(
-                req.body.firstDate,
-                req.body.lastDate,
+                UTCFirstDate,
+                UTCLastDate,
                 req.body.upcomingDates
                   ? req.body.upcomingDates
                   : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -142,13 +143,13 @@ export const getTodaysHabits = async (req: IReq | any, res: Response) => {
       .tz(req.user[0].localTimeZone)
       .startOf("day")
       .utc()
-      .format("YYYY-MM-DD[T]HH:mm:ss");
+      .toDate();
 
     var end = moment()
       .tz(req.user[0].localTimeZone)
       .endOf("day")
       .utc()
-      .format("YYYY-MM-DD[T]HH:mm:ss");
+      .toDate();
 
     // //calculate the start and end timestamps for the current day
     // const startOfToday = new Date(clientTime);

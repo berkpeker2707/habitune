@@ -27,7 +27,8 @@ dotenv_1.default.config();
 function getDateUTC(initDate) {
     var now = new Date(initDate);
     var utc_timestamp = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds());
-    return utc_timestamp;
+    let utc_timestamp_formatted = (0, moment_timezone_1.default)(utc_timestamp).toDate();
+    return utc_timestamp_formatted;
 }
 exports.default = getDateUTC;
 const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -60,7 +61,7 @@ const createHabit = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .updateOne({
                 $push: {
                     upcomingDates: [
-                        ...(yield (0, calculateUpcomingDates_1.default)(req.body.firstDate, req.body.lastDate, req.body.upcomingDates
+                        ...(yield (0, calculateUpcomingDates_1.default)(UTCFirstDate, UTCLastDate, req.body.upcomingDates
                             ? req.body.upcomingDates
                             : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])),
                     ],
@@ -125,12 +126,12 @@ const getTodaysHabits = (req, res) => __awaiter(void 0, void 0, void 0, function
             .tz(req.user[0].localTimeZone)
             .startOf("day")
             .utc()
-            .format("YYYY-MM-DD[T]HH:mm:ss");
+            .toDate();
         var end = (0, moment_timezone_1.default)()
             .tz(req.user[0].localTimeZone)
             .endOf("day")
             .utc()
-            .format("YYYY-MM-DD[T]HH:mm:ss");
+            .toDate();
         // //calculate the start and end timestamps for the current day
         // const startOfToday = new Date(clientTime);
         // startOfToday.setHours(0, 0, 0, 0); //set the time to 00:00:00.000
