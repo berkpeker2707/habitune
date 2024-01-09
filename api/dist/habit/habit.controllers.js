@@ -147,8 +147,17 @@ const getTodaysHabitsBoolean = (req, res) => __awaiter(void 0, void 0, void 0, f
         var clientTime = (0, moment_timezone_1.default)(parseInt(req.params.today))
             .tz(req.user[0].localTimeZone)
             .toDate();
+        const start = (0, moment_timezone_1.default)()
+            .tz(req.user[0].localTimeZone)
+            .startOf("day")
+            .toDate();
+        const end = (0, moment_timezone_1.default)().tz(req.user[0].localTimeZone).endOf("day").toDate();
         const loggedinUsersTodayHabits = yield habit_model_1.default.find({
             owner: req.user[0]._id,
+            upcomingDates: {
+                $gte: start,
+                $lte: end, //less than or equal to the end of the day
+            },
         })
             .populate({ path: "sharedWith", model: "User" })
             .slice("dates", -10) //last 10 numbers of the dates array
@@ -156,7 +165,7 @@ const getTodaysHabitsBoolean = (req, res) => __awaiter(void 0, void 0, void 0, f
             .exec();
         var todaysHabitBooleanData;
         todaysHabitBooleanData = loggedinUsersTodayHabits.map((allHabitsItem) => {
-            return (0, isInCompletedDates_1.default)(allHabitsItem.dates, new Date(clientTime));
+            return (0, isInCompletedDates_1.default)(allHabitsItem.dates, clientTime);
         });
         logger_1.infoLogger.info(`User ${req.user[0]._id} invoked getTodaysHabitsBoolean`);
         res.status(200).json(todaysHabitBooleanData);

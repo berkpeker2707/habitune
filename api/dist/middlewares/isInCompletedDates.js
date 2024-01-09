@@ -23,12 +23,11 @@ const isInCompletedDates = (array, value) => {
     return array.some((item) => {
         var alreadyStoredDate = new Date(item);
         var dateToBeChecked = new Date(value);
-        const msBetweenDates = Math.abs(alreadyStoredDate.getTime() - dateToBeChecked.getTime());
+        const msBetweenDates = Math.abs(item.getTime() - value.getTime());
         //convert ms to hours (min sec ms)
         const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
         //check if the date is within 24 hours and on the same day
-        if (hoursBetweenDates < 24 &&
-            alreadyStoredDate.getDate() === dateToBeChecked.getDate()) {
+        if (hoursBetweenDates < 24 && item.getDate() === value.getDate()) {
             //date is within 24 hours and on the same day
             return true;
         }
