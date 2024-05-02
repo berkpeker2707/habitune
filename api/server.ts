@@ -1,5 +1,10 @@
 import path from "path";
-import dotenv from "dotenv";
+
+import dotenv from 'dotenv';
+dotenv.config({ path: './api/.env' });
+
+
+
 dotenv.config();
 const key = process.env.FIREBASE_ADMINSDK_PRIVATE_KEY?.replace(
   /Ö/g,
@@ -34,7 +39,7 @@ app.listen(port, () => console.log(`Server running at port: ${port}`));
 
 import { getErrorMessage } from "./utils/errors.util";
 app.use(morganMiddleware);
-
+console.log("first")
 db();
 // const mongoDBStore = mongoStore();
 

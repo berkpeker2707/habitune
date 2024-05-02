@@ -11,7 +11,7 @@ const dbConnect = async () => {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
-      dbName: "habitune_db",
+      dbName: "habitune_db_new",
     });
     warnLogger.warn(`Connected to: ${conn.connection.host}`);
     // console.log(`Connected to: ${conn.connection.host}`);
