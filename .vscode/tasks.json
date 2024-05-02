@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "api",
+			"group": "build",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"label": "npm: build - api",
+			"detail": "rimraf dist && tsc && npm run copyHTML && npm run copyStatic && npm run copyRobots",
+		}
+	]
+}

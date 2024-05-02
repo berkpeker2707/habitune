@@ -1,7 +1,12 @@
 import winston from "winston";
 import winston_db from "winston-mongodb";
 import path from "path";
+import dotenv from 'dotenv';
+dotenv.config({ path: './api/.env' });
 const env = process.env.NODE_ENV || "development";
+
+
+
 
 const mongodbConnectionString = process.env.MONGODB_LOG_URI;
 
@@ -22,21 +27,21 @@ const httpLogger = winston.createLogger({
   transports:
     env === "development"
       ? [
-          new winston.transports.Console(),
-          new winston.transports.File({
-            filename: path.join(__dirname, "..", "logs/http.log"),
-            level: "http",
-          }),
-        ]
+        new winston.transports.Console(),
+        new winston.transports.File({
+          filename: path.join(__dirname, "..", "logs/http.log"),
+          level: "http",
+        }),
+      ]
       : [
-          new winston_db.MongoDB({
-            db: mongodbConnectionString,
-            options: { useNewUrlParser: true, useUnifiedTopology: true },
-            collection: "http_logs",
-            level: "http",
-            tryReconnect: true,
-          }),
-        ],
+        new winston_db.MongoDB({
+          db: mongodbConnectionString,
+          options: { useNewUrlParser: true, useUnifiedTopology: true },
+          collection: "http_logs",
+          level: "http",
+          tryReconnect: true,
+        }),
+      ],
 });
 
 const infoLogger = winston.createLogger({
@@ -45,21 +50,21 @@ const infoLogger = winston.createLogger({
   transports:
     env === "development"
       ? [
-          new winston.transports.Console(),
-          new winston.transports.File({
-            filename: path.join(__dirname, "..", "logs/info.log"),
-            level: "info",
-          }),
-        ]
+        new winston.transports.Console(),
+        new winston.transports.File({
+          filename: path.join(__dirname, "..", "logs/info.log"),
+          level: "info",
+        }),
+      ]
       : [
-          new winston_db.MongoDB({
-            db: mongodbConnectionString,
-            options: { useNewUrlParser: true, useUnifiedTopology: true },
-            collection: "info_logs",
-            level: "info",
-            tryReconnect: true,
-          }),
-        ],
+        new winston_db.MongoDB({
+          db: mongodbConnectionString,
+          options: { useNewUrlParser: true, useUnifiedTopology: true },
+          collection: "info_logs",
+          level: "info",
+          tryReconnect: true,
+        }),
+      ],
 });
 
 const errorLogger = winston.createLogger({
@@ -68,21 +73,21 @@ const errorLogger = winston.createLogger({
   transports:
     env === "development"
       ? [
-          new winston.transports.Console(),
-          new winston.transports.File({
-            filename: path.join(__dirname, "..", "logs/error.log"),
-            level: "error",
-          }),
-        ]
+        new winston.transports.Console(),
+        new winston.transports.File({
+          filename: path.join(__dirname, "..", "logs/error.log"),
+          level: "error",
+        }),
+      ]
       : [
-          new winston_db.MongoDB({
-            db: mongodbConnectionString,
-            options: { useNewUrlParser: true, useUnifiedTopology: true },
-            collection: "error_logs",
-            level: "error",
-            tryReconnect: true,
-          }),
-        ],
+        new winston_db.MongoDB({
+          db: mongodbConnectionString,
+          options: { useNewUrlParser: true, useUnifiedTopology: true },
+          collection: "error_logs",
+          level: "error",
+          tryReconnect: true,
+        }),
+      ],
 });
 
 const warnLogger = winston.createLogger({
@@ -91,21 +96,21 @@ const warnLogger = winston.createLogger({
   transports:
     env === "development"
       ? [
-          new winston.transports.Console(),
-          new winston.transports.File({
-            filename: path.join(__dirname, "..", "logs/warn.log"),
-            level: "warn",
-          }),
-        ]
+        new winston.transports.Console(),
+        new winston.transports.File({
+          filename: path.join(__dirname, "..", "logs/warn.log"),
+          level: "warn",
+        }),
+      ]
       : [
-          new winston_db.MongoDB({
-            db: mongodbConnectionString,
-            options: { useNewUrlParser: true, useUnifiedTopology: true },
-            collection: "warn_logs",
-            level: "warn",
-            tryReconnect: true,
-          }),
-        ],
+        new winston_db.MongoDB({
+          db: mongodbConnectionString,
+          options: { useNewUrlParser: true, useUnifiedTopology: true },
+          collection: "warn_logs",
+          level: "warn",
+          tryReconnect: true,
+        }),
+      ],
 });
 
 export { httpLogger, infoLogger, errorLogger, warnLogger };
