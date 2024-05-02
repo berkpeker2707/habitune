@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express'
 import {
   signInWithGoogleController,
   signInController,
@@ -9,50 +9,50 @@ import {
   changeTheme,
   deleteUser,
   sendFeedback,
-} from "./user.controllers";
+} from './user.controllers'
 
-import verifyToken from "../middlewares/verifyToken";
-import defaultLimitter from "../middlewares/defaultLimitter";
-import lowLimitter from "../middlewares/lowLimitter";
+import verifyToken from '../middlewares/verifyToken'
+import defaultLimitter from '../middlewares/defaultLimitter'
+import lowLimitter from '../middlewares/lowLimitter'
 
-const userRoutes = Router();
+const userRoutes = Router()
 
-userRoutes.post("/google", lowLimitter, signInWithGoogleController);
+userRoutes.post('/google', lowLimitter, signInWithGoogleController)
 
-userRoutes.post("/signin", lowLimitter, signInController);
-
-userRoutes.get(
-  "/profile/:today",
-  [verifyToken, defaultLimitter],
-  fetchCurrentUserProfile
-);
+userRoutes.post('/signin', lowLimitter, signInController)
 
 userRoutes.get(
-  "/selectedUser/profile/:userID",
+  '/profile/:today',
   [verifyToken, defaultLimitter],
-  fetchUserProfile
-);
+  fetchCurrentUserProfile,
+)
+
+userRoutes.get(
+  '/selectedUser/profile/:userID',
+  [verifyToken, defaultLimitter],
+  fetchUserProfile,
+)
 
 userRoutes.post(
-  "/update/profile/image",
+  '/update/profile/image',
   [verifyToken, defaultLimitter],
-  updateCurrentUserImage
-);
+  updateCurrentUserImage,
+)
 
 userRoutes.post(
-  "/update/feedback",
+  '/update/feedback',
   [verifyToken, defaultLimitter],
-  sendFeedback
-);
+  sendFeedback,
+)
 
 userRoutes.post(
-  "/sendFriendshipRequest",
+  '/sendFriendshipRequest',
   [verifyToken, defaultLimitter],
-  sendFriendship
-);
+  sendFriendship,
+)
 
-userRoutes.post("/changeTheme", [verifyToken, defaultLimitter], changeTheme);
+userRoutes.post('/changeTheme', [verifyToken, defaultLimitter], changeTheme)
 
-userRoutes.delete("/delete/me", [verifyToken, defaultLimitter], deleteUser);
+userRoutes.delete('/delete/me', [verifyToken, defaultLimitter], deleteUser)
 
-export default userRoutes;
+export default userRoutes

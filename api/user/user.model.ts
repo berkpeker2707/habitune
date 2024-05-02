@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-import { IUser } from "../middlewares/interfaces";
+import mongoose, { Schema } from 'mongoose'
+import { IUser } from '../middlewares/interfaces'
 
 const userSchema = new Schema<IUser>({
   id: { type: Number },
@@ -25,9 +25,9 @@ const userSchema = new Schema<IUser>({
   daySevenNotificationSent: { type: Boolean, default: false },
   dayThirtyNotificationSent: { type: Boolean, default: false },
   dayNinetyNotificationSent: { type: Boolean, default: false },
-  userType: { type: String, default: "standart" },
-  theme: { type: String, default: "default" },
+  userType: { type: String, default: 'standart' },
+  theme: { type: String, default: 'default' },
   createdAt: { type: Date, default: Date.now },
-});
+})
 
-export = mongoose.model<IUser>("User", userSchema);
+export = mongoose.model<IUser>('User', userSchema)

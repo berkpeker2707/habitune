@@ -1,63 +1,63 @@
-import User from "../user/user.model";
-import dotenv from "dotenv";
-import { warnLogger, errorLogger } from "../middlewares/logger";
+import User from '../user/user.model'
+import dotenv from 'dotenv'
+import { warnLogger, errorLogger } from '../middlewares/logger'
 
-import isInYesterday from "../middlewares/isInYesterday";
-import isInThreeToFiveDays from "../middlewares/isInThreeToFiveDays";
-import isInSevenToFifteenDays from "../middlewares/isInSevenToFifteenDays";
-import isInThirtyToSixtyDays from "../middlewares/isInThirtyToSixtyDays";
-import isInNinetyToThreeHundredDays from "../middlewares/isInNinetyToThreeHundredDays";
+import isInYesterday from '../middlewares/isInYesterday'
+import isInThreeToFiveDays from '../middlewares/isInThreeToFiveDays'
+import isInSevenToFifteenDays from '../middlewares/isInSevenToFifteenDays'
+import isInThirtyToSixtyDays from '../middlewares/isInThirtyToSixtyDays'
+import isInNinetyToThreeHundredDays from '../middlewares/isInNinetyToThreeHundredDays'
 
-dotenv.config();
+dotenv.config()
 
 // const schedule = require("node-schedule");
 
-const admin = require("firebase-admin");
+const admin = require('firebase-admin')
 
 export const notifyUser = async () => {
   try {
-    await step1();
-    await step2();
-    await step3();
-    await step4();
-    await step5();
-    await step6();
+    await step1()
+    await step2()
+    await step3()
+    await step4()
+    await step5()
+    await step6()
 
-    warnLogger.info("notifyUser steps completed successfully");
+    warnLogger.info('notifyUser steps completed successfully')
   } catch (error) {
-    errorLogger.error("Error in sequential steps:", error);
+    errorLogger.error('Error in sequential steps:', error)
   }
-};
+}
 
 const step1 = async () => {
   // console.log("Step 1: Completed sequential step logic");
-  await notifyUsersDaily();
-};
+  await notifyUsersDaily()
+}
 
 const step2 = async () => {
   // console.log("Step 2: Completed cron job logic");
-  await notifyUsersThreeDaysLater();
-};
+  await notifyUsersThreeDaysLater()
+}
 
 const step3 = async () => {
   // console.log("Step 3: Completed cron job logic");
-  await notifyUsersSevenDaysLater();
-};
+  await notifyUsersSevenDaysLater()
+}
 
 const step4 = async () => {
   // console.log("Step 4: Completed cron job logic");
-  await notifyUsersSevenDaysLater();
-};
+  await notifyUsersSevenDaysLater()
+}
 
 const step5 = async () => {
   // console.log("Step 5: Completed cron job logic");
-  await notifyUsersThirtyDaysLater();
-};
+  await notifyUsersThirtyDaysLater()
+}
 
 const step6 = async () => {
   // console.log("Step 6: Completed cron job logic");
-  await notifyUsersNinetyDaysLater();
-};
+  await notifyUsersNinetyDaysLater()
+}
 
 //every 6 hours 0 minute past
 //0 */6 * * *
@@ -70,7 +70,7 @@ export const notifyUsersDaily = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    warnLogger.info("reminder notifyUsersDaily started");
+    warnLogger.info('reminder notifyUsersDaily started')
 
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -80,7 +80,7 @@ export const notifyUsersDaily = async () => {
       daySevenNotificationSent: false,
       dayThirtyNotificationSent: false,
       dayNinetyNotificationSent: false,
-    }).select("lastHabitUpdated fcmToken");
+    }).select('lastHabitUpdated fcmToken')
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
@@ -88,7 +88,7 @@ export const notifyUsersDaily = async () => {
     // );
 
     const result: boolean[] = await Promise.all(
-      selectUsers.map(async (selectUser) => {
+      selectUsers.map(async selectUser => {
         return await isInYesterday(
           [selectUser.lastHabitUpdated],
           new Date(
@@ -98,12 +98,12 @@ export const notifyUsersDaily = async () => {
               new Date().getDate(),
               new Date().getHours(),
               new Date().getMinutes(),
-              new Date().getSeconds()
-            )
-          )
-        );
-      })
-    );
+              new Date().getSeconds(),
+            ),
+          ),
+        )
+      }),
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:53 ~ schedule.scheduleJob ~ result:",
@@ -113,7 +113,7 @@ export const notifyUsersDaily = async () => {
     //users who did not loggedin within last 24 hour
     const filteredUsersFCM = selectUsers
       .filter((user, index) => result[index])
-      .map((user) => user.fcmToken);
+      .map(user => user.fcmToken)
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
@@ -124,8 +124,8 @@ export const notifyUsersDaily = async () => {
       {
         fcmToken: filteredUsersFCM,
       },
-      { $set: { dayOneNotificationSent: true } }
-    );
+      { $set: { dayOneNotificationSent: true } },
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:71 ~ //schedule.scheduleJob ~ fcmTokensBelongedToUpdated:",
@@ -134,31 +134,31 @@ export const notifyUsersDaily = async () => {
 
     const randomNotification = [
       {
-        title: "Daily Delight 🌈",
-        body: "Just a friendly reminder: Progress, no matter how small, is still progress. Keep going and embrace the journey! 🚀",
+        title: 'Daily Delight 🌈',
+        body: 'Just a friendly reminder: Progress, no matter how small, is still progress. Keep going and embrace the journey! 🚀',
       },
       ,
       {
-        title: "Radiant Resilience 🌻",
-        body: "Life may have its ups and downs, but so do the paths to success. Your resilience is your strength. Keep pressing forward! 💪",
+        title: 'Radiant Resilience 🌻',
+        body: 'Life may have its ups and downs, but so do the paths to success. Your resilience is your strength. Keep pressing forward! 💪',
       },
 
       {
-        title: "Daily Discovery 🌼",
-        body: "Every day is a chance to discover the extraordinary within the ordinary. Seize the day, and let your habits guide you toward greatness! 🌟",
+        title: 'Daily Discovery 🌼',
+        body: 'Every day is a chance to discover the extraordinary within the ordinary. Seize the day, and let your habits guide you toward greatness! 🌟',
       },
       {
-        title: "Endless Possibilities 🌌",
+        title: 'Endless Possibilities 🌌',
         body: "Embrace each moment as an opportunity for growth. Your journey is unique, and you're doing fantastic. Believe in yourself! 🌠",
       },
       {
-        title: "Fresh Start 🌱",
-        body: "As the day winds down, remember: Your efforts matter. Tomorrow is another chance to grow. 🌱",
+        title: 'Fresh Start 🌱',
+        body: 'As the day winds down, remember: Your efforts matter. Tomorrow is another chance to grow. 🌱',
       },
-    ];
+    ]
 
     const notificationContent =
-      randomNotification[Math.floor(Math.random() * randomNotification.length)];
+      randomNotification[Math.floor(Math.random() * randomNotification.length)]
 
     if (filteredUsersFCM.length > 0) {
       const notificationResponse = await admin.messaging().sendMulticast({
@@ -168,18 +168,15 @@ export const notifyUsersDaily = async () => {
           body: notificationContent?.body,
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
-      });
-      warnLogger.info(
-        "reminder notifyUsersDaily ended: ",
-        notificationResponse
-      );
+      })
+      warnLogger.info('reminder notifyUsersDaily ended: ', notificationResponse)
     }
   } catch (error) {
-    errorLogger.error(error);
+    errorLogger.error(error)
   }
 
   // });
-};
+}
 
 export const notifyUsersThreeDaysLater = async () => {
   // dayThreeNotificationSent
@@ -191,7 +188,7 @@ export const notifyUsersThreeDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    warnLogger.info("reminder notifyUsersThreeDaysLater started ");
+    warnLogger.info('reminder notifyUsersThreeDaysLater started ')
 
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -201,7 +198,7 @@ export const notifyUsersThreeDaysLater = async () => {
       daySevenNotificationSent: false,
       dayThirtyNotificationSent: false,
       dayNinetyNotificationSent: false,
-    }).select("lastHabitUpdated fcmToken");
+    }).select('lastHabitUpdated fcmToken')
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
@@ -209,7 +206,7 @@ export const notifyUsersThreeDaysLater = async () => {
     // );
 
     const result: boolean[] = await Promise.all(
-      selectUsers.map(async (selectUser) => {
+      selectUsers.map(async selectUser => {
         return await isInThreeToFiveDays(
           [selectUser.lastHabitUpdated],
           new Date(
@@ -219,12 +216,12 @@ export const notifyUsersThreeDaysLater = async () => {
               new Date().getDate(),
               new Date().getHours(),
               new Date().getMinutes(),
-              new Date().getSeconds()
-            )
-          )
-        );
-      })
-    );
+              new Date().getSeconds(),
+            ),
+          ),
+        )
+      }),
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:53 ~ schedule.scheduleJob ~ result:",
@@ -234,7 +231,7 @@ export const notifyUsersThreeDaysLater = async () => {
     //users who did not loggedin within last 3 to 5 days
     const filteredUsersFCM = selectUsers
       .filter((user, index) => result[index])
-      .map((user) => user.fcmToken);
+      .map(user => user.fcmToken)
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
@@ -245,8 +242,8 @@ export const notifyUsersThreeDaysLater = async () => {
       {
         fcmToken: filteredUsersFCM,
       },
-      { $set: { dayThreeNotificationSent: true } }
-    );
+      { $set: { dayThreeNotificationSent: true } },
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:71 ~ //schedule.scheduleJob ~ fcmTokensBelongedToUpdated:",
@@ -261,17 +258,17 @@ export const notifyUsersThreeDaysLater = async () => {
           body: "Building a habit takes 2 weeks to 3 months. Don't give up!",
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
-      });
+      })
       warnLogger.info(
-        "reminder notifyUsersThreeDaysLater ended: ",
-        notificationResponse
-      );
+        'reminder notifyUsersThreeDaysLater ended: ',
+        notificationResponse,
+      )
     }
   } catch (error) {
-    errorLogger.error(error);
+    errorLogger.error(error)
   }
   // });
-};
+}
 
 export const notifyUsersSevenDaysLater = async () => {
   // daySevenNotificationSent
@@ -283,7 +280,7 @@ export const notifyUsersSevenDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    warnLogger.info("reminder notifyUsersSevenDaysLater started");
+    warnLogger.info('reminder notifyUsersSevenDaysLater started')
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
     var selectUsers = await User.find({
@@ -292,7 +289,7 @@ export const notifyUsersSevenDaysLater = async () => {
       daySevenNotificationSent: false,
       dayThirtyNotificationSent: false,
       dayNinetyNotificationSent: false,
-    }).select("lastHabitUpdated fcmToken");
+    }).select('lastHabitUpdated fcmToken')
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
@@ -300,7 +297,7 @@ export const notifyUsersSevenDaysLater = async () => {
     // );
 
     const result: boolean[] = await Promise.all(
-      selectUsers.map(async (selectUser) => {
+      selectUsers.map(async selectUser => {
         return await isInSevenToFifteenDays(
           [selectUser.lastHabitUpdated],
           new Date(
@@ -310,12 +307,12 @@ export const notifyUsersSevenDaysLater = async () => {
               new Date().getDate(),
               new Date().getHours(),
               new Date().getMinutes(),
-              new Date().getSeconds()
-            )
-          )
-        );
-      })
-    );
+              new Date().getSeconds(),
+            ),
+          ),
+        )
+      }),
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:53 ~ schedule.scheduleJob ~ result:",
@@ -325,7 +322,7 @@ export const notifyUsersSevenDaysLater = async () => {
     //users who did not loggedin within last 3 to 5 days
     const filteredUsersFCM = selectUsers
       .filter((user, index) => result[index])
-      .map((user) => user.fcmToken);
+      .map(user => user.fcmToken)
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
@@ -336,8 +333,8 @@ export const notifyUsersSevenDaysLater = async () => {
       {
         fcmToken: filteredUsersFCM,
       },
-      { $set: { daySevenNotificationSent: true } }
-    );
+      { $set: { daySevenNotificationSent: true } },
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:71 ~ //schedule.scheduleJob ~ fcmTokensBelongedToUpdated:",
@@ -352,17 +349,17 @@ export const notifyUsersSevenDaysLater = async () => {
           body: "Don't feel disheartened; as long as you keep trying, you're already succeeding.",
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
-      });
+      })
       warnLogger.info(
-        "reminder notifyUsersSevenDaysLater ended: ",
-        notificationResponse
-      );
+        'reminder notifyUsersSevenDaysLater ended: ',
+        notificationResponse,
+      )
     }
   } catch (error) {
-    errorLogger.error(error);
+    errorLogger.error(error)
   }
   // });
-};
+}
 
 export const notifyUsersThirtyDaysLater = async () => {
   // dayThirtyNotificationSent
@@ -374,7 +371,7 @@ export const notifyUsersThirtyDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    warnLogger.info("reminder notifyUsersThirtyDaysLater started");
+    warnLogger.info('reminder notifyUsersThirtyDaysLater started')
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
     var selectUsers = await User.find({
@@ -383,7 +380,7 @@ export const notifyUsersThirtyDaysLater = async () => {
       daySevenNotificationSent: true,
       dayThirtyNotificationSent: false,
       dayNinetyNotificationSent: false,
-    }).select("lastHabitUpdated fcmToken");
+    }).select('lastHabitUpdated fcmToken')
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
@@ -391,7 +388,7 @@ export const notifyUsersThirtyDaysLater = async () => {
     // );
 
     const result: boolean[] = await Promise.all(
-      selectUsers.map(async (selectUser) => {
+      selectUsers.map(async selectUser => {
         return await isInThirtyToSixtyDays(
           [selectUser.lastHabitUpdated],
           new Date(
@@ -401,12 +398,12 @@ export const notifyUsersThirtyDaysLater = async () => {
               new Date().getDate(),
               new Date().getHours(),
               new Date().getMinutes(),
-              new Date().getSeconds()
-            )
-          )
-        );
-      })
-    );
+              new Date().getSeconds(),
+            ),
+          ),
+        )
+      }),
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:53 ~ schedule.scheduleJob ~ result:",
@@ -416,7 +413,7 @@ export const notifyUsersThirtyDaysLater = async () => {
     //users who did not loggedin within last 3 to 5 days
     const filteredUsersFCM = selectUsers
       .filter((user, index) => result[index])
-      .map((user) => user.fcmToken);
+      .map(user => user.fcmToken)
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
@@ -427,8 +424,8 @@ export const notifyUsersThirtyDaysLater = async () => {
       {
         fcmToken: filteredUsersFCM,
       },
-      { $set: { dayThirtyNotificationSent: true } }
-    );
+      { $set: { dayThirtyNotificationSent: true } },
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:71 ~ //schedule.scheduleJob ~ fcmTokensBelongedToUpdated:",
@@ -443,17 +440,17 @@ export const notifyUsersThirtyDaysLater = async () => {
           body: "It's been a while since we've seen you. Your journey is unique, and we'd love to continue supporting you. Whenever you're ready, your habits are here waiting. 💙",
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
-      });
+      })
       warnLogger.info(
-        "reminder notifyUsersThirtyDaysLater ended: ",
-        notificationResponse
-      );
+        'reminder notifyUsersThirtyDaysLater ended: ',
+        notificationResponse,
+      )
     }
   } catch (error) {
-    errorLogger.error(error);
+    errorLogger.error(error)
   }
   // });
-};
+}
 
 export const notifyUsersNinetyDaysLater = async () => {
   // dayNinetyNotificationSent
@@ -465,7 +462,7 @@ export const notifyUsersNinetyDaysLater = async () => {
   //every 6 hours
   // schedule.scheduleJob("0 0 */6 * *", async () => {
   try {
-    warnLogger.info("reminder notifyUsersNinetyDaysLater started");
+    warnLogger.info('reminder notifyUsersNinetyDaysLater started')
 
     // This function will run every hour
     // var selectUsers = await User.find({}).select("lastHabitUpdated");
@@ -475,7 +472,7 @@ export const notifyUsersNinetyDaysLater = async () => {
       daySevenNotificationSent: true,
       dayThirtyNotificationSent: true,
       dayNinetyNotificationSent: false,
-    }).select("lastHabitUpdated fcmToken");
+    }).select('lastHabitUpdated fcmToken')
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
@@ -483,7 +480,7 @@ export const notifyUsersNinetyDaysLater = async () => {
     // );
 
     const result: boolean[] = await Promise.all(
-      selectUsers.map(async (selectUser) => {
+      selectUsers.map(async selectUser => {
         return await isInNinetyToThreeHundredDays(
           [selectUser.lastHabitUpdated],
           new Date(
@@ -493,12 +490,12 @@ export const notifyUsersNinetyDaysLater = async () => {
               new Date().getDate(),
               new Date().getHours(),
               new Date().getMinutes(),
-              new Date().getSeconds()
-            )
-          )
-        );
-      })
-    );
+              new Date().getSeconds(),
+            ),
+          ),
+        )
+      }),
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:53 ~ schedule.scheduleJob ~ result:",
@@ -508,7 +505,7 @@ export const notifyUsersNinetyDaysLater = async () => {
     //users who did not loggedin within last 3 to 5 days
     const filteredUsersFCM = selectUsers
       .filter((user, index) => result[index])
-      .map((user) => user.fcmToken);
+      .map(user => user.fcmToken)
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
@@ -519,8 +516,8 @@ export const notifyUsersNinetyDaysLater = async () => {
       {
         fcmToken: filteredUsersFCM,
       },
-      { $set: { dayNinetyNotificationSent: true } }
-    );
+      { $set: { dayNinetyNotificationSent: true } },
+    )
 
     // console.log(
     //   "🚀 ~ file: notification.reminders.ts:71 ~ //schedule.scheduleJob ~ fcmTokensBelongedToUpdated:",
@@ -531,18 +528,18 @@ export const notifyUsersNinetyDaysLater = async () => {
       const notificationResponse = await admin.messaging().sendMulticast({
         tokens: filteredUsersFCM,
         notification: {
-          title: "A Welcome Back Beacon 🚀",
+          title: 'A Welcome Back Beacon 🚀',
           body: "It's been an extended period, and we've missed your presence. Your habits, like old friends, eagerly await your return. Whenever you're ready, let's pick up where we left off on this journey together! 🌈",
           // imageUrl: "https://www.habitune.net/image/empty-shell",
         },
-      });
+      })
       warnLogger.info(
-        "reminder notifyUsersNinetyDaysLater ended: ",
-        notificationResponse
-      );
+        'reminder notifyUsersNinetyDaysLater ended: ',
+        notificationResponse,
+      )
     }
   } catch (error) {
-    errorLogger.error(error);
+    errorLogger.error(error)
   }
   // });
-};
+}

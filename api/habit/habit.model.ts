@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-import { IHabit } from "../middlewares/interfaces";
+import mongoose, { Schema } from 'mongoose'
+import { IHabit } from '../middlewares/interfaces'
 
 const habitSchema = new Schema<IHabit>({
   owner: { type: mongoose.Schema.Types.ObjectId },
@@ -11,6 +11,6 @@ const habitSchema = new Schema<IHabit>({
   dates: [{ type: Date }],
   upcomingDates: [{ type: Date }],
   isHidden: { type: Boolean, default: false },
-});
+})
 
-export = mongoose.model<IHabit>("Habit", habitSchema);
+export = mongoose.model<IHabit>('Habit', habitSchema)
