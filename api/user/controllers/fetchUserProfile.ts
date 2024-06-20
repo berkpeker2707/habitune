@@ -1,23 +1,13 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { getErrorMessage } from '../../utils/errors.util'
 
 import User from '../models/user'
-import Notification from '../../notifications/notification.model'
-import Habit from '../../habit/habit.model'
 
 import { IReq } from '../../middlewares/interfaces'
-const jwt = require('jsonwebtoken')
-
-const {
-    cloudinaryUploadUserImg,
-    cloudinaryDeleteUserImg,
-} = require('../../middlewares/cloudinary')
-
-// const path = require("path");
 
 import dotenv from 'dotenv'
 import { infoLogger, errorLogger } from '../../middlewares/logger'
-const bcrypt = require('bcrypt')
+
 
 dotenv.config()
 
