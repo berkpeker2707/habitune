@@ -2,10 +2,10 @@ import mongoose, { Schema } from 'mongoose'
 import { IHabit } from '../middlewares/interfaces'
 
 const habitSchema = new Schema<IHabit>({
-  owner: { type: mongoose.Schema.Types.ObjectId },
+  owner: { type: String },
   name: { type: String },
   color: { type: String },
-  sharedWith: [{ type: mongoose.Schema.Types.ObjectId }],
+  sharedWith: [{ type: String }],
   firstDate: { type: Date },
   lastDate: { type: Date },
   dates: [{ type: Date }],

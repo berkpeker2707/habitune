@@ -26,10 +26,10 @@ export interface IUser {
 }
 
 export interface IHabit {
-  owner: Types.ObjectId
+  owner: string
   name: string
   color: string
-  sharedWith: Types.ObjectId[]
+  sharedWith: string[]
   firstDate: Date
   lastDate: Date
   dates: Date[]

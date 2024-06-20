@@ -1,6 +1,12 @@
 import mongoose, { Schema } from 'mongoose'
 import { IUser } from '../../middlewares/interfaces'
 
+const friendSchema = new Schema({
+    friend: { type: String, required: true },
+    pending: { type: Boolean, required: true },
+    paired: { type: Boolean, default: false },
+});
+
 const userSchema = new Schema<IUser>({
     _id: { type: String },
     firstName: { type: String },
@@ -8,13 +14,7 @@ const userSchema = new Schema<IUser>({
     email: { type: String, unique: true, index: true },
     image: { type: String },
     habits: [mongoose.Schema.Types.ObjectId],
-    friends: [
-        {
-            friend: mongoose.Schema.Types.ObjectId,
-            pending: Boolean,
-            paired: { type: Boolean, default: false },
-        },
-    ],
+    friends: [friendSchema],
     password: { type: String },
     fcmToken: { type: String },
     feedback: { type: [], default: [] },

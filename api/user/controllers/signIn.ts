@@ -7,7 +7,7 @@ import { IReq } from '../../middlewares/interfaces'
 const jwt = require('jsonwebtoken')
 
 import dotenv from 'dotenv'
-import { infoLogger, errorLogger } from '../../middlewares/logger'
+import { errorLogger } from '../../middlewares/logger'
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -23,7 +23,7 @@ export const signIn = async (req: IReq | any, res: Response) => {
         )
         if (!emailRegex.test(req.body.email)) {
             errorLogger.error('Unacceptable email')
-            res.status(500).send(getErrorMessage('Unacceptable email'))
+            return res.status(500).send(getErrorMessage('Unacceptable email'))
         } else {
             var userExists = await User.exists({ email: req.body.email })
 
@@ -43,15 +43,12 @@ export const signIn = async (req: IReq | any, res: Response) => {
                             expiresIn: '365d',
                         },
                     )
-                    infoLogger.info(
-                        `User ${req.body.email} invoked signInWithGoogle, token: ${token}`,
-                    )
-                    res.status(200).json(token)
+                    return res.status(200).json(token)
                 } else {
                     errorLogger.error(
                         `Wrong password: ${req.body.password} or email: ${req.body.email}`,
                     )
-                    res.status(500).send(getErrorMessage('Wrong password or email'))
+                    return res.status(500).send(getErrorMessage('Wrong password or email'))
                 }
             } else {
                 if (
@@ -60,7 +57,7 @@ export const signIn = async (req: IReq | any, res: Response) => {
                     (!req.body.password && req.body.password === '')
                 ) {
                     errorLogger.error('Need all required data')
-                    res.status(500).send(getErrorMessage('Need all required data'))
+                    return res.status(500).send(getErrorMessage('Need all required data'))
                 } else {
                     const user = await User.create({
                         id: uuidv4(),
@@ -77,15 +74,12 @@ export const signIn = async (req: IReq | any, res: Response) => {
                     var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
                         expiresIn: '365d',
                     })
-                    infoLogger.info(
-                        `User ${req.body.email} invoked signInWithGoogle, token: ${token}`,
-                    )
-                    res.status(200).json(token)
+                    return res.status(200).json(token)
                 }
             }
         }
     } catch (error) {
         errorLogger.error(error)
-        res.status(500).send(getErrorMessage(error))
+        return res.status(500).send(getErrorMessage(error))
     }
 }
