@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 
 const notificationSchema = new Schema<any>({
   userID: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'User',
     // unique: true,
     // index: true,
