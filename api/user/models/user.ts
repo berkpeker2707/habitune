@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 import { IUser } from '../../middlewares/interfaces'
 
 const userSchema = new Schema<IUser>({
-    id: { type: String },
+    _id: { type: String },
     firstName: { type: String },
     lastName: { type: String },
     email: { type: String, unique: true, index: true },

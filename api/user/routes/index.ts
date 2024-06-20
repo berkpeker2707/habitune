@@ -23,7 +23,7 @@ userRoutes.post('/google', lowLimitter, signInWithGoogle)
 userRoutes.post('/signin', lowLimitter, signIn)
 
 userRoutes.get(
-    '/profile/:today',
+    '/profile',
     [verifyToken, defaultLimitter],
     fetchCurrentUserProfile,
 )
