@@ -8,7 +8,7 @@ export interface IUser {
   lastName: string
   email: string
   image: string
-  // habits: Types.ObjectId[]
+  habits: Types.ObjectId[]
   friends: [{ friend: Types.ObjectId; pending: boolean; paired: boolean }]
   password: any
   fcmToken: string
