@@ -6,11 +6,11 @@ const dotenv = require('dotenv')
 dotenv.config({ path: './api/.env' })
 
 describe('GET /privacy', () => {
-    it('should return privacy', async () => {
-        const res = await request(app)
-            .get('/privacy')
-            .expect(200)
-            .expect(res.statusCode)
-            .toBe(200)
-    })
+  it('should return privacy', async () => {
+    const res = await request(app)
+      .get('/privacy')
+      .expect(200)
+      .expect(res.statusCode)
+      .toBe(200)
+  })
 })

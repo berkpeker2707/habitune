@@ -1,16 +1,15 @@
 import { Router } from 'express'
 import {
-    signInWithGoogle,
-    signIn,
-    fetchCurrentUserProfile,
-    fetchUserProfile,
-    updateCurrentUserImage,
-    sendFriendship,
-    changeTheme,
-    deleteUser,
-    sendFeedback,
-} from "../controllers/index"
-
+  signInWithGoogle,
+  signIn,
+  fetchCurrentUserProfile,
+  fetchUserProfile,
+  updateCurrentUserImage,
+  sendFriendship,
+  changeTheme,
+  deleteUser,
+  sendFeedback,
+} from '../controllers/index'
 
 import verifyToken from '../../middlewares/verifyToken'
 import defaultLimitter from '../../middlewares/defaultLimitter'
@@ -23,33 +22,33 @@ userRoutes.post('/google', lowLimitter, signInWithGoogle)
 userRoutes.post('/signin', lowLimitter, signIn)
 
 userRoutes.get(
-    '/profile',
-    [verifyToken, defaultLimitter],
-    fetchCurrentUserProfile,
+  '/profile',
+  [verifyToken, defaultLimitter],
+  fetchCurrentUserProfile,
 )
 
 userRoutes.get(
-    '/selectedUser/profile/:userID',
-    [verifyToken, defaultLimitter],
-    fetchUserProfile,
+  '/selectedUser/profile/:userID',
+  [verifyToken, defaultLimitter],
+  fetchUserProfile,
 )
 
 userRoutes.post(
-    '/update/profile/image',
-    [verifyToken, defaultLimitter],
-    updateCurrentUserImage,
+  '/update/profile/image',
+  [verifyToken, defaultLimitter],
+  updateCurrentUserImage,
 )
 
 userRoutes.post(
-    '/update/feedback',
-    [verifyToken, defaultLimitter],
-    sendFeedback,
+  '/update/feedback',
+  [verifyToken, defaultLimitter],
+  sendFeedback,
 )
 
 userRoutes.post(
-    '/sendFriendshipRequest',
-    [verifyToken, defaultLimitter],
-    sendFriendship,
+  '/sendFriendshipRequest',
+  [verifyToken, defaultLimitter],
+  sendFriendship,
 )
 
 userRoutes.post('/changeTheme', [verifyToken, defaultLimitter], changeTheme)

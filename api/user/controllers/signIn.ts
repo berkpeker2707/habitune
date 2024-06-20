@@ -8,78 +8,78 @@ const jwt = require('jsonwebtoken')
 
 import dotenv from 'dotenv'
 import { errorLogger } from '../../middlewares/logger'
-const { v4: uuidv4 } = require('uuid');
-
+const { v4: uuidv4 } = require('uuid')
 
 const bcrypt = require('bcrypt')
-
 
 dotenv.config()
 
 export const signIn = async (req: IReq | any, res: Response) => {
-    try {
-        const emailRegex = new RegExp(
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  try {
+    const emailRegex = new RegExp(
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    )
+    if (!emailRegex.test(req.body.email)) {
+      errorLogger.error('Unacceptable email')
+      return res.status(500).send(getErrorMessage('Unacceptable email'))
+    } else {
+      var userExists = await User.exists({ email: req.body.email })
+
+      if (userExists) {
+        const thatUser = await User.findOne({ email: req.body.email })
+
+        const result = await bcrypt.compare(
+          req.body.password,
+          thatUser?.password,
         )
-        if (!emailRegex.test(req.body.email)) {
-            errorLogger.error('Unacceptable email')
-            return res.status(500).send(getErrorMessage('Unacceptable email'))
+        if (result) {
+          var foundUser = await User.findOne({ email: req.body.email })
+          var token = await jwt.sign(
+            { user: foundUser },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: '365d',
+            },
+          )
+          return res.status(200).json(token)
         } else {
-            var userExists = await User.exists({ email: req.body.email })
-
-            if (userExists) {
-                const thatUser = await User.findOne({ email: req.body.email })
-
-                const result = await bcrypt.compare(
-                    req.body.password,
-                    thatUser?.password,
-                )
-                if (result) {
-                    var foundUser = await User.findOne({ email: req.body.email })
-                    var token = await jwt.sign(
-                        { user: foundUser },
-                        process.env.JWT_SECRET,
-                        {
-                            expiresIn: '365d',
-                        },
-                    )
-                    return res.status(200).json(token)
-                } else {
-                    errorLogger.error(
-                        `Wrong password: ${req.body.password} or email: ${req.body.email}`,
-                    )
-                    return res.status(500).send(getErrorMessage('Wrong password or email'))
-                }
-            } else {
-                if (
-                    (!req.body.name && req.body.name === '') ||
-                    (!req.body.email && req.body.email === '') ||
-                    (!req.body.password && req.body.password === '')
-                ) {
-                    errorLogger.error('Need all required data')
-                    return res.status(500).send(getErrorMessage('Need all required data'))
-                } else {
-                    const user = await User.create({
-                        id: uuidv4(),
-                        firstName: req.body.name,
-                        email: req.body.email,
-                        image: 'https://www.habitune.net/image/empty-shell',
-                        password: await bcrypt.hash(req.body.password, 10),
-                        fcmToken: 'empty',
-                        userType: 'standart',
-                        theme: 'default',
-                    })
-                    await user.save()
-
-                    var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
-                        expiresIn: '365d',
-                    })
-                    return res.status(200).json(token)
-                }
-            }
+          errorLogger.error(
+            `Wrong password: ${req.body.password} or email: ${req.body.email}`,
+          )
+          return res
+            .status(500)
+            .send(getErrorMessage('Wrong password or email'))
         }
-    } catch (error) {
-        errorLogger.error(error)
-        return res.status(500).send(getErrorMessage(error))
+      } else {
+        if (
+          (!req.body.name && req.body.name === '') ||
+          (!req.body.email && req.body.email === '') ||
+          (!req.body.password && req.body.password === '')
+        ) {
+          errorLogger.error('Need all required data')
+          return res.status(500).send(getErrorMessage('Need all required data'))
+        } else {
+          const user = await User.create({
+            id: uuidv4(),
+            firstName: req.body.name,
+            email: req.body.email,
+            image: 'https://www.habitune.net/image/empty-shell',
+            password: await bcrypt.hash(req.body.password, 10),
+            fcmToken: 'empty',
+            userType: 'standart',
+            theme: 'default',
+          })
+          await user.save()
+
+          var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
+            expiresIn: '365d',
+          })
+          return res.status(200).json(token)
+        }
+      }
     }
+  } catch (error) {
+    errorLogger.error(error)
+    return res.status(500).send(getErrorMessage(error))
+  }
 }
