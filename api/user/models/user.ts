@@ -7,7 +7,7 @@ const userSchema = new Schema<IUser>({
     lastName: { type: String },
     email: { type: String, unique: true, index: true },
     image: { type: String },
-    habits: [mongoose.Schema.Types.ObjectId],
+    // habits: [mongoose.Schema.Types.ObjectId],
     friends: [
         {
             friend: mongoose.Schema.Types.ObjectId,
