@@ -24,7 +24,7 @@ import lowLimitter from './middlewares/lowLimitter'
 
 const admin = require('firebase-admin')
 
-import userRoutes from './user/user.routes'
+import userRoutes from './user/routes/index'
 import habitRoutes from './habit/habit.routes'
 import notificationRoutes from './notifications/notification.routes'
 

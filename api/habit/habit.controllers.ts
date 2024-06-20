@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { getErrorMessage } from '../utils/errors.util'
 import Habit from './habit.model'
-import User from '../user/user.model'
+import User from '../user/models/user'
 import Notification from '../notifications/notification.model'
 
 import { IReq } from '../middlewares/interfaces'

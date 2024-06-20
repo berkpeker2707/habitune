@@ -1,4 +1,4 @@
-import User from '../user/user.model'
+import User from '../user/models/user'
 import dotenv from 'dotenv'
 import { warnLogger, errorLogger } from '../middlewares/logger'
 

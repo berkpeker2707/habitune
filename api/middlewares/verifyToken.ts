@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-import User from '../user/user.model'
+import User from '../user/models/user'
 import { getErrorMessage } from '../utils/errors.util'
 import { errorLogger } from './logger'
 
