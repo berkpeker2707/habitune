@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express'
 import {
   createHabit,
   getAllHabits,
@@ -18,103 +18,99 @@ import {
   getAllHabitDatesDotsBoolean,
   getFriendHabitWeekStreakBoolean,
   getFriendHabitDatesDotsBoolean,
-} from "./habit.controllers";
+} from './habit.controllers'
 
-import verifyToken from "../middlewares/verifyToken";
-import defaultLimitter from "../middlewares/defaultLimitter";
+import verifyToken from '../middlewares/verifyToken'
+import defaultLimitter from '../middlewares/defaultLimitter'
 
-const habitRoutes = Router();
+const habitRoutes = Router()
 
-habitRoutes.post("/new", [verifyToken, defaultLimitter], createHabit);
+habitRoutes.post('/new', [verifyToken, defaultLimitter], createHabit)
 
-habitRoutes.get("/all", [verifyToken, defaultLimitter], getAllHabits);
-
-habitRoutes.get(
-  "/all/of/selected/user/:id",
-  [verifyToken, defaultLimitter],
-  getAllHabitsOfSelectedUser
-);
+habitRoutes.get('/all', [verifyToken, defaultLimitter], getAllHabits)
 
 habitRoutes.get(
-  "/all/today/:today",
+  '/all/of/selected/user/:id',
   [verifyToken, defaultLimitter],
-  getTodaysHabits
-);
+  getAllHabitsOfSelectedUser,
+)
 
 habitRoutes.get(
-  "/home/boolean/:today",
+  '/all/today/:today',
   [verifyToken, defaultLimitter],
-  getTodaysHabitsBoolean
-);
+  getTodaysHabits,
+)
 
 habitRoutes.get(
-  "/overview/streak/:today",
+  '/home/boolean/:today',
   [verifyToken, defaultLimitter],
-  getCurrentHabitWeekStreakBoolean
-);
+  getTodaysHabitsBoolean,
+)
 
 habitRoutes.get(
-  "/overview/dots/:today",
+  '/overview/streak/:today',
   [verifyToken, defaultLimitter],
-  getAllHabitDatesDotsBoolean
-);
+  getCurrentHabitWeekStreakBoolean,
+)
 
 habitRoutes.get(
-  "/friend/:friend/overview/streak/:today",
+  '/overview/dots/:today',
   [verifyToken, defaultLimitter],
-  getFriendHabitWeekStreakBoolean
-);
+  getAllHabitDatesDotsBoolean,
+)
 
 habitRoutes.get(
-  "/friend/:friend/overview/dots/:today",
+  '/friend/:friend/overview/streak/:today',
   [verifyToken, defaultLimitter],
-  getFriendHabitDatesDotsBoolean
-);
+  getFriendHabitWeekStreakBoolean,
+)
 
-habitRoutes.get("/single", [verifyToken, defaultLimitter], getSingleHabit);
+habitRoutes.get(
+  '/friend/:friend/overview/dots/:today',
+  [verifyToken, defaultLimitter],
+  getFriendHabitDatesDotsBoolean,
+)
 
-habitRoutes.delete("/delete/:id", [verifyToken, defaultLimitter], deleteHabit);
+habitRoutes.get('/single', [verifyToken, defaultLimitter], getSingleHabit)
+
+habitRoutes.delete('/delete/:id', [verifyToken, defaultLimitter], deleteHabit)
+
+habitRoutes.put('/update/name', [verifyToken, defaultLimitter], updateHabitName)
 
 habitRoutes.put(
-  "/update/name",
+  '/update/color',
   [verifyToken, defaultLimitter],
-  updateHabitName
-);
+  updateHabitColor,
+)
 
 habitRoutes.put(
-  "/update/color",
+  '/update/share',
   [verifyToken, defaultLimitter],
-  updateHabitColor
-);
+  updateHabitSharedWith,
+)
 
 habitRoutes.put(
-  "/update/share",
+  '/update/firstAndLastDate',
   [verifyToken, defaultLimitter],
-  updateHabitSharedWith
-);
+  updateHabitFirstAndLastDate,
+)
 
 habitRoutes.put(
-  "/update/firstAndLastDate",
+  '/update/date',
   [verifyToken, defaultLimitter],
-  updateHabitFirstAndLastDate
-);
+  updateHabitDates,
+)
 
 habitRoutes.put(
-  "/update/date",
+  '/update/completed/date',
   [verifyToken, defaultLimitter],
-  updateHabitDates
-);
+  updateHabitCompletedDate,
+)
 
 habitRoutes.put(
-  "/update/completed/date",
+  '/update/hidden',
   [verifyToken, defaultLimitter],
-  updateHabitCompletedDate
-);
+  updateHabitHidden,
+)
 
-habitRoutes.put(
-  "/update/hidden",
-  [verifyToken, defaultLimitter],
-  updateHabitHidden
-);
-
-export default habitRoutes;
+export default habitRoutes

@@ -1,24 +1,24 @@
-import { Router } from "express";
+import { Router } from 'express'
 import {
   notificationUpdateToken,
   notificationSend,
-} from "./notification.controllers";
+} from './notification.controllers'
 
-import verifyToken from "../middlewares/verifyToken";
-import defaultLimitter from "../middlewares/defaultLimitter";
+import verifyToken from '../middlewares/verifyToken'
+import defaultLimitter from '../middlewares/defaultLimitter'
 
-const notificationRoutes = Router();
-
-notificationRoutes.post(
-  "/update/token",
-  [verifyToken, defaultLimitter],
-  notificationUpdateToken
-);
+const notificationRoutes = Router()
 
 notificationRoutes.post(
-  "/update/push",
+  '/update/token',
   [verifyToken, defaultLimitter],
-  notificationSend
-);
+  notificationUpdateToken,
+)
 
-export default notificationRoutes;
+notificationRoutes.post(
+  '/update/push',
+  [verifyToken, defaultLimitter],
+  notificationSend,
+)
+
+export default notificationRoutes
