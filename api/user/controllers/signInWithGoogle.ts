@@ -2,22 +2,18 @@ import { Request, Response } from 'express'
 import { getErrorMessage } from '../../utils/errors.util'
 
 import User from '../models/user'
-import Notification from '../../notifications/notification.model'
-import Habit from '../../habit/habit.model'
 
-import { IReq } from '../../middlewares/interfaces'
 const jwt = require('jsonwebtoken')
 
 const {
-    cloudinaryUploadUserImg,
     cloudinaryDeleteUserImg,
 } = require('../../middlewares/cloudinary')
 
-// const path = require("path");
 
 import dotenv from 'dotenv'
-import { infoLogger, errorLogger } from '../../middlewares/logger'
-const bcrypt = require('bcrypt')
+import { errorLogger } from '../../middlewares/logger'
+const { v4: uuidv4 } = require('uuid');
+
 
 dotenv.config()
 
@@ -49,14 +45,10 @@ export const signInWithGoogle = async (
             var token = await jwt.sign({ user: foundUser }, process.env.JWT_SECRET, {
                 expiresIn: '365d',
             })
-
-            infoLogger.info(
-                `User invoked signInWithGoogle, token: ${token}`,
-            )
-            res.status(200).json(token)
+            return res.status(200).json(token)
         } else {
             const user = await User.create({
-                id: req.body.id,
+                id: uuidv4(),
                 firstName: req.body.name,
                 email: req.body.email,
                 image: req.body.picture,
@@ -69,13 +61,10 @@ export const signInWithGoogle = async (
             var token = await jwt.sign({ user: user }, process.env.JWT_SECRET, {
                 expiresIn: '365d',
             })
-            infoLogger.info(
-                `User invoked signInWithGoogle, token: ${token}`,
-            )
-            res.status(200).json(token)
+            return res.status(200).json(token)
         }
     } catch (error) {
         errorLogger.error(error)
-        res.status(500).send(getErrorMessage(error))
+        return res.status(500).send(getErrorMessage(error))
     }
 }

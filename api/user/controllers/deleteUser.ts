@@ -46,7 +46,7 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
             })
 
             infoLogger.info(`User ${req.user[0]._id} invoked deleteUser`)
-            res.status(200).json(loggedinUser)
+            return res.status(200).json(loggedinUser)
         } else {
             // console.log("No habit detected.");
 
@@ -71,10 +71,10 @@ export const deleteUser = async (req: IReq | any, res: Response) => {
                 userID: req.user[0]._id,
             })
             infoLogger.info(`User ${req.user[0]._id} invoked deleteUser`)
-            res.status(200).json(loggedinUser)
+            return res.status(200).json(loggedinUser)
         }
     } catch (error) {
         errorLogger.error(error)
-        res.status(500).send(getErrorMessage(error))
+        return res.status(500).send(getErrorMessage(error))
     }
 }
