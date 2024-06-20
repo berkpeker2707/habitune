@@ -1,26 +1,14 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { getErrorMessage } from '../../utils/errors.util'
 
 import User from '../models/user'
-import Notification from '../../notifications/notification.model'
-import Habit from '../../habit/habit.model'
 
 import { IReq } from '../../middlewares/interfaces'
-const jwt = require('jsonwebtoken')
-
-const {
-    cloudinaryUploadUserImg,
-    cloudinaryDeleteUserImg,
-} = require('../../middlewares/cloudinary')
-
-// const path = require("path");
 
 import dotenv from 'dotenv'
-import { infoLogger, errorLogger } from '../../middlewares/logger'
-const bcrypt = require('bcrypt')
+import { errorLogger } from '../../middlewares/logger'
 
 dotenv.config()
-
 
 export const sendFeedback = async (req: IReq | any, res: Response) => {
     try {
@@ -31,7 +19,7 @@ export const sendFeedback = async (req: IReq | any, res: Response) => {
 
             if (currentUser && currentUser.feedback.length >= 10) {
                 errorLogger.error('Feedback limit reached (10 items)')
-                res
+                return res
                     .status(500)
                     .send(getErrorMessage('Feedback limit reached (10 items)'))
             }
@@ -41,16 +29,15 @@ export const sendFeedback = async (req: IReq | any, res: Response) => {
                 { $push: { feedback: feedback } },
                 { new: true },
             )
-            infoLogger.info(`User ${req.user[0]._id} invoked sendFeedback`)
-            res.status(200).json(loggedinUser)
+            return res.status(200).json(loggedinUser)
         } else {
             errorLogger.error('Feedback limit 500 character reached')
-            res
+            return res
                 .status(500)
                 .send(getErrorMessage('Feedback limit 500 character reached'))
         }
     } catch (error) {
         errorLogger.error(error)
-        res.status(500).send(getErrorMessage(error))
+        return res.status(500).send(getErrorMessage(error))
     }
 }
