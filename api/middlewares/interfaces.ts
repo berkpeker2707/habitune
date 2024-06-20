@@ -3,7 +3,7 @@ import { Types } from 'mongoose'
 
 // interface representing User
 export interface IUser {
-  id: number
+  id: string
   firstName: string
   lastName: string
   email: string

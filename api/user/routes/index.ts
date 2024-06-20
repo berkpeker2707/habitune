@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import {
-    signInWithGoogleController,
-    signInController,
+    signInWithGoogle,
+    signIn,
     fetchCurrentUserProfile,
     fetchUserProfile,
     updateCurrentUserImage,
@@ -18,9 +18,9 @@ import lowLimitter from '../../middlewares/lowLimitter'
 
 const userRoutes = Router()
 
-userRoutes.post('/google', lowLimitter, signInWithGoogleController)
+userRoutes.post('/google', lowLimitter, signInWithGoogle)
 
-userRoutes.post('/signin', lowLimitter, signInController)
+userRoutes.post('/signin', lowLimitter, signIn)
 
 userRoutes.get(
     '/profile/:today',

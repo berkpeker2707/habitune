@@ -1,5 +1,5 @@
-export { signInWithGoogleController } from "./signInWithGoogleController"
-export { signInController } from "./signInController"
+export { signInWithGoogle } from "./signInWithGoogle"
+export { signIn } from "./signIn"
 export { fetchCurrentUserProfile } from "./fetchCurrentUserProfile"
 export { fetchUserProfile } from "./fetchUserProfile"
 export { sendFriendship } from "./sendFriendship"

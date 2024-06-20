@@ -21,7 +21,7 @@ const bcrypt = require('bcrypt')
 
 dotenv.config()
 
-export const signInWithGoogleController = async (
+export const signInWithGoogle = async (
     req: Request,
     res: Response,
 ) => {
@@ -51,7 +51,7 @@ export const signInWithGoogleController = async (
             })
 
             infoLogger.info(
-                `User invoked signInWithGoogleController, token: ${token}`,
+                `User invoked signInWithGoogle, token: ${token}`,
             )
             res.status(200).json(token)
         } else {
@@ -70,7 +70,7 @@ export const signInWithGoogleController = async (
                 expiresIn: '365d',
             })
             infoLogger.info(
-                `User invoked signInWithGoogleController, token: ${token}`,
+                `User invoked signInWithGoogle, token: ${token}`,
             )
             res.status(200).json(token)
         }
