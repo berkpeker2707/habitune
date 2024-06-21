@@ -1,5 +1,4 @@
 import { Request } from 'express'
-import { Types } from 'mongoose'
 
 // interface representing User
 export interface IUser {
@@ -8,8 +7,8 @@ export interface IUser {
   lastName: string
   email: string
   image: string
-  habits: Types.ObjectId[]
-  friends: [{ friend: Types.ObjectId; pending: boolean; paired: boolean }]
+  habits: [{ type: String }],
+  friends: [{ friend: string; pending: boolean; paired: boolean }]
   password: any
   fcmToken: string
   feedback: Array<string>
@@ -26,6 +25,7 @@ export interface IUser {
 }
 
 export interface IHabit {
+  _id: string
   owner: string
   name: string
   color: string

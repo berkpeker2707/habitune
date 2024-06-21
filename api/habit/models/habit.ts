@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose'
 import { IHabit } from '../../middlewares/interfaces'
 
 const habitSchema = new Schema<IHabit>({
+    _id: { type: String },
     owner: { type: String },
     name: { type: String },
     color: { type: String },

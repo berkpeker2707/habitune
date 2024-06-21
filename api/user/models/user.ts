@@ -13,7 +13,7 @@ const userSchema = new Schema<IUser>({
   lastName: { type: String },
   email: { type: String, unique: true, index: true },
   image: { type: String },
-  habits: [mongoose.Schema.Types.ObjectId],
+  habits: [{ type: String }],
   friends: [friendSchema],
   password: { type: String },
   fcmToken: { type: String },
