@@ -8,7 +8,7 @@ const notificationSchema = new Schema<any>({
     // index: true,
   },
   habitID: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'Habit',
     // unique: true,
     // index: true,

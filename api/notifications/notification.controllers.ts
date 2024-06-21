@@ -1,12 +1,10 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { getErrorMessage } from '../utils/errors.util'
 import Notification from './notification.model'
 import User from '../user/models/user'
 
-import { IReq } from '../middlewares/interfaces'
-
 import dotenv from 'dotenv'
-import { infoLogger, errorLogger } from '../middlewares/logger'
+import { errorLogger } from '../middlewares/logger'
 
 dotenv.config()
 
@@ -18,11 +16,10 @@ export const notificationUpdateToken = async (req: any, res: Response) => {
       fcmToken: req.body.token,
     })
 
-    infoLogger.info(`User ${req.user[0]._id} invoked notificationUpdateToken`)
-    res.status(200).json(updatedUser)
+    return res.status(200).json(updatedUser)
   } catch (error) {
     errorLogger.error(error)
-    res.status(500).send(getErrorMessage(error))
+    return res.status(500).send(getErrorMessage(error))
   }
 }
 
@@ -70,11 +67,10 @@ export const notificationSend = async (req: any, res: Response) => {
         notificationHabitName: req.body.habitName,
       })
       .exec()
-    infoLogger.info(`User ${req.user[0]._id} invoked notificationSend`)
-    res.status(200).json(notification)
+    return res.status(200).json(notification)
   } catch (error) {
     // console.log("error controller noti: ", error);
     errorLogger.error(error)
-    res.status(500).send(getErrorMessage(error))
+    return res.status(500).send(getErrorMessage(error))
   }
 }

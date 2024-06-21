@@ -2,7 +2,7 @@ import { Response } from 'express'
 import { getErrorMessage } from '../../utils/errors.util'
 
 import User from '../models/user'
-import Habit from '../../habit/habit.model'
+import Habit from '../../habit/models/habit'
 
 import { IReq } from '../../middlewares/interfaces'
 
