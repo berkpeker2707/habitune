@@ -11,5 +11,12 @@
       "src": "/(.*)",
       "dest": "dist/server.js"
     }
+  ],
+
+  "crons": [
+    {
+      "path": "/api/cronjob",
+      "schedule": "0 */6 * * *"
+    }
   ]
 }
