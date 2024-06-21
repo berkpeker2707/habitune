@@ -7,6 +7,7 @@ import { IReq } from '../../middlewares/interfaces'
 
 import dotenv from 'dotenv'
 import { errorLogger } from '../../middlewares/logger'
+import calculateUpcomingDates from '../../middlewares/calculateUpcomingDates'
 const { v4: uuidv4 } = require('uuid')
 
 dotenv.config()
@@ -31,6 +32,7 @@ export const createHabit = async (req: IReq | any, res: Response) => {
                 firstDate: req.body.firstDate,
                 lastDate: req.body.lastDate,
                 dates: [],
+                upcomingDates: [],
                 isHidden: false,
             })
 
@@ -42,10 +44,27 @@ export const createHabit = async (req: IReq | any, res: Response) => {
                 { upsert: true },
             )
 
-            const newHabitItem = await newHabit
+            var newHabitItem = await newHabit
+                .updateOne({
+                    $push: {
+                        upcomingDates: [
+                            ...(await calculateUpcomingDates(
+                                req.body.firstDate,
+                                req.body.lastDate,
+                                req.body.upcomingDates
+                                    ? req.body.upcomingDates
+                                    : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                            )),
+                        ],
+                    },
+                })
                 .populate({ path: 'sharedWith', model: 'User' })
+                .slice('dates', -10) //last 10 numbers of the dates array
+                .slice('upcomingDates', -10)
+                .exec()
 
-            return res.status(200).json(newHabitItem)
+            // console.log("newHabitItem: ", newHabitItem);
+            return res.status(200).json(newHabit)
         }
     } catch (error) {
         errorLogger.error(error)
