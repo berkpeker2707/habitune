@@ -1,15 +1,11 @@
-import { Request, Response } from 'express'
-import { getErrorMessage } from '../../utils/errors.util'
+import { Response } from 'express'
+
 import Habit from '../models/habit'
-import User from '../../user/models/user'
-import Notification from '../../notifications/notification.model'
+
 
 import { IReq } from '../../middlewares/interfaces'
 
 import dotenv from 'dotenv'
-import { infoLogger, errorLogger } from '../../middlewares/logger'
-import calculateUpcomingDates from '../../middlewares/calculateUpcomingDates'
-import isInCompletedDates from '../../middlewares/isInCompletedDates'
 import isInArray from '../../middlewares/isInArray'
 
 dotenv.config()
@@ -126,5 +122,5 @@ export const getAllHabitDatesDotsBoolean = async (
             ),
         )
     }
-    res.status(200).json(allHabitDatesDotsData)
+    return res.status(200).json(allHabitDatesDotsData)
 }

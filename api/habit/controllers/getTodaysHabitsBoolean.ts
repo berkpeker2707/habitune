@@ -1,16 +1,15 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { getErrorMessage } from '../../utils/errors.util'
 import Habit from '../models/habit'
-import User from '../../user/models/user'
-import Notification from '../../notifications/notification.model'
+
 
 import { IReq } from '../../middlewares/interfaces'
 
 import dotenv from 'dotenv'
-import { infoLogger, errorLogger } from '../../middlewares/logger'
-import calculateUpcomingDates from '../../middlewares/calculateUpcomingDates'
+import { errorLogger } from '../../middlewares/logger'
+
 import isInCompletedDates from '../../middlewares/isInCompletedDates'
-import isInArray from '../../middlewares/isInArray'
+
 
 dotenv.config()
 
@@ -37,10 +36,10 @@ export const getTodaysHabitsBoolean = async (
             },
         )
 
-        infoLogger.info(`User ${req.user[0]._id} invoked getTodaysHabitsBoolean`)
-        res.status(200).json(todaysHabitBooleanData)
+
+        return res.status(200).json(todaysHabitBooleanData)
     } catch (error) {
         errorLogger.error(error)
-        res.status(500).send(getErrorMessage(error))
+        return res.status(500).send(getErrorMessage(error))
     }
 }
