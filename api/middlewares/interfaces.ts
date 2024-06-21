@@ -7,7 +7,7 @@ export interface IUser {
   lastName: string
   email: string
   image: string
-  habits: [{ type: String }],
+  habits: [{ type: String }]
   friends: [{ friend: string; pending: boolean; paired: boolean }]
   password: any
   fcmToken: string
