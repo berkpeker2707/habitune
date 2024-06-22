@@ -20,7 +20,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // };
 // export default isInCompletedDates;
 const isInCompletedDates = (array, value) => {
-    return array.some((item) => {
+    return array.some(item => {
         var alreadyStoredDate = new Date(item);
         var dateToBeChecked = new Date(value);
         const msBetweenDates = Math.abs(alreadyStoredDate.getTime() - dateToBeChecked.getTime());
@@ -39,3 +39,4 @@ const isInCompletedDates = (array, value) => {
     });
 };
 exports.default = isInCompletedDates;
+//# sourceMappingURL=isInCompletedDates.js.map

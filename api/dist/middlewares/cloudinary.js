@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const cloudinary = require("cloudinary");
-const path = require("path");
+const cloudinary = require('cloudinary');
+const path = require('path');
 const logger_1 = require("./logger");
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -20,25 +20,25 @@ cloudinary.config({
 const cloudinaryUploadUserImg = (fileToUpload, id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // console.log("publish");
-        const imageFormats = [".jpg", ".jpeg", ".jpe", ".tiff", ".tif", ".png"];
+        const imageFormats = ['.jpg', '.jpeg', '.jpe', '.tiff', '.tif', '.png'];
         const extension = path.extname(fileToUpload);
-        const type = imageFormats.includes(extension) ? "photos" : "Wrong type";
-        if (type === "Wrong type")
-            return "Wrong type";
+        const type = imageFormats.includes(extension) ? 'photos' : 'Wrong type';
+        if (type === 'Wrong type')
+            return 'Wrong type';
         let promise = new Promise((resolve, reject) => {
             cloudinary.v2.uploader
                 .upload(fileToUpload, {
-                resource_type: "auto",
+                resource_type: 'auto',
                 folder: `habitune/user/${type}`,
                 tags: [`user${type}`, id],
                 height: 300,
                 width: 300,
-                crop: "fill",
+                crop: 'fill',
                 async: false,
-                end_offset: "15",
+                end_offset: '15',
             })
                 .then((result) => {
-                if (result && result.hasOwnProperty("secure_url")) {
+                if (result && result.hasOwnProperty('secure_url')) {
                     // if secure_url exists
                     // console.log(result);
                     logger_1.infoLogger.info(`User ${id} invoked cloudinaryUploadUserImg`);
@@ -62,8 +62,8 @@ const cloudinaryDeleteUserImg = (public_id) => __awaiter(void 0, void 0, void 0,
     var _a;
     try {
         // console.log("delete");
-        const getPublicId = (_a = public_id.split("/").pop()) === null || _a === void 0 ? void 0 : _a.split(".")[0];
-        var imagePath = "habitune/user/photos/" + getPublicId;
+        const getPublicId = (_a = public_id.split('/').pop()) === null || _a === void 0 ? void 0 : _a.split('.')[0];
+        var imagePath = 'habitune/user/photos/' + getPublicId;
         const data = yield cloudinary.v2.uploader.destroy(imagePath, (error, result) => {
             logger_1.infoLogger.info(`Photo ${getPublicId} deleted, invoked cloudinaryDeleteUserImg`);
             // console.log(result);
@@ -81,3 +81,4 @@ module.exports = {
     cloudinaryUploadUserImg,
     cloudinaryDeleteUserImg,
 };
+//# sourceMappingURL=cloudinary.js.map

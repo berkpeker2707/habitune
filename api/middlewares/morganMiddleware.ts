@@ -1,13 +1,13 @@
-import morgan, { StreamOptions } from "morgan";
+import morgan, { StreamOptions } from 'morgan'
 
-import { httpLogger } from "./logger";
+import { httpLogger } from './logger'
 
 // Override the stream method by telling
 // Morgan to use our custom logger instead of the console.log.
 const stream: StreamOptions = {
   // Use the http severity
-  write: (message) => httpLogger.http(message),
-};
+  write: message => httpLogger.http(message),
+}
 
 // Skip all the Morgan http log if the
 // application is not running in development mode.
@@ -26,13 +26,13 @@ const morganMiddleware = morgan(
   // defined inside the Morgan library.
   // You can create your custom token to show what do you want from a request.
   // ":remote-addr :method :url :status :res[content-length] - :response-time ms",
-  ":remote-addr - :remote-user [:date] :method :url HTTP/:http-version :status :res[content-length]",
+  ':remote-addr - :remote-user [:date] :method :url HTTP/:http-version :status :res[content-length]',
   // Options: in this case, I overwrote the stream and the skip logic.
   // See the methods above.
   {
     stream,
     // skip,
-  }
-);
+  },
+)
 
-export default morganMiddleware;
+export default morganMiddleware

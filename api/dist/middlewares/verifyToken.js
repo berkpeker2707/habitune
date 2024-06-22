@@ -12,29 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const user_model_1 = __importDefault(require("../user/user.model"));
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const user_1 = __importDefault(require("../user/models/user"));
 const errors_util_1 = require("../utils/errors.util");
 const logger_1 = require("./logger");
 const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         var jwtS = process.env.JWT_SECRET;
-        const bearerHeader = req.headers["authorization"];
-        const token = bearerHeader.split(" ")[1];
+        const bearerHeader = req.headers['authorization'];
+        const token = bearerHeader.split(' ')[1];
         const decoded = jwt.verify(token, jwtS);
         if (!decoded) {
-            logger_1.errorLogger.error("Unauthorized");
-            res.status(500).send((0, errors_util_1.getErrorMessage)("Unauthorized"));
+            logger_1.errorLogger.error('Unauthorized');
+            res.status(500).send((0, errors_util_1.getErrorMessage)('Unauthorized'));
         }
-        const user = yield user_model_1.default.find({ email: decoded.user.email });
+        const user = yield user_1.default.find({ email: decoded.user.email });
         req.user = user;
         next();
     }
     catch (error) {
-        logger_1.errorLogger.error("token error: ", error);
+        logger_1.errorLogger.error('token error: ', error);
         // console.log("token error: ", error);
         res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.default = verifyToken;
+//# sourceMappingURL=verifyToken.js.map

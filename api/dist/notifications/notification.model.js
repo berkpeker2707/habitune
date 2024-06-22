@@ -25,14 +25,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 const mongoose_1 = __importStar(require("mongoose"));
 const notificationSchema = new mongoose_1.Schema({
     userID: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
+        type: String,
+        ref: 'User',
         // unique: true,
         // index: true,
     },
     habitID: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Habit",
+        type: String,
+        ref: 'Habit',
         // unique: true,
         // index: true,
     },
@@ -65,7 +65,8 @@ const notificationSchema = new mongoose_1.Schema({
         type: Date,
         // default: () => new Date(Date.now() + 1 * 60 * 1000), //1 minutes in milliseconds
         default: () => new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-        index: { expires: "5m" }, //create a TTL (Time-To-Live) index, where documents expire after 5 minute
+        index: { expires: '5m' }, //create a TTL (Time-To-Live) index, where documents expire after 5 minute
     },
 });
-module.exports = mongoose_1.default.model("Notification", notificationSchema);
+module.exports = mongoose_1.default.model('Notification', notificationSchema);
+//# sourceMappingURL=notification.model.js.map

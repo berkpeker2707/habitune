@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const isInThreeToFiveDays = (array, value) => {
-    return array.some((item) => {
+    return array.some(item => {
         var alreadyStoredDate = new Date(item);
         var dateToBeChecked = new Date(value);
         const msBetweenDates = Math.abs(alreadyStoredDate.getTime() - dateToBeChecked.getTime());
@@ -16,3 +16,4 @@ const isInThreeToFiveDays = (array, value) => {
     });
 };
 exports.default = isInThreeToFiveDays;
+//# sourceMappingURL=isInThreeToFiveDays.js.map

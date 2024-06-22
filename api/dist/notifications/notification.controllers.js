@@ -15,22 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.notificationSend = exports.notificationUpdateToken = void 0;
 const errors_util_1 = require("../utils/errors.util");
 const notification_model_1 = __importDefault(require("./notification.model"));
-const user_model_1 = __importDefault(require("../user/user.model"));
+const user_1 = __importDefault(require("../user/models/user"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = require("../middlewares/logger");
 dotenv_1.default.config();
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 const notificationUpdateToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const updatedUser = yield user_model_1.default.findByIdAndUpdate(req.user[0]._id, {
+        const updatedUser = yield user_1.default.findByIdAndUpdate(req.user[0]._id, {
             fcmToken: req.body.token,
         });
-        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked notificationUpdateToken`);
-        res.status(200).json(updatedUser);
+        return res.status(200).json(updatedUser);
     }
     catch (error) {
         logger_1.errorLogger.error(error);
-        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.notificationUpdateToken = notificationUpdateToken;
@@ -72,13 +71,13 @@ const notificationSend = (req, res) => __awaiter(void 0, void 0, void 0, functio
             notificationHabitName: req.body.habitName,
         })
             .exec();
-        logger_1.infoLogger.info(`User ${req.user[0]._id} invoked notificationSend`);
-        res.status(200).json(notification);
+        return res.status(200).json(notification);
     }
     catch (error) {
         // console.log("error controller noti: ", error);
         logger_1.errorLogger.error(error);
-        res.status(500).send((0, errors_util_1.getErrorMessage)(error));
+        return res.status(500).send((0, errors_util_1.getErrorMessage)(error));
     }
 });
 exports.notificationSend = notificationSend;
+//# sourceMappingURL=notification.controllers.js.map
