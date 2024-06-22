@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1018578640461",
+    "project_id": "habitune-395006",
+    "storage_bucket": "habitune-395006.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018578640461:android:c6c66c57f660e419104604",
+        "android_client_info": {
+          "package_name": "com.thelittleteaclipper.habitune"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1018578640461-qcuhsngal9ijgmhl4gkbi7kqi6ilo6ca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thelittleteaclipper.habitune",
+            "certificate_hash": "dcc4faec5fa5f068302cbfad5918548ff42ebcd6"
+          }
+        },
+        {
+          "client_id": "1018578640461-408uqjlu20adjmfobm3ibajmfh1j6kkt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlYiTrNVGtkCJ64JE7_NmJE176J_hoBj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1018578640461-408uqjlu20adjmfobm3ibajmfh1j6kkt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

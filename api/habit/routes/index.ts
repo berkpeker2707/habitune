@@ -18,10 +18,10 @@ import {
   getAllHabitDatesDotsBoolean,
   getFriendHabitWeekStreakBoolean,
   getFriendHabitDatesDotsBoolean,
-} from './habit.controllers'
+} from '../controllers/index'
 
-import verifyToken from '../middlewares/verifyToken'
-import defaultLimitter from '../middlewares/defaultLimitter'
+import verifyToken from '../../middlewares/verifyToken'
+import defaultLimitter from '../../middlewares/defaultLimitter'
 
 const habitRoutes = Router()
 
