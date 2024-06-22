@@ -6,17 +6,17 @@
   "scripts": {
     "build": "rimraf dist && tsc && npm run copyHTML && npm run copyStatic && npm run copyRobots",
     "copyLogs": "copyfiles 'logs/**' dist",
-    "copyHTML": "copyfiles 'view/**' dist",
-    "copyStatic": "copyfiles 'public/**' dist",
-    "copyRobots": "copyfiles robots.txt dist",
+    "copyHTML": "copyfiles 'src/view/**' dist",
+    "copyStatic": "copyfiles 'src/public/**' dist",
+    "copyRobots": "copyfiles src/robots.txt dist",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "lint": "npx eslint **/*.ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "test": "jest --watchAll",
-    "api": "nodemon server.ts",
+    "api": "nodemon src/server.ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
-    "start:dev": "tsc-watch --onSuccess 'node --inspect=0.0.0.0:5858 dist/src/server.js'"
+    "start:dev": "tsc-watch --onSuccess 'node --inspect=0.0.0.0:5858 dist/server.js'"
   },
   "pre-commit": [
     "ts.check",
