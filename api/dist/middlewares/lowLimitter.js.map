@@ -1,0 +1,1 @@
+{"version":3,"file":"lowLimitter.js","sourceRoot":"","sources":["../../middlewares/lowLimitter.ts"],"names":[],"mappings":";;;;;AAAA,4EAA0C;AAE1C,4CAA4C;AAC5C,MAAM,WAAW,GAAG,IAAA,4BAAS,EAAC;IAC5B,QAAQ,EAAE,EAAE,GAAG,EAAE,GAAG,IAAI;IACxB,GAAG,EAAE,EAAE;IACP,eAAe,EAAE,IAAI;IACrB,aAAa,EAAE,KAAK,EAAE,sCAAsC;CAC7D,CAAC,CAAA;AAEF,kBAAe,WAAW,CAAA"}

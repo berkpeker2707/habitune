@@ -1,0 +1,1 @@
+{"version":3,"file":"defaultLimitter.js","sourceRoot":"","sources":["../../middlewares/defaultLimitter.ts"],"names":[],"mappings":";;;;;AAAA,4EAA0C;AAE1C,6CAA6C;AAC7C,MAAM,eAAe,GAAG,IAAA,4BAAS,EAAC;IAChC,QAAQ,EAAE,EAAE,GAAG,EAAE,GAAG,IAAI;IACxB,GAAG,EAAE,GAAG;IACR,eAAe,EAAE,IAAI;IACrB,aAAa,EAAE,KAAK,EAAE,sCAAsC;CAC7D,CAAC,CAAA;AAEF,kBAAe,eAAe,CAAA"}
