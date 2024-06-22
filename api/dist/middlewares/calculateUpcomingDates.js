@@ -14,7 +14,7 @@ const calculateUpcomingDates = (startTime, endstartTime, reqBodyDays) => __await
     var endstartTimeStamp = new Date(endstartTime);
     // var reqBodyDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     //regex for the dates taken from body
-    var reqBodyDaysInFormat = reqBodyDays.join("|");
+    var reqBodyDaysInFormat = reqBodyDays.join('|');
     var weekDays = reqBodyDaysInFormat;
     var re = new RegExp(weekDays);
     // calculating specific day time starts
@@ -40,7 +40,8 @@ const calculateUpcomingDates = (startTime, endstartTime, reqBodyDays) => __await
             result.push(new Date(tempDate));
         tempDate.setDate(tempDate.getDate() + 1);
     }
-    result.forEach((day) => day.getTime() + dayTimeInMilliseconds);
+    result.forEach(day => day.getTime() + dayTimeInMilliseconds);
     return result;
 });
 exports.default = calculateUpcomingDates;
+//# sourceMappingURL=calculateUpcomingDates.js.map

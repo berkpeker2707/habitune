@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.notifyUsersNinetyDaysLater = exports.notifyUsersThirtyDaysLater = exports.notifyUsersSevenDaysLater = exports.notifyUsersThreeDaysLater = exports.notifyUsersDaily = exports.notifyUser = void 0;
-const user_model_1 = __importDefault(require("../user/user.model"));
+const user_1 = __importDefault(require("../user/models/user"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const logger_1 = require("../middlewares/logger");
 const isInYesterday_1 = __importDefault(require("../middlewares/isInYesterday"));
@@ -23,7 +23,7 @@ const isInThirtyToSixtyDays_1 = __importDefault(require("../middlewares/isInThir
 const isInNinetyToThreeHundredDays_1 = __importDefault(require("../middlewares/isInNinetyToThreeHundredDays"));
 dotenv_1.default.config();
 // const schedule = require("node-schedule");
-const admin = require("firebase-admin");
+const admin = require('firebase-admin');
 const notifyUser = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield step1();
@@ -32,10 +32,10 @@ const notifyUser = () => __awaiter(void 0, void 0, void 0, function* () {
         yield step4();
         yield step5();
         yield step6();
-        logger_1.warnLogger.info("notifyUser steps completed successfully");
+        logger_1.warnLogger.info('notifyUser steps completed successfully');
     }
     catch (error) {
-        logger_1.errorLogger.error("Error in sequential steps:", error);
+        logger_1.errorLogger.error('Error in sequential steps:', error);
     }
 });
 exports.notifyUser = notifyUser;
@@ -72,16 +72,16 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        logger_1.warnLogger.info("reminder notifyUsersDaily started");
+        logger_1.warnLogger.info('reminder notifyUsersDaily started');
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
-        var selectUsers = yield user_model_1.default.find({
+        var selectUsers = yield user_1.default.find({
             dayOneNotificationSent: false,
             dayThreeNotificationSent: false,
             daySevenNotificationSent: false,
             dayThirtyNotificationSent: false,
             dayNinetyNotificationSent: false,
-        }).select("lastHabitUpdated fcmToken");
+        }).select('lastHabitUpdated fcmToken');
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
         //   selectUsers
@@ -96,12 +96,12 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
         //users who did not loggedin within last 24 hour
         const filteredUsersFCM = selectUsers
             .filter((user, index) => result[index])
-            .map((user) => user.fcmToken);
+            .map(user => user.fcmToken);
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
         //   filteredUsersFCM
         // );
-        var fcmTokensBelongedToUpdated = yield user_model_1.default.updateMany({
+        var fcmTokensBelongedToUpdated = yield user_1.default.updateMany({
             fcmToken: filteredUsersFCM,
         }, { $set: { dayOneNotificationSent: true } });
         // console.log(
@@ -110,25 +110,25 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
         // );
         const randomNotification = [
             {
-                title: "Daily Delight 🌈",
-                body: "Just a friendly reminder: Progress, no matter how small, is still progress. Keep going and embrace the journey! 🚀",
+                title: 'Daily Delight 🌈',
+                body: 'Just a friendly reminder: Progress, no matter how small, is still progress. Keep going and embrace the journey! 🚀',
             },
             ,
             {
-                title: "Radiant Resilience 🌻",
-                body: "Life may have its ups and downs, but so do the paths to success. Your resilience is your strength. Keep pressing forward! 💪",
+                title: 'Radiant Resilience 🌻',
+                body: 'Life may have its ups and downs, but so do the paths to success. Your resilience is your strength. Keep pressing forward! 💪',
             },
             {
-                title: "Daily Discovery 🌼",
-                body: "Every day is a chance to discover the extraordinary within the ordinary. Seize the day, and let your habits guide you toward greatness! 🌟",
+                title: 'Daily Discovery 🌼',
+                body: 'Every day is a chance to discover the extraordinary within the ordinary. Seize the day, and let your habits guide you toward greatness! 🌟',
             },
             {
-                title: "Endless Possibilities 🌌",
+                title: 'Endless Possibilities 🌌',
                 body: "Embrace each moment as an opportunity for growth. Your journey is unique, and you're doing fantastic. Believe in yourself! 🌠",
             },
             {
-                title: "Fresh Start 🌱",
-                body: "As the day winds down, remember: Your efforts matter. Tomorrow is another chance to grow. 🌱",
+                title: 'Fresh Start 🌱',
+                body: 'As the day winds down, remember: Your efforts matter. Tomorrow is another chance to grow. 🌱',
             },
         ];
         const notificationContent = randomNotification[Math.floor(Math.random() * randomNotification.length)];
@@ -141,7 +141,7 @@ const notifyUsersDaily = () => __awaiter(void 0, void 0, void 0, function* () {
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.warnLogger.info("reminder notifyUsersDaily ended: ", notificationResponse);
+            logger_1.warnLogger.info('reminder notifyUsersDaily ended: ', notificationResponse);
         }
     }
     catch (error) {
@@ -159,16 +159,16 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        logger_1.warnLogger.info("reminder notifyUsersThreeDaysLater started ");
+        logger_1.warnLogger.info('reminder notifyUsersThreeDaysLater started ');
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
-        var selectUsers = yield user_model_1.default.find({
+        var selectUsers = yield user_1.default.find({
             dayOneNotificationSent: true,
             dayThreeNotificationSent: false,
             daySevenNotificationSent: false,
             dayThirtyNotificationSent: false,
             dayNinetyNotificationSent: false,
-        }).select("lastHabitUpdated fcmToken");
+        }).select('lastHabitUpdated fcmToken');
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
         //   selectUsers
@@ -183,12 +183,12 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
         //users who did not loggedin within last 3 to 5 days
         const filteredUsersFCM = selectUsers
             .filter((user, index) => result[index])
-            .map((user) => user.fcmToken);
+            .map(user => user.fcmToken);
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
         //   filteredUsersFCM
         // );
-        var fcmTokensBelongedToUpdated = yield user_model_1.default.updateMany({
+        var fcmTokensBelongedToUpdated = yield user_1.default.updateMany({
             fcmToken: filteredUsersFCM,
         }, { $set: { dayThreeNotificationSent: true } });
         // console.log(
@@ -204,7 +204,7 @@ const notifyUsersThreeDaysLater = () => __awaiter(void 0, void 0, void 0, functi
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.warnLogger.info("reminder notifyUsersThreeDaysLater ended: ", notificationResponse);
+            logger_1.warnLogger.info('reminder notifyUsersThreeDaysLater ended: ', notificationResponse);
         }
     }
     catch (error) {
@@ -222,16 +222,16 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        logger_1.warnLogger.info("reminder notifyUsersSevenDaysLater started");
+        logger_1.warnLogger.info('reminder notifyUsersSevenDaysLater started');
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
-        var selectUsers = yield user_model_1.default.find({
+        var selectUsers = yield user_1.default.find({
             dayOneNotificationSent: true,
             dayThreeNotificationSent: true,
             daySevenNotificationSent: false,
             dayThirtyNotificationSent: false,
             dayNinetyNotificationSent: false,
-        }).select("lastHabitUpdated fcmToken");
+        }).select('lastHabitUpdated fcmToken');
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
         //   selectUsers
@@ -246,12 +246,12 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
         //users who did not loggedin within last 3 to 5 days
         const filteredUsersFCM = selectUsers
             .filter((user, index) => result[index])
-            .map((user) => user.fcmToken);
+            .map(user => user.fcmToken);
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
         //   filteredUsersFCM
         // );
-        var fcmTokensBelongedToUpdated = yield user_model_1.default.updateMany({
+        var fcmTokensBelongedToUpdated = yield user_1.default.updateMany({
             fcmToken: filteredUsersFCM,
         }, { $set: { daySevenNotificationSent: true } });
         // console.log(
@@ -267,7 +267,7 @@ const notifyUsersSevenDaysLater = () => __awaiter(void 0, void 0, void 0, functi
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.warnLogger.info("reminder notifyUsersSevenDaysLater ended: ", notificationResponse);
+            logger_1.warnLogger.info('reminder notifyUsersSevenDaysLater ended: ', notificationResponse);
         }
     }
     catch (error) {
@@ -285,16 +285,16 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        logger_1.warnLogger.info("reminder notifyUsersThirtyDaysLater started");
+        logger_1.warnLogger.info('reminder notifyUsersThirtyDaysLater started');
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
-        var selectUsers = yield user_model_1.default.find({
+        var selectUsers = yield user_1.default.find({
             dayOneNotificationSent: true,
             dayThreeNotificationSent: true,
             daySevenNotificationSent: true,
             dayThirtyNotificationSent: false,
             dayNinetyNotificationSent: false,
-        }).select("lastHabitUpdated fcmToken");
+        }).select('lastHabitUpdated fcmToken');
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
         //   selectUsers
@@ -309,12 +309,12 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
         //users who did not loggedin within last 3 to 5 days
         const filteredUsersFCM = selectUsers
             .filter((user, index) => result[index])
-            .map((user) => user.fcmToken);
+            .map(user => user.fcmToken);
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
         //   filteredUsersFCM
         // );
-        var fcmTokensBelongedToUpdated = yield user_model_1.default.updateMany({
+        var fcmTokensBelongedToUpdated = yield user_1.default.updateMany({
             fcmToken: filteredUsersFCM,
         }, { $set: { dayThirtyNotificationSent: true } });
         // console.log(
@@ -330,7 +330,7 @@ const notifyUsersThirtyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.warnLogger.info("reminder notifyUsersThirtyDaysLater ended: ", notificationResponse);
+            logger_1.warnLogger.info('reminder notifyUsersThirtyDaysLater ended: ', notificationResponse);
         }
     }
     catch (error) {
@@ -348,16 +348,16 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     //every 6 hours
     // schedule.scheduleJob("0 0 */6 * *", async () => {
     try {
-        logger_1.warnLogger.info("reminder notifyUsersNinetyDaysLater started");
+        logger_1.warnLogger.info('reminder notifyUsersNinetyDaysLater started');
         // This function will run every hour
         // var selectUsers = await User.find({}).select("lastHabitUpdated");
-        var selectUsers = yield user_model_1.default.find({
+        var selectUsers = yield user_1.default.find({
             dayOneNotificationSent: true,
             dayThreeNotificationSent: true,
             daySevenNotificationSent: true,
             dayThirtyNotificationSent: true,
             dayNinetyNotificationSent: false,
-        }).select("lastHabitUpdated fcmToken");
+        }).select('lastHabitUpdated fcmToken');
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:30 ~ schedule.scheduleJob ~ selectUsers:",
         //   selectUsers
@@ -372,12 +372,12 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
         //users who did not loggedin within last 3 to 5 days
         const filteredUsersFCM = selectUsers
             .filter((user, index) => result[index])
-            .map((user) => user.fcmToken);
+            .map(user => user.fcmToken);
         // console.log(
         //   "🚀 ~ file: notification.reminders.ts:62 ~ //schedule.scheduleJob ~ filteredUsersFCM:",
         //   filteredUsersFCM
         // );
-        var fcmTokensBelongedToUpdated = yield user_model_1.default.updateMany({
+        var fcmTokensBelongedToUpdated = yield user_1.default.updateMany({
             fcmToken: filteredUsersFCM,
         }, { $set: { dayNinetyNotificationSent: true } });
         // console.log(
@@ -388,12 +388,12 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
             const notificationResponse = yield admin.messaging().sendMulticast({
                 tokens: filteredUsersFCM,
                 notification: {
-                    title: "A Welcome Back Beacon 🚀",
+                    title: 'A Welcome Back Beacon 🚀',
                     body: "It's been an extended period, and we've missed your presence. Your habits, like old friends, eagerly await your return. Whenever you're ready, let's pick up where we left off on this journey together! 🌈",
                     // imageUrl: "https://www.habitune.net/image/empty-shell",
                 },
             });
-            logger_1.warnLogger.info("reminder notifyUsersNinetyDaysLater ended: ", notificationResponse);
+            logger_1.warnLogger.info('reminder notifyUsersNinetyDaysLater ended: ', notificationResponse);
         }
     }
     catch (error) {
@@ -402,3 +402,4 @@ const notifyUsersNinetyDaysLater = () => __awaiter(void 0, void 0, void 0, funct
     // });
 });
 exports.notifyUsersNinetyDaysLater = notifyUsersNinetyDaysLater;
+//# sourceMappingURL=notification.reminders.js.map

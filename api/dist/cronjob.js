@@ -17,8 +17,8 @@ const cronjob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, notification_reminders_1.notifyUser)();
         // console.log("Cron job executed successfully");
-        logger_1.warnLogger.warn("Cron job executed successfully");
-        res.status(200).send("Cron job executed successfully");
+        logger_1.warnLogger.warn('Cron job executed successfully');
+        res.status(200).send('Cron job executed successfully');
     }
     catch (error) {
         // console.log(error);
@@ -27,3 +27,4 @@ const cronjob = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.cronjob = cronjob;
+//# sourceMappingURL=cronjob.js.map

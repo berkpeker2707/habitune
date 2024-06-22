@@ -12,3 +12,4 @@ const defaultLimitter = (0, express_rate_limit_1.default)({
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 exports.default = defaultLimitter;
+//# sourceMappingURL=defaultLimitter.js.map

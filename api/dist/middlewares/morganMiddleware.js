@@ -9,7 +9,7 @@ const logger_1 = require("./logger");
 // Morgan to use our custom logger instead of the console.log.
 const stream = {
     // Use the http severity
-    write: (message) => logger_1.httpLogger.http(message),
+    write: message => logger_1.httpLogger.http(message),
 };
 // Skip all the Morgan http log if the
 // application is not running in development mode.
@@ -27,7 +27,7 @@ const morganMiddleware = (0, morgan_1.default)(
 // defined inside the Morgan library.
 // You can create your custom token to show what do you want from a request.
 // ":remote-addr :method :url :status :res[content-length] - :response-time ms",
-":remote-addr - :remote-user [:date] :method :url HTTP/:http-version :status :res[content-length]", 
+':remote-addr - :remote-user [:date] :method :url HTTP/:http-version :status :res[content-length]', 
 // Options: in this case, I overwrote the stream and the skip logic.
 // See the methods above.
 {
@@ -35,3 +35,4 @@ const morganMiddleware = (0, morgan_1.default)(
     // skip,
 });
 exports.default = morganMiddleware;
+//# sourceMappingURL=morganMiddleware.js.map
