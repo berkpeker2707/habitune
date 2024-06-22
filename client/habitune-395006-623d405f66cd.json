@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "habitune-395006",
+  "private_key_id": "623d405f66cd4304be936ca497ded11bed1d358e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDYBUiGnS4wCG1y\nG6d129hMK8Z8vxT3oDHN2mUbNuuzFlJ3VsX+7JXa9IFnqsxT2t+GtNeiHd2vUrDT\nidQNXLZCX5hY6HN4viRI97gJsmRzMFtRwKNjq2kpSngkzybv2SgMBW6eS3JrSFrd\nJEfO8oeB1QIpubb3tf9yYZDQ0DtN6JK0rVb7AfS3snNu4N0S6w7GnSMcs7oQd7l4\nraopYj5vgmh+PuCO7S3QfifvGuCtzpHY7KsiTYzuIupSphTu3mtprjZWChVPfPmo\nBnU2MFSUY6JRaU0lZZMMUMR9gsNlys4xxZ1d/ozbPVuvIQaOpwfSKQpJ/kFKB8Qu\nBhrG0cedAgMBAAECggEACfggcznwxj21U1VMYqeNMWK5y8sDvDPT6JSiIuHjecXX\nc3N5Or0PY2XyTOb4fAw3UZ+p7ezj7LHrwC91rlIvhRulS8EahyF7SjTIdQYbFafP\nJxQ1ViW0ejfaGJTIzrveWcOsabjApIvXyanheH7/2vGKIoPUGlV3Xv96r/BUNFGo\nKnRYBRNbNxXTWlWYyg3BXa3xN6KlsUYh/FWzapMupezmAz6EXqb6az/SnUqWfNQc\nahQXlPtujHtSzBRcDLksdzJMhEQzBWBjSl7dE9la4qqBVfKq5pYQV2SfcP3K5fdC\nqGFiQoZX8Ro5U0AfnmtAthdJ7N4w3MH9u9Qv7jUgHwKBgQD4iucbX5cvqWx6DRJp\naxyxSPirJCG/09GO4k1+sxf2ZfF7O4vrBi12cbpW0TBgRL8kKyfPiQoUtVXGrqgk\nZVeJTc78g/wnZQdkL+ZydnUoUmhiS5MxaWNiErKoWVW2y0js0v+t1MKQGY61hzEs\npcZ7JmrQUDWXhBNF4kH9sGQswwKBgQDegJLxIP4mOtV9c9bn0GNiZ9IvIUCQ/buE\nOeNtq9Fkw6XWsPw1CzH6Ii7butNJOxddPf+gzvfBMNA/U6dBUjHCdrZ+trJdVztr\nrS6+K717DshAyd3+LD85cWOi4cEj0OBfbsRbobq930AnqRrnHDkzeKlcXpUuaWlM\n1oBLGXh0HwKBgQCmb+Ypl47X1P4WkZBl1dvGANa9TJnpKsCnjXZVxTrjvwrB+nNN\nNLrXGXuuTbG2lfLmFpw3R07f5TsGrMlebhr7kIZu5TfDbc1QUx9gQWFdWioawP9V\n1HxAHcNUJ1bV7TXtmbKsRtDvzJ2bhGfyvSS4LVbUHxJ0X3bEkqqcZzX+HwKBgQCD\nqtZJttpuyRYY/PnJiDmnvARXO3g31M6oepEpDyoEVPrIR0eYJB3ZBW1xPedWSI+U\n7+Fbyd43BqnVL62kK/2iNBnedkKqlbpmB7/HbZ7dOWwrWsnxZUGsvnrVon5msW51\nStkL2HLndTtDvQBcjwkSem7OaHIjWuGjRLP6vQHYxQKBgBQcbuyj054gj/DQPd1C\ndmbF4f/fxepdEE7wphYK1Il6PyRfyoTtktwjzd/B6wQ29slEVxDCVGV9sQ13Bs5O\nZkPP0Zfa+gZBbdxb+pxAO1GtSKPZU7usD89EfkWvyaZU79jUaylVgizN6cK8a+JJ\nJZM5VpGPJ/Gfk3atDw69c4lr\n-----END PRIVATE KEY-----\n",
+  "client_email": "com-thelittleteaclipper-habitu@habitune-395006.iam.gserviceaccount.com",
+  "client_id": "104865876658274274646",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/com-thelittleteaclipper-habitu%40habitune-395006.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
